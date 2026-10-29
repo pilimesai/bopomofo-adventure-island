@@ -1,0 +1,1487 @@
+/* ========================================================
+   ㄅㄆㄇ 快樂冒險島 (Bopomofo Adventure Island)
+   台灣教育部小一國語注音生動教學系統
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+TC:wght@400;600;800;900&display=swap');
+
+:root {
+  --primary: #FF6B6B;
+  --primary-light: #FFE3E3;
+  --secondary: #4DABF7;
+  --secondary-light: #E7F5FF;
+  --accent-yellow: #FFD43B;
+  --accent-green: #51CF66;
+  --accent-purple: #845EF7;
+  --accent-orange: #FF922B;
+  
+  --bg-main: #FFF9DB;
+  --bg-card: #FFFFFF;
+  --text-dark: #2B2D42;
+  --text-muted: #868E96;
+  
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-round: 999px;
+  
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(255, 107, 107, 0.12);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.1);
+  --shadow-pop: 0 8px 0px rgba(0, 0, 0, 0.1);
+  
+  --font-child: 'Zen Maru Gothic', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-child);
+  background: linear-gradient(135deg, #FFF9DB 0%, #FFF3BF 50%, #EBFBEE 100%);
+  min-height: 100vh;
+  color: var(--text-dark);
+  overflow-x: hidden;
+  position: relative;
+  user-select: none;
+}
+
+/* 背景可愛雲朵與裝飾泡泡 */
+.bg-decor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius-round);
+  filter: blur(1px);
+  animation: floatCloud 24s infinite linear;
+}
+.cloud-1 { width: 140px; height: 50px; top: 12%; left: -150px; }
+.cloud-2 { width: 200px; height: 70px; top: 35%; left: -220px; animation-duration: 34s; animation-delay: 5s; }
+.cloud-3 { width: 160px; height: 55px; top: 68%; left: -180px; animation-duration: 28s; animation-delay: 12s; }
+
+@keyframes floatCloud {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 300px)); }
+}
+
+/* 頂部導航欄 (Header) */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 4px solid #FFE066;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logo-badge {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #FF6B6B, #FF8787);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 0 #E03131;
+  animation: bounceMini 2.5s infinite ease-in-out;
+}
+
+.logo-text h1 {
+  font-size: 24px;
+  font-weight: 900;
+  color: #E8590C;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo-tag {
+  font-size: 13px;
+  color: #7950F2;
+  font-weight: 700;
+  background: #F3F0FF;
+  padding: 2px 10px;
+  border-radius: var(--radius-round);
+}
+
+/* 吉祥物與星星進度條 */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mascot-bubble {
+  background: #FFF4E6;
+  border: 2px solid #FFD8A8;
+  padding: 6px 14px;
+  border-radius: var(--radius-round);
+  font-size: 14px;
+  font-weight: 700;
+  color: #D9480F;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  animation: pulseLight 3s infinite;
+}
+
+.star-counter {
+  background: linear-gradient(135deg, #FFD43B, #FCC419);
+  padding: 8px 18px;
+  border-radius: var(--radius-round);
+  font-size: 18px;
+  font-weight: 900;
+  color: #7A4100;
+  box-shadow: 0 4px 0 #E67700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.star-counter:hover {
+  transform: scale(1.05);
+}
+
+.audio-toggle-btn {
+  background: white;
+  border: 2px solid #E9ECEF;
+  border-radius: var(--radius-round);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #CED4DA;
+  transition: all 0.15s;
+}
+
+.audio-toggle-btn:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+/* 主分頁切換選單 (Top Tabs) */
+.tab-navigation {
+  max-width: 1200px;
+  margin: 16px auto 8px auto;
+  padding: 0 16px;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  flex: 1;
+  min-width: 150px;
+  background: white;
+  border: none;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #DEE2E6;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.tab-btn .tab-icon {
+  font-size: 22px;
+}
+
+.tab-btn:hover {
+  transform: translateY(-2px);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #FF6B6B, #FA5252);
+  color: white;
+  box-shadow: 0 5px 0 #C92A2A;
+  transform: translateY(-3px);
+}
+
+/* 主容器區塊 */
+.main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px 80px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.tab-pane {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================================
+   MODULE 1: 37注音探險圖鑑
+   ======================================================== */
+.gallery-filter-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  background: white;
+  border: 2px solid #E9ECEF;
+  border-radius: var(--radius-round);
+  padding: 8px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #495057;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #CED4DA;
+  transition: all 0.15s;
+}
+
+.filter-chip.active {
+  background: #339AF0;
+  border-color: #339AF0;
+  color: white;
+  box-shadow: 0 3px 0 #1864AB;
+  transform: translateY(-2px);
+}
+
+.symbol-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 16px;
+}
+
+.symbol-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 16px 12px;
+  text-align: center;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.06), 0 2px 12px rgba(0,0,0,0.04);
+  border: 3px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.symbol-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 0 rgba(0, 0, 0, 0.08), 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.symbol-card:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-zhuyin-char {
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: #2B2D42;
+  margin-bottom: 4px;
+}
+
+.card-icon {
+  font-size: 32px;
+  margin: 4px 0;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.card-word {
+  font-size: 15px;
+  font-weight: 800;
+  color: #495057;
+}
+
+.card-pinyin {
+  font-size: 12px;
+  color: #868E96;
+  font-weight: 700;
+  background: #F1F3F5;
+  padding: 2px 8px;
+  border-radius: var(--radius-round);
+  margin-top: 4px;
+}
+
+.card-sound-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  background: #E7F5FF;
+  color: #228BE6;
+  border-radius: var(--radius-round);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* 結合韻展示小卡 */
+.combined-banner {
+  background: linear-gradient(135deg, #E3FAFC, #C5F6FA);
+  border: 3px dashed #3BC9DB;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-top: 32px;
+}
+
+.combined-banner h3 {
+  font-size: 20px;
+  font-weight: 900;
+  color: #0C8599;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.combined-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.combo-chip {
+  background: white;
+  border: 2px solid #66D9E8;
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #1098AD;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #3BC9DB;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.combo-chip:hover {
+  transform: translateY(-3px);
+  background: #1098AD;
+  color: white;
+}
+
+/* ========================================================
+   MODULE 2: 神奇拼音小火車 (Spelling Blending Train)
+   ======================================================== */
+.train-station-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-md);
+  border: 4px solid #FFE066;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.station-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #D9480F;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.station-desc {
+  font-size: 16px;
+  color: #868E96;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.train-track-view {
+  background: #F8F9FA;
+  border: 3px dashed #CED4DA;
+  border-radius: var(--radius-lg);
+  padding: 24px 16px;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.train-cars-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.train-engine {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #FF6B6B, #FA5252);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 38px;
+  box-shadow: 0 6px 0 #C92A2A;
+  animation: trainChug 0.8s infinite alternate ease-in-out;
+}
+
+.train-engine span {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.train-car {
+  width: 100px;
+  min-height: 120px;
+  background: white;
+  border-radius: var(--radius-md);
+  border: 3px solid #74C0FC;
+  box-shadow: 0 6px 0 #4DABF7;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.car-tag {
+  font-size: 13px;
+  font-weight: 800;
+  background: #E7F5FF;
+  color: #1971C2;
+  padding: 2px 10px;
+  border-radius: var(--radius-round);
+}
+
+.car-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: #2B2D42;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.car-wheels {
+  display: flex;
+  gap: 18px;
+  margin-top: 4px;
+}
+.wheel {
+  width: 18px;
+  height: 18px;
+  background: #495057;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.train-plus {
+  font-size: 28px;
+  font-weight: 900;
+  color: #ADB5BD;
+}
+
+.train-result-box {
+  background: linear-gradient(135deg, #FFF4E6, #FFE8CC);
+  border: 3px solid #FF922B;
+  border-radius: var(--radius-lg);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 6px 0 #E8590C;
+}
+
+.result-char {
+  font-size: 60px;
+  font-weight: 900;
+  color: #D9480F;
+  line-height: 1;
+}
+
+.result-meta {
+  text-align: left;
+}
+
+.result-word {
+  font-size: 24px;
+  font-weight: 900;
+  color: #495057;
+}
+
+.result-pinyin {
+  font-size: 16px;
+  color: #E8590C;
+  font-weight: 700;
+}
+
+/* 拼音控制盤與聲母/韻母/聲調選鈕 */
+.train-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.picker-col {
+  background: #F8F9FA;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  border: 2px solid #E9ECEF;
+}
+
+.picker-col h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #495057;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.selector-scroll {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.pick-item {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 2px solid #DEE2E6;
+  border-radius: var(--radius-sm);
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pick-item:hover {
+  border-color: #339AF0;
+  transform: scale(1.08);
+}
+
+.pick-item.active {
+  background: #339AF0;
+  color: white;
+  border-color: #1971C2;
+}
+
+.train-action-btns {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.big-action-btn {
+  background: linear-gradient(135deg, #51CF66, #40C057);
+  border: none;
+  padding: 16px 36px;
+  border-radius: var(--radius-round);
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 900;
+  color: white;
+  box-shadow: 0 6px 0 #2B8A3E;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.big-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #2B8A3E;
+}
+
+.big-action-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #2B8A3E;
+}
+
+.secondary-action-btn {
+  background: white;
+  border: 3px solid #FF922B;
+  padding: 14px 28px;
+  border-radius: var(--radius-round);
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  color: #E8590C;
+  box-shadow: 0 4px 0 #FF922B;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.secondary-action-btn:hover {
+  background: #FFF4E6;
+}
+
+/* ========================================================
+   MODULE 3: 四聲溜滑梯 (4 Tones Mastery)
+   ======================================================== */
+.tone-slider-wrapper {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-md);
+  border: 4px solid #74C0FC;
+  text-align: center;
+}
+
+.tone-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.tone-card {
+  background: #F8F9FA;
+  border-radius: var(--radius-lg);
+  padding: 24px 16px;
+  border: 3px solid #E9ECEF;
+  box-shadow: 0 6px 0 #DEE2E6;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tone-card:hover {
+  transform: translateY(-6px);
+}
+
+.tone-card.active {
+  background: #FFF9DB;
+  border-color: #FCC419;
+  box-shadow: 0 8px 0 #F59F00;
+  transform: translateY(-4px) scale(1.02);
+}
+
+.tone-symbol-large {
+  font-size: 64px;
+  font-weight: 900;
+  color: #2B2D42;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tone-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.tone-rhyme {
+  font-size: 14px;
+  font-weight: 700;
+  color: #D9480F;
+  margin-bottom: 12px;
+}
+
+.tone-visual-path {
+  height: 60px;
+  background: white;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #CED4DA;
+  position: relative;
+}
+
+.tone-car-anim {
+  font-size: 24px;
+  position: absolute;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 四聲動畫軌跡 */
+.tone-card[data-tone="1"] .tone-car-anim { animation: glideStraight 2s infinite ease-in-out; }
+.tone-card[data-tone="2"] .tone-car-anim { animation: climbUp 2s infinite ease-in-out; }
+.tone-card[data-tone="3"] .tone-car-anim { animation: rollerCoaster 2s infinite ease-in-out; }
+.tone-card[data-tone="4"] .tone-car-anim { animation: slideDown 2s infinite ease-in-out; }
+.tone-card[data-tone="0"] .tone-car-anim { animation: floatBubble 2s infinite ease-in-out; }
+
+@keyframes glideStraight {
+  0% { transform: translateX(-35px); }
+  100% { transform: translateX(35px); }
+}
+@keyframes climbUp {
+  0% { transform: translate(-35px, 15px); }
+  100% { transform: translate(35px, -15px); }
+}
+@keyframes rollerCoaster {
+  0% { transform: translate(-35px, -10px); }
+  50% { transform: translate(0, 15px); }
+  100% { transform: translate(35px, -10px); }
+}
+@keyframes slideDown {
+  0% { transform: translate(-35px, -15px); }
+  100% { transform: translate(35px, 15px); }
+}
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(5px); }
+  50% { transform: translateY(-8px); }
+}
+
+.tone-practice-box {
+  background: #F1F3F5;
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.tone-speak-char {
+  font-size: 42px;
+  font-weight: 900;
+  color: #1864AB;
+}
+
+/* ========================================================
+   MODULE 4: 趣味注音小遊樂園 (3 Mini Games)
+   ======================================================== */
+.game-hub-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.game-mode-selector {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mode-btn {
+  background: white;
+  border: 3px solid #DEE2E6;
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #495057;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #CED4DA;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.mode-btn.active {
+  background: #FF6B6B;
+  color: white;
+  border-color: #E03131;
+  box-shadow: 0 4px 0 #C92A2A;
+  transform: translateY(-2px);
+}
+
+.game-arena {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
+  border: 4px solid #69DB7C;
+  min-height: 480px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 遊戲狀態列 (Score, Timer, Prompt) */
+.game-status-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 2px dashed #E9ECEF;
+}
+
+.game-prompt-large {
+  font-size: 24px;
+  font-weight: 900;
+  color: #2B2D42;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.replay-audio-btn {
+  background: #E7F5FF;
+  border: 2px solid #339AF0;
+  color: #1971C2;
+  border-radius: var(--radius-round);
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.replay-audio-btn:hover {
+  transform: scale(1.1);
+}
+
+.score-badge {
+  background: #FFF3BF;
+  border: 2px solid #FFD43B;
+  padding: 6px 16px;
+  border-radius: var(--radius-round);
+  font-size: 16px;
+  font-weight: 800;
+  color: #D9480F;
+}
+
+/* 遊戲1：氣球戳戳樂 (Balloons) */
+.balloon-grid {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 700px;
+}
+
+.balloon-item {
+  width: 120px;
+  height: 150px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  font-weight: 900;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  box-shadow: inset -6px -6px 12px rgba(0,0,0,0.15), 0 8px 18px rgba(0,0,0,0.12);
+  transition: transform 0.15s;
+  animation: balloonFloat 3s infinite ease-in-out alternate;
+}
+
+.balloon-item::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  width: 4px;
+  height: 24px;
+  background: #CED4DA;
+}
+
+.balloon-item:hover {
+  transform: scale(1.08) translateY(-4px);
+}
+
+@keyframes balloonFloat {
+  0% { transform: translateY(0px) rotate(-2deg); }
+  100% { transform: translateY(-16px) rotate(2deg); }
+}
+
+/* 遊戲2：翻牌記憶連連看 (Card Memory Matching) */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.memory-card {
+  height: 110px;
+  background: #4DABF7;
+  border-radius: var(--radius-md);
+  border: 3px solid #339AF0;
+  box-shadow: 0 5px 0 #1864AB;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 900;
+  color: white;
+  transition: all 0.3s;
+  perspective: 1000px;
+}
+
+.memory-card.flipped {
+  background: white;
+  color: #2B2D42;
+  border-color: #FFD43B;
+  box-shadow: 0 5px 0 #FCC419;
+  transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+  background: #D3F9D8;
+  border-color: #51CF66;
+  box-shadow: 0 5px 0 #2B8A3E;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* ========================================================
+   MODULE 5: 筆順小畫家 (Stroke Tracing Canvas)
+   ======================================================== */
+.canvas-station-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  border: 4px solid #FF922B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.canvas-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.color-palette {
+  display: flex;
+  gap: 8px;
+}
+
+.color-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: transform 0.15s;
+}
+
+.color-dot.active {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 3px #2B2D42;
+}
+
+.canvas-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.tool-btn {
+  background: #F1F3F5;
+  border: 2px solid #DEE2E6;
+  border-radius: var(--radius-round);
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+
+.tool-btn:hover {
+  background: #E9ECEF;
+}
+
+/* 田字格與米字格畫布容器 */
+.canvas-container {
+  width: 340px;
+  height: 340px;
+  background: #FFFDF5;
+  border: 6px solid #FF8787;
+  border-radius: var(--radius-md);
+  position: relative;
+  box-shadow: 0 8px 24px rgba(255, 107, 107, 0.15);
+  cursor: crosshair;
+}
+
+/* 米字格十字與對角虛線 */
+.canvas-grid-guide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.guide-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  border-top: 2px dashed #FFC9C9;
+}
+.guide-v {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  border-left: 2px dashed #FFC9C9;
+}
+.guide-d1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top right, transparent calc(50% - 1px), #FFE3E3 calc(50% - 1px), #FFE3E3 50%, transparent 50%);
+  opacity: 0.5;
+}
+
+/* 描紅底字 */
+.canvas-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 210px;
+  font-weight: 900;
+  color: #FFD8A8;
+  opacity: 0.45;
+  pointer-events: none;
+  line-height: 1;
+}
+
+#stroke-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.stroke-char-picker {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 16px 0 8px 0;
+  scrollbar-width: thin;
+}
+
+.picker-badge {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  background: white;
+  border: 2px solid #E9ECEF;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #CED4DA;
+  transition: all 0.15s;
+}
+
+.picker-badge.active {
+  background: #FF6B6B;
+  color: white;
+  border-color: #E03131;
+  box-shadow: 0 3px 0 #C92A2A;
+  transform: translateY(-2px);
+}
+
+/* ========================================================
+   MODULE 6: 榮譽星光榜 (Achievements & Badges)
+   ======================================================== */
+.achieve-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.achieve-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 3px solid #FFE066;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.badge-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #FFF3BF;
+  border: 4px solid #FFD43B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(255, 212, 59, 0.3);
+}
+
+.badge-name {
+  font-size: 20px;
+  font-weight: 900;
+  color: #2B2D42;
+  margin-bottom: 6px;
+}
+
+.badge-desc {
+  font-size: 14px;
+  color: #868E96;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.badge-status {
+  padding: 4px 16px;
+  border-radius: var(--radius-round);
+  font-size: 13px;
+  font-weight: 800;
+}
+.badge-status.unlocked {
+  background: #D3F9D8;
+  color: #2B8A3E;
+}
+.badge-status.locked {
+  background: #F1F3F5;
+  color: #868E96;
+}
+
+/* ========================================================
+   MODAL: 詳細注音學習視窗 (Detail Popup Modal)
+   ======================================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(43, 45, 66, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-card {
+  background: white;
+  width: 100%;
+  max-width: 640px;
+  border-radius: var(--radius-lg);
+  border: 5px solid #FFD43B;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  padding: 28px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  background: #F1F3F5;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.modal-close-btn:hover {
+  background: #FF6B6B;
+  color: white;
+}
+
+.modal-header-hero {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.modal-char-box {
+  width: 110px;
+  height: 110px;
+  background: #FFF9DB;
+  border: 4px solid #FCC419;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  font-weight: 900;
+  color: #D9480F;
+  box-shadow: 0 6px 0 #FAB005;
+}
+
+.modal-hero-info h2 {
+  font-size: 28px;
+  font-weight: 900;
+  color: #2B2D42;
+  margin-bottom: 6px;
+}
+
+.modal-stroke-tag {
+  font-size: 14px;
+  font-weight: 700;
+  background: #E7F5FF;
+  color: #1971C2;
+  padding: 3px 12px;
+  border-radius: var(--radius-round);
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.modal-listen-btn {
+  background: #51CF66;
+  border: none;
+  padding: 8px 20px;
+  border-radius: var(--radius-round);
+  color: white;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 0 #2B8A3E;
+  transition: all 0.15s;
+}
+.modal-listen-btn:hover {
+  transform: translateY(-2px);
+}
+
+.modal-mnemonic-box {
+  background: #FFF4E6;
+  border: 2px dashed #FF922B;
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.mnemonic-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #D9480F;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mnemonic-text {
+  font-size: 17px;
+  font-weight: 800;
+  color: #495057;
+}
+
+.modal-examples-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.example-card-item {
+  background: #F8F9FA;
+  border-radius: var(--radius-md);
+  padding: 14px 8px;
+  text-align: center;
+  border: 2px solid #E9ECEF;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.example-card-item:hover {
+  border-color: #339AF0;
+  transform: translateY(-3px);
+  background: #E7F5FF;
+}
+
+.ex-icon {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+.ex-word {
+  font-size: 16px;
+  font-weight: 800;
+  color: #2B2D42;
+}
+.ex-zhuyin {
+  font-size: 13px;
+  color: #868E96;
+  font-weight: 700;
+}
+
+.modal-nav-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modal-nav-btn {
+  background: white;
+  border: 2px solid #CED4DA;
+  padding: 10px 22px;
+  border-radius: var(--radius-round);
+  font-size: 15px;
+  font-weight: 800;
+  color: #495057;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #ADB5BD;
+  transition: all 0.15s;
+}
+.modal-nav-btn:hover {
+  background: #F1F3F5;
+}
+
+/* ========================================================
+   RWD 手機與平板適應
+   ======================================================== */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 10px 14px;
+  }
+  .logo-text h1 {
+    font-size: 19px;
+  }
+  .mascot-bubble {
+    display: none;
+  }
+  .tab-btn {
+    min-width: 120px;
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+  .symbol-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .card-zhuyin-char {
+    font-size: 42px;
+  }
+  .train-cars-row {
+    gap: 8px;
+  }
+  .train-car {
+    width: 80px;
+    min-height: 105px;
+  }
+  .car-value {
+    font-size: 36px;
+  }
+  .modal-examples-grid {
+    grid-template-columns: 1fr;
+  }
+}

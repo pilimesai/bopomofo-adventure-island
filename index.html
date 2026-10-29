@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ㄅㄆㄇ 快樂冒險島 | 台灣教育部小一注音生動教學系統</title>
+  <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
+</head>
+<body>
+  <!-- 背景雲朵動態 -->
+  <div class="bg-decor">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <!-- 頂部導航列 -->
+  <header class="app-header">
+    <div class="logo-container" id="btn-home-logo" title="回首頁">
+      <div class="logo-badge">ㄅ</div>
+      <div class="logo-text">
+        <h1>ㄅㄆㄇ 快樂冒險島 <span class="logo-tag">小一教育部專用</span></h1>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="mascot-bubble" id="mascot-speech">
+        🐱 喵～今天想跟哪一個注音符號當好朋友呢？
+      </div>
+
+      <div class="star-counter" id="header-star-btn" title="查看榮譽星光榜">
+        <span>⭐</span>
+        <span id="global-star-count">0</span>
+        <span style="font-size:12px;opacity:0.85;">顆星</span>
+      </div>
+
+      <button class="audio-toggle-btn" id="btn-voice-settings" title="自然老師語音設定" aria-label="語音設定">
+        🎙️
+      </button>
+
+      <button class="audio-toggle-btn" id="btn-audio-toggle" title="開啟/關閉聲音" aria-label="語音切換">
+        🔊
+      </button>
+    </div>
+  </header>
+
+  <!-- 功能選單分頁列 -->
+  <nav class="tab-navigation" aria-label="學習專區切換">
+    <button class="tab-btn active" data-tab="tab-gallery">
+      <span class="tab-icon">🌈</span>
+      <span>37注音探險</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-train">
+      <span class="tab-icon">🚂</span>
+      <span>神奇拼音火車</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-tones">
+      <span class="tab-icon">🎢</span>
+      <span>四聲溜滑梯</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-games">
+      <span class="tab-icon">🎮</span>
+      <span>趣味小遊樂園</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-canvas">
+      <span class="tab-icon">✍️</span>
+      <span>筆順小畫家</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-achievements">
+      <span class="tab-icon">🏆</span>
+      <span>榮譽星光榜</span>
+    </button>
+  </nav>
+
+  <!-- 主內容區塊 -->
+  <main class="main-wrapper">
+
+    <!-- ========================================================
+         PAGE 1: 37注音探險圖鑑
+         ======================================================== -->
+    <section class="tab-pane active" id="tab-gallery">
+      <!-- 篩選列 -->
+      <div class="gallery-filter-bar">
+        <button class="filter-chip active" data-filter="all">🌟 全部符號 (37個)</button>
+        <button class="filter-chip" data-filter="initial">🎈 聲母家族 (21個)</button>
+        <button class="filter-chip" data-filter="medial">🤝 介音夥伴 (3個)</button>
+        <button class="filter-chip" data-filter="final">🧚 韻母精靈 (13個)</button>
+      </div>
+
+      <!-- 注音卡片網格 -->
+      <div class="symbol-grid" id="symbol-card-grid">
+        <!-- 由 JavaScript 動態生成 37 張注音卡片 -->
+      </div>
+
+      <!-- 結合韻城堡專區 -->
+      <div class="combined-banner">
+        <h3>🏰 結合韻神奇城堡 (22個結合韻)</h3>
+        <p style="color:#15AABF;margin-bottom:14px;font-weight:700;">由介音（ㄧ、ㄨ、ㄩ）與韻母手牽手合體的好朋友！點擊聽發音：</p>
+        <div class="combined-chips" id="combined-chips-container">
+          <!-- 由 JS 動態生成結合韻卡片 -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         PAGE 2: 神奇拼音小火車
+         ======================================================== -->
+    <section class="tab-pane" id="tab-train">
+      <div class="train-station-card">
+        <h2 class="station-title">🚂 神奇拼音小火車出發囉！</h2>
+        <p class="station-desc">挑選聲母車廂、介音車廂、韻母車廂與聲調，拼出生活中的中文好朋友！</p>
+
+        <!-- 火車軌道視圖 -->
+        <div class="train-track-view">
+          <div class="train-cars-row">
+            <!-- 火車頭 -->
+            <div class="train-engine">
+              🚂
+              <span>ㄅㄆㄇ號</span>
+            </div>
+
+            <!-- 聲母車廂 -->
+            <div class="train-car">
+              <span class="car-tag">聲母</span>
+              <div class="car-value" id="train-initial-val">ㄅ</div>
+              <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
+            </div>
+
+            <div class="train-plus">+</div>
+
+            <!-- 介音車廂 -->
+            <div class="train-car">
+              <span class="car-tag">介音</span>
+              <div class="car-value" id="train-medial-val" style="color:#FAB005;">—</div>
+              <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
+            </div>
+
+            <div class="train-plus">+</div>
+
+            <!-- 韻母車廂 -->
+            <div class="train-car">
+              <span class="car-tag">韻母</span>
+              <div class="car-value" id="train-final-val" style="color:#FA5252;">ㄚ</div>
+              <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
+            </div>
+
+            <div class="train-plus">+</div>
+
+            <!-- 聲調旗幟 -->
+            <div class="train-car">
+              <span class="car-tag">聲調</span>
+              <div class="car-value" id="train-tone-val" style="color:#4DABF7;">ˉ</div>
+              <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
+            </div>
+
+            <div class="train-plus">=</div>
+
+            <!-- 拼音合成結果車廂 -->
+            <div class="train-result-box" id="train-result-box">
+              <div class="result-char" id="train-result-char">八</div>
+              <div class="result-meta">
+                <div class="result-word" id="train-result-word">八個蘋果 🍎</div>
+                <div class="result-pinyin" id="train-result-pinyin">ㄅㄚ (bā)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 選擇器區域 -->
+        <div class="train-controls">
+          <!-- 挑選聲母 -->
+          <div class="picker-col">
+            <h4>1. 挑選聲母 <span style="font-size:12px;color:#868E96;">(可不選)</span></h4>
+            <div class="selector-scroll" id="train-picker-initial"></div>
+          </div>
+
+          <!-- 挑選介音 -->
+          <div class="picker-col">
+            <h4>2. 挑選介音 <span style="font-size:12px;color:#868E96;">(ㄧ ㄨ ㄩ)</span></h4>
+            <div class="selector-scroll" id="train-picker-medial"></div>
+          </div>
+
+          <!-- 挑選韻母 -->
+          <div class="picker-col">
+            <h4>3. 挑選韻母</h4>
+            <div class="selector-scroll" id="train-picker-final"></div>
+          </div>
+
+          <!-- 挑選聲調 -->
+          <div class="picker-col">
+            <h4>4. 挑選聲調</h4>
+            <div class="selector-scroll" id="train-picker-tone"></div>
+          </div>
+        </div>
+
+        <!-- 按鈕操作區 -->
+        <div class="train-action-btns">
+          <button class="big-action-btn" id="btn-train-spell">
+            <span>📢</span>
+            <span>按我拼讀發音！</span>
+          </button>
+          <button class="secondary-action-btn" id="btn-train-random">
+            <span>🎲</span>
+            <span>隨機抽題換新字</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         PAGE 3: 四聲溜滑梯
+         ======================================================== -->
+    <section class="tab-pane" id="tab-tones">
+      <div class="tone-slider-wrapper">
+        <h2 style="font-size:26px;font-weight:900;color:#1864AB;margin-bottom:8px;">
+          🎢 四聲溜滑梯！聲調口訣大冒險
+        </h2>
+        <p style="color:#868E96;font-weight:700;margin-bottom:20px;">
+          跟著溜滑梯小車一起念：一聲平平、二聲向上爬、三聲轉個彎、四聲溜滑梯、輕聲點個點！
+        </p>
+
+        <!-- 四聲調卡片列 -->
+        <div class="tone-cards-row" id="tone-cards-row">
+          <!-- 由 JS 動態生成 5 個聲調卡片 -->
+        </div>
+
+        <!-- 聲調練習台 -->
+        <div class="tone-practice-box">
+          <span style="font-size:18px;font-weight:800;color:#495057;">當前試聽示範：</span>
+          <span class="tone-speak-char" id="tone-current-char">ㄅㄚ</span>
+          <button class="big-action-btn" id="btn-tone-listen" style="padding:10px 24px;font-size:18px;">
+            <span>🔊</span>
+            <span>聽調值與滑動音</span>
+          </button>
+          <div style="font-size:16px;color:#D9480F;font-weight:700;" id="tone-current-rhyme">
+            一聲平平像地平線 🚗💨
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         PAGE 4: 趣味注音小遊樂園
+         ======================================================== -->
+    <section class="tab-pane" id="tab-games">
+      <div class="game-hub-container">
+        <!-- 遊戲模式切換按鈕 -->
+        <div class="game-mode-selector">
+          <button class="mode-btn active" data-game="balloon">
+            <span>🎈</span> 聽音戳氣球
+          </button>
+          <button class="mode-btn" data-game="memory">
+            <span>🃏</span> 符號翻牌記憶賽
+          </button>
+          <button class="mode-btn" data-game="toneQuiz">
+            <span>🎯</span> 聲調聽力神射手
+          </button>
+        </div>
+
+        <!-- 遊戲主舞台 -->
+        <div class="game-arena" id="game-arena">
+          <!-- 動態載入各款遊戲畫面 -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         PAGE 5: 筆順小畫家
+         ======================================================== -->
+    <section class="tab-pane" id="tab-canvas">
+      <div class="canvas-station-card">
+        <h2 style="font-size:26px;font-weight:900;color:#D9480F;margin-bottom:8px;">
+          ✍️ 筆順小畫家！標準米字格描紅練習
+        </h2>
+        <p style="color:#868E96;font-weight:700;margin-bottom:16px;">
+          挑選你想要練寫的注音符號，拿起彩筆跟著虛線描一描，寫完可以蓋集星章喔！
+        </p>
+
+        <!-- 工具列 (顏色、清除、語音、印章) -->
+        <div class="canvas-toolbar">
+          <div class="color-palette">
+            <div class="color-dot active" style="background:#FF6B6B;" data-color="#FF6B6B" title="草莓紅"></div>
+            <div class="color-dot" style="background:#4DABF7;" data-color="#4DABF7" title="天藍色"></div>
+            <div class="color-dot" style="background:#51CF66;" data-color="#51CF66" title="薄荷綠"></div>
+            <div class="color-dot" style="background:#FF922B;" data-color="#FF922B" title="蜜柑橘"></div>
+            <div class="color-dot" style="background:#845EF7;" data-color="#845EF7" title="葡萄紫"></div>
+          </div>
+
+          <div class="canvas-actions">
+            <button class="tool-btn" id="btn-canvas-listen">
+              <span>🔊</span> 聽讀音
+            </button>
+            <button class="tool-btn" id="btn-canvas-clear">
+              <span>🧹</span> 清除重寫
+            </button>
+            <button class="tool-btn" id="btn-canvas-stamp" style="background:#FFE066;border-color:#FCC419;">
+              <span>⭐</span> 寫好了領星星
+            </button>
+          </div>
+        </div>
+
+        <!-- 畫布容器（含米字格線與背景描紅浮水印） -->
+        <div class="canvas-container" id="canvas-container">
+          <div class="canvas-grid-guide">
+            <div class="guide-h"></div>
+            <div class="guide-v"></div>
+            <div class="guide-d1"></div>
+          </div>
+          <div class="canvas-watermark" id="canvas-watermark">ㄅ</div>
+          <canvas id="stroke-canvas" width="340" height="340"></canvas>
+        </div>
+
+        <!-- 快速選擇注音列 -->
+        <div class="stroke-char-picker" id="stroke-char-picker">
+          <!-- 由 JS 動態生成 37 個注音小方塊 -->
+        </div>
+
+        <div style="margin-top:12px;font-size:15px;font-weight:800;color:#495057;" id="canvas-stroke-tip">
+          筆順提示：一筆橫折，二筆橫（共 2 畫）
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         PAGE 6: 榮譽星光榜
+         ======================================================== -->
+    <section class="tab-pane" id="tab-achievements">
+      <div class="achieve-container" id="achievements-list">
+        <!-- 由 JS 動態生成榮譽勳章卡片 -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       MODAL: 單一注音詳細卡片彈跳視窗
+       ======================================================== -->
+  <div class="modal-backdrop" id="symbol-detail-modal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="關閉視窗">✕</button>
+
+      <div class="modal-header-hero">
+        <div class="modal-char-box" id="modal-char">ㄅ</div>
+        <div class="modal-hero-info">
+          <span class="modal-stroke-tag" id="modal-category">聲母家族</span>
+          <div style="font-size:14px;color:#868E96;font-weight:700;" id="modal-strokes-info">筆劃：2 畫</div>
+          <h2 id="modal-title">ㄅ (b)</h2>
+          <button class="modal-listen-btn" id="modal-listen-btn">
+            <span>📢</span>
+            <span>點我聽發音</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 記憶口訣 -->
+      <div class="modal-mnemonic-box">
+        <div class="mnemonic-title">💡 小一必背記憶口訣</div>
+        <div class="mnemonic-text" id="modal-mnemonic">ㄅ像收音機，天線豎起來 ㄅㄅㄅ</div>
+      </div>
+
+      <!-- 筆順走法提示 -->
+      <div style="background:#F1F3F5;border-radius:12px;padding:12px 16px;margin-bottom:18px;font-weight:700;color:#495057;">
+        ✍️ 筆順指引：<span id="modal-stroke-guide" style="color:#1864AB;">一筆橫折，二筆橫</span>
+      </div>
+
+      <!-- 生活常用例詞三合一 -->
+      <div style="font-size:16px;font-weight:900;color:#2B2D42;margin-bottom:10px;">🌟 生活好朋友例詞（點擊聽發音）：</div>
+      <div class="modal-examples-grid" id="modal-examples-grid">
+        <!-- 由 JS 動態生成 -->
+      </div>
+
+      <!-- 上一個 / 下一個切換 -->
+      <div class="modal-nav-actions">
+        <button class="modal-nav-btn" id="modal-prev-btn">⬅️ 上一個符號</button>
+        <button class="modal-nav-btn" id="modal-practice-btn" style="background:#FFE066;border-color:#FCC419;">✍️ 去米字格練寫</button>
+        <button class="modal-nav-btn" id="modal-next-btn">下一個符號 ➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: 自然老師語音設定視窗 (Voice Settings Modal)
+       ======================================================== -->
+  <div class="modal-backdrop" id="voice-settings-modal" aria-hidden="true">
+    <div class="modal-card" style="max-width:520px;border-color:#4DABF7;">
+      <button class="modal-close-btn" id="voice-modal-close-btn" aria-label="關閉視窗">✕</button>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+        <div style="font-size:36px;background:#E7F5FF;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;">🎙️</div>
+        <div>
+          <h2 style="font-size:22px;font-weight:900;color:#1864AB;">老師聲音設定</h2>
+          <p style="font-size:13px;color:#868E96;font-weight:700;">挑選最自然親切的發音，告別生硬機器聲！</p>
+        </div>
+      </div>
+
+      <!-- 發音老師選擇 -->
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:15px;font-weight:800;color:#2B2D42;margin-bottom:8px;">
+          🗣️ 選擇說話老師：
+        </label>
+        <select id="select-voice-picker" style="width:100%;padding:12px;font-size:15px;font-weight:700;border:2px solid #CED4DA;border-radius:12px;background:#F8F9FA;font-family:inherit;color:#2B2D42;outline:none;">
+          <!-- 由 JS 自動填入可用台灣語音 -->
+        </select>
+        <div style="margin-top:6px;font-size:12px;color:#2B8A3E;font-weight:700;" id="voice-recommend-tip">
+          ✨ 推薦首選「Microsoft 雅婷老師」（純台灣口音）或「Google 台灣國語」，溫柔親切！
+        </div>
+      </div>
+
+      <!-- 語速調整 -->
+      <div style="margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <label style="font-size:15px;font-weight:800;color:#2B2D42;">🐢 語速節奏：</label>
+          <span id="speech-rate-label" style="font-weight:800;color:#1864AB;">0.88x (親切教學)</span>
+        </div>
+        <input type="range" id="slider-speech-rate" min="0.65" max="1.15" step="0.05" value="0.88" style="width:100%;accent-color:#339AF0;cursor:pointer;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#868E96;font-weight:700;margin-top:2px;">
+          <span>慢速清楚 (0.65x)</span>
+          <span>適中 (0.88x)</span>
+          <span>一般速度 (1.15x)</span>
+        </div>
+      </div>
+
+      <!-- 語調調整 -->
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <label style="font-size:15px;font-weight:800;color:#2B2D42;">🎵 語調高低：</label>
+          <span id="speech-pitch-label" style="font-weight:800;color:#1864AB;">1.15 (活潑溫柔)</span>
+        </div>
+        <input type="range" id="slider-speech-pitch" min="0.85" max="1.35" step="0.05" value="1.15" style="width:100%;accent-color:#339AF0;cursor:pointer;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#868E96;font-weight:700;margin-top:2px;">
+          <span>沉穩 (0.85)</span>
+          <span>親切活潑 (1.15)</span>
+          <span>輕快明亮 (1.35)</span>
+        </div>
+      </div>
+
+      <!-- 操作按鈕 -->
+      <div style="display:flex;gap:12px;justify-content:flex-end;">
+        <button class="big-action-btn" id="btn-test-voice" style="padding:10px 20px;font-size:16px;background:linear-gradient(135deg,#4DABF7,#339AF0);box-shadow:0 4px 0 #1864AB;">
+          <span>🔊</span> 試聽發音效果
+        </button>
+        <button class="big-action-btn" id="btn-save-voice" style="padding:10px 24px;font-size:16px;">
+          <span>💾</span> 確定保存
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入資料庫與邏輯腳本 -->
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
