@@ -9,7 +9,7 @@ class ZhuyinAudioEngine {
     this.synth = window.speechSynthesis;
     this.currentAudio = null; // 預錄正音班神經語音 MP3 播放器
     this.taiwanVoice = null;
-    this.selectedVoiceName = localStorage.getItem('zhuyin_selected_voice') || '';
+    this.selectedVoiceName = localStorage.getItem('zhuyin_selected_voice') || 'PERSONA::DUET';
     this.isMuted = false;
     this.speechRate = parseFloat(localStorage.getItem('zhuyin_speech_rate') || '0.86');
     this.speechPitch = parseFloat(localStorage.getItem('zhuyin_speech_pitch') || '1.12'); // 台灣國小溫柔親切的老師音調
@@ -205,35 +205,40 @@ class ZhuyinAudioEngine {
   }
 
   /**
-   * 說話：優先播放預錄的「台灣正音班女老師 (zh-TW-HsiaoChenNeural)」真人級高清 MP3 音檔！
-   * 確保 ㄅ(bē)、ㄆ(pē)、ㄇ(mē)、ㄈ(fē)、ㄉ(dē)、ㄊ(tē)、ㄋ(nē)、ㄌ(lē) 100% 符合台灣正音班第一聲標準發音！
+   * 說話：根據目前選擇的角色，自動切換對應的真人級高清語音庫！
+   * 1. PERSONA::DUET / PERSONA::SWEET_SISTER -> 🌻 小潔姐姐 ＆ 5歲小萌娃雙人律動跟讀 (AUDIO_DUET_MANIFEST)
+   * 2. PERSONA::CUTE_GIRL -> 🍓 5歲超萌小莓妹妹獨唱配音 (AUDIO_CUTE_MANIFEST)
+   * 3. PERSONA::TEACHER -> 🌸 YMCA 正音班溫柔單人女老師 (AUDIO_MANIFEST)
    */
   speak(text, options = {}) {
     if (this.isMuted || !text) return;
     this.stopSpeaking();
 
     const cleanKey = text.trim();
-    const manifest = window.AUDIO_MANIFEST || {};
-    const audioUrl = manifest[cleanKey];
+    const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::DUET';
+    const targetPitch = options.pitch || this.speechPitch;
+
+    const baseManifest = window.AUDIO_MANIFEST || {};
+    const duetManifest = window.AUDIO_DUET_MANIFEST || {};
+    const cuteManifest = window.AUDIO_CUTE_MANIFEST || {};
+
+    let audioUrl = null;
+    if (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35) {
+      audioUrl = cuteManifest[cleanKey] || baseManifest[cleanKey];
+    } else if (voiceRole === 'PERSONA::DUET' || voiceRole === 'PERSONA::SWEET_SISTER') {
+      audioUrl = duetManifest[cleanKey] || baseManifest[cleanKey];
+    } else if (voiceRole === 'PERSONA::TEACHER') {
+      audioUrl = baseManifest[cleanKey];
+    } else {
+      // 若選了系統內建語音，仍優先使用與音調對應的高清正音音檔以防注音被截斷
+      audioUrl = baseManifest[cleanKey];
+    }
 
     if (audioUrl) {
       try {
         const audio = new Audio(audioUrl);
         this.currentAudio = audio;
-
-        const targetPitch = options.pitch || this.speechPitch;
-        const isCuteGirl = this.selectedVoiceName === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35;
-        const isSweetSister = this.selectedVoiceName === 'PERSONA::SWEET_SISTER' || (targetPitch >= 1.22 && targetPitch < 1.35);
-
-        // 若選擇「🍓 小莓姐姐」或「🎀 糖糖學姊」，可透過不保持音高的微調速率呈現超萌少女聲線
-        if ((isCuteGirl || isSweetSister) && !cleanKey.includes('小莓姐姐') && !cleanKey.includes('糖糖學姊')) {
-          audio.preservesPitch = false;
-          audio.mozPreservesPitch = false;
-          audio.webkitPreservesPitch = false;
-          audio.playbackRate = isCuteGirl ? 1.10 : 1.05;
-        } else {
-          audio.playbackRate = 1.0;
-        }
+        audio.playbackRate = 1.0;
 
         if (options.onEnd) {
           audio.onended = options.onEnd;

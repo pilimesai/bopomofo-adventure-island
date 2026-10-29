@@ -383,20 +383,24 @@ document.addEventListener('DOMContentLoaded', () => {
       updateSliderLabels(parseFloat(dom.sliderSpeechRate.value), parseFloat(e.target.value));
     });
 
-    // 當切換下拉選單的角色時，自動套用該女生角色的最佳甜美音調與語速
+    // 當切換下拉選單的角色時，立即生效並自動套用該女生角色的最佳音調與語速
     dom.selectVoicePicker.addEventListener('change', (e) => {
       const val = e.target.value;
       if (val === 'PERSONA::CUTE_GIRL') {
         dom.sliderSpeechRate.value = 0.92;
         dom.sliderSpeechPitch.value = 1.42;
-      } else if (val === 'PERSONA::SWEET_SISTER') {
+      } else if (val === 'PERSONA::DUET' || val === 'PERSONA::SWEET_SISTER') {
         dom.sliderSpeechRate.value = 0.90;
-        dom.sliderSpeechPitch.value = 1.28;
+        dom.sliderSpeechPitch.value = 1.25;
       } else {
         dom.sliderSpeechRate.value = 0.86;
         dom.sliderSpeechPitch.value = 1.12;
       }
-      updateSliderLabels(parseFloat(dom.sliderSpeechRate.value), parseFloat(dom.sliderSpeechPitch.value));
+      const rate = parseFloat(dom.sliderSpeechRate.value);
+      const pitch = parseFloat(dom.sliderSpeechPitch.value);
+      updateSliderLabels(rate, pitch);
+      window.audioEngine.setVoice(val);
+      window.audioEngine.setSpeechParams(rate, pitch);
     });
 
     // 試聽按鈕
@@ -408,12 +412,12 @@ document.addEventListener('DOMContentLoaded', () => {
       window.audioEngine.setVoice(chosenVoiceName);
       window.audioEngine.setSpeechParams(rate, pitch);
 
-      if (chosenVoiceName === 'PERSONA::CUTE_GIRL' || pitch >= 1.35) {
-        window.audioEngine.speak('嗨～！我是最喜歡草莓的小莓姐姐！我們一起開開心心闖關學注音唷，耶～！', { rate, pitch });
-      } else if (chosenVoiceName === 'PERSONA::SWEET_SISTER' || pitch >= 1.22) {
-        window.audioEngine.speak('哈囉小朋友！我是糖糖學姊，答對題目會送你亮晶晶的大星星喔！', { rate, pitch });
+      if (chosenVoiceName === 'PERSONA::CUTE_GIRL') {
+        window.audioEngine.speak('嗨～！我是最喜歡草莓的小莓姐姐！我們一起開開心心闖關學注音唷，耶～！', { voiceName: chosenVoiceName, rate, pitch });
+      } else if (chosenVoiceName === 'PERSONA::DUET' || chosenVoiceName === 'PERSONA::SWEET_SISTER') {
+        window.audioEngine.speak('哈囉小朋友！我是糖糖學姊，答對題目會送你亮晶晶的大星星喔！', { voiceName: chosenVoiceName, rate, pitch });
       } else {
-        window.audioEngine.speak('小朋友好！我是雅婷老師，我們一起來快樂學注音喔！', { rate, pitch });
+        window.audioEngine.speak('小朋友好！我是雅婷老師，我們一起來快樂學注音喔！', { voiceName: chosenVoiceName, rate, pitch });
       }
     });
 
@@ -428,9 +432,19 @@ document.addEventListener('DOMContentLoaded', () => {
       window.audioEngine.playCorrect();
 
       closeVoiceModal();
-      const roleName = chosenVoiceName === 'PERSONA::CUTE_GIRL' ? '🍓 小莓姐姐（超萌小女生）' :
-                       chosenVoiceName === 'PERSONA::SWEET_SISTER' ? '🎀 糖糖學姊（甜美少女）' : '🌸 溫柔女老師';
-      setMascotSpeech(`🎙️ 耶！已經切換成【${roleName}】的可愛聲音囉！`);
+      const roleName = chosenVoiceName === 'PERSONA::CUTE_GIRL' ? '🍓 小莓妹妹（5歲超萌小女生）' :
+                       (chosenVoiceName === 'PERSONA::DUET' || chosenVoiceName === 'PERSONA::SWEET_SISTER') ? '🌻 小潔姐姐 ＆ 小萌娃（雙人律動）' : '🌸 正音班溫柔女老師';
+      setMascotSpeech(`🎙️ 耶！已經切換成【${roleName}】的聲音囉！`);
+
+      // 若目前正在闖關畫面中，立刻用新切換的聲音重念一次當前題目！
+      if (state.adventure && state.adventure.currentStage) {
+        const q = state.adventure.currentStage.questions[state.adventure.currentQIndex];
+        if (q && q.speakText) {
+          setTimeout(() => {
+            window.audioEngine.speak(q.speakText);
+          }, 300);
+        }
+      }
     });
   }
 
@@ -438,19 +452,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dom.selectVoicePicker) return;
     dom.selectVoicePicker.innerHTML = '';
 
-    // 1. 新增專屬台灣正音班老師與可愛女生聲音角色（內建小潔姐姐＋小萌娃雙人律動跟讀高清音檔）
+    const currentVoice = window.audioEngine.selectedVoiceName || 'PERSONA::DUET';
+
+    // 1. 三大專屬真人級台灣女聲與萌娃角色（皆擁有完整獨立錄製的闖關與圖鑑語音庫！）
     const cutePersonas = [
       {
-        value: 'PERSONA::TEACHER',
-        label: '🌻 小潔姐姐 ＆ 小萌娃（三拍律動口訣＋5歲萌娃跟讀・真人雙聲道推薦 ✨）'
+        value: 'PERSONA::DUET',
+        label: '🌻 小潔姐姐 ＆ 小萌娃（三拍律動口訣＋5歲萌娃雙人跟讀 ✨激推！）'
       },
       {
         value: 'PERSONA::CUTE_GIRL',
-        label: '🍓 小莓姐姐（超萌可愛小女生・活潑高音調 ✨）'
+        label: '🍓 小莓妹妹（5歲超萌可愛小女生童音獨唱 ✨新登場！）'
       },
       {
-        value: 'PERSONA::SWEET_SISTER',
-        label: '🎀 糖糖學姊（元氣甜美少女聲 ✨）'
+        value: 'PERSONA::TEACHER',
+        label: '🌸 台灣正音班女老師（YMCA標準第一聲溫柔單人女老師 ✨）'
       }
     ];
 
@@ -458,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const opt = document.createElement('option');
       opt.value = p.value;
       opt.textContent = p.label;
-      if (window.audioEngine.selectedVoiceName === p.value) {
+      if (currentVoice === p.value || (currentVoice === 'PERSONA::SWEET_SISTER' && p.value === 'PERSONA::DUET')) {
         opt.selected = true;
       }
       dom.selectVoicePicker.appendChild(opt);
@@ -467,10 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. 系統內建台灣女聲清單（已全面刪除所有男聲）
     const voices = window.audioEngine.getAvailableTaiwanVoices();
     if (!voices || voices.length === 0) {
-      const opt = document.createElement('option');
-      opt.value = '';
-      opt.textContent = '🌸 台灣溫柔女老師 (預設)';
-      dom.selectVoicePicker.appendChild(opt);
       return;
     }
 
@@ -495,26 +507,21 @@ document.addEventListener('DOMContentLoaded', () => {
       // 友好女聲別名標註（已完全移除男聲）
       let label = v.name;
       if (v.name.includes('Yating') || v.name.includes('雅婷')) {
-        label = '🌸 Microsoft 雅婷老師（純台灣口音・溫柔國小女老師・推薦首選）';
+        label = '🌸 系統內建：Microsoft 雅婷老師（純台灣口音）';
       } else if (v.name.includes('HsiaoChen') || v.name.includes('曉臻')) {
-        label = '👧 晨晨姐姐（Microsoft 曉臻・甜美自然台灣女生）';
+        label = '👧 系統內建：晨晨姐姐（Microsoft 曉臻）';
       } else if (v.name.includes('HsiaoYu') || v.name.includes('曉雨')) {
-        label = '🌺 小雨姐姐（Microsoft 曉雨・清亮台灣女聲）';
+        label = '🌺 系統內建：小雨姐姐（Microsoft 曉雨）';
       } else if (v.name.includes('Google') && (v.name.includes('臺灣') || v.lang === 'zh-TW')) {
-        label = '🌟 Google 台灣甜美女聲（流暢自然語音）';
+        label = '🌟 系統內建：Google 台灣甜美女聲';
       } else if (v.name.includes('Meijia') || v.name.includes('美佳')) {
-        label = '🍎 美佳老師（Apple 台灣親切女聲）';
+        label = '🍎 系統內建：美佳老師（Apple 台灣女聲）';
       } else if (v.name.includes('Hanhan')) {
-        label = '🌼 涵涵老師（台灣女聲）';
+        label = '🌼 系統內建：涵涵老師（台灣女聲）';
       }
 
       opt.textContent = label;
-      if (
-        window.audioEngine.selectedVoiceName !== 'PERSONA::CUTE_GIRL' &&
-        window.audioEngine.selectedVoiceName !== 'PERSONA::SWEET_SISTER' &&
-        window.audioEngine.taiwanVoice &&
-        window.audioEngine.taiwanVoice.name === v.name
-      ) {
+      if (!currentVoice.startsWith('PERSONA::') && currentVoice === v.name) {
         opt.selected = true;
       }
       dom.selectVoicePicker.appendChild(opt);
