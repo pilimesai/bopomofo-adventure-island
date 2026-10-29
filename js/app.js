@@ -438,19 +438,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dom.selectVoicePicker) return;
     dom.selectVoicePicker.innerHTML = '';
 
-    // 1. 新增專屬台灣正音班老師與可愛女生聲音角色（內建 497 句真人級台灣女聲正音音檔）
+    // 1. 新增專屬台灣正音班老師與可愛女生聲音角色（內建小潔姐姐＋小萌娃雙人律動跟讀高清音檔）
     const cutePersonas = [
       {
         value: 'PERSONA::TEACHER',
-        label: '🌸 台灣正音班女老師（標準第一聲正音・真人級甜美推薦 ✨）'
+        label: '🌻 小潔姐姐 ＆ 小萌娃（三拍律動口訣＋5歲萌娃跟讀・真人雙聲道推薦 ✨）'
       },
       {
         value: 'PERSONA::CUTE_GIRL',
-        label: '🍓 小莓姐姐（超萌可愛小女生・活潑甜美 ✨新登場！）'
+        label: '🍓 小莓姐姐（超萌可愛小女生・活潑高音調 ✨）'
       },
       {
         value: 'PERSONA::SWEET_SISTER',
-        label: '🎀 糖糖學姊（元氣甜美少女聲 ✨新登場！）'
+        label: '🎀 糖糖學姊（元氣甜美少女聲 ✨）'
       }
     ];
 
