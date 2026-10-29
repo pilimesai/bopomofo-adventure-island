@@ -1,320 +1,327 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>????敹急??撜?| ?啁??典?銝瘜券???飛蝟餌絞</title>
-  <meta name="description" content="撠?啁撠??啁?????瘜券?飛鈭?撟喳嚗???7?釣?喟泵?????脫?皛０??憟?喳??怨???單瘞????????怠振??>
+  <title>ㄅㄆㄇ 快樂冒險島 | 台灣教育部小一注音生動教學系統</title>
+  <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>??儭?/text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
-  <!-- ??脫?? -->
+  <!-- 背景雲朵動態 -->
   <div class="bg-decor">
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
     <div class="cloud cloud-3"></div>
   </div>
 
-  <!-- ?撠??-->
+  <!-- 頂部導航列 -->
   <header class="app-header">
-    <div class="logo-container" id="btn-home-logo" title="????>
-      <div class="logo-badge">??/div>
+    <div class="logo-container" id="btn-home-logo" title="回首頁">
+      <div class="logo-badge">ㄅ</div>
       <div class="logo-text">
-        <h1>????敹急??撜?<span class="logo-tag">撠???典???/span></h1>
+        <h1>ㄅㄆㄇ 快樂冒險島 <span class="logo-tag">小一教育部專用</span></h1>
       </div>
     </div>
 
     <div class="header-right">
       <div class="mascot-bubble" id="mascot-speech">
-        ? ?蛛?甇∟?靘?????芸雀嚗??末????鈭?嚗?      </div>
-
-      <div class="player-level-badge" id="player-level-badge" title="???蝝?>
-        <span id="player-rank-icon">?儭?/span>
-        <span id="player-rank-title">Lv.1 閬?撠???/span>
+        🐱 喵～歡迎來到ㄅㄆㄇ冒險島，準備好開始闖關了嗎？
       </div>
 
-      <div class="star-counter" id="header-star-btn" title="?亦?璁株亳??璁?>
-        <span>潃?/span>
+      <div class="player-level-badge" id="player-level-badge" title="冒險者等級">
+        <span id="player-rank-icon">🛡️</span>
+        <span id="player-rank-title">Lv.1 見習小勇者</span>
+      </div>
+
+      <div class="star-counter" id="header-star-btn" title="查看榮譽星光榜">
+        <span>⭐</span>
         <span id="global-star-count">0</span>
-        <span style="font-size:12px;opacity:0.85;">憿?</span>
+        <span style="font-size:12px;opacity:0.85;">顆星</span>
       </div>
 
-      <button class="audio-toggle-btn" id="btn-voice-settings" title="?芰?葦隤閮剖?" aria-label="隤閮剖?">
-        ??儭?      </button>
+      <button class="audio-toggle-btn" id="btn-voice-settings" title="自然老師語音設定" aria-label="語音設定">
+        🎙️
+      </button>
 
-      <button class="audio-toggle-btn" id="btn-audio-toggle" title="??/???脤" aria-label="隤??">
-        ??
+      <button class="audio-toggle-btn" id="btn-audio-toggle" title="開啟/關閉聲音" aria-label="語音切換">
+        🔊
       </button>
     </div>
   </header>
 
-  <!-- ??詨????-->
-  <nav class="tab-navigation" aria-label="摮貊?撠???">
+  <!-- 功能選單分頁列 -->
+  <nav class="tab-navigation" aria-label="學習專區切換">
     <button class="tab-btn active" data-tab="tab-adventure">
-      <span class="tab-icon">?儭?/span>
-      <span>??憭批???/span>
+      <span class="tab-icon">🗺️</span>
+      <span>闖關大冒險</span>
     </button>
     <button class="tab-btn" data-tab="tab-gallery">
-      <span class="tab-icon">??</span>
-      <span>37瘜券??</span>
+      <span class="tab-icon">🌈</span>
+      <span>37注音圖鑑</span>
     </button>
     <button class="tab-btn" data-tab="tab-train">
-      <span class="tab-icon">??</span>
-      <span>蟡??潮?怨?</span>
+      <span class="tab-icon">🚂</span>
+      <span>神奇拼音火車</span>
     </button>
     <button class="tab-btn" data-tab="tab-tones">
-      <span class="tab-icon">?</span>
-      <span>?皞?璇?/span>
+      <span class="tab-icon">🎢</span>
+      <span>四聲溜滑梯</span>
     </button>
     <button class="tab-btn" data-tab="tab-games">
-      <span class="tab-icon">?</span>
-      <span>頞?撠?璅?</span>
+      <span class="tab-icon">🎮</span>
+      <span>趣味小遊樂園</span>
     </button>
     <button class="tab-btn" data-tab="tab-canvas">
-      <span class="tab-icon">??</span>
-      <span>蝑?撠摰?/span>
+      <span class="tab-icon">✍️</span>
+      <span>筆順小畫家</span>
     </button>
     <button class="tab-btn" data-tab="tab-achievements">
-      <span class="tab-icon">??</span>
-      <span>璁株亳??璁?/span>
+      <span class="tab-icon">🏆</span>
+      <span>榮譽星光榜</span>
     </button>
   </nav>
 
-  <!-- 銝餃摰孵?憛?-->
+  <!-- 主內容區塊 -->
   <main class="main-wrapper">
 
     <!-- ========================================================
-         PAGE 0: ?儭??撜?10 憭折????(Adventure Campaign)
+         PAGE 0: 🗺️ 冒險島 10 大闖關地圖 (Adventure Campaign)
          ======================================================== -->
     <section class="tab-pane active" id="tab-adventure">
-      <!-- 閬? A嚗??雀撊澆??-->
+      <!-- 視圖 A：闖關島嶼地圖 -->
       <div id="adventure-map-view" class="adventure-map-container">
         <div class="adventure-hero-banner">
           <div class="hero-left">
-            <h2>?儭????????之?</h2>
-            <p>頝?撠????梢脣漲嚗?????釣?喳?霅瑞嚗??洵??暺?撌券?嚗?/p>
+            <h2>🗺️ ㄅㄆㄇ 勇者闖關大冒險</h2>
+            <p>跟著小一前十週進度，一關一關收服注音守護獸，打敗第十關黃金巨龍！</p>
           </div>
           <div class="hero-stats-box">
             <div class="stat-pill">
-              <span>?? 撌脩?嚗?/span>
+              <span>🏅 已破關卡：</span>
               <strong id="adv-cleared-count">0 / 10</strong>
             </div>
             <div class="stat-pill">
-              <span>潃????嚗?/span>
+              <span>⭐ 闖關星數：</span>
               <strong id="adv-stage-stars">0 / 30</strong>
             </div>
-            <button class="unlock-all-btn" id="btn-toggle-unlock-all" title="?葦?振?瑕??剁??芰???券?">
-              ?? ?芰?賊?璅∪?嚗???            </button>
+            <button class="unlock-all-btn" id="btn-toggle-unlock-all" title="老師與家長專用：自由開啟全部關卡">
+              🔓 自由選關模式：關閉
+            </button>
           </div>
         </div>
 
-        <!-- 10 憭折??∟楝蝺? -->
+        <!-- 10 大關卡路線圖 -->
         <div class="adventure-stages-grid" id="adventure-stages-grid">
-          <!-- ??JS ??皜脫? 10 摨批雀撊潮??∪??-->
+          <!-- 由 JS 動態渲染 10 座島嶼關卡卡片 -->
         </div>
       </div>
 
-      <!-- 閬? B嚗??∪??啗???(?脣?敺＊蝷? -->
+      <!-- 視圖 B：關卡對戰舞台 (進入關卡後顯示) -->
       <div id="adventure-battle-view" class="adventure-battle-container" style="display:none;">
-        <!-- ????嚗?????∪?蝔晞?敹??賬????-->
+        <!-- 頂部狀態列：返回地圖、關卡名稱、愛心生命、連擊數 -->
         <div class="battle-top-bar">
           <button class="battle-back-btn" id="btn-battle-back">
-            漎? 餈??啣?
+            ⬅️ 返回地圖
           </button>
           <div class="battle-stage-title" id="battle-stage-title">
-            ? 蝚砌???敺桅◢璉格?
+            🌲 第一關：微風森林
           </div>
           <div class="battle-status-right">
             <div class="battle-combo-badge" id="battle-combo-badge" style="display:none;">
-              ? ??? x2
+              🔥 連擊 x2
             </div>
-            <div class="battle-hearts" id="battle-hearts" title="?拚???">
-              ?歹??歹??歹?
+            <div class="battle-hearts" id="battle-hearts" title="剩餘愛心">
+              ❤️❤️❤️
             </div>
             <div class="battle-progress-pill" id="battle-progress-pill">
-              憿 1 / 5
+              題目 1 / 5
             </div>
           </div>
         </div>
 
-        <!-- 摰?蝎暸? / 擳?銵璇? -->
+        <!-- 守關精靈 / 魔王血條區 -->
         <div class="boss-encounter-bar" id="boss-encounter-bar">
           <div class="boss-avatar-wrap" id="boss-avatar-wrap">
-            <span class="boss-emoji" id="boss-emoji">??</span>
-            <span class="boss-hit-fx" id="boss-hit-fx">?</span>
+            <span class="boss-emoji" id="boss-emoji">🦊</span>
+            <span class="boss-hit-fx" id="boss-hit-fx">💥</span>
           </div>
           <div class="boss-info-col">
             <div class="boss-name-row">
-              <span class="boss-name-tag" id="boss-name-tag">摰?蝎暸?嚗??憟?</span>
+              <span class="boss-name-tag" id="boss-name-tag">守關精靈：小狐狸奇奇</span>
               <span class="boss-hp-text" id="boss-hp-text">HP: 100%</span>
             </div>
             <div class="boss-hp-track">
               <div class="boss-hp-fill" id="boss-hp-fill" style="width:100%;"></div>
             </div>
             <div class="boss-dialogue" id="boss-dialogue">
-              ??撠?憿停?賜撠???瘜?頝?銝韏琿??嚗?            </div>
+              「答對問題就能發射星光魔法，跟我一起過招吧！」
+            </div>
           </div>
         </div>
 
-        <!-- 憿撅內? -->
+        <!-- 題目展示區 -->
         <div class="battle-question-card" id="battle-question-card">
           <div class="question-visual-row">
-            <div class="question-big-icon" id="battle-q-icon">??</div>
+            <div class="question-big-icon" id="battle-q-icon">🦓</div>
             <div class="question-text-col">
-              <div class="question-word-badge" id="battle-q-word" style="display:none;">?收</div>
+              <div class="question-word-badge" id="battle-q-word" style="display:none;">斑馬</div>
               <h3 class="question-prompt-text" id="battle-q-prompt">
-                ?質葦?賂???單?憭拍?鞊絲靘?????芯???
+                聽老師唸：像收音機天線豎起來的「ㄅ」是哪一個？
               </h3>
             </div>
           </div>
 
           <div class="question-helper-btns">
             <button class="q-helper-btn listen" id="btn-battle-listen">
-              <span>??</span> ??葦?訾?甈?            </button>
+              <span>🔊</span> 再聽老師唸一次
+            </button>
             <button class="q-helper-btn hint" id="btn-battle-hint">
-              <span>?</span> ?葦撠?蝷?            </button>
+              <span>💡</span> 老師小提示
+            </button>
           </div>
 
           <div class="battle-hint-toast" id="battle-hint-toast" style="display:none;">
-            ? ?內嚗?擐祉? ??銝蝑帖??蝑帖
+            💡 提示：斑馬的 ㄅ，一筆橫折、二筆橫
           </div>
 
-          <!-- 4?之?賊??? -->
+          <!-- 4個大選項按鈕 -->
           <div class="battle-options-grid" id="battle-options-grid">
-            <!-- ??JS ?????賊??? -->
+            <!-- 由 JS 動態生成選項按鈕 -->
           </div>
         </div>
       </div>
     </section>
 
     <!-- ========================================================
-         PAGE 1: 37瘜券?ａ??
+         PAGE 1: 37注音探險圖鑑
          ======================================================== -->
     <section class="tab-pane" id="tab-gallery">
-      <!-- 蝭拚??-->
+      <!-- 篩選列 -->
       <div class="gallery-filter-bar">
-        <button class="filter-chip active" data-filter="all">?? ?券蝚西? (37??</button>
-        <button class="filter-chip" data-filter="initial">?? ?脫?摰嗆? (21??</button>
-        <button class="filter-chip" data-filter="medial">?? 隞憭乩撈 (3??</button>
-        <button class="filter-chip" data-filter="final">?? ?餅?蝎暸? (13??</button>
+        <button class="filter-chip active" data-filter="all">🌟 全部符號 (37個)</button>
+        <button class="filter-chip" data-filter="initial">🎈 聲母家族 (21個)</button>
+        <button class="filter-chip" data-filter="medial">🤝 介音夥伴 (3個)</button>
+        <button class="filter-chip" data-filter="final">🧚 韻母精靈 (13個)</button>
       </div>
 
-      <!-- 瘜券?∠?蝬脫 -->
+      <!-- 注音卡片網格 -->
       <div class="symbol-grid" id="symbol-card-grid">
-        <!-- ??JavaScript ???? 37 撘菜釣?喳??-->
+        <!-- 由 JavaScript 動態生成 37 張注音卡片 -->
       </div>
 
-      <!-- 蝯??餃??∪?? -->
+      <!-- 結合韻城堡專區 -->
       <div class="combined-banner">
-        <h3>? 蝯??餌?憟???(22???)</h3>
-        <p style="color:#15AABF;margin-bottom:14px;font-weight:700;">?曹??喉??扼?嚗??餅????擃?憟賣???暺??賜?喉?</p>
+        <h3>🏰 結合韻神奇城堡 (22個結合韻)</h3>
+        <p style="color:#15AABF;margin-bottom:14px;font-weight:700;">由介音（ㄧ、ㄨ、ㄩ）與韻母手牽手合體的好朋友！點擊聽發音：</p>
         <div class="combined-chips" id="combined-chips-container">
-          <!-- ??JS ????蝯??餃??-->
+          <!-- 由 JS 動態生成結合韻卡片 -->
         </div>
       </div>
     </section>
 
 
     <!-- ========================================================
-         PAGE 2: 蟡??潮撠頠?         ======================================================== -->
+         PAGE 2: 神奇拼音小火車
+         ======================================================== -->
     <section class="tab-pane" id="tab-train">
       <div class="train-station-card">
-        <h2 class="station-title">?? 蟡??潮撠頠?澆?嚗?/h2>
-        <p class="station-desc">??脫?頠????唾?撱瘥?撱??脰矽嚗?箇?瘣颱葉?葉?末??嚗?/p>
+        <h2 class="station-title">🚂 神奇拼音小火車出發囉！</h2>
+        <p class="station-desc">挑選聲母車廂、介音車廂、韻母車廂與聲調，拼出生活中的中文好朋友！</p>
 
-        <!-- ?怨?頠?閬? -->
+        <!-- 火車軌道視圖 -->
         <div class="train-track-view">
           <div class="train-cars-row">
-            <!-- ?怨???-->
+            <!-- 火車頭 -->
             <div class="train-engine">
-              ??
-              <span>????</span>
+              🚂
+              <span>ㄅㄆㄇ號</span>
             </div>
 
-            <!-- ?脫?頠? -->
+            <!-- 聲母車廂 -->
             <div class="train-car">
-              <span class="car-tag">?脫?</span>
-              <div class="car-value" id="train-initial-val">??/div>
+              <span class="car-tag">聲母</span>
+              <div class="car-value" id="train-initial-val">ㄅ</div>
               <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
             </div>
 
             <div class="train-plus">+</div>
 
-            <!-- 隞頠? -->
+            <!-- 介音車廂 -->
             <div class="train-car">
-              <span class="car-tag">隞</span>
-              <div class="car-value" id="train-medial-val" style="color:#FAB005;">??/div>
+              <span class="car-tag">介音</span>
+              <div class="car-value" id="train-medial-val" style="color:#FAB005;">—</div>
               <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
             </div>
 
             <div class="train-plus">+</div>
 
-            <!-- ?餅?頠? -->
+            <!-- 韻母車廂 -->
             <div class="train-car">
-              <span class="car-tag">?餅?</span>
-              <div class="car-value" id="train-final-val" style="color:#FA5252;">??/div>
+              <span class="car-tag">韻母</span>
+              <div class="car-value" id="train-final-val" style="color:#FA5252;">ㄚ</div>
               <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
             </div>
 
             <div class="train-plus">+</div>
 
-            <!-- ?脰矽?? -->
+            <!-- 聲調旗幟 -->
             <div class="train-car">
-              <span class="car-tag">?脰矽</span>
-              <div class="car-value" id="train-tone-val" style="color:#4DABF7;">?</div>
+              <span class="car-tag">聲調</span>
+              <div class="car-value" id="train-tone-val" style="color:#4DABF7;">ˉ</div>
               <div class="car-wheels"><div class="wheel"></div><div class="wheel"></div></div>
             </div>
 
             <div class="train-plus">=</div>
 
-            <!-- ?潮??蝯?頠? -->
+            <!-- 拼音合成結果車廂 -->
             <div class="train-result-box" id="train-result-box">
-              <div class="result-char" id="train-result-char">??/div>
+              <div class="result-char" id="train-result-char">八</div>
               <div class="result-meta">
-                <div class="result-word" id="train-result-word">?怠?????</div>
-                <div class="result-pinyin" id="train-result-pinyin">?? (b?)</div>
+                <div class="result-word" id="train-result-word">八個蘋果 🍎</div>
+                <div class="result-pinyin" id="train-result-pinyin">ㄅㄚ (bā)</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ?豢??典???-->
+        <!-- 選擇器區域 -->
         <div class="train-controls">
-          <!-- ??脫? -->
+          <!-- 挑選聲母 -->
           <div class="picker-col">
-            <h4>1. ??脫? <span style="font-size:12px;color:#868E96;">(?臭???</span></h4>
+            <h4>1. 挑選聲母 <span style="font-size:12px;color:#868E96;">(可不選)</span></h4>
             <div class="selector-scroll" id="train-picker-initial"></div>
           </div>
 
-          <!-- ?隞 -->
+          <!-- 挑選介音 -->
           <div class="picker-col">
-            <h4>2. ?隞 <span style="font-size:12px;color:#868E96;">(??????</span></h4>
+            <h4>2. 挑選介音 <span style="font-size:12px;color:#868E96;">(ㄧ ㄨ ㄩ)</span></h4>
             <div class="selector-scroll" id="train-picker-medial"></div>
           </div>
 
-          <!-- ??餅? -->
+          <!-- 挑選韻母 -->
           <div class="picker-col">
-            <h4>3. ??餅?</h4>
+            <h4>3. 挑選韻母</h4>
             <div class="selector-scroll" id="train-picker-final"></div>
           </div>
 
-          <!-- ??脰矽 -->
+          <!-- 挑選聲調 -->
           <div class="picker-col">
-            <h4>4. ??脰矽</h4>
+            <h4>4. 挑選聲調</h4>
             <div class="selector-scroll" id="train-picker-tone"></div>
           </div>
         </div>
 
-        <!-- ????? -->
+        <!-- 按鈕操作區 -->
         <div class="train-action-btns">
           <button class="big-action-btn" id="btn-train-spell">
-            <span>?</span>
-            <span>???潸??潮嚗?/span>
+            <span>📢</span>
+            <span>按我拼讀發音！</span>
           </button>
           <button class="secondary-action-btn" id="btn-train-random">
-            <span>?</span>
-            <span>?冽??賡??摮?/span>
+            <span>🎲</span>
+            <span>隨機抽題換新字</span>
           </button>
         </div>
       </div>
@@ -322,29 +329,32 @@
 
 
     <!-- ========================================================
-         PAGE 3: ?皞?璇?         ======================================================== -->
+         PAGE 3: 四聲溜滑梯
+         ======================================================== -->
     <section class="tab-pane" id="tab-tones">
       <div class="tone-slider-wrapper">
         <h2 style="font-size:26px;font-weight:900;color:#1864AB;margin-bottom:8px;">
-          ? ?皞?璇荔??脰矽??見憭批???        </h2>
+          🎢 四聲溜滑梯！聲調口訣大冒險
+        </h2>
         <p style="color:#868E96;font-weight:700;margin-bottom:20px;">
-          頝?皞?璇臬?頠?韏瑕艙嚗??脣像撟喋??脣?銝???脰??????脫?皛０???脤???嚗?        </p>
+          跟著溜滑梯小車一起念：一聲平平、二聲向上爬、三聲轉個彎、四聲溜滑梯、輕聲點個點！
+        </p>
 
-        <!-- ?隤踹?? -->
+        <!-- 四聲調卡片列 -->
         <div class="tone-cards-row" id="tone-cards-row">
-          <!-- ??JS ???? 5 ?隤踹??-->
+          <!-- 由 JS 動態生成 5 個聲調卡片 -->
         </div>
 
-        <!-- ?脰矽蝺渡???-->
+        <!-- 聲調練習台 -->
         <div class="tone-practice-box">
-          <span style="font-size:18px;font-weight:800;color:#495057;">?嗅?閰西蝷箇?嚗?/span>
-          <span class="tone-speak-char" id="tone-current-char">??</span>
+          <span style="font-size:18px;font-weight:800;color:#495057;">當前試聽示範：</span>
+          <span class="tone-speak-char" id="tone-current-char">ㄅㄚ</span>
           <button class="big-action-btn" id="btn-tone-listen" style="padding:10px 24px;font-size:18px;">
-            <span>??</span>
-            <span>?質矽?潸?皛???/span>
+            <span>🔊</span>
+            <span>聽調值與滑動音</span>
           </button>
           <div style="font-size:16px;color:#D9480F;font-weight:700;" id="tone-current-rhyme">
-            銝?脣像撟喳??啣像蝺????
+            一聲平平像地平線 🚗💨
           </div>
         </div>
       </div>
@@ -352,207 +362,215 @@
 
 
     <!-- ========================================================
-         PAGE 4: 頞?瘜券撠?璅?
+         PAGE 4: 趣味注音小遊樂園
          ======================================================== -->
     <section class="tab-pane" id="tab-games">
       <div class="game-hub-container">
-        <!-- ?璅∪????? -->
+        <!-- 遊戲模式切換按鈕 -->
         <div class="game-mode-selector">
           <button class="mode-btn active" data-game="balloon">
-            <span>??</span> ?賡?單除??          </button>
+            <span>🎈</span> 聽音戳氣球
+          </button>
           <button class="mode-btn" data-game="memory">
-            <span>??</span> 蝚西?蝧餌?閮鞈?          </button>
+            <span>🃏</span> 符號翻牌記憶賽
+          </button>
           <button class="mode-btn" data-game="toneQuiz">
-            <span>?</span> ?脰矽?賢?蟡???          </button>
+            <span>🎯</span> 聲調聽力神射手
+          </button>
         </div>
 
-        <!-- ?銝餉???-->
+        <!-- 遊戲主舞台 -->
         <div class="game-arena" id="game-arena">
-          <!-- ??頛?狡??恍 -->
+          <!-- 動態載入各款遊戲畫面 -->
         </div>
       </div>
     </section>
 
 
     <!-- ========================================================
-         PAGE 5: 蝑?撠摰?         ======================================================== -->
+         PAGE 5: 筆順小畫家
+         ======================================================== -->
     <section class="tab-pane" id="tab-canvas">
       <div class="canvas-station-card">
         <h2 style="font-size:26px;font-weight:900;color:#D9480F;margin-bottom:8px;">
-          ?? 蝑?撠摰塚?璅?蝐喳??潭?蝝毀蝧?        </h2>
+          ✍️ 筆順小畫家！標準米字格描紅練習
+        </h2>
         <p style="color:#868E96;font-weight:700;margin-bottom:16px;">
-          ?雿閬毀撖怎?瘜券蝚西?嚗韏瑕蔗蝑???蝺?銝??撖怠??臭誑??????
+          挑選你想要練寫的注音符號，拿起彩筆跟著虛線描一描，寫完可以蓋集星章喔！
         </p>
 
-        <!-- 撌亙??(憿???扎??喋蝡? -->
+        <!-- 工具列 (顏色、清除、語音、印章) -->
         <div class="canvas-toolbar">
           <div class="color-palette">
-            <div class="color-dot active" style="background:#FF6B6B;" data-color="#FF6B6B" title="??蝝?></div>
-            <div class="color-dot" style="background:#4DABF7;" data-color="#4DABF7" title="憭抵???></div>
-            <div class="color-dot" style="background:#51CF66;" data-color="#51CF66" title="?蝬?></div>
-            <div class="color-dot" style="background:#FF922B;" data-color="#FF922B" title="??璈?></div>
-            <div class="color-dot" style="background:#845EF7;" data-color="#845EF7" title="?∟?蝝?></div>
+            <div class="color-dot active" style="background:#FF6B6B;" data-color="#FF6B6B" title="草莓紅"></div>
+            <div class="color-dot" style="background:#4DABF7;" data-color="#4DABF7" title="天藍色"></div>
+            <div class="color-dot" style="background:#51CF66;" data-color="#51CF66" title="薄荷綠"></div>
+            <div class="color-dot" style="background:#FF922B;" data-color="#FF922B" title="蜜柑橘"></div>
+            <div class="color-dot" style="background:#845EF7;" data-color="#845EF7" title="葡萄紫"></div>
           </div>
 
           <div class="canvas-actions">
             <button class="tool-btn" id="btn-canvas-listen">
-              <span>??</span> ?質???            </button>
+              <span>🔊</span> 聽讀音
+            </button>
             <button class="tool-btn" id="btn-canvas-clear">
-              <span>?完</span> 皜?神
+              <span>🧹</span> 清除重寫
             </button>
             <button class="tool-btn" id="btn-canvas-stamp" style="background:#FFE066;border-color:#FCC419;">
-              <span>潃?/span> 撖怠末鈭???
+              <span>⭐</span> 寫好了領星星
             </button>
           </div>
         </div>
 
-        <!-- ?怠?摰孵嚗蝐喳??潛????舀?蝝筑瘞游嚗?-->
+        <!-- 畫布容器（含米字格線與背景描紅浮水印） -->
         <div class="canvas-container" id="canvas-container">
           <div class="canvas-grid-guide">
             <div class="guide-h"></div>
             <div class="guide-v"></div>
             <div class="guide-d1"></div>
           </div>
-          <div class="canvas-watermark" id="canvas-watermark">??/div>
+          <div class="canvas-watermark" id="canvas-watermark">ㄅ</div>
           <canvas id="stroke-canvas" width="340" height="340"></canvas>
         </div>
 
-        <!-- 敹恍?釣?喳? -->
+        <!-- 快速選擇注音列 -->
         <div class="stroke-char-picker" id="stroke-char-picker">
-          <!-- ??JS ???? 37 ?釣?喳??孵? -->
+          <!-- 由 JS 動態生成 37 個注音小方塊 -->
         </div>
 
         <div style="margin-top:12px;font-size:15px;font-weight:800;color:#495057;" id="canvas-stroke-tip">
-          蝑??內嚗?蝑帖??鈭?璈恬???2 ?恬?
+          筆順提示：一筆橫折，二筆橫（共 2 畫）
         </div>
       </div>
     </section>
 
 
     <!-- ========================================================
-         PAGE 6: 璁株亳??璁?         ======================================================== -->
+         PAGE 6: 榮譽星光榜
+         ======================================================== -->
     <section class="tab-pane" id="tab-achievements">
       <div class="achieve-container" id="achievements-list">
-        <!-- ??JS ????璁株亳?喟??∠? -->
+        <!-- 由 JS 動態生成榮譽勳章卡片 -->
       </div>
     </section>
 
   </main>
 
   <!-- ========================================================
-       MODAL: ?桐?瘜券閰喟敦?∠?敶歲閬?
+       MODAL: 單一注音詳細卡片彈跳視窗
        ======================================================== -->
   <div class="modal-backdrop" id="symbol-detail-modal" aria-hidden="true">
     <div class="modal-card">
-      <button class="modal-close-btn" id="modal-close-btn" aria-label="??閬?">??/button>
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="關閉視窗">✕</button>
 
       <div class="modal-header-hero">
-        <div class="modal-char-box" id="modal-char">??/div>
+        <div class="modal-char-box" id="modal-char">ㄅ</div>
         <div class="modal-hero-info">
-          <span class="modal-stroke-tag" id="modal-category">?脫?摰嗆?</span>
-          <div style="font-size:14px;color:#868E96;font-weight:700;" id="modal-strokes-info">蝑?嚗? ??/div>
-          <h2 id="modal-title">??(b)</h2>
+          <span class="modal-stroke-tag" id="modal-category">聲母家族</span>
+          <div style="font-size:14px;color:#868E96;font-weight:700;" id="modal-strokes-info">筆劃：2 畫</div>
+          <h2 id="modal-title">ㄅ (b)</h2>
           <button class="modal-listen-btn" id="modal-listen-btn">
-            <span>?</span>
-            <span>暺??賜??/span>
+            <span>📢</span>
+            <span>點我聽發音</span>
           </button>
         </div>
       </div>
 
-      <!-- 閮??見 -->
+      <!-- 記憶口訣 -->
       <div class="modal-mnemonic-box">
-        <div class="mnemonic-title">? 撠?敹?閮??見</div>
-        <div class="mnemonic-text" id="modal-mnemonic">???園璈?憭拍?鞊絲靘?????/div>
+        <div class="mnemonic-title">💡 小一必背記憶口訣</div>
+        <div class="mnemonic-text" id="modal-mnemonic">ㄅ像收音機，天線豎起來 ㄅㄅㄅ</div>
       </div>
 
-      <!-- 蝑?韏唳??內 -->
+      <!-- 筆順走法提示 -->
       <div style="background:#F1F3F5;border-radius:12px;padding:12px 16px;margin-bottom:18px;font-weight:700;color:#495057;">
-        ?? 蝑???嚗?span id="modal-stroke-guide" style="color:#1864AB;">銝蝑帖??鈭?璈?/span>
+        ✍️ 筆順指引：<span id="modal-stroke-guide" style="color:#1864AB;">一筆橫折，二筆橫</span>
       </div>
 
-      <!-- ?暑撣貊靘?銝?銝 -->
-      <div style="font-size:16px;font-weight:900;color:#2B2D42;margin-bottom:10px;">?? ?暑憟賣???閰?暺??賜?喉?嚗?/div>
+      <!-- 生活常用例詞三合一 -->
+      <div style="font-size:16px;font-weight:900;color:#2B2D42;margin-bottom:10px;">🌟 生活好朋友例詞（點擊聽發音）：</div>
       <div class="modal-examples-grid" id="modal-examples-grid">
-        <!-- ??JS ???? -->
+        <!-- 由 JS 動態生成 -->
       </div>
 
-      <!-- 銝???/ 銝?????-->
+      <!-- 上一個 / 下一個切換 -->
       <div class="modal-nav-actions">
-        <button class="modal-nav-btn" id="modal-prev-btn">漎? 銝??泵??/button>
-        <button class="modal-nav-btn" id="modal-practice-btn" style="background:#FFE066;border-color:#FCC419;">?? ?餌掖摮蝺游神</button>
-        <button class="modal-nav-btn" id="modal-next-btn">銝??泵???∴?</button>
+        <button class="modal-nav-btn" id="modal-prev-btn">⬅️ 上一個符號</button>
+        <button class="modal-nav-btn" id="modal-practice-btn" style="background:#FFE066;border-color:#FCC419;">✍️ 去米字格練寫</button>
+        <button class="modal-nav-btn" id="modal-next-btn">下一個符號 ➡️</button>
       </div>
     </div>
   </div>
 
   <!-- ========================================================
-       MODAL: ?芰?葦隤閮剖?閬? (Voice Settings Modal)
+       MODAL: 自然老師語音設定視窗 (Voice Settings Modal)
        ======================================================== -->
   <div class="modal-backdrop" id="voice-settings-modal" aria-hidden="true">
     <div class="modal-card" style="max-width:520px;border-color:#4DABF7;">
-      <button class="modal-close-btn" id="voice-modal-close-btn" aria-label="??閬?">??/button>
+      <button class="modal-close-btn" id="voice-modal-close-btn" aria-label="關閉視窗">✕</button>
 
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-        <div style="font-size:36px;background:#E7F5FF;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;">??儭?/div>
+        <div style="font-size:36px;background:#E7F5FF;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;">🎙️</div>
         <div>
-          <h2 style="font-size:22px;font-weight:900;color:#1864AB;">?葦?脤閮剖?</h2>
-          <p style="font-size:13px;color:#868E96;font-weight:700;">???芰閬芸???喉???′璈?莎?</p>
+          <h2 style="font-size:22px;font-weight:900;color:#1864AB;">老師聲音設定</h2>
+          <p style="font-size:13px;color:#868E96;font-weight:700;">挑選最自然親切的發音，告別生硬機器聲！</p>
         </div>
       </div>
 
-      <!-- ?潮?葦?豢? -->
+      <!-- 發音老師選擇 -->
       <div style="margin-bottom:20px;">
         <label style="display:block;font-size:15px;font-weight:800;color:#2B2D42;margin-bottom:8px;">
-          ?儭??豢?隤芾店?葦嚗?        </label>
+          🗣️ 選擇說話老師：
+        </label>
         <select id="select-voice-picker" style="width:100%;padding:12px;font-size:15px;font-weight:700;border:2px solid #CED4DA;border-radius:12px;background:#F8F9FA;font-family:inherit;color:#2B2D42;outline:none;">
-          <!-- ??JS ?芸?憛怠?舐?啁隤 -->
+          <!-- 由 JS 自動填入可用台灣語音 -->
         </select>
         <div style="margin-top:6px;font-size:12px;color:#2B8A3E;font-weight:700;" id="voice-recommend-tip">
-          ???刻????弧?葦嚗澈?戊?葦嚗??冽???撠?憪?嚗????憟喟?嚗?
+          ✨ 推薦「🌸 雅婷老師（溫柔女老師）」或全新「🍓 小莓姐姐（超萌可愛小女生）」！
         </div>
       </div>
 
-      <!-- 隤矽??-->
+      <!-- 語速調整 -->
       <div style="margin-bottom:20px;">
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-          <label style="font-size:15px;font-weight:800;color:#2B2D42;">? 隤?憟?</label>
-          <span id="speech-rate-label" style="font-weight:800;color:#1864AB;">0.88x (閬芸??飛)</span>
+          <label style="font-size:15px;font-weight:800;color:#2B2D42;">🐢 語速節奏：</label>
+          <span id="speech-rate-label" style="font-weight:800;color:#1864AB;">0.88x (親切教學)</span>
         </div>
         <input type="range" id="slider-speech-rate" min="0.65" max="1.15" step="0.05" value="0.88" style="width:100%;accent-color:#339AF0;cursor:pointer;">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#868E96;font-weight:700;margin-top:2px;">
-          <span>?ａ?璆?(0.65x)</span>
-          <span>?拐葉 (0.88x)</span>
-          <span>頛翰瘣餅? (1.15x)</span>
+          <span>慢速清楚 (0.65x)</span>
+          <span>適中 (0.88x)</span>
+          <span>輕快活潑 (1.15x)</span>
         </div>
       </div>
 
-      <!-- 隤矽隤踵 -->
+      <!-- 語調調整 -->
       <div style="margin-bottom:24px;">
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-          <label style="font-size:15px;font-weight:800;color:#2B2D42;">? 隤矽擃?嚗?/label>
-          <span id="speech-pitch-label" style="font-weight:800;color:#1864AB;">1.15 (瘣餅?皞急?)</span>
+          <label style="font-size:15px;font-weight:800;color:#2B2D42;">🎵 語調高低：</label>
+          <span id="speech-pitch-label" style="font-weight:800;color:#1864AB;">1.15 (活潑溫柔)</span>
         </div>
         <input type="range" id="slider-speech-pitch" min="0.90" max="1.55" step="0.05" value="1.15" style="width:100%;accent-color:#339AF0;cursor:pointer;">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#868E96;font-weight:700;margin-top:2px;">
-          <span>皞急?憪? (0.90)</span>
-          <span>閬芸??葦 (1.15)</span>
-          <span>頞?撠戊??(1.50)</span>
+          <span>溫柔姊姊 (0.90)</span>
+          <span>親切老師 (1.15)</span>
+          <span>超萌小女生 (1.50)</span>
         </div>
       </div>
 
-      <!-- ???? -->
+      <!-- 操作按鈕 -->
       <div style="display:flex;gap:12px;justify-content:flex-end;">
         <button class="big-action-btn" id="btn-test-voice" style="padding:10px 20px;font-size:16px;background:linear-gradient(135deg,#4DABF7,#339AF0);box-shadow:0 4px 0 #1864AB;">
-          <span>??</span> 閰西?潮??
+          <span>🔊</span> 試聽發音效果
         </button>
         <button class="big-action-btn" id="btn-save-voice" style="padding:10px 24px;font-size:16px;">
-          <span>?</span> 蝣箏?靽?
+          <span>💾</span> 確定保存
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 撘鞈?摨怨??摩?單 -->
+  <!-- 引入資料庫與邏輯腳本 -->
   <script src="js/data.js?v=4"></script>
   <script src="js/audio_manifest.js?v=4"></script>
   <script src="js/audio.js?v=4"></script>
