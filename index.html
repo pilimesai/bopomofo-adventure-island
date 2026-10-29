@@ -27,7 +27,12 @@
 
     <div class="header-right">
       <div class="mascot-bubble" id="mascot-speech">
-        🐱 喵～今天想跟哪一個注音符號當好朋友呢？
+        🐱 喵～歡迎來到ㄅㄆㄇ冒險島，準備好開始闖關了嗎？
+      </div>
+
+      <div class="player-level-badge" id="player-level-badge" title="冒險者等級">
+        <span id="player-rank-icon">🛡️</span>
+        <span id="player-rank-title">Lv.1 見習小勇者</span>
       </div>
 
       <div class="star-counter" id="header-star-btn" title="查看榮譽星光榜">
@@ -48,9 +53,13 @@
 
   <!-- 功能選單分頁列 -->
   <nav class="tab-navigation" aria-label="學習專區切換">
-    <button class="tab-btn active" data-tab="tab-gallery">
+    <button class="tab-btn active" data-tab="tab-adventure">
+      <span class="tab-icon">🗺️</span>
+      <span>闖關大冒險</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-gallery">
       <span class="tab-icon">🌈</span>
-      <span>37注音探險</span>
+      <span>37注音圖鑑</span>
     </button>
     <button class="tab-btn" data-tab="tab-train">
       <span class="tab-icon">🚂</span>
@@ -78,9 +87,117 @@
   <main class="main-wrapper">
 
     <!-- ========================================================
+         PAGE 0: 🗺️ 冒險島 10 大闖關地圖 (Adventure Campaign)
+         ======================================================== -->
+    <section class="tab-pane active" id="tab-adventure">
+      <!-- 視圖 A：闖關島嶼地圖 -->
+      <div id="adventure-map-view" class="adventure-map-container">
+        <div class="adventure-hero-banner">
+          <div class="hero-left">
+            <h2>🗺️ ㄅㄆㄇ 勇者闖關大冒險</h2>
+            <p>跟著小一前十週進度，一關一關收服注音守護獸，打敗第十關黃金巨龍！</p>
+          </div>
+          <div class="hero-stats-box">
+            <div class="stat-pill">
+              <span>🏅 已破關卡：</span>
+              <strong id="adv-cleared-count">0 / 10</strong>
+            </div>
+            <div class="stat-pill">
+              <span>⭐ 闖關星數：</span>
+              <strong id="adv-stage-stars">0 / 30</strong>
+            </div>
+            <button class="unlock-all-btn" id="btn-toggle-unlock-all" title="老師與家長專用：自由開啟全部關卡">
+              🔓 自由選關模式：關閉
+            </button>
+          </div>
+        </div>
+
+        <!-- 10 大關卡路線圖 -->
+        <div class="adventure-stages-grid" id="adventure-stages-grid">
+          <!-- 由 JS 動態渲染 10 座島嶼關卡卡片 -->
+        </div>
+      </div>
+
+      <!-- 視圖 B：關卡對戰舞台 (進入關卡後顯示) -->
+      <div id="adventure-battle-view" class="adventure-battle-container" style="display:none;">
+        <!-- 頂部狀態列：返回地圖、關卡名稱、愛心生命、連擊數 -->
+        <div class="battle-top-bar">
+          <button class="battle-back-btn" id="btn-battle-back">
+            ⬅️ 返回地圖
+          </button>
+          <div class="battle-stage-title" id="battle-stage-title">
+            🌲 第一關：微風森林
+          </div>
+          <div class="battle-status-right">
+            <div class="battle-combo-badge" id="battle-combo-badge" style="display:none;">
+              🔥 連擊 x2
+            </div>
+            <div class="battle-hearts" id="battle-hearts" title="剩餘愛心">
+              ❤️❤️❤️
+            </div>
+            <div class="battle-progress-pill" id="battle-progress-pill">
+              題目 1 / 5
+            </div>
+          </div>
+        </div>
+
+        <!-- 守關精靈 / 魔王血條區 -->
+        <div class="boss-encounter-bar" id="boss-encounter-bar">
+          <div class="boss-avatar-wrap" id="boss-avatar-wrap">
+            <span class="boss-emoji" id="boss-emoji">🦊</span>
+            <span class="boss-hit-fx" id="boss-hit-fx">💥</span>
+          </div>
+          <div class="boss-info-col">
+            <div class="boss-name-row">
+              <span class="boss-name-tag" id="boss-name-tag">守關精靈：小狐狸奇奇</span>
+              <span class="boss-hp-text" id="boss-hp-text">HP: 100%</span>
+            </div>
+            <div class="boss-hp-track">
+              <div class="boss-hp-fill" id="boss-hp-fill" style="width:100%;"></div>
+            </div>
+            <div class="boss-dialogue" id="boss-dialogue">
+              「答對問題就能發射星光魔法，跟我一起過招吧！」
+            </div>
+          </div>
+        </div>
+
+        <!-- 題目展示區 -->
+        <div class="battle-question-card" id="battle-question-card">
+          <div class="question-visual-row">
+            <div class="question-big-icon" id="battle-q-icon">🦓</div>
+            <div class="question-text-col">
+              <div class="question-word-badge" id="battle-q-word" style="display:none;">斑馬</div>
+              <h3 class="question-prompt-text" id="battle-q-prompt">
+                聽老師唸：像收音機天線豎起來的「ㄅ」是哪一個？
+              </h3>
+            </div>
+          </div>
+
+          <div class="question-helper-btns">
+            <button class="q-helper-btn listen" id="btn-battle-listen">
+              <span>🔊</span> 再聽老師唸一次
+            </button>
+            <button class="q-helper-btn hint" id="btn-battle-hint">
+              <span>💡</span> 老師小提示
+            </button>
+          </div>
+
+          <div class="battle-hint-toast" id="battle-hint-toast" style="display:none;">
+            💡 提示：斑馬的 ㄅ，一筆橫折、二筆橫
+          </div>
+
+          <!-- 4個大選項按鈕 -->
+          <div class="battle-options-grid" id="battle-options-grid">
+            <!-- 由 JS 動態生成選項按鈕 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
          PAGE 1: 37注音探險圖鑑
          ======================================================== -->
-    <section class="tab-pane active" id="tab-gallery">
+    <section class="tab-pane" id="tab-gallery">
       <!-- 篩選列 -->
       <div class="gallery-filter-bar">
         <button class="filter-chip active" data-filter="all">🌟 全部符號 (37個)</button>

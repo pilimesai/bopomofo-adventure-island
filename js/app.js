@@ -47,9 +47,25 @@ document.addEventListener('DOMContentLoaded', () => {
       matchedPairs: 0
     },
 
+    // 🗺️ 闖關大冒險狀態 (Adventure Campaign)
+    adventure: {
+      // 紀錄每關獲得星數 { "1": 3, "2": 2, ... }
+      stageStars: JSON.parse(localStorage.getItem('zhuyin_stage_progress') || '{}'),
+      unlockAll: false,
+      activeStage: null,
+      qIndex: 0,
+      hearts: 3,
+      combo: 0,
+      mistakes: 0,
+      isAnswering: false
+    },
+
     // 徽章成就追蹤
     achievements: [
       { id: 'first_step', name: '注音探險家', desc: '成功登入ㄅㄆㄇ冒險島', icon: '🏝️', unlocked: true },
+      { id: 'stage_1_clear', name: '森林破關勇者', desc: '成功通過冒險島第一關', icon: '🌲', unlocked: false },
+      { id: 'stage_5_clear', name: '神殿大冒險家', desc: '成功通過冒險島第五關', icon: '🦢', unlocked: false },
+      { id: 'dragon_slayer', name: '黃金注音勇者王', desc: '擊敗第十關黃金注音巨龍！', icon: '👑', unlocked: false },
       { id: 'initial_master', name: '聲母神射手', desc: '在聽音氣球中連對3題', icon: '🎯', unlocked: false },
       { id: 'spelling_ace', name: '拼音小達人', desc: '開動神奇拼音火車完成合音', icon: '🚂', unlocked: false },
       { id: 'tone_roller', name: '聲調特技王', desc: '挑戰四聲溜滑梯全部聲調', icon: '🎢', unlocked: false },
@@ -62,10 +78,39 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   const dom = {
     starCount: document.getElementById('global-star-count'),
+    playerRankIcon: document.getElementById('player-rank-icon'),
+    playerRankTitle: document.getElementById('player-rank-title'),
     audioToggleBtn: document.getElementById('btn-audio-toggle'),
     mascotSpeech: document.getElementById('mascot-speech'),
     tabBtns: document.querySelectorAll('.tab-btn'),
     tabPanes: document.querySelectorAll('.tab-pane'),
+
+    // Adventure Map & Battle
+    advMapView: document.getElementById('adventure-map-view'),
+    advBattleView: document.getElementById('adventure-battle-view'),
+    advClearedCount: document.getElementById('adv-cleared-count'),
+    advStageStars: document.getElementById('adv-stage-stars'),
+    btnToggleUnlockAll: document.getElementById('btn-toggle-unlock-all'),
+    advStagesGrid: document.getElementById('adventure-stages-grid'),
+    btnBattleBack: document.getElementById('btn-battle-back'),
+    battleStageTitle: document.getElementById('battle-stage-title'),
+    battleComboBadge: document.getElementById('battle-combo-badge'),
+    battleHearts: document.getElementById('battle-hearts'),
+    battleProgressPill: document.getElementById('battle-progress-pill'),
+    bossAvatarWrap: document.getElementById('boss-avatar-wrap'),
+    bossEmoji: document.getElementById('boss-emoji'),
+    bossNameTag: document.getElementById('boss-name-tag'),
+    bossHpText: document.getElementById('boss-hp-text'),
+    bossHpFill: document.getElementById('boss-hp-fill'),
+    bossDialogue: document.getElementById('boss-dialogue'),
+    battleQuestionCard: document.getElementById('battle-question-card'),
+    battleQIcon: document.getElementById('battle-q-icon'),
+    battleQWord: document.getElementById('battle-q-word'),
+    battleQPrompt: document.getElementById('battle-q-prompt'),
+    btnBattleListen: document.getElementById('btn-battle-listen'),
+    btnBattleHint: document.getElementById('btn-battle-hint'),
+    battleHintToast: document.getElementById('battle-hint-toast'),
+    battleOptionsGrid: document.getElementById('battle-options-grid'),
     
     // Gallery
     filterChips: document.querySelectorAll('.filter-chip'),
@@ -146,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTabNavigation();
     setupAudioToggle();
     setupVoiceSettingsModal();
+    initAdventureModule();
     renderGallery();
     renderCombinedFinals();
     setupModalEvents();
@@ -157,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 語音引擎初始化歡迎詞（親切台灣小一老師口吻）
     setTimeout(() => {
-      window.audioEngine.speak('小朋友好！歡迎來到ㄅㄆㄇ冒險島，我們一起快樂學注音喔！');
+      window.audioEngine.speak('小朋友好！歡迎來到ㄅㄆㄇ冒險島，快點選第一關，跟老師一起闖關打怪獸喔！');
     }, 600);
   }
 
@@ -178,6 +224,27 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dom.starCount) {
       dom.starCount.textContent = state.stars;
     }
+    updatePlayerRankDisplay();
+  }
+
+  function updatePlayerRankDisplay() {
+    if (!dom.playerRankIcon || !dom.playerRankTitle) return;
+    const clearedStages = Object.keys(state.adventure.stageStars).filter(k => state.adventure.stageStars[k] > 0).length;
+    const ranks = [
+      { min: 0, icon: '🛡️', title: 'Lv.1 見習小勇者' },
+      { min: 1, icon: '🌲', title: 'Lv.2 森林探險員' },
+      { min: 3, icon: '🦖', title: 'Lv.4 恐龍馴獸師' },
+      { min: 5, icon: '🦢', title: 'Lv.6 湖畔大精靈' },
+      { min: 7, icon: '🚂', title: 'Lv.8 魔法列車長' },
+      { min: 9, icon: '🏰', title: 'Lv.9 水晶聖騎士' },
+      { min: 10, icon: '👑', title: 'Lv.10 黃金注音王' }
+    ];
+    let currentRank = ranks[0];
+    ranks.forEach(r => {
+      if (clearedStages >= r.min) currentRank = r;
+    });
+    dom.playerRankIcon.textContent = currentRank.icon;
+    dom.playerRankTitle.textContent = currentRank.title;
   }
 
   function unlockAchievement(id) {
@@ -220,10 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 分頁對應吉祥物貼心提示
         const speeches = {
-          'tab-gallery': '🐱 點擊任何一張注音卡片，來聽聽生活生活例詞和口訣！',
+          'tab-adventure': '🗺️ 選擇亮起來的島嶼關卡，答對題目就能發射星光魔法收服守護獸喔！',
+          'tab-gallery': '🐱 點擊任何一張注音卡片，來聽聽生活例詞和口訣！',
           'tab-train': '🚂 嗚嗚～小火車要開了！把聲母和韻母拼在一起吧！',
           'tab-tones': '🎢 一聲平、二聲揚、三聲拐彎、四聲降！跟著滑梯唸！',
-          'tab-games': '🎈 準備好挑戰遊戲了嗎？戳破彩色氣球拿星星！',
+          'tab-games': '🎈 準備好挑戰小遊戲了嗎？戳破彩色氣球拿星星！',
           'tab-canvas': '✍️ 拿出手指或滑鼠，在標準米字格裡認真描寫吧！',
           'tab-achievements': '🏆 看看你蒐集了多少顆星星和亮晶晶的勳章！'
         };
@@ -238,6 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnHome) {
       btnHome.addEventListener('click', () => {
         dom.tabBtns[0].click();
+        showAdventureMap();
       });
     }
 
@@ -387,6 +456,456 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       dom.selectVoicePicker.appendChild(opt);
     });
+  }
+
+  // ==========================================
+  // MODULE 0: 🗺️ 冒險島 10 大闖關地圖與對戰系統
+  // ==========================================
+  function initAdventureModule() {
+    if (!dom.advStagesGrid) return;
+
+    // 檢查歷史通關紀錄以同步成就
+    if (state.adventure.stageStars['1'] > 0) state.achievements.find(a => a.id === 'stage_1_clear').unlocked = true;
+    if (state.adventure.stageStars['5'] > 0) state.achievements.find(a => a.id === 'stage_5_clear').unlocked = true;
+    if (state.adventure.stageStars['10'] > 0) state.achievements.find(a => a.id === 'dragon_slayer').unlocked = true;
+
+    // 自由選關切換（方便老師/家長直接跳關教學）
+    if (dom.btnToggleUnlockAll) {
+      dom.btnToggleUnlockAll.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        state.adventure.unlockAll = !state.adventure.unlockAll;
+        if (state.adventure.unlockAll) {
+          dom.btnToggleUnlockAll.textContent = '🔓 自由選關模式：開啟中';
+          dom.btnToggleUnlockAll.classList.add('unlocked-mode');
+          setMascotSpeech('✨ 已開啟自由選關模式！全部 10 個關卡都可以直接點選挑戰囉！');
+        } else {
+          dom.btnToggleUnlockAll.textContent = '🔓 自由選關模式：關閉';
+          dom.btnToggleUnlockAll.classList.remove('unlocked-mode');
+          setMascotSpeech('🗺️ 恢復循序漸進闖關模式！一關一關挑戰更有成就感喔！');
+        }
+        renderAdventureMap();
+      });
+    }
+
+    // 返回地圖按鈕
+    if (dom.btnBattleBack) {
+      dom.btnBattleBack.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        window.audioEngine.stopSpeaking();
+        showAdventureMap();
+      });
+    }
+
+    // 再聽一次題目語音
+    if (dom.btnBattleListen) {
+      dom.btnBattleListen.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        const stg = state.adventure.activeStage;
+        if (!stg) return;
+        const q = stg.questions[state.adventure.qIndex];
+        if (q) window.audioEngine.speak(q.speakText);
+      });
+    }
+
+    // 老師小提示按鈕
+    if (dom.btnBattleHint) {
+      dom.btnBattleHint.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        const stg = state.adventure.activeStage;
+        if (!stg) return;
+        const q = stg.questions[state.adventure.qIndex];
+        if (q && dom.battleHintToast) {
+          dom.battleHintToast.textContent = `💡 老師提示：${q.hint}`;
+          dom.battleHintToast.style.display = 'block';
+          window.audioEngine.speak(`老師提示你喔：${q.hint}`);
+        }
+      });
+    }
+
+    renderAdventureMap();
+  }
+
+  function showAdventureMap() {
+    if (dom.advMapView) dom.advMapView.style.display = 'block';
+    if (dom.advBattleView) dom.advBattleView.style.display = 'none';
+    renderAdventureMap();
+  }
+
+  function isStageUnlocked(stageId) {
+    if (state.adventure.unlockAll) return true;
+    if (stageId === 1) return true;
+    // 前一關有拿到至少 1 顆星即可解鎖下一關
+    return (state.adventure.stageStars[String(stageId - 1)] || 0) > 0;
+  }
+
+  function renderAdventureMap() {
+    if (!dom.advStagesGrid) return;
+    dom.advStagesGrid.innerHTML = '';
+
+    const stages = ZHUYIN_DATA.adventureStages || [];
+    let clearedCount = 0;
+    let totalStageStars = 0;
+
+    // 找出目前最新可挑戰但尚未通關的關卡，標記為 current-target
+    let latestTargetId = 1;
+    stages.forEach(s => {
+      const earned = state.adventure.stageStars[String(s.id)] || 0;
+      if (earned > 0) {
+        clearedCount++;
+        totalStageStars += earned;
+        if (s.id < stages.length) latestTargetId = s.id + 1;
+      }
+    });
+
+    if (dom.advClearedCount) dom.advClearedCount.textContent = `${clearedCount} / ${stages.length}`;
+    if (dom.advStageStars) dom.advStageStars.textContent = `${totalStageStars} / ${stages.length * 3}`;
+    updatePlayerRankDisplay();
+
+    stages.forEach(stage => {
+      const unlocked = isStageUnlocked(stage.id);
+      const earnedStars = state.adventure.stageStars[String(stage.id)] || 0;
+      const isCurrentTarget = unlocked && earnedStars === 0 && stage.id === latestTargetId;
+
+      const card = document.createElement('div');
+      card.className = `stage-node-card ${unlocked ? '' : 'locked'} ${isCurrentTarget ? 'current-target' : ''}`;
+      if (unlocked && earnedStars > 0) {
+        card.style.borderColor = stage.color;
+      }
+
+      const starStr = [1, 2, 3].map(n => (n <= earnedStars ? '⭐' : '☆')).join('');
+
+      card.innerHTML = `
+        <div>
+          <div class="stage-top-row">
+            <span class="stage-num-badge" style="background:${unlocked ? stage.color : '#ADB5BD'};">
+              STAGE ${stage.id}
+            </span>
+            <span class="stage-stars-row" style="color:${earnedStars > 0 ? '#FCC419' : '#CED4DA'};">
+              ${starStr}
+            </span>
+          </div>
+
+          <div class="stage-main-hero">
+            <div class="stage-icon-circle" style="background:${unlocked ? stage.bgGradient : '#E9ECEF'};">
+              ${unlocked ? stage.icon : '🔒'}
+            </div>
+            <div class="stage-title-info">
+              <h3>${stage.name}</h3>
+              <div class="stage-sub">${stage.subtitle}</div>
+            </div>
+          </div>
+
+          <div class="stage-desc-text">${stage.desc}</div>
+        </div>
+
+        <div class="stage-footer-row">
+          <div class="stage-boss-tag">
+            <span>${stage.bossIcon}</span>
+            <span>守關：${stage.bossName}</span>
+          </div>
+          <button class="stage-play-btn">
+            ${!unlocked ? '🔒 未解鎖' : earnedStars > 0 ? '🔄 再玩一次' : '⚔️ 開始闖關'}
+          </button>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        if (!unlocked) {
+          window.audioEngine.playWrong();
+          window.audioEngine.speak(`要先通過第 ${stage.id - 1} 關，才能解鎖這一關喔！或是按右上角的自由選關按鈕！`);
+          return;
+        }
+        window.audioEngine.playPop();
+        startStageBattle(stage);
+      });
+
+      dom.advStagesGrid.appendChild(card);
+    });
+  }
+
+  function startStageBattle(stage) {
+    state.adventure.activeStage = stage;
+    state.adventure.qIndex = 0;
+    state.adventure.hearts = 3;
+    state.adventure.combo = 0;
+    state.adventure.mistakes = 0;
+    state.adventure.isAnswering = false;
+
+    if (dom.advMapView) dom.advMapView.style.display = 'none';
+    if (dom.advBattleView) dom.advBattleView.style.display = 'block';
+
+    // 確保題目卡顯示（避免上一次勝利畫面覆蓋）
+    if (dom.battleQuestionCard) {
+      dom.battleQuestionCard.innerHTML = `
+        <div class="question-visual-row">
+          <div class="question-big-icon" id="battle-q-icon">🦓</div>
+          <div class="question-text-col">
+            <div class="question-word-badge" id="battle-q-word" style="display:none;">斑馬</div>
+            <h3 class="question-prompt-text" id="battle-q-prompt"></h3>
+          </div>
+        </div>
+        <div class="question-helper-btns">
+          <button class="q-helper-btn listen" id="btn-battle-listen">
+            <span>🔊</span> 再聽老師唸一次
+          </button>
+          <button class="q-helper-btn hint" id="btn-battle-hint">
+            <span>💡</span> 老師小提示
+          </button>
+        </div>
+        <div class="battle-hint-toast" id="battle-hint-toast" style="display:none;"></div>
+        <div class="battle-options-grid" id="battle-options-grid"></div>
+      `;
+      // 重新綁定動態生成的內部元素
+      dom.battleQIcon = document.getElementById('battle-q-icon');
+      dom.battleQWord = document.getElementById('battle-q-word');
+      dom.battleQPrompt = document.getElementById('battle-q-prompt');
+      dom.btnBattleListen = document.getElementById('btn-battle-listen');
+      dom.btnBattleHint = document.getElementById('btn-battle-hint');
+      dom.battleHintToast = document.getElementById('battle-hint-toast');
+      dom.battleOptionsGrid = document.getElementById('battle-options-grid');
+
+      dom.btnBattleListen.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        const q = stage.questions[state.adventure.qIndex];
+        if (q) window.audioEngine.speak(q.speakText);
+      });
+      dom.btnBattleHint.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        const q = stage.questions[state.adventure.qIndex];
+        if (q && dom.battleHintToast) {
+          dom.battleHintToast.textContent = `💡 老師提示：${q.hint}`;
+          dom.battleHintToast.style.display = 'block';
+          window.audioEngine.speak(`老師提示你喔：${q.hint}`);
+        }
+      });
+    }
+
+    dom.battleStageTitle.textContent = `${stage.icon} ${stage.name}・${stage.subtitle}`;
+    dom.bossEmoji.textContent = stage.bossIcon;
+    dom.bossNameTag.textContent = `守關精靈：${stage.bossName}`;
+    dom.bossDialogue.textContent = `「我是${stage.bossName}！答對 ${stage.questions.length} 題就能過關拿星星喔！」`;
+
+    updateBattleHeaderUI();
+    renderCurrentStageQuestion();
+  }
+
+  function updateBattleHeaderUI() {
+    const stage = state.adventure.activeStage;
+    if (!stage) return;
+
+    const totalQ = stage.questions.length;
+    const currentQ = Math.min(state.adventure.qIndex + 1, totalQ);
+    dom.battleProgressPill.textContent = `題目 ${currentQ} / ${totalQ}`;
+
+    // 愛心顯示
+    const heartsStr = [1, 2, 3].map(n => (n <= state.adventure.hearts ? '❤️' : '🖤')).join('');
+    dom.battleHearts.textContent = heartsStr;
+
+    // 連擊顯示
+    if (state.adventure.combo >= 2) {
+      dom.battleComboBadge.style.display = 'inline-block';
+      dom.battleComboBadge.textContent = `🔥 連擊 x${state.adventure.combo}`;
+    } else {
+      dom.battleComboBadge.style.display = 'none';
+    }
+
+    // 守關者血量計算
+    const remainingRatio = Math.max(0, Math.round(((totalQ - state.adventure.qIndex) / totalQ) * 100));
+    dom.bossHpText.textContent = `HP: ${remainingRatio}%`;
+    dom.bossHpFill.style.width = `${remainingRatio}%`;
+  }
+
+  function renderCurrentStageQuestion() {
+    const stage = state.adventure.activeStage;
+    if (!stage) return;
+
+    if (state.adventure.qIndex >= stage.questions.length) {
+      handleStageVictory();
+      return;
+    }
+
+    state.adventure.isAnswering = false;
+    const q = stage.questions[state.adventure.qIndex];
+
+    updateBattleHeaderUI();
+    dom.battleQIcon.textContent = q.icon || stage.icon;
+    if (q.word) {
+      dom.battleQWord.style.display = 'inline-block';
+      dom.battleQWord.textContent = q.word;
+    } else {
+      dom.battleQWord.style.display = 'none';
+    }
+    dom.battleQPrompt.textContent = q.prompt;
+    dom.battleHintToast.style.display = 'none';
+
+    // 隨機打亂選項順序
+    const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+    dom.battleOptionsGrid.innerHTML = '';
+
+    shuffled.forEach(optText => {
+      const btn = document.createElement('button');
+      btn.className = 'battle-opt-btn';
+      btn.textContent = optText;
+
+      btn.addEventListener('click', () => {
+        handleBattleAnswer(btn, optText, q);
+      });
+
+      dom.battleOptionsGrid.appendChild(btn);
+    });
+
+    // 自動朗讀題目
+    setTimeout(() => {
+      window.audioEngine.speak(q.speakText);
+    }, 200);
+  }
+
+  function handleBattleAnswer(btn, chosenText, q) {
+    if (state.adventure.isAnswering) return;
+    const stage = state.adventure.activeStage;
+
+    if (chosenText === q.answer) {
+      // 答對！發動星光攻擊！
+      state.adventure.isAnswering = true;
+      state.adventure.combo++;
+      btn.classList.add('correct-choice');
+
+      window.audioEngine.playCorrect();
+      addStars(1, false);
+
+      // 魔王受擊動畫
+      if (dom.bossAvatarWrap) {
+        dom.bossAvatarWrap.classList.remove('hit-shake');
+        void dom.bossAvatarWrap.offsetWidth;
+        dom.bossAvatarWrap.classList.add('hit-shake');
+      }
+
+      const praises = [
+        '「哇！好強的星光魔法，你答對了！」',
+        '「太厲害了吧！完全正確！」',
+        '「嗚哇～被你的注音閃電擊中了！」',
+        '「好棒喔！耳朵超級靈敏！」'
+      ];
+      dom.bossDialogue.textContent = praises[state.adventure.qIndex % praises.length];
+
+      state.adventure.qIndex++;
+      updateBattleHeaderUI();
+
+      setTimeout(() => {
+        renderCurrentStageQuestion();
+      }, 950);
+    } else {
+      // 答錯！扣除一顆愛心但溫柔提示
+      btn.classList.add('wrong-choice');
+      state.adventure.combo = 0;
+      state.adventure.mistakes++;
+      if (state.adventure.hearts > 1) {
+        state.adventure.hearts--;
+      }
+      updateBattleHeaderUI();
+
+      window.audioEngine.playWrong();
+      dom.battleHintToast.textContent = `💡 老師提示：${q.hint}`;
+      dom.battleHintToast.style.display = 'block';
+      dom.bossDialogue.textContent = `「差一點點！看下面的老師小提示再選一次吧！」`;
+
+      window.audioEngine.speak(`這題不是 ${chosenText} 喔！提示你：${q.hint}，再試一次！`);
+    }
+  }
+
+  function handleStageVictory() {
+    const stage = state.adventure.activeStage;
+    if (!stage) return;
+
+    // 計算星等：0失誤=3星，1~2失誤=2星，3失誤以上=1星
+    const earnedStars = state.adventure.mistakes === 0 ? 3 : state.adventure.mistakes <= 2 ? 2 : 1;
+    const prevStars = state.adventure.stageStars[String(stage.id)] || 0;
+    if (earnedStars > prevStars) {
+      state.adventure.stageStars[String(stage.id)] = earnedStars;
+      localStorage.setItem('zhuyin_stage_progress', JSON.stringify(state.adventure.stageStars));
+    }
+
+    // 過關額外獎勵星星
+    addStars(earnedStars * 2, true);
+    window.audioEngine.playFanfare();
+
+    // 解鎖特定關卡成就
+    if (stage.id === 1) unlockAchievement('stage_1_clear');
+    if (stage.id === 5) unlockAchievement('stage_5_clear');
+    if (stage.id === 10) unlockAchievement('dragon_slayer');
+
+    dom.bossDialogue.textContent = `「太佩服你了！你成功通過了${stage.name}！」`;
+
+    const starIcons = [1, 2, 3].map(n => (n <= earnedStars ? '⭐' : '☆')).join(' ');
+    const nextStage = ZHUYIN_DATA.adventureStages.find(s => s.id === stage.id + 1);
+
+    window.audioEngine.speak(`太棒了！恭喜你通過${stage.name}，獲得 ${earnedStars} 顆過關大星星！`);
+
+    dom.battleQuestionCard.innerHTML = `
+      <div style="text-align:center;padding:20px 10px;animation:fadeIn 0.4s ease;">
+        <div style="font-size:68px;margin-bottom:8px;">🎉🏆🎉</div>
+        <h2 style="font-size:30px;font-weight:900;color:#D9480F;margin-bottom:8px;">
+          恭喜破關！${stage.name}挑戰成功！
+        </h2>
+        <div style="font-size:44px;margin:12px 0;letter-spacing:8px;">
+          ${starIcons}
+        </div>
+        <p style="font-size:18px;font-weight:800;color:#495057;margin-bottom:24px;">
+          收服守關精靈【${stage.bossIcon} ${stage.bossName}】，額外獲得 <strong>+${earnedStars * 2} 顆金星星</strong>！
+        </p>
+        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+          <button class="secondary-action-btn" id="btn-victory-map">
+            🗺️ 返回冒險地圖
+          </button>
+          <button class="secondary-action-btn" id="btn-victory-retry">
+            🔄 再挑戰一次
+          </button>
+          ${nextStage ? `
+            <button class="big-action-btn" id="btn-victory-next">
+              <span>➡️</span>
+              <span>前進下一關：${nextStage.name}</span>
+            </button>
+          ` : `
+            <button class="big-action-btn" id="btn-victory-allclear">
+              <span>👑</span>
+              <span>領取全島破關大禮！</span>
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+
+    const btnMap = document.getElementById('btn-victory-map');
+    const btnRetry = document.getElementById('btn-victory-retry');
+    const btnNext = document.getElementById('btn-victory-next');
+    const btnAllClear = document.getElementById('btn-victory-allclear');
+
+    if (btnMap) {
+      btnMap.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        showAdventureMap();
+      });
+    }
+    if (btnRetry) {
+      btnRetry.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        startStageBattle(stage);
+      });
+    }
+    if (btnNext && nextStage) {
+      btnNext.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        startStageBattle(nextStage);
+      });
+    }
+    if (btnAllClear) {
+      btnAllClear.addEventListener('click', () => {
+        window.audioEngine.playFanfare();
+        if (window.confetti) window.confetti.trigger(120);
+        window.audioEngine.speak('太了不起了！你已經把十個關卡全部破關，成為真正的注音大勇者囉！');
+        showAdventureMap();
+      });
+    }
   }
 
   // ==========================================

@@ -974,5 +974,629 @@ const ZHUYIN_DATA = {
       options: ['ㄩ', 'ㄨ', 'ㄧ', 'ㄇ'],
       hint: '金魚的ㄩ，吐泡泡'
     }
+  ],
+
+  // ========================================================
+  // 🗺️ 冒險島 10 大闖關關卡 (依據小一前十週注音進度設計)
+  // ========================================================
+  adventureStages: [
+    {
+      id: 1,
+      name: '第一關：微風森林',
+      subtitle: 'ㄅㄆㄇㄈ 唇音村',
+      icon: '🌲',
+      bossIcon: '🦊',
+      bossName: '小狐狸奇奇',
+      color: '#51CF66',
+      bgGradient: 'linear-gradient(135deg, #D3F9D8, #B2F2BB)',
+      desc: '認識最常見的唇音好朋友：ㄅ、ㄆ、ㄇ、ㄈ！',
+      questions: [
+        {
+          qType: 'listen_pick',
+          prompt: '聽老師唸：像收音機天線豎起來的「ㄅ」是哪一個？',
+          speakText: '第一題！請找出，ㄅ，斑馬的ㄅ！',
+          icon: '🦓',
+          hint: '斑馬的 ㄅ，一筆橫折、二筆橫',
+          answer: 'ㄅ',
+          options: ['ㄅ', 'ㄆ', 'ㄇ', 'ㄈ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🍎 蘋果」的「蘋」，第一個注音是什麼？',
+          speakText: '紅通通的蘋果，請問蘋的第一個注音是什麼呢？',
+          icon: '🍎',
+          word: '蘋果 (？ㄧㄥˊ ㄍㄨㄛˇ)',
+          hint: 'ㄆ像小水盆，蘋果的ㄆ',
+          answer: 'ㄆ',
+          options: ['ㄆ', 'ㄅ', 'ㄈ', 'ㄉ']
+        },
+        {
+          qType: 'listen_pick',
+          prompt: '聽音挑戰：像小山洞一樣，「🐱 貓咪」的「ㄇ」是哪一個？',
+          speakText: '喵～！貓咪的ㄇ，請找出像小山洞的ㄇ！',
+          icon: '🐱',
+          hint: 'ㄇ像小山洞，鑽進山洞裡',
+          answer: 'ㄇ',
+          options: ['ㄇ', 'ㄈ', 'ㄩ', 'ㄅ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「✈️ 飛機」在天上飛，「飛」的聲母是什麼？',
+          speakText: '飛機飛高高！請問飛機的飛，開頭是哪一個注音呢？',
+          icon: '✈️',
+          word: '飛機 (？ㄟ ㄐㄧ)',
+          hint: 'ㄈ像老爺爺的拐杖',
+          answer: 'ㄈ',
+          options: ['ㄈ', 'ㄇ', 'ㄆ', 'ㄊ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '守關題：「🐝 蜜蜂」嗡嗡嗡，「蜜」的聲母是哪一個？',
+          speakText: '最後一題囉！小蜜蜂的蜜，開頭是哪一個注音呢？',
+          icon: '🐝',
+          word: '蜜蜂 (？ㄧˋ ㄈㄥ)',
+          hint: '蜜蜂的蜜，是 ㄇ 喔！',
+          answer: 'ㄇ',
+          options: ['ㄇ', 'ㄅ', 'ㄆ', 'ㄈ']
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: '第二關：陽光草原',
+      subtitle: 'ㄉㄊㄋㄌ 舌尖營地',
+      icon: '🌻',
+      bossIcon: '🦁',
+      bossName: '草原小獅王',
+      color: '#FCC419',
+      bgGradient: 'linear-gradient(135deg, #FFF3BF, #FFEC99)',
+      desc: '分辨長得很像的 ㄉ、ㄊ、ㄋ、ㄌ 四兄弟！',
+      questions: [
+        {
+          qType: 'listen_pick',
+          prompt: '聽音辨字：馬蹄得得得，「🐘 大象」的「ㄉ」是哪一個？',
+          speakText: '請找出，ㄉ，大象的ㄉ！小心不要跟ㄅ搞混囉！',
+          icon: '🐘',
+          hint: 'ㄉ的肚子在左邊，像小馬蹄',
+          answer: 'ㄉ',
+          options: ['ㄉ', 'ㄅ', 'ㄊ', 'ㄌ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🐰 兔子」跳跳跳，「兔」的聲母是什麼？',
+          speakText: '可愛的小兔子！請問兔子的兔，第一個注音是什麼呢？',
+          icon: '🐰',
+          word: '兔子 (？ㄨˋ ˙ㄗ)',
+          hint: 'ㄊ像一把小雨傘',
+          answer: 'ㄊ',
+          options: ['ㄊ', 'ㄉ', 'ㄋ', 'ㄌ']
+        },
+        {
+          qType: 'listen_pick',
+          prompt: '聽音挑戰：「🥛 牛奶」好營養，請找出牛奶的「ㄋ」！',
+          speakText: '喝牛奶長高高！請找出牛奶的，ㄋ！',
+          icon: '🥛',
+          hint: 'ㄋ像小泥人，一筆橫折折、二筆撇',
+          answer: 'ㄋ',
+          options: ['ㄋ', 'ㄌ', 'ㄉ', 'ㄖ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🐯 老虎」大聲吼，「老」的聲母是什麼？',
+          speakText: '大老虎來了！請問老虎的老，開頭是哪一個注音呢？',
+          icon: '🐯',
+          word: '老虎 (？ㄠˇ ㄏㄨˇ)',
+          hint: 'ㄌ像掛著的小鈴鐺，老虎的ㄌ',
+          answer: 'ㄌ',
+          options: ['ㄌ', 'ㄋ', 'ㄉ', 'ㄎ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '守關題：「☀️ 太陽」笑咪咪，「太」的完整注音是哪一個？',
+          speakText: '太陽公公出來了！請問太陽的太，注音怎麼拼呢？',
+          icon: '☀️',
+          word: '太陽 (？ ㄧㄤˊ)',
+          hint: 'ㄊ ＋ ㄞ ＋ 四聲 ˋ ＝ ㄊㄞˋ',
+          answer: 'ㄊㄞˋ',
+          options: ['ㄊㄞˋ', 'ㄉㄞˋ', 'ㄌㄞˋ', 'ㄋㄞˋ']
+        }
+      ]
+    },
+    {
+      id: 3,
+      name: '第三關：恐龍山谷',
+      subtitle: 'ㄍㄎㄏ 與 ㄐㄑㄒ 峽谷',
+      icon: '🌋',
+      bossIcon: '🦖',
+      bossName: '暴龍阿卡',
+      color: '#FF922B',
+      bgGradient: 'linear-gradient(135deg, #FFE8CC, #FFD8A8)',
+      desc: '勇闖恐龍山谷，收服 ㄍㄎㄏ 與 ㄐㄑㄒ！',
+      questions: [
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🦖 恐龍」的「恐」，第一個注音是什麼？',
+          speakText: '吼～！大恐龍出現了！請問恐龍的恐，第一個注音是什麼？',
+          icon: '🦖',
+          word: '恐龍 (？ㄨㄥˇ ㄌㄨㄥˊ)',
+          hint: 'ㄎ像開口笑，恐龍的ㄎ',
+          answer: 'ㄎ',
+          options: ['ㄎ', 'ㄍ', 'ㄏ', 'ㄆ']
+        },
+        {
+          qType: 'listen_pick',
+          prompt: '聽音辨字：高高瘦瘦大哥哥，請選出「🕊️ 鴿子」的「ㄍ」！',
+          speakText: '請找出，ㄍ，鴿子的ㄍ，哥哥的ㄍ！',
+          icon: '🕊️',
+          hint: 'ㄍ有兩條腿，一筆撇折、二筆豎',
+          answer: 'ㄍ',
+          options: ['ㄍ', 'ㄑ', 'ㄎ', 'ㄏ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🌸 花朵」真美麗，「花」的聲母是什麼？',
+          speakText: '香噴噴的花朵！請問花朵的花，第一個注音是什麼呢？',
+          icon: '🌸',
+          word: '花朵 (？ㄨㄚ ㄉㄨㄛˇ)',
+          hint: 'ㄏ像懸崖邊的小亭子',
+          answer: 'ㄏ',
+          options: ['ㄏ', 'ㄎ', 'ㄈ', 'ㄒ']
+        },
+        {
+          qType: 'listen_pick',
+          prompt: '聽音挑戰：小母雞嘰嘰喳喳，請找出「🤖 機器人」的「ㄐ」！',
+          speakText: '請找出，ㄐ，小雞跟機器人的ㄐ！',
+          icon: '🤖',
+          hint: 'ㄐ像小母雞，三畫寫成',
+          answer: 'ㄐ',
+          options: ['ㄐ', 'ㄑ', 'ㄒ', 'ㄓ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '守關題：「🍉 西瓜」又大又甜，「西」跟「瓜」的聲母分別是？',
+          speakText: '清涼的大西瓜！請問西瓜兩個字的開頭聲母是什麼呢？',
+          icon: '🍉',
+          word: '西瓜 (？ㄧ ？ㄨㄚ)',
+          hint: 'ㄒㄧ（西）＋ ㄍㄨㄚ（瓜）',
+          answer: 'ㄒ 和 ㄍ',
+          options: ['ㄒ 和 ㄍ', 'ㄐ 和 ㄎ', 'ㄑ 和 ㄏ', 'ㄕ 和 ㄍ']
+        }
+      ]
+    },
+    {
+      id: 4,
+      name: '第四關：翹舌神殿',
+      subtitle: 'ㄓㄔㄕㄖ vs ㄗㄘㄙ 對決',
+      icon: '🏛️',
+      bossIcon: '🐉',
+      bossName: '神殿小青龍',
+      color: '#339AF0',
+      bgGradient: 'linear-gradient(135deg, #E7F5FF, #D0EBFF)',
+      desc: '小一最愛考！分清楚翹舌音（ㄓㄔㄕㄖ）與平舌音（ㄗㄘㄙ）！',
+      questions: [
+        {
+          qType: 'listen_pick',
+          prompt: '聽音辨別：舌頭翹起來！「🕷️ 蜘蛛」的「ㄓ」是哪一個？',
+          speakText: '注意聽喔！舌頭翹起來，ㄓ，蜘蛛的ㄓ！',
+          icon: '🕷️',
+          hint: 'ㄓ上面有一點，總共 4 畫喔！',
+          answer: 'ㄓ',
+          options: ['ㄓ', 'ㄗ', 'ㄔ', 'ㄕ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '平翹舌大考驗：「⚽ 足球」的「足」，聲母是平舌還是翹舌？',
+          speakText: '踢足球囉！請問足球的足，開頭是ㄗ還是ㄓ呢？',
+          icon: '⚽',
+          word: '足球 (？ㄨˊ ㄑㄧㄡˊ)',
+          hint: '足球是平舌音「ㄗ」喔！',
+          answer: 'ㄗ',
+          options: ['ㄗ', 'ㄓ', 'ㄘ', 'ㄔ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🚂 火車」嘟嘟嘟，「車」的注音是哪一個？',
+          speakText: '火車開動了！請問火車的車，注音是ㄔㄜ還是ㄘㄜ呢？',
+          icon: '🚂',
+          word: '火車 (ㄏㄨㄛˇ ？)',
+          hint: '車是翹舌音 ㄔ ＋ ㄜ ＝ ㄔㄜ',
+          answer: 'ㄔㄜ',
+          options: ['ㄔㄜ', 'ㄘㄜ', 'ㄕㄜ', 'ㄙㄜ']
+        },
+        {
+          qType: 'listen_pick',
+          prompt: '聽音挑戰：舌頭放平平，「🌲 森林」的「ㄙ」是哪一個？',
+          speakText: '舌頭放平平，請找出森林的，ㄙ！不要選成獅子的ㄕ喔！',
+          icon: '🌲',
+          hint: 'ㄙ像小蠶寶寶，平舌音',
+          answer: 'ㄙ',
+          options: ['ㄙ', 'ㄕ', 'ㄘ', 'ㄖ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '守關題：「🦁 獅子」是森林之王，「獅」的聲母是哪一個？',
+          speakText: '大獅子吼叫了！請問獅子的獅，開頭聲母是哪一個呢？',
+          icon: '🦁',
+          word: '獅子 (？ ˙ㄗ)',
+          hint: '獅子要翹舌，是「ㄕ」喔！',
+          answer: 'ㄕ',
+          options: ['ㄕ', 'ㄙ', 'ㄓ', 'ㄖ']
+        }
+      ]
+    },
+    {
+      id: 5,
+      name: '第五關：精靈湖畔',
+      subtitle: 'ㄧㄨㄩ 與單韻母 ㄚㄛㄜㄝ',
+      icon: '🦢',
+      bossIcon: '🧚',
+      bossName: '湖畔水精靈',
+      color: '#20C997',
+      bgGradient: 'linear-gradient(135deg, #E6FCF5, #C3FAE8)',
+      desc: '認識介音三寶（ㄧ、ㄨ、ㄩ）與張大嘴巴的單韻母！',
+      questions: [
+        {
+          qType: 'listen_pick',
+          prompt: '聽音辨字：嘴巴圓圓吐泡泡，「🐠 金魚」的「ㄩ」是哪一個？',
+          speakText: '小金魚游呀游！請找出金魚的，ㄩ！',
+          icon: '🐠',
+          hint: 'ㄩ像金魚缸，開口朝上',
+          answer: 'ㄩ',
+          options: ['ㄩ', 'ㄨ', 'ㄧ', 'ㄇ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🐢 烏龜」慢慢爬，「烏」的注音是什麼？',
+          speakText: '小烏龜背著殼！請問烏龜的烏，是哪一個注音符號呢？',
+          icon: '🐢',
+          word: '烏龜 (？ ㄍㄨㄟ)',
+          hint: '烏龜的 ㄨ，像圓圓小屋頂',
+          answer: 'ㄨ',
+          options: ['ㄨ', 'ㄩ', 'ㄧ', 'ㄛ']
+        },
+        {
+          qType: 'listen_pick',
+          prompt: '聽音挑戰：張大嘴巴 ㄚㄚㄚ，請選出「🦆 小鴨」的韻母「ㄚ」！',
+          speakText: '張大嘴巴，ㄚ～！請選出ㄚ！',
+          icon: '🦆',
+          hint: 'ㄚ像小樹杈',
+          answer: 'ㄚ',
+          options: ['ㄚ', 'ㄛ', 'ㄜ', 'ㄝ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '看圖選注音：「🦢 白鵝」水上游，「鵝」是哪一個韻母加上二聲？',
+          speakText: '天鵝白鵝水上游，請問鵝是哪一個注音呢？',
+          icon: '🦢',
+          word: '白鵝 (ㄅㄞˊ ？)',
+          hint: 'ㄜ ＋ 二聲 ˊ ＝ ㄜˊ',
+          answer: 'ㄜˊ',
+          options: ['ㄜˊ', 'ㄛˊ', 'ㄚˊ', 'ㄝˊ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '守關題：「👕 衣服」真乾淨，「衣」是哪一個介音符號？',
+          speakText: '穿新衣服囉！請問衣服的衣，是哪一個符號呢？',
+          icon: '👕',
+          word: '衣服 (？ ㄈㄨˊ)',
+          hint: '衣服的 ㄧ',
+          answer: 'ㄧ',
+          options: ['ㄧ', 'ㄨ', 'ㄩ', 'ㄚ']
+        }
+      ]
+    },
+    {
+      id: 6,
+      name: '第六關：彩虹吊橋',
+      subtitle: '複韻母與鼻韻母大考驗',
+      icon: '🌈',
+      bossIcon: '🦄',
+      bossName: '彩虹獨角獸',
+      color: '#845EF7',
+      bgGradient: 'linear-gradient(135deg, #F3F0FF, #E5DBFF)',
+      desc: '分辨小一最容易搞混的 ㄞ/ㄟ、ㄠ/ㄡ 以及閃電 ㄣ/ㄥ！',
+      questions: [
+        {
+          qType: 'listen_pick',
+          prompt: '聽音辨字：冬天穿棉襖，請選出「🍓 草莓」的「莓」韻母「ㄟ」！',
+          speakText: '請仔細聽喔！ㄟ，飛高高的ㄟ，草莓的ㄟ！',
+          icon: '🍓',
+          hint: 'ㄟ是一筆橫撇、二筆捺，像溜滑梯',
+          answer: 'ㄟ',
+          options: ['ㄟ', 'ㄞ', 'ㄠ', 'ㄡ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '閃電鼻音對決：「⚡ 閃電」的「閃 (ㄕㄢˇ)」，韻母是 ㄢ 還是 ㄤ？',
+          speakText: '轟隆隆閃電來了！請問閃電的閃，韻母是ㄢ還是ㄤ呢？',
+          icon: '⚡',
+          word: '閃電 (ㄕ？ˇ ㄉㄧㄢˋ)',
+          hint: '閃是前鼻音「ㄢ」喔！',
+          answer: 'ㄢ',
+          options: ['ㄢ', 'ㄤ', 'ㄣ', 'ㄥ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '閃電鼻音對決：「🍬 糖果」好甜喔！「糖 (ㄊㄤˊ)」的韻母是哪一個？',
+          speakText: '甜甜的糖果！請問糖果的糖，韻母是ㄢ還是ㄤ呢？',
+          icon: '🍬',
+          word: '糖果 (ㄊ？ˊ ㄍㄨㄛˇ)',
+          hint: '糖果嘴巴張大有後鼻音，是「ㄤ」！',
+          answer: 'ㄤ',
+          options: ['ㄤ', 'ㄢ', 'ㄥ', 'ㄣ']
+        },
+        {
+          qType: 'listen_pick',
+          prompt: '聽音挑戰：請分清楚「ㄣ」與「ㄥ」，找出「🎐 風箏」的韻母「ㄥ」！',
+          speakText: '請找出，ㄥ！蜜蜂跟風箏的ㄥ，有後鼻音喔！',
+          icon: '🎐',
+          hint: 'ㄥ上面是一筆橫折，下面是撇折',
+          answer: 'ㄥ',
+          options: ['ㄥ', 'ㄣ', 'ㄤ', 'ㄦ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '守關題：「👂 耳朵」聽聲音，「耳」是哪一個韻母加上三聲？',
+          speakText: '小耳朵聽聲音！請問耳朵的耳，是哪一個注音呢？',
+          icon: '👂',
+          word: '耳朵 (？ ˙ㄉㄨㄛ)',
+          hint: 'ㄦ ＋ 三聲 ˇ ＝ ㄦˇ',
+          answer: 'ㄦˇ',
+          options: ['ㄦˇ', 'ㄜˇ', 'ㄢˇ', 'ㄡˇ']
+        }
+      ]
+    },
+    {
+      id: 7,
+      name: '第七關：雲霄飛車',
+      subtitle: '四聲調值聽力大冒險',
+      icon: '🎢',
+      bossIcon: '🐼',
+      bossName: '功夫貓熊阿寶',
+      color: '#F06595',
+      bgGradient: 'linear-gradient(135deg, #FFF0F6, #FFDEEB)',
+      desc: '一聲平、二聲揚、三聲轉彎、四聲溜滑梯！成為聲調神射手！',
+      questions: [
+        {
+          qType: 'tone_pick',
+          prompt: '聲調神射手：「☀️ 太陽」的「太 (ㄊㄞˋ)」，是第幾聲？',
+          speakText: '聽聽看喔！太陽的太，ㄊㄞˋ，是第幾聲呢？',
+          icon: '☀️',
+          word: '太陽 → 太 (ㄊㄞˋ)',
+          hint: '四聲溜滑梯往下衝 ˋ',
+          answer: '第四聲 ˋ',
+          options: ['第一聲 ˉ', '第二聲 ˊ', '第三聲 ˇ', '第四聲 ˋ']
+        },
+        {
+          qType: 'tone_pick',
+          prompt: '聲調神射手：「🥕 拔蘿蔔」的「拔 (ㄅㄚˊ)」，是第幾聲？',
+          speakText: '嘿呦嘿呦拔蘿蔔！請問拔蘿蔔的拔，ㄅㄚˊ，是第幾聲呢？',
+          icon: '🥕',
+          word: '拔蘿蔔 → 拔 (ㄅㄚˊ)',
+          hint: '二聲往上爬山坡 ˊ',
+          answer: '第二聲 ˊ',
+          options: ['第一聲 ˉ', '第二聲 ˊ', '第三聲 ˇ', '第四聲 ˋ']
+        },
+        {
+          qType: 'tone_pick',
+          prompt: '聲調神射手：「🐦 小鳥」的「鳥 (ㄋㄧㄠˇ)」，是第幾聲？',
+          speakText: '小鳥在唱歌！請問小鳥的鳥，ㄋㄧㄠˇ，是第幾聲呢？',
+          icon: '🐦',
+          word: '小鳥 → 鳥 (ㄋㄧㄠˇ)',
+          hint: '三聲打勾轉個彎 ˇ',
+          answer: '第三聲 ˇ',
+          options: ['第一聲 ˉ', '第二聲 ˊ', '第三聲 ˇ', '第四聲 ˋ']
+        },
+        {
+          qType: 'tone_pick',
+          prompt: '聲調神射手：「🍉 西瓜」的「西 (ㄒㄧ)」，是第幾聲？',
+          speakText: '甜滋滋的西瓜！請問西瓜的西，ㄒㄧ，是第幾聲呢？',
+          icon: '🍉',
+          word: '西瓜 → 西 (ㄒㄧ)',
+          hint: '一聲平平的一條線 ˉ',
+          answer: '第一聲 ˉ',
+          options: ['第一聲 ˉ', '第二聲 ˊ', '第三聲 ˇ', '第四聲 ˋ']
+        },
+        {
+          qType: 'tone_pick',
+          prompt: '守關題：「👨 爸爸 (ㄅㄚˋ ˙ㄅㄚ)」後面的第二個「爸」，是什麼聲調？',
+          speakText: '爸爸的後面那個字，唸得輕輕短短的，請問是什麼聲調呢？',
+          icon: '👨',
+          word: '爸爸 → ˙ㄅㄚ (後字)',
+          hint: '上面有一個小圓點 ˙，輕輕點一下',
+          answer: '輕聲 ˙',
+          options: ['輕聲 ˙', '第一聲 ˉ', '第二聲 ˊ', '第四聲 ˋ']
+        }
+      ]
+    },
+    {
+      id: 8,
+      name: '第八關：魔法火車站',
+      subtitle: '兩拼合音列車長',
+      icon: '🚂',
+      bossIcon: '🦉',
+      bossName: '貓頭鷹站長',
+      color: '#FD7E14',
+      bgGradient: 'linear-gradient(135deg, #FFF4E6, #FFE8CC)',
+      desc: '把聲母車廂和韻母車廂拼在一起，拼出正確的國字讀音！',
+      questions: [
+        {
+          qType: 'blend_pick',
+          prompt: '魔法拼音：「ㄅ」＋「ㄚ」＋「一聲」，合起來是什麼字？',
+          speakText: '跟著火車拼拼看：ㄅ～，ㄚ～，一聲，ㄅㄚ！請問是哪一個字呢？',
+          icon: '🍎',
+          word: 'ㄅ ＋ ㄚ ＝ ？',
+          hint: 'ㄅㄚ，八個蘋果的「八」！',
+          answer: '八 (ㄅㄚ)',
+          options: ['八 (ㄅㄚ)', '爸 (ㄅㄚˋ)', '媽 (ㄇㄚ)', '大 (ㄉㄚˋ)']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '看圖拼注音：要拼出「🐱 貓咪」的「貓」，應該怎麼拼？',
+          speakText: '貓咪的貓，ㄇㄠ，請問要用哪兩個符號拼起來呢？',
+          icon: '🐱',
+          word: '貓 ＝ ？ ＋ ？',
+          hint: 'ㄇ～，ㄠ～，一聲 ㄇㄠ！',
+          answer: 'ㄇ ＋ ㄠ',
+          options: ['ㄇ ＋ ㄠ', 'ㄇ ＋ ㄡ', 'ㄅ ＋ ㄠ', 'ㄈ ＋ ㄠ']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '看圖拼注音：要拼出「🏃 跑步」的「跑」，正確注音是？',
+          speakText: '操場跑步囉！請問跑步的跑，ㄆㄠˇ，怎麼拼呢？',
+          icon: '🏃',
+          word: '跑 ＝ ？',
+          hint: 'ㄆ ＋ ㄠ ＋ 三聲 ˇ ＝ ㄆㄠˇ',
+          answer: 'ㄆㄠˇ',
+          options: ['ㄆㄠˇ', 'ㄅㄠˇ', 'ㄊㄠˇ', 'ㄆㄡˇ']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '看圖拼注音：「🌱 青草」的「草」，正確的注音是哪一個？',
+          speakText: '綠油油的青草！請問草地的草，注音是哪一個呢？',
+          icon: '🌱',
+          word: '草 ＝ ？',
+          hint: '草是平舌音 ㄘ ＋ ㄠ ＋ ˇ ＝ ㄘㄠˇ',
+          answer: 'ㄘㄠˇ',
+          options: ['ㄘㄠˇ', 'ㄔㄠˇ', 'ㄗㄠˇ', 'ㄙㄠˇ']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '守關題：「🐘 大象」的「大」，是由哪三個部分拼成的？',
+          speakText: '大象的大，ㄉㄚˋ，請問是怎麼拼出來的呢？',
+          icon: '🐘',
+          word: '大 ＝ ？',
+          hint: 'ㄉ ＋ ㄚ ＋ 四聲 ˋ',
+          answer: 'ㄉ ＋ ㄚ ＋ ˋ',
+          options: ['ㄉ ＋ ㄚ ＋ ˋ', 'ㄅ ＋ ㄚ ＋ ˋ', 'ㄊ ＋ ㄚ ＋ ˋ', 'ㄉ ＋ ㄛ ＋ ˋ']
+        }
+      ]
+    },
+    {
+      id: 9,
+      name: '第九關：水晶城堡',
+      subtitle: '結合韻與三拼大挑戰',
+      icon: '🏰',
+      bossIcon: '🧙‍♂️',
+      bossName: '水晶大法師',
+      color: '#15AABF',
+      bgGradient: 'linear-gradient(135deg, #E3FAFC, #C5F6FA)',
+      desc: '挑戰「聲母＋介音＋韻母」三拼魔法，突破結合韻難關！',
+      questions: [
+        {
+          qType: 'blend_pick',
+          prompt: '三拼魔法：「ㄍ」＋「ㄨ」＋「ㄚ」合起來是什麼音？',
+          speakText: '三拼挑戰！ㄍ～，ㄨ～，ㄚ～，合起來是什麼呢？',
+          icon: '🍉',
+          word: 'ㄍ ＋ ㄨ ＋ ㄚ ＝ ？',
+          hint: 'ㄍㄨㄚ，西瓜的「瓜」！',
+          answer: '瓜 (ㄍㄨㄚ)',
+          options: ['瓜 (ㄍㄨㄚ)', '花 (ㄏㄨㄚ)', '蛙 (ㄨㄚ)', '家 (ㄐㄧㄚ)']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '看圖選三拼：「🌸 花朵」的「花」，中間躲著哪一個介音？',
+          speakText: '花朵的花，ㄏ、ㄨ、ㄚ，花！請問中間的介音是哪一個呢？',
+          icon: '🌸',
+          word: 'ㄏ ＋ [ ？ ] ＋ ㄚ ＝ 花',
+          hint: 'ㄏ ＋ ㄨ ＋ ㄚ ＝ ㄏㄨㄚ',
+          answer: 'ㄨ',
+          options: ['ㄨ', 'ㄧ', 'ㄩ', 'ㄛ']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '看圖選三拼：「🍌 香蕉」的「香」，正確的三拼注音是？',
+          speakText: '猴子愛吃香蕉！請問香蕉的香，注音怎麼拼呢？',
+          icon: '🍌',
+          word: '香 ＝ ？',
+          hint: 'ㄒ ＋ ㄧ ＋ ㄤ ＝ ㄒㄧㄤ',
+          answer: 'ㄒㄧㄤ',
+          options: ['ㄒㄧㄤ', 'ㄒㄧㄢ', 'ㄑㄧㄤ', 'ㄕㄤ']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '結合韻挑戰：「🌙 月亮」的「月」，注音是哪一個結合韻？',
+          speakText: '彎彎的月亮！請問月亮的月，注音怎麼寫呢？',
+          icon: '🌙',
+          word: '月亮 (？ ㄌㄧㄤˋ)',
+          hint: 'ㄩ ＋ ㄝ ＋ 四聲 ˋ ＝ ㄩㄝˋ',
+          answer: 'ㄩㄝˋ',
+          options: ['ㄩㄝˋ', 'ㄧㄝˋ', 'ㄨㄛˋ', 'ㄩㄢˋ']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '守關題：「👟 一雙鞋」的「雙」，正確的三拼注音是？',
+          speakText: '最後一題！一雙鞋子的雙，ㄕ、ㄨ、ㄤ，雙！是哪一個呢？',
+          icon: '👟',
+          word: '雙 ＝ ？',
+          hint: '翹舌音 ㄕ ＋ ㄨ ＋ ㄤ ＝ ㄕㄨㄤ',
+          answer: 'ㄕㄨㄤ',
+          options: ['ㄕㄨㄤ', 'ㄙㄨㄤ', 'ㄕㄨㄢ', 'ㄒㄩㄤ']
+        }
+      ]
+    },
+    {
+      id: 10,
+      name: '第十關：魔王寶藏島',
+      subtitle: '注音大魔王終極試煉 🏆',
+      icon: '👑',
+      bossIcon: '🐲',
+      bossName: '黃金注音巨龍',
+      color: '#FA5252',
+      bgGradient: 'linear-gradient(135deg, #FFE3E3, #FFC9C9)',
+      desc: '集結全島所學！打敗黃金注音巨龍，奪得「注音大勇者」最高榮耀王冠！',
+      questions: [
+        {
+          qType: 'pic_pick',
+          prompt: '魔王第 1 擊：「🦋 蝴蝶 (ㄏㄨˊ ㄉㄧㄝˊ)」的「蝶」，注音是哪一個？',
+          speakText: '終極試煉開始！美麗的蝴蝶，請問蝴蝶的蝶，注音是哪一個？',
+          icon: '🦋',
+          word: '蝴蝶 (ㄏㄨˊ ？)',
+          hint: 'ㄉ ＋ ㄧ ＋ ㄝ ＋ 二聲 ˊ ＝ ㄉㄧㄝˊ',
+          answer: 'ㄉㄧㄝˊ',
+          options: ['ㄉㄧㄝˊ', 'ㄊㄧㄝˊ', 'ㄉㄟˊ', 'ㄌㄧㄝˊ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '魔王第 2 擊：「🐧 企鵝 (ㄑㄧˋ ㄜˊ)」的兩個字分別是幾聲？',
+          speakText: '南極的小企鵝，ㄑㄧˋ、ㄜˊ，請問企鵝分別是第幾聲呢？',
+          icon: '🐧',
+          word: '企 (ㄑㄧˋ) 鵝 (ㄜˊ)',
+          hint: '企是四聲 ˋ，鵝是二聲 ˊ',
+          answer: '四聲 與 二聲',
+          options: ['四聲 與 二聲', '一聲 與 二聲', '三聲 與 四聲', '四聲 與 三聲']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '魔王第 3 擊：「🦖 恐龍」的「龍 (ㄌㄨㄥˊ)」，正確拼音是？',
+          speakText: '黃金巨龍出題了！恐龍跟巨龍的龍，ㄌ、ㄨ、ㄥ、二聲，是哪一個呢？',
+          icon: '🐲',
+          word: '龍 ＝ ？',
+          hint: 'ㄌ ＋ ㄨ ＋ ㄥ ＋ ˊ ＝ ㄌㄨㄥˊ',
+          answer: 'ㄌㄨㄥˊ',
+          options: ['ㄌㄨㄥˊ', 'ㄋㄨㄥˊ', 'ㄌㄨㄣˊ', 'ㄖㄨㄥˊ']
+        },
+        {
+          qType: 'pic_pick',
+          prompt: '魔王第 4 擊：「🍓 草莓」的「草」和「🚢 帆船」的「船」，哪一個要翹舌？',
+          speakText: '想一想喔！草莓的草，跟帆船的船，哪一個字舌頭要翹起來呢？',
+          icon: '🚢',
+          word: '草 (ㄘㄠˇ) vs 船 (ㄔㄨㄢˊ)',
+          hint: '船 (ㄔㄨㄢˊ) 的開頭是翹舌音 ㄔ！',
+          answer: '船 (ㄔㄨㄢˊ)',
+          options: ['船 (ㄔㄨㄢˊ)', '草 (ㄘㄠˇ)', '兩個都要', '兩個都不用']
+        },
+        {
+          qType: 'blend_pick',
+          prompt: '🔥 終極必殺技：「台灣小一最棒」的「棒 (ㄅㄤˋ)」，怎麼拼？',
+          speakText: '最後一擊！好棒的棒，ㄅ、ㄤ、四聲，ㄅㄤˋ！選出正確答案打敗大魔王吧！',
+          icon: '🏆',
+          word: '好棒的「棒」＝ ？',
+          hint: 'ㄅ ＋ ㄤ ＋ 四聲 ˋ ＝ ㄅㄤˋ',
+          answer: 'ㄅㄤˋ',
+          options: ['ㄅㄤˋ', 'ㄆㄤˋ', 'ㄅㄢˋ', 'ㄉㄤˋ']
+        }
+      ]
+    }
   ]
 };
