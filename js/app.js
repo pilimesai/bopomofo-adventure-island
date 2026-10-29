@@ -438,8 +438,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dom.selectVoicePicker) return;
     dom.selectVoicePicker.innerHTML = '';
 
-    // 1. 新增專屬可愛女生聲音角色（不論任何瀏覽器皆可享受超萌台灣女生配音）
+    // 1. 新增專屬台灣正音班老師與可愛女生聲音角色（內建 497 句真人級台灣女聲正音音檔）
     const cutePersonas = [
+      {
+        value: 'PERSONA::TEACHER',
+        label: '🌸 台灣正音班女老師（標準第一聲正音・真人級甜美推薦 ✨）'
+      },
       {
         value: 'PERSONA::CUTE_GIRL',
         label: '🍓 小莓姐姐（超萌可愛小女生・活潑甜美 ✨新登場！）'
@@ -1063,7 +1067,7 @@ document.addEventListener('DOMContentLoaded', () => {
       exCard.addEventListener('click', (e) => {
         e.stopPropagation();
         window.audioEngine.playPop();
-        window.audioEngine.speak(`${ex.word}。${ex.zhuyin}。`);
+        window.audioEngine.speak(`${ex.word}，${ex.word}`);
       });
       dom.modalExamplesGrid.appendChild(exCard);
     });

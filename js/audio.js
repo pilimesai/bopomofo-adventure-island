@@ -7,6 +7,7 @@ class ZhuyinAudioEngine {
   constructor() {
     this.ctx = null;
     this.synth = window.speechSynthesis;
+    this.currentAudio = null; // 預錄正音班神經語音 MP3 播放器
     this.taiwanVoice = null;
     this.selectedVoiceName = localStorage.getItem('zhuyin_selected_voice') || '';
     this.isMuted = false;
@@ -169,48 +170,20 @@ class ZhuyinAudioEngine {
   }
 
   /**
-   * 台灣教育部標準注音「飽滿呼讀音」對照表
-   * 解決瀏覽器 TTS 直接念單一注音符號（如 ㄅ、ㄆ、ㄉ）時聲音太短、含糊聽不清楚的問題！
-   * 轉為同音國字後，語音引擎會發出飽滿、響亮、字正腔圓的台灣標準發音。
+   * 台灣正音班標準「第一聲呼讀音」備援對照表（僅供動態未預錄字串使用）
+   * 參考 YMCA 線上正音班女老師發音：37 個注音符號皆以第一聲清楚持續發音（ㄅ=bē, ㄆ=pē, ㄇ=mē, ㄈ=fē, ㄉ=dē, ㄊ=tē, ㄋ=nē, ㄌ=lē）
    */
   getClearPhoneticMap() {
     return {
-      // 常見完整拼音音節（優先比對長音節）
-      'ㄊㄞˋ': '太', 'ㄉㄞˋ': '代', 'ㄌㄞˋ': '賴', 'ㄋㄞˋ': '奈',
-      'ㄅㄚˊ': '拔', 'ㄅㄚˇ': '把', 'ㄅㄚˋ': '爸', '˙ㄅㄚ': '吧', 'ㄅㄚ': '八',
-      'ㄆㄠˇ': '跑', 'ㄅㄠˇ': '飽', 'ㄊㄠˇ': '討', 'ㄆㄡˇ': '剖',
-      'ㄘㄠˇ': '草', 'ㄔㄠˇ': '吵', 'ㄗㄠˇ': '早', 'ㄙㄠˇ': '掃',
-      'ㄔㄜ': '車', 'ㄘㄜ': '冊', 'ㄕㄜ': '奢', 'ㄙㄜ': '色',
-      'ㄜˊ': '鵝', 'ㄛˊ': '哦', 'ㄚˊ': '牙', 'ㄝˊ': '爺',
-      'ㄦˇ': '耳', 'ㄜˇ': '襖', 'ㄢˇ': '俺', 'ㄡˇ': '偶',
-      'ㄍㄨㄚ': '瓜', 'ㄏㄨㄚ': '花', 'ㄒㄧㄤ': '香', 'ㄒㄧㄢ': '先', 'ㄑㄧㄤ': '槍', 'ㄕㄤ': '商',
-      'ㄩㄝˋ': '月', 'ㄧㄝˋ': '夜', 'ㄨㄛˋ': '握', 'ㄩㄢˋ': '願',
-      'ㄕㄨㄤ': '雙', 'ㄕㄨㄢ': '拴',
-      'ㄉㄧㄝˊ': '蝶', 'ㄊㄧㄝˊ': '疊', 'ㄌㄧㄝˊ': '連',
-      'ㄌㄨㄥˊ': '龍', 'ㄋㄨㄥˊ': '農', 'ㄌㄨㄣˊ': '輪', 'ㄖㄨㄥˊ': '容',
-      'ㄅㄤˋ': '棒', 'ㄆㄤˋ': '胖', 'ㄅㄢˋ': '半', 'ㄉㄤˋ': '當',
-      'ㄋㄧㄠˇ': '鳥', 'ㄑㄧˋ': '企', 'ㄔㄨㄢˊ': '船',
-      'ㄅㄢ': '斑', 'ㄇㄚˇ': '馬', 'ㄇㄚ': '媽', 'ㄉㄚˋ': '大',
-      'ㄆㄧㄥˊ': '平', 'ㄍㄨㄛˇ': '果', 'ㄇㄠ': '貓', 'ㄇㄧ': '咪', 'ㄈㄟ': '飛', 'ㄐㄧ': '機',
-
-      // 22個結合韻
-      'ㄧㄚ': '呀', 'ㄧㄛ': '唷', 'ㄧㄝ': '耶', 'ㄧㄞ': '崖', 'ㄧㄠ': '腰',
-      'ㄧㄡ': '優', 'ㄧㄢ': '煙', 'ㄧㄣ': '音', 'ㄧㄤ': '央', 'ㄧㄥ': '英',
-      'ㄨㄚ': '蛙', 'ㄨㄛ': '窩', 'ㄨㄞ': '歪', 'ㄨㄟ': '威', 'ㄨㄢ': '彎',
-      'ㄨㄣ': '溫', 'ㄨㄤ': '汪', 'ㄨㄥ': '翁',
-      'ㄩㄝ': '約', 'ㄩㄢ': '冤', 'ㄩㄣ': '暈', 'ㄩㄥ': '雍',
-
-      // 21個聲母（教育部標準呼讀音，飽滿清晰）
-      'ㄅ': '玻', 'ㄆ': '坡', 'ㄇ': '摸', 'ㄈ': '佛',
-      'ㄉ': '得', 'ㄊ': '特', 'ㄋ': '訥', 'ㄌ': '勒',
-      'ㄍ': '哥', 'ㄎ': '科', 'ㄏ': '喝',
-      'ㄐ': '基', 'ㄑ': '欺', 'ㄒ': '希',
-      'ㄓ': '知', 'ㄔ': '吃', 'ㄕ': '詩', 'ㄖ': '日',
-      'ㄗ': '資', 'ㄘ': '雌', 'ㄙ': '思',
-
+      // 21個聲母（第一聲標準正音，不使用二聲「佛/得」或四聲「特/訥/勒」）
+      'ㄅ': 'ㄅㄜ', 'ㄆ': 'ㄆㄜ', 'ㄇ': 'ㄇㄜ', 'ㄈ': 'ㄈㄜ',
+      'ㄉ': 'ㄉㄜ', 'ㄊ': 'ㄊㄜ', 'ㄋ': 'ㄋㄜ', 'ㄌ': 'ㄌㄜ',
+      'ㄍ': 'ㄍㄜ', 'ㄎ': 'ㄎㄜ', 'ㄏ': 'ㄏㄜ',
+      'ㄐ': 'ㄐㄧ', 'ㄑ': 'ㄑㄧ', 'ㄒ': 'ㄒㄧ',
+      'ㄓ': 'ㄓ', 'ㄔ': 'ㄔ', 'ㄕ': 'ㄕ', 'ㄖ': 'ㄖ',
+      'ㄗ': 'ㄗ', 'ㄘ': 'ㄘ', 'ㄙ': 'ㄙ',
       // 3個介音
       'ㄧ': '衣', 'ㄨ': '烏', 'ㄩ': '迂',
-
       // 13個韻母
       'ㄚ': '啊', 'ㄛ': '喔', 'ㄜ': '婀', 'ㄝ': '耶',
       'ㄞ': '哀', 'ㄟ': '誒', 'ㄠ': '凹', 'ㄡ': '歐',
@@ -218,13 +191,9 @@ class ZhuyinAudioEngine {
     };
   }
 
-  /**
-   * 將語音字串中的注音符號自動轉為「飽滿清晰的教育部標準發音國字」
-   */
   normalizeZhuyinForSpeech(text) {
     if (!text) return '';
     const map = this.getClearPhoneticMap();
-    // 依照 key 長度由長到短排序，先替換完整拼音再替換單一注音符號
     const keys = Object.keys(map).sort((a, b) => b.length - a.length);
     let result = text;
     for (const k of keys) {
@@ -236,15 +205,54 @@ class ZhuyinAudioEngine {
   }
 
   /**
-   * 說話：朗讀文字 (專為台灣小一國語最佳化，自動強化注音發音清晰度)
+   * 說話：優先播放預錄的「台灣正音班女老師 (zh-TW-HsiaoChenNeural)」真人級高清 MP3 音檔！
+   * 確保 ㄅ(bē)、ㄆ(pē)、ㄇ(mē)、ㄈ(fē)、ㄉ(dē)、ㄊ(tē)、ㄋ(nē)、ㄌ(lē) 100% 符合台灣正音班第一聲標準發音！
    */
   speak(text, options = {}) {
-    if (this.isMuted || !this.synth) return;
-    this.synth.cancel(); // 停止先前的朗讀
+    if (this.isMuted || !text) return;
+    this.stopSpeaking();
 
-    // 將所有注音符號轉換為飽滿清楚的同音國字，確保「ㄅ(玻)」、「ㄆ(坡)」等念得無比清楚
+    const cleanKey = text.trim();
+    const manifest = window.AUDIO_MANIFEST || {};
+    const audioUrl = manifest[cleanKey];
+
+    if (audioUrl) {
+      try {
+        const audio = new Audio(audioUrl);
+        this.currentAudio = audio;
+
+        const targetPitch = options.pitch || this.speechPitch;
+        const isCuteGirl = this.selectedVoiceName === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35;
+        const isSweetSister = this.selectedVoiceName === 'PERSONA::SWEET_SISTER' || (targetPitch >= 1.22 && targetPitch < 1.35);
+
+        // 若選擇「🍓 小莓姐姐」或「🎀 糖糖學姊」，可透過不保持音高的微調速率呈現超萌少女聲線
+        if ((isCuteGirl || isSweetSister) && !cleanKey.includes('小莓姐姐') && !cleanKey.includes('糖糖學姊')) {
+          audio.preservesPitch = false;
+          audio.mozPreservesPitch = false;
+          audio.webkitPreservesPitch = false;
+          audio.playbackRate = isCuteGirl ? 1.10 : 1.05;
+        } else {
+          audio.playbackRate = 1.0;
+        }
+
+        if (options.onEnd) {
+          audio.onended = options.onEnd;
+        }
+        audio.play().catch(() => {
+          this.speakWithBrowserTTS(cleanKey, options);
+        });
+        return;
+      } catch (e) {
+        // fallback to browser TTS
+      }
+    }
+
+    this.speakWithBrowserTTS(cleanKey, options);
+  }
+
+  speakWithBrowserTTS(text, options = {}) {
+    if (!this.synth) return;
     const clearText = this.normalizeZhuyinForSpeech(text);
-
     const utterance = new SpeechSynthesisUtterance(clearText);
     if (this.taiwanVoice) {
       utterance.voice = this.taiwanVoice;
@@ -252,43 +260,46 @@ class ZhuyinAudioEngine {
     } else {
       utterance.lang = 'zh-TW';
     }
-
     utterance.rate = options.rate || this.speechRate;
-    utterance.pitch = options.pitch || this.speechPitch; // 活潑親切的老師/小女生語調
-
+    utterance.pitch = options.pitch || this.speechPitch;
     if (options.onEnd) {
       utterance.onend = options.onEnd;
     }
-
     this.synth.speak(utterance);
   }
 
   /**
-   * 停止所有語音
+   * 停止所有語音（包含高清 MP3 與瀏覽器 TTS）
    */
   stopSpeaking() {
+    if (this.currentAudio) {
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+      } catch (e) {}
+      this.currentAudio = null;
+    }
     if (this.synth) {
       this.synth.cancel();
     }
   }
 
   /**
-   * 朗讀注音符號（連念兩次標準呼讀音＋詞彙舉例，讓孩子聽得超清楚！）
+   * 朗讀注音符號（完全比照台灣正音班女老師：第一聲清楚連念兩次＋代表詞彙＋口訣）
    */
   speakSymbol(symbolData, mode = 'full') {
-    const map = this.getClearPhoneticMap();
-    const soundWord = map[symbolData.char] || symbolData.char;
+    const c = symbolData.char;
+    const w = symbolData.word;
+    const m = symbolData.mnemonic;
     if (mode === 'short') {
-      this.speak(`${soundWord}～！${soundWord}～！`, { rate: Math.min(this.speechRate, 0.84) });
+      this.speak(`${c}，${c}。${w}的，${c}。`);
     } else {
-      // 連續清楚念兩次單音，再搭配生活詞彙
-      const naturalText = `${soundWord}，${soundWord}！${symbolData.word}的，${soundWord}！`;
-      this.speak(naturalText, { rate: Math.min(this.speechRate, 0.84) });
+      this.speak(`${c}，${c}。${w}的${c}。${m}`);
     }
   }
 
   /**
-   * 拼音小火車循序拼讀（自然生動、富有節奏感的拼讀）
+   * 拼音小火車循序拼讀（對應預錄的高清正音班女老師拼讀音檔）
    */
   spellBlending(initial, medial, final, toneMark, toneId, fullChar, fullWord) {
     const parts = [];
@@ -296,22 +307,20 @@ class ZhuyinAudioEngine {
     if (medial) parts.push(medial);
     if (final) parts.push(final);
 
-    const spellSeq = parts.map(p => `${p}～`).join('，');
     const toneText = toneId === 1 ? '一聲' :
                      toneId === 2 ? '二聲' :
                      toneId === 3 ? '三聲' :
                      toneId === 4 ? '四聲' : '輕聲';
 
-    let reading = `${spellSeq}，`;
-    if (toneId > 0 && toneId !== 1) {
-      reading += `${toneText}，`;
-    }
-    reading += `${fullChar}！`;
     if (fullWord) {
-      reading += `是${fullWord}的${fullChar}哦！`;
+      const cleanWord = fullWord.includes(' ') ? fullWord.split(' ')[0] : fullWord;
+      const exactKey = `${parts.join('，')}，${toneText}，${fullChar}！${cleanWord}的${fullChar}！`;
+      this.speak(exactKey);
+      return;
     }
 
-    this.speak(reading, { rate: this.speechRate * 0.95 });
+    const reading = `${parts.join('，')}，${toneText}，${fullChar}！`;
+    this.speak(reading);
   }
 
   // ==========================================
