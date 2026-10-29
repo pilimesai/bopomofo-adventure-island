@@ -1408,11 +1408,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const balloonColors = ['#FF6B6B', '#4DABF7', '#51CF66', '#FF922B'];
     const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+    const symData = ZHUYIN_DATA.symbols.find(s => s.char === question.target);
+    const visualWordHint = symData ? `${symData.icon} ${symData.word}` : '仔細聽發音';
 
     dom.gameArena.innerHTML = `
       <div class="game-status-bar">
         <div class="game-prompt-large">
-          <span>🎧 聽聽看喔～請選出「<strong>${question.target}</strong>」的氣球！</span>
+          <span>🎧 仔細聽老師唸的聲音，戳破正確的注音氣球！（提示詞：<strong>${visualWordHint}</strong>）</span>
           <button class="replay-audio-btn" id="btn-replay-game-audio" title="重聽發音">🔊</button>
         </div>
         <div class="score-badge">第 ${state.game.round} / ${state.game.maxRounds} 關 | 得分：⭐ ${state.game.score}</div>
@@ -1424,7 +1426,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const replayBtn = document.getElementById('btn-replay-game-audio');
 
     const speakTarget = () => {
-      window.audioEngine.speak(`聽聽看喔！請找出，${question.target}，${question.hint}喔！`);
+      const wordPart = symData ? `${symData.word}的，` : '';
+      window.audioEngine.speak(`仔細聽喔：${question.target}，${question.target}！${wordPart}${question.target}，${question.target}！請找出正確的氣球！`);
     };
     speakTarget();
 

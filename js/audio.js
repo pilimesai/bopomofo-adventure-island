@@ -169,13 +169,83 @@ class ZhuyinAudioEngine {
   }
 
   /**
-   * 說話：朗讀文字 (專為台灣小一國語最佳化)
+   * 台灣教育部標準注音「飽滿呼讀音」對照表
+   * 解決瀏覽器 TTS 直接念單一注音符號（如 ㄅ、ㄆ、ㄉ）時聲音太短、含糊聽不清楚的問題！
+   * 轉為同音國字後，語音引擎會發出飽滿、響亮、字正腔圓的台灣標準發音。
+   */
+  getClearPhoneticMap() {
+    return {
+      // 常見完整拼音音節（優先比對長音節）
+      'ㄊㄞˋ': '太', 'ㄉㄞˋ': '代', 'ㄌㄞˋ': '賴', 'ㄋㄞˋ': '奈',
+      'ㄅㄚˊ': '拔', 'ㄅㄚˇ': '把', 'ㄅㄚˋ': '爸', '˙ㄅㄚ': '吧', 'ㄅㄚ': '八',
+      'ㄆㄠˇ': '跑', 'ㄅㄠˇ': '飽', 'ㄊㄠˇ': '討', 'ㄆㄡˇ': '剖',
+      'ㄘㄠˇ': '草', 'ㄔㄠˇ': '吵', 'ㄗㄠˇ': '早', 'ㄙㄠˇ': '掃',
+      'ㄔㄜ': '車', 'ㄘㄜ': '冊', 'ㄕㄜ': '奢', 'ㄙㄜ': '色',
+      'ㄜˊ': '鵝', 'ㄛˊ': '哦', 'ㄚˊ': '牙', 'ㄝˊ': '爺',
+      'ㄦˇ': '耳', 'ㄜˇ': '襖', 'ㄢˇ': '俺', 'ㄡˇ': '偶',
+      'ㄍㄨㄚ': '瓜', 'ㄏㄨㄚ': '花', 'ㄒㄧㄤ': '香', 'ㄒㄧㄢ': '先', 'ㄑㄧㄤ': '槍', 'ㄕㄤ': '商',
+      'ㄩㄝˋ': '月', 'ㄧㄝˋ': '夜', 'ㄨㄛˋ': '握', 'ㄩㄢˋ': '願',
+      'ㄕㄨㄤ': '雙', 'ㄕㄨㄢ': '拴',
+      'ㄉㄧㄝˊ': '蝶', 'ㄊㄧㄝˊ': '疊', 'ㄌㄧㄝˊ': '連',
+      'ㄌㄨㄥˊ': '龍', 'ㄋㄨㄥˊ': '農', 'ㄌㄨㄣˊ': '輪', 'ㄖㄨㄥˊ': '容',
+      'ㄅㄤˋ': '棒', 'ㄆㄤˋ': '胖', 'ㄅㄢˋ': '半', 'ㄉㄤˋ': '當',
+      'ㄋㄧㄠˇ': '鳥', 'ㄑㄧˋ': '企', 'ㄔㄨㄢˊ': '船',
+      'ㄅㄢ': '斑', 'ㄇㄚˇ': '馬', 'ㄇㄚ': '媽', 'ㄉㄚˋ': '大',
+      'ㄆㄧㄥˊ': '平', 'ㄍㄨㄛˇ': '果', 'ㄇㄠ': '貓', 'ㄇㄧ': '咪', 'ㄈㄟ': '飛', 'ㄐㄧ': '機',
+
+      // 22個結合韻
+      'ㄧㄚ': '呀', 'ㄧㄛ': '唷', 'ㄧㄝ': '耶', 'ㄧㄞ': '崖', 'ㄧㄠ': '腰',
+      'ㄧㄡ': '優', 'ㄧㄢ': '煙', 'ㄧㄣ': '音', 'ㄧㄤ': '央', 'ㄧㄥ': '英',
+      'ㄨㄚ': '蛙', 'ㄨㄛ': '窩', 'ㄨㄞ': '歪', 'ㄨㄟ': '威', 'ㄨㄢ': '彎',
+      'ㄨㄣ': '溫', 'ㄨㄤ': '汪', 'ㄨㄥ': '翁',
+      'ㄩㄝ': '約', 'ㄩㄢ': '冤', 'ㄩㄣ': '暈', 'ㄩㄥ': '雍',
+
+      // 21個聲母（教育部標準呼讀音，飽滿清晰）
+      'ㄅ': '玻', 'ㄆ': '坡', 'ㄇ': '摸', 'ㄈ': '佛',
+      'ㄉ': '得', 'ㄊ': '特', 'ㄋ': '訥', 'ㄌ': '勒',
+      'ㄍ': '哥', 'ㄎ': '科', 'ㄏ': '喝',
+      'ㄐ': '基', 'ㄑ': '欺', 'ㄒ': '希',
+      'ㄓ': '知', 'ㄔ': '吃', 'ㄕ': '詩', 'ㄖ': '日',
+      'ㄗ': '資', 'ㄘ': '雌', 'ㄙ': '思',
+
+      // 3個介音
+      'ㄧ': '衣', 'ㄨ': '烏', 'ㄩ': '迂',
+
+      // 13個韻母
+      'ㄚ': '啊', 'ㄛ': '喔', 'ㄜ': '婀', 'ㄝ': '耶',
+      'ㄞ': '哀', 'ㄟ': '誒', 'ㄠ': '凹', 'ㄡ': '歐',
+      'ㄢ': '安', 'ㄣ': '恩', 'ㄤ': '骯', 'ㄥ': '鞥', 'ㄦ': '兒'
+    };
+  }
+
+  /**
+   * 將語音字串中的注音符號自動轉為「飽滿清晰的教育部標準發音國字」
+   */
+  normalizeZhuyinForSpeech(text) {
+    if (!text) return '';
+    const map = this.getClearPhoneticMap();
+    // 依照 key 長度由長到短排序，先替換完整拼音再替換單一注音符號
+    const keys = Object.keys(map).sort((a, b) => b.length - a.length);
+    let result = text;
+    for (const k of keys) {
+      if (result.includes(k)) {
+        result = result.split(k).join(map[k]);
+      }
+    }
+    return result;
+  }
+
+  /**
+   * 說話：朗讀文字 (專為台灣小一國語最佳化，自動強化注音發音清晰度)
    */
   speak(text, options = {}) {
     if (this.isMuted || !this.synth) return;
     this.synth.cancel(); // 停止先前的朗讀
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    // 將所有注音符號轉換為飽滿清楚的同音國字，確保「ㄅ(玻)」、「ㄆ(坡)」等念得無比清楚
+    const clearText = this.normalizeZhuyinForSpeech(text);
+
+    const utterance = new SpeechSynthesisUtterance(clearText);
     if (this.taiwanVoice) {
       utterance.voice = this.taiwanVoice;
       utterance.lang = this.taiwanVoice.lang;
@@ -184,7 +254,7 @@ class ZhuyinAudioEngine {
     }
 
     utterance.rate = options.rate || this.speechRate;
-    utterance.pitch = options.pitch || this.speechPitch; // 活潑親切的老師語調
+    utterance.pitch = options.pitch || this.speechPitch; // 活潑親切的老師/小女生語調
 
     if (options.onEnd) {
       utterance.onend = options.onEnd;
@@ -203,15 +273,17 @@ class ZhuyinAudioEngine {
   }
 
   /**
-   * 朗讀注音符號（以自然、溫柔親切的老師口吻）
+   * 朗讀注音符號（連念兩次標準呼讀音＋詞彙舉例，讓孩子聽得超清楚！）
    */
   speakSymbol(symbolData, mode = 'full') {
+    const map = this.getClearPhoneticMap();
+    const soundWord = map[symbolData.char] || symbolData.char;
     if (mode === 'short') {
-      this.speak(`${symbolData.char}～！`);
+      this.speak(`${soundWord}～！${soundWord}～！`, { rate: Math.min(this.speechRate, 0.84) });
     } else {
-      // 親切生動的口誦教學：用「～」與驚嘆號引導自然語調抑揚頓挫
-      const naturalText = `${symbolData.char}～！${symbolData.word}的${symbolData.char}！`;
-      this.speak(naturalText);
+      // 連續清楚念兩次單音，再搭配生活詞彙
+      const naturalText = `${soundWord}，${soundWord}！${symbolData.word}的，${soundWord}！`;
+      this.speak(naturalText, { rate: Math.min(this.speechRate, 0.84) });
     }
   }
 
