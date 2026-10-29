@@ -492,7 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (v.name.includes('Yating') || v.name.includes('雅婷')) return 100;
         if (v.name.includes('HsiaoChen') || v.name.includes('曉臻')) return 95;
         if (v.name.includes('HsiaoYu') || v.name.includes('曉雨')) return 92;
-        if (v.name.includes('Google') && (v.name.includes('臺灣') || v.name.includes('Taiwan') || v.lang === 'zh-TW')) return 90;
         if (v.name.includes('Meijia') || v.name.includes('美佳')) return 85;
         if (v.name.includes('Hanhan')) return 20;
         return 50;
@@ -512,8 +511,6 @@ document.addEventListener('DOMContentLoaded', () => {
         label = '👧 系統內建：晨晨姐姐（Microsoft 曉臻）';
       } else if (v.name.includes('HsiaoYu') || v.name.includes('曉雨')) {
         label = '🌺 系統內建：小雨姐姐（Microsoft 曉雨）';
-      } else if (v.name.includes('Google') && (v.name.includes('臺灣') || v.lang === 'zh-TW')) {
-        label = '🌟 系統內建：Google 台灣甜美女聲';
       } else if (v.name.includes('Meijia') || v.name.includes('美佳')) {
         label = '🍎 系統內建：美佳老師（Apple 台灣女聲）';
       } else if (v.name.includes('Hanhan')) {

@@ -59,7 +59,9 @@ class ZhuyinAudioEngine {
       name.includes('yunjhe') ||
       name.includes('雲哲') ||
       name.includes('danny') ||
-      name.includes('male')
+      name.includes('male') ||
+      // 刪除所有 Google 台灣女聲
+      name.includes('google')
     );
   }
 
@@ -94,7 +96,6 @@ class ZhuyinAudioEngine {
       taiwanVoices.find(v => v.name.includes('Yating') || v.name.includes('雅婷')) ||
       taiwanVoices.find(v => v.name.includes('HsiaoChen') || v.name.includes('曉臻')) ||
       taiwanVoices.find(v => v.name.includes('HsiaoYu') || v.name.includes('曉雨')) ||
-      taiwanVoices.find(v => v.name.includes('Google') && (v.name.includes('臺灣') || v.name.includes('Taiwan') || v.lang === 'zh-TW')) ||
       taiwanVoices.find(v => v.name.includes('Meijia') || v.name.includes('美佳')) ||
       taiwanVoices.find(v => v.lang === 'zh-TW' && !v.name.includes('Hanhan')) ||
       taiwanVoices.find(v => v.lang === 'zh-TW') ||
@@ -112,8 +113,8 @@ class ZhuyinAudioEngine {
       const taiwanVoices = voices.filter(v => this.isTaiwanVoice(v));
 
       // 若之前存到已刪除的男聲，自動重設為可愛女聲或雅婷老師
-      if (this.selectedVoiceName && (this.selectedVoiceName.includes('Zhiwei') || this.selectedVoiceName.includes('志偉') || this.selectedVoiceName.includes('YunJhe'))) {
-        this.selectedVoiceName = '';
+      if (this.selectedVoiceName && (this.selectedVoiceName.includes('Zhiwei') || this.selectedVoiceName.includes('志偉') || this.selectedVoiceName.includes('YunJhe') || this.selectedVoiceName.toLowerCase().includes('google'))) {
+        this.selectedVoiceName = 'PERSONA::DUET';
         localStorage.removeItem('zhuyin_selected_voice');
       }
 
@@ -140,7 +141,6 @@ class ZhuyinAudioEngine {
       // 台灣在地女聲優先順序：
       // 1. Microsoft 雅婷 (Yating) -> 台北錄製、道地台灣腔調、溫柔親切國小女老師首選！
       // 2. Microsoft 曉臻 (HsiaoChen) / 曉雨 (HsiaoYu) -> 甜美自然台灣女生
-      // 3. Google 國語（臺灣）-> 台灣流暢女聲
       this.taiwanVoice = this.getBestBaseFemaleVoice(taiwanVoices);
     };
 
