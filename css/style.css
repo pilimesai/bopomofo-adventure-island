@@ -3217,3 +3217,345 @@ body {
   padding: 14px 10px !important;
   line-height: 1.35;
 }
+
+/* ========================================================
+   📱 平板與行動裝置全螢幕防切割自適應優化 (Tablet & iPad Optimization)
+   針對 iPad (768px - 1024px)、iPad Air、iPad Pro 及各尺寸平板深度優化
+   ======================================================== */
+
+/* 全域防止水平滾動與邊緣裁切 */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 📱 平板通用優化 (螢幕寬度 <= 1024px，包含 iPad 橫屏與大平板) */
+@media (max-width: 1024px) {
+  .main-wrapper {
+    max-width: 100%;
+    padding: 12px 14px 70px 14px;
+  }
+
+  /* 頂部導航列防止溢出 */
+  .app-header {
+    padding: 10px 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .logo-container {
+    gap: 8px;
+  }
+
+  .logo-text h1 {
+    font-size: 20px;
+  }
+
+  .header-right {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .mascot-bubble {
+    max-width: 260px;
+    font-size: 12px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .star-counter, .ball-counter, .player-level-badge {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  /* 分頁標籤欄滑動保護 */
+  .tab-navigation {
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .tab-btn {
+    min-width: 130px;
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  /* 道館地圖頂部橫幅 */
+  .adventure-hero-banner {
+    padding: 18px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .adventure-hero-banner .hero-left h2 {
+    font-size: 24px;
+  }
+
+  .hero-stats-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* 關卡卡片網格自適應 */
+  .adventure-stages-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  /* 徽章網格 */
+  .gym-badge-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+}
+
+/* 📱 平板直屏與窄螢幕優化 (螢幕寬度 <= 960px，包含 iPad 10.2"、iPad Air、iPad Mini 豎屏) */
+@media (max-width: 960px) {
+  /* 戰鬥容器防切割 */
+  .adventure-battle-container {
+    padding: 14px;
+    border-width: 4px;
+    margin: 0;
+  }
+
+  .battle-top-bar {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  .battle-stage-title {
+    font-size: 16px;
+  }
+
+  .battle-status-right {
+    gap: 8px;
+  }
+
+  /* 🔴 關鍵修復：戰鬥舞台由絕對定位切換為彈性上下區塊，徹底根除左右重疊破版與裁切！ */
+  .pokemon-battle-field {
+    padding: 12px;
+    min-height: auto;
+    border-width: 4px;
+  }
+
+  .pokemon-stadium-platforms {
+    height: auto;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+  }
+
+  /* 對手精靈區 (右上靠齊) */
+  .poke-opponent-zone {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    width: 100%;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  /* 玩家夥伴區 (左下靠齊) */
+  .poke-player-zone {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100%;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .poke-opponent-plate, .poke-player-plate {
+    min-width: 0 !important;
+    flex: 1;
+    max-width: 320px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .poke-opponent-sprite, .poke-player-sprite {
+    width: 84px !important;
+    height: 84px !important;
+    font-size: 48px !important;
+    flex-shrink: 0;
+  }
+
+  /* 寶貝球在平板上的精確拋射弧線與吸入定位 */
+  @keyframes pokeThrowToOpponent {
+    0% {
+      left: 50px;
+      top: 170px;
+      transform: scale(0.5) rotate(0deg);
+      opacity: 0.85;
+    }
+    45% {
+      left: 50%;
+      top: 15px;
+      transform: scale(1.15) rotate(360deg);
+      opacity: 1;
+    }
+    100% {
+      right: 20px;
+      left: auto;
+      top: 15px;
+      transform: scale(1) rotate(720deg);
+    }
+  }
+
+  .flying-pokeball.ball-open {
+    right: 20px !important;
+    left: auto !important;
+    top: 15px !important;
+  }
+
+  .capture-beam-cone {
+    right: 15px !important;
+    top: 10px !important;
+    width: 125px !important;
+    height: 80px !important;
+  }
+
+  .flying-pokeball.ball-drop {
+    animation: ballDropBounceTablet 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+  }
+
+  @keyframes ballDropBounceTablet {
+    0% {
+      right: 20px;
+      left: auto;
+      top: 15px;
+      transform: scale(1);
+    }
+    55% {
+      right: 20px;
+      left: auto;
+      top: 85px;
+      transform: scale(1.12, 0.85);
+    }
+    75% {
+      right: 20px;
+      left: auto;
+      top: 68px;
+      transform: scale(0.95, 1.05);
+    }
+    100% {
+      right: 20px;
+      left: auto;
+      top: 75px;
+      transform: scale(1);
+    }
+  }
+
+  .flying-pokeball.ball-wobble-ground {
+    right: 20px !important;
+    left: auto !important;
+    top: 75px !important;
+  }
+
+  /* 對決題目與操作指令卡防切割 */
+  .battle-question-card {
+    padding: 14px 12px;
+  }
+
+  /* 4 個指令按鈕改為 2x2 網格，避免橫向排擠破版 */
+  .poke-battle-actions {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .poke-cmd-btn {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  /* 🎒 背包道具欄在平板上自動折行 */
+  .poke-trainer-bag-bar {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .bag-items-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .bag-item-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    flex: 1 1 calc(50% - 6px);
+    justify-content: center;
+  }
+
+  /* 📖 閱讀測驗故事卡在平板上的文字行距優化 */
+  .reading-passage-card {
+    padding: 12px 14px;
+    margin: 8px 0 12px 0;
+  }
+
+  .reading-passage-text {
+    font-size: 16px;
+    line-height: 1.75;
+    padding: 10px 12px;
+  }
+
+  /* 4個選項按鈕在平板上的防裁切大小 */
+  .battle-options-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .battle-opt-btn {
+    font-size: 26px !important;
+    padding: 14px 8px !important;
+  }
+
+  .battle-opt-btn.long-text {
+    font-size: 15px !important;
+    padding: 12px 6px !important;
+  }
+}
+
+/* 📱 手機螢幕優化 (螢幕寬度 <= 640px) */
+@media (max-width: 640px) {
+  .mascot-bubble {
+    display: none;
+  }
+
+  .battle-options-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .battle-opt-btn {
+    font-size: 24px !important;
+    padding: 12px !important;
+  }
+
+  .gym-badge-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bag-item-btn {
+    flex: 1 1 100%;
+  }
+}
