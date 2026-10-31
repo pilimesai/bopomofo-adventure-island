@@ -2583,3 +2583,80 @@ body {
   }
 }
 
+
+
+/* ========================================================
+   EXAM DIFFICULTY TOGGLE (期中考 / 期末考 難度切換)
+   ======================================================== */
+.exam-difficulty-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.exam-difficulty-pill-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 3px solid #374151;
+  border-radius: var(--radius-round);
+  padding: 4px;
+  gap: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.exam-diff-btn {
+  border: none;
+  background: transparent;
+  padding: 8px 18px;
+  border-radius: var(--radius-round);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  color: #4B5563;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.exam-diff-btn:hover {
+  color: #1F2937;
+  background: #F3F4F6;
+}
+
+.exam-diff-btn.active[data-diff="midterm"] {
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+  box-shadow: 0 3px 0 #047857;
+}
+
+.exam-diff-btn.active[data-diff="final"] {
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  color: #FFFFFF;
+  box-shadow: 0 3px 0 #991B1B;
+}
+
+.battle-diff-badge {
+  font-size: 13px;
+  font-weight: 900;
+  padding: 4px 12px;
+  border-radius: var(--radius-round);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.battle-diff-badge.midterm {
+  background: #D1FAE5;
+  color: #065F46;
+  border: 2px solid #34D399;
+}
+.battle-diff-badge.final {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 2px solid #F87171;
+}
+

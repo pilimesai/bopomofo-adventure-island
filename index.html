@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="css/style.css?v=7">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -102,6 +102,19 @@
           <div class="hero-left">
             <h2>🗺️ ㄅㄆㄇ 寶可夢道館巡迴大挑戰</h2>
             <p>挑戰 10 大屬性道館館主，收集 10 枚道館徽章，用寶貝球收服 37 隻野生注音寶可夢！</p>
+            <div class="exam-difficulty-wrapper">
+              <span style="font-size:14px;font-weight:900;color:#1E293B;">🎯 段考難度（依據米蘭老師題庫）：</span>
+              <div class="exam-difficulty-pill-toggle" id="exam-difficulty-container">
+                <button class="exam-diff-btn active" id="btn-diff-midterm" data-diff="midterm" title="首冊進度：37符號形音辨析與基礎聲調">
+                  <span>🐣</span>
+                  <span>期中考難度 (首冊符號辨識)</span>
+                </button>
+                <button class="exam-diff-btn" id="btn-diff-final" data-diff="final" title="段考綜合：二拼三拼結合韻與語詞生活拼讀">
+                  <span>🦅</span>
+                  <span>期末考難度 (綜合拼讀段考)</span>
+                </button>
+              </div>
+            </div>
           </div>
           <div class="hero-stats-box">
             <div class="stat-pill">
@@ -174,7 +187,7 @@
             <div class="question-text-col">
               <div class="question-word-badge" id="battle-q-word" style="display:none;">斑馬</div>
               <h3 class="question-prompt-text" id="battle-q-prompt">
-                聽老師唸：像收音機天線豎起來的「ㄅ」是哪一個？
+                請仔細聽老師的發音，選出正確的答案！
               </h3>
             </div>
           </div>
@@ -189,7 +202,7 @@
           </div>
 
           <div class="battle-hint-toast" id="battle-hint-toast" style="display:none;">
-            💡 提示：斑馬的 ㄅ，一筆橫折、二筆橫
+            
           </div>
 
           <!-- 4個大選項按鈕 -->
@@ -633,10 +646,10 @@
   </div>
 
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=6"></script>
-  <script src="js/audio_manifest.js?v=6"></script>
-  <script src="js/audio.js?v=6"></script>
-  <script src="js/confetti.js?v=6"></script>
-  <script src="js/app.js?v=6"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/audio_manifest.js?v=7"></script>
+  <script src="js/audio.js?v=7"></script>
+  <script src="js/confetti.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 </html>

@@ -50,7 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 🔴 寶可夢訓練家狀態 (Pokémon Trainer State)
     balls: parseInt(localStorage.getItem('zhuyin_balls') || '20', 10),
     partner: localStorage.getItem('zhuyin_partner') || 'pikachu',
-    pokedexCaught: JSON.parse(localStorage.getItem('zhuyin_caught_symbols') || '["ㄅ","ㄆ","ㄇ"]'), // 預設送新手3隻已收服
+    pokedexCaught: JSON.parse(localStorage.getItem('zhuyin_caught_symbols') || '["ㄅ","ㄆ","ㄇ"]'),
+    examDifficulty: localStorage.getItem('zhuyin_exam_difficulty') || 'midterm', // 'midterm' (期中考) 或 'final' (期末考)
 
     // 🗺️ 闖關道館大冒險狀態 (Gym Adventure Campaign)
     adventure: {
@@ -94,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     partnerPickerList: document.getElementById('partner-picker-list'),
     partnerModalCloseBtn: document.getElementById('partner-modal-close-btn'),
     btnConfirmPartner: document.getElementById('btn-confirm-partner'),
+    btnDiffMidterm: document.getElementById('btn-diff-midterm'),
+    btnDiffFinal: document.getElementById('btn-diff-final'),
     audioToggleBtn: document.getElementById('btn-audio-toggle'),
     mascotSpeech: document.getElementById('mascot-speech'),
     tabBtns: document.querySelectorAll('.tab-btn'),
@@ -629,6 +632,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (state.adventure.stageStars['5'] > 0) state.achievements.find(a => a.id === 'stage_5_clear').unlocked = true;
     if (state.adventure.stageStars['10'] > 0) state.achievements.find(a => a.id === 'dragon_slayer').unlocked = true;
 
+    // 🎯 難度切換：期中考難度 (首冊符號辨識) vs 期末考難度 (綜合拼讀段考)
+    const updateDiffButtons = () => {
+      if (dom.btnDiffMidterm && dom.btnDiffFinal) {
+        if (state.examDifficulty === 'final') {
+          dom.btnDiffMidterm.classList.remove('active');
+          dom.btnDiffFinal.classList.add('active');
+        } else {
+          dom.btnDiffFinal.classList.remove('active');
+          dom.btnDiffMidterm.classList.add('active');
+        }
+      }
+    };
+
+    if (dom.btnDiffMidterm) {
+      dom.btnDiffMidterm.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        state.examDifficulty = 'midterm';
+        localStorage.setItem('zhuyin_exam_difficulty', 'midterm');
+        updateDiffButtons();
+        setMascotSpeech('🐣 已切換至【期中考難度】！專注於首冊 37 注音符號形音與基礎聲調辨識！');
+        window.audioEngine.speak('已切換為期中考難度！');
+        renderAdventureMap();
+      });
+    }
+
+    if (dom.btnDiffFinal) {
+      dom.btnDiffFinal.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        state.examDifficulty = 'final';
+        localStorage.setItem('zhuyin_exam_difficulty', 'final');
+        updateDiffButtons();
+        setMascotSpeech('🦅 已切換至【期末考難度】！考查二拼三拼結合韻與完整生活語詞拼讀段考題！');
+        window.audioEngine.speak('已切換為期末考難度！');
+        renderAdventureMap();
+      });
+    }
+
+    updateDiffButtons();
+
     // 自由選關切換（方便老師/家長直接跳關教學）
     if (dom.btnToggleUnlockAll) {
       dom.btnToggleUnlockAll.addEventListener('click', () => {
@@ -738,9 +780,14 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <div>
           <div class="stage-top-row">
-            <span class="stage-num-badge" style="background:${unlocked ? stage.color : '#ADB5BD'};">
-              道館 ${stage.id}
-            </span>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="stage-num-badge" style="background:${unlocked ? stage.color : '#ADB5BD'};">
+                道館 ${stage.id}
+              </span>
+              <span class="battle-diff-badge ${state.examDifficulty === 'final' ? 'final' : 'midterm'}" style="font-size:11px;padding:2px 8px;">
+                ${state.examDifficulty === 'final' ? '🦅 期末段考題' : '🐣 期中首冊題'}
+              </span>
+            </div>
             <span class="stage-stars-row" style="color:${earnedStars > 0 ? '#FCC419' : '#CED4DA'};">
               ${starStr}
             </span>
@@ -793,6 +840,13 @@ document.addEventListener('DOMContentLoaded', () => {
     state.adventure.mistakes = 0;
     state.adventure.isAnswering = false;
 
+    // 依據選擇的段考難度載入題目
+    const isFinal = state.examDifficulty === 'final';
+    const stageQuestions = (isFinal && stage.finalQuestions && stage.finalQuestions.length > 0)
+      ? stage.finalQuestions
+      : stage.questions;
+    state.adventure.activeQuestions = stageQuestions;
+
     if (dom.advMapView) dom.advMapView.style.display = 'none';
     if (dom.advBattleView) dom.advBattleView.style.display = 'block';
 
@@ -807,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ⬅️ 返回道館地圖
           </button>
           <div class="battle-stage-title" id="battle-stage-title">
-            ${stage.icon} ${badge ? badge.gym : stage.name}・${stage.subtitle}
+            ${stage.icon} ${badge ? badge.gym : stage.name}・${stage.subtitle} <span class="battle-diff-badge ${isFinal ? 'final' : 'midterm'}" style="margin-left:8px;">${isFinal ? '🦅 期末考難度' : '🐣 期中考難度'}</span>
           </div>
           <div class="battle-status-right">
             <div class="battle-combo-badge" id="battle-combo-badge" style="display:none;">
@@ -817,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ❤️❤️❤️
             </div>
             <div class="battle-progress-pill" id="battle-progress-pill">
-              關卡進度 1 / ${stage.questions.length}
+              關卡進度 1 / ${stageQuestions.length}
             </div>
           </div>
         </div>
@@ -932,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnListen) {
         btnListen.addEventListener('click', () => {
           window.audioEngine.playPop();
-          const q = stage.questions[state.adventure.qIndex];
+          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
           if (q) window.audioEngine.speak(q.speakText);
         });
       }
@@ -941,7 +995,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnHint) {
         btnHint.addEventListener('click', () => {
           window.audioEngine.playPop();
-          const q = stage.questions[state.adventure.qIndex];
+          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
           const toast = document.getElementById('battle-hint-toast');
           if (q && toast) {
             toast.textContent = `💡 大木博士提示：${q.hint}`;
@@ -963,7 +1017,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnCatch) {
         btnCatch.addEventListener('click', () => {
           window.audioEngine.playPokeThrow();
-          const q = stage.questions[state.adventure.qIndex];
+          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
           if (q) window.audioEngine.speak(`準備投擲寶貝球！請仔細聽：${q.prompt}`);
         });
       }
@@ -975,9 +1029,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateBattleHeaderUI() {
     const stage = state.adventure.activeStage;
-    if (!stage) return;
+    const questions = state.adventure.activeQuestions || (stage ? stage.questions : []);
+    if (!stage || !questions) return;
 
-    const totalQ = stage.questions.length;
+    const totalQ = questions.length;
     const currentQ = Math.min(state.adventure.qIndex + 1, totalQ);
     const pill = document.getElementById('battle-progress-pill');
     if (pill) pill.textContent = `道館考核 ${currentQ} / ${totalQ}`;
@@ -1021,15 +1076,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderCurrentStageQuestion() {
     const stage = state.adventure.activeStage;
-    if (!stage) return;
+    const questions = state.adventure.activeQuestions || (stage ? stage.questions : []);
+    if (!stage || !questions) return;
 
-    if (state.adventure.qIndex >= stage.questions.length) {
+    if (state.adventure.qIndex >= questions.length) {
       handleStageVictory();
       return;
     }
 
     state.adventure.isAnswering = false;
-    const q = stage.questions[state.adventure.qIndex];
+    const q = questions[state.adventure.qIndex];
 
     updateBattleHeaderUI();
 
@@ -1043,10 +1099,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.getElementById('battle-hint-toast');
 
     if (oppSprite) oppSprite.textContent = q.icon || (sym ? sym.icon : stage.icon);
-    if (oppName) oppName.textContent = sym ? `野生的【${sym.char}】${sym.pokeName}` : `守關精靈：${stage.bossName}`;
+    // 嚴格防止洩漏答案：答題前對手名稱絕不顯示注音符號！
+    if (oppName) oppName.textContent = '野生的【神秘注音精靈】';
     if (oppType) oppType.textContent = sym ? `${sym.pokeTypeIcon} ${sym.pokeType}` : `🌟 屬性：綜合考核`;
     if (oppLevel) oppLevel.textContent = `Lv.${stage.id * 3 + state.adventure.qIndex + 1}`;
-    if (promptText) promptText.textContent = q.prompt;
+    // 確保題目文字絕不出現注音答案
+    const safePrompt = (q.prompt || '').replace(/[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]/g, '❓');
+    if (promptText) promptText.textContent = safePrompt;
     if (toast) toast.style.display = 'none';
 
     // 隨機打亂選項順序
@@ -1134,6 +1193,8 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.setItem('zhuyin_balls', state.balls.toString());
           updateTrainerHeaderUI();
 
+          const oppNameEl = document.getElementById('poke-opp-name');
+          if (oppNameEl) oppNameEl.textContent = sym ? `收服成功：【${sym.char}】${sym.pokeName}` : `收服成功！`;
           setMascotSpeech(`✨ 叮！太棒了！成功收服【${q.answer}】！圖鑑已登錄！`);
 
           state.adventure.qIndex++;
