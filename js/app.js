@@ -1459,7 +1459,23 @@ document.addEventListener('DOMContentLoaded', () => {
     state.adventure.isCurrentShiny = isShiny;
 
     const oppZone = document.getElementById('poke-opp-zone');
+    const oppSprite = document.getElementById('poke-opp-sprite');
     const shinyBadge = document.getElementById('poke-shiny-badge');
+
+    // 確保每道新題目動物精靈恢復正常立體狀態
+    if (oppSprite) {
+      oppSprite.classList.remove('animal-sucked-in');
+      oppSprite.style.opacity = '1';
+      oppSprite.style.transform = '';
+      oppSprite.style.filter = '';
+    }
+
+    const flyingBall = document.getElementById('flying-pokeball');
+    if (flyingBall) flyingBall.className = 'flying-pokeball';
+
+    const oldBeam = document.getElementById('capture-beam-cone');
+    if (oldBeam) oldBeam.remove();
+
     if (oppZone) {
       if (isShiny) {
         oppZone.classList.add('is-shiny-pokemon');
@@ -1473,7 +1489,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 查詢目標注音的寶可夢資訊
     const sym = ZHUYIN_DATA.symbols.find(s => s.char === q.answer);
-    const oppSprite = document.getElementById('poke-opp-sprite');
     const oppName = document.getElementById('poke-opp-name');
     const oppType = document.getElementById('poke-opp-type');
     const oppLevel = document.getElementById('poke-opp-level');
@@ -1531,64 +1546,106 @@ document.addEventListener('DOMContentLoaded', () => {
       executePlayerAttack(partnerObj, q, () => {
         // 2. 拋球與收服流程
         const flyingBall = document.getElementById('flying-pokeball');
+        const oppSprite = document.getElementById('poke-opp-sprite');
+        const stadium = document.getElementById('pokemon-battle-field');
+
         if (flyingBall) {
           flyingBall.className = 'flying-pokeball throw-arc';
         }
         window.audioEngine.playPokeThrow();
 
-        // 0.75秒後落地搖晃
+        // 0.65秒後：球到達野生動物前方空中，開啟並射出紅色捕捉吸入光束！
         setTimeout(() => {
           if (flyingBall) {
-            flyingBall.className = 'flying-pokeball wobble';
+            flyingBall.className = 'flying-pokeball ball-open';
           }
-          window.audioEngine.playPokeShake();
+          window.audioEngine.playPokeBeam();
 
-          setTimeout(() => window.audioEngine.playPokeShake(), 500);
-          setTimeout(() => window.audioEngine.playPokeShake(), 1000);
+          // 產生紅色能量光錐
+          if (stadium) {
+            const oldBeam = document.getElementById('capture-beam-cone');
+            if (oldBeam) oldBeam.remove();
+            const beamEl = document.createElement('div');
+            beamEl.id = 'capture-beam-cone';
+            beamEl.className = 'capture-beam-cone';
+            stadium.appendChild(beamEl);
+          }
 
-          // 1.6秒後成功收服！
+          // 🐾 重磅亮點：野生動物化作紅色能量、旋轉縮小吸入寶貝球！
+          if (oppSprite) {
+            oppSprite.classList.add('animal-sucked-in');
+          }
+
+          // 0.65秒後：動物完全吸入球心！光束消失，寶貝球啪一聲合上並掉落到地面草皮！
           setTimeout(() => {
-            window.audioEngine.playPokeCaught();
-            if (window.confetti) window.confetti.trigger(isShiny ? 80 : 40);
+            const beam = document.getElementById('capture-beam-cone');
+            if (beam) beam.remove();
 
-            // 收服至注音圖鑑
-            if (!state.pokedexCaught.includes(q.answer) && ZHUYIN_DATA.symbols.some(s => s.char === q.answer)) {
-              state.pokedexCaught.push(q.answer);
-              localStorage.setItem('zhuyin_caught_symbols', JSON.stringify(state.pokedexCaught));
-              updatePokedexProgressUI();
-              renderGallery();
+            if (flyingBall) {
+              flyingBall.className = 'flying-pokeball ball-drop';
             }
 
-            // 獎勵星星與寶貝球 (閃光神獸雙倍獎勵)
-            const starBonus = isShiny ? 2 : 1;
-            addStars(starBonus, false);
-            state.balls = Math.min(99, state.balls + (isShiny ? 3 : 1));
-            localStorage.setItem('zhuyin_balls', state.balls.toString());
-            if (isShiny) {
-              state.bag.masterBall = Math.min(9, state.bag.masterBall + 1);
-              localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
-            }
-            updateTrainerHeaderUI();
-
-            const oppNameEl = document.getElementById('poke-opp-name');
-            const sym = ZHUYIN_DATA.symbols.find(s => s.char === q.answer);
-            if (oppNameEl) {
-              oppNameEl.textContent = sym ? `收服成功：【${sym.char}】${sym.pokeName}` : `收服成功！`;
-            }
-            setMascotSpeech(isShiny
-              ? `✨ 太神了！收服了【稀有閃光精靈】！獲得雙倍星星與大師球！`
-              : `✨ 叮！太棒了！成功收服【${q.answer}】！圖鑑已登錄！`
-            );
-
-            state.adventure.qIndex++;
-            updateBattleHeaderUI();
-
+            // 0.45秒後：寶貝球掉落在地面草皮，開始左右晃動三次！
             setTimeout(() => {
-              if (flyingBall) flyingBall.className = 'flying-pokeball';
-              renderCurrentStageQuestion();
-            }, 1100);
-          }, 1600);
-        }, 750);
+              if (flyingBall) {
+                flyingBall.className = 'flying-pokeball ball-wobble-ground';
+              }
+              window.audioEngine.playPokeShake();
+
+              setTimeout(() => window.audioEngine.playPokeShake(), 500);
+              setTimeout(() => window.audioEngine.playPokeShake(), 1000);
+
+              // 1.6秒後成功收服！金色光芒迸發
+              setTimeout(() => {
+                window.audioEngine.playPokeCaught();
+                if (window.confetti) window.confetti.trigger(isShiny ? 90 : 50);
+
+                // 收服至注音圖鑑
+                if (!state.pokedexCaught.includes(q.answer) && ZHUYIN_DATA.symbols.some(s => s.char === q.answer)) {
+                  state.pokedexCaught.push(q.answer);
+                  localStorage.setItem('zhuyin_caught_symbols', JSON.stringify(state.pokedexCaught));
+                  updatePokedexProgressUI();
+                  renderGallery();
+                }
+
+                // 獎勵星星與寶貝球 (閃光神獸雙倍獎勵)
+                const starBonus = isShiny ? 2 : 1;
+                addStars(starBonus, false);
+                state.balls = Math.min(99, state.balls + (isShiny ? 3 : 1));
+                localStorage.setItem('zhuyin_balls', state.balls.toString());
+                if (isShiny) {
+                  state.bag.masterBall = Math.min(9, state.bag.masterBall + 1);
+                  localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
+                }
+                updateTrainerHeaderUI();
+
+                const oppNameEl = document.getElementById('poke-opp-name');
+                const sym = ZHUYIN_DATA.symbols.find(s => s.char === q.answer);
+                if (oppNameEl) {
+                  oppNameEl.textContent = sym ? `收服成功：【${sym.char}】${sym.pokeName}` : `收服成功！`;
+                }
+                setMascotSpeech(isShiny
+                  ? `✨ 太神了！收服了【稀有閃光精靈】！獲得雙倍星星與大師球！`
+                  : `✨ 叮！太棒了！成功收服【${q.answer}】！圖鑑已登錄！`
+                );
+
+                state.adventure.qIndex++;
+                updateBattleHeaderUI();
+
+                setTimeout(() => {
+                  if (flyingBall) flyingBall.className = 'flying-pokeball';
+                  if (oppSprite) {
+                    oppSprite.classList.remove('animal-sucked-in');
+                    oppSprite.style.opacity = '1';
+                    oppSprite.style.transform = '';
+                    oppSprite.style.filter = '';
+                  }
+                  renderCurrentStageQuestion();
+                }, 1200);
+              }, 1600);
+            }, 450);
+          }, 650);
+        }, 650);
       });
 
     } else {

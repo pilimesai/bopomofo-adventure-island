@@ -2264,43 +2264,155 @@ body {
   border-radius: 50%;
 }
 
+/* 🔴 拋出精靈球飛行弧線 */
 .flying-pokeball.throw-arc {
   display: block;
-  animation: pokeThrow 0.75s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: pokeThrowToOpponent 0.65s cubic-bezier(0.2, 0.8, 0.35, 1) forwards;
 }
 
-.flying-pokeball.wobble {
-  display: block;
-  animation: pokeWobble 1.6s forwards ease-in-out;
-}
-
-@keyframes pokeThrow {
+@keyframes pokeThrowToOpponent {
   0% {
-    left: 20%;
-    bottom: 20%;
-    transform: scale(0.6) rotate(0deg);
+    left: 80px;
+    top: 180px;
+    transform: scale(0.5) rotate(0deg);
+    opacity: 0.85;
   }
-  50% {
-    left: 55%;
-    bottom: 60%;
-    transform: scale(1.1) rotate(360deg);
+  45% {
+    left: 45%;
+    top: 25px;
+    transform: scale(1.2) rotate(360deg);
+    opacity: 1;
   }
   100% {
-    left: 75%;
-    bottom: 50%;
+    left: calc(100% - 195px);
+    top: 45px;
     transform: scale(1) rotate(720deg);
   }
 }
 
-@keyframes pokeWobble {
-  0% { transform: scale(1) rotate(0deg); left: 75%; bottom: 50%; }
-  15% { transform: scale(1.05) rotate(-26deg); }
-  30% { transform: scale(1) rotate(0deg); }
-  45% { transform: scale(1.05) rotate(26deg); }
-  60% { transform: scale(1) rotate(0deg); }
-  75% { transform: scale(1.05) rotate(-26deg); }
-  90% { transform: scale(1) rotate(0deg); }
-  100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 30px #F59E0B; }
+/* 🔴 精靈球在空中打開並發射紅色吸入光芒 */
+.flying-pokeball.ball-open {
+  display: block;
+  left: calc(100% - 195px);
+  top: 45px;
+  transform: scale(1.15);
+  box-shadow: 0 0 30px #EF4444, 0 0 60px rgba(239, 68, 68, 0.85);
+  transition: all 0.15s ease;
+}
+
+.flying-pokeball.ball-open::after {
+  background: #FEE2E2;
+  box-shadow: 0 0 20px #EF4444;
+}
+
+/* 🔴 紅色捕捉能量吸入光錐 */
+.capture-beam-cone {
+  position: absolute;
+  right: 55px;
+  top: 35px;
+  width: 155px;
+  height: 95px;
+  background: radial-gradient(ellipse at left, rgba(239, 68, 68, 0.9) 0%, rgba(254, 202, 202, 0.6) 45%, transparent 80%);
+  clip-path: polygon(0% 45%, 100% 0%, 100% 100%, 0% 55%);
+  pointer-events: none;
+  z-index: 15;
+  animation: beamPulse 0.65s ease-out forwards;
+}
+
+@keyframes beamPulse {
+  0% { opacity: 0; transform: scaleX(0.2); }
+  25% { opacity: 1; transform: scaleX(1.15); }
+  75% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0.75); }
+}
+
+/* 🐾 野生動物化作紅光能量被吸入寶貝球的超炫動畫！ */
+.poke-opponent-sprite.animal-sucked-in {
+  animation: animalAbsorbToBall 0.65s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  pointer-events: none;
+}
+
+@keyframes animalAbsorbToBall {
+  0% {
+    transform: scale(1) translate(0, 0) rotate(0deg);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  20% {
+    /* 轉化為耀眼紅光能量體 */
+    transform: scale(1.22) translate(-8px, -12px) rotate(-12deg);
+    filter: brightness(2.8) drop-shadow(0 0 35px #EF4444) hue-rotate(-20deg);
+    opacity: 1;
+  }
+  50% {
+    /* 扭曲螺旋拉長指向寶貝球 */
+    transform: scale(0.65, 0.45) translate(-45px, 15px) rotate(180deg);
+    filter: brightness(3.5) drop-shadow(0 0 45px #DC2626);
+    opacity: 0.9;
+  }
+  85% {
+    /* 縮小成光點進入球心 */
+    transform: scale(0.15, 0.1) translate(-90px, 35px) rotate(480deg);
+    filter: brightness(4.5) drop-shadow(0 0 25px #B91C1C);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(0) translate(-115px, 45px) rotate(720deg);
+    filter: brightness(5);
+    opacity: 0;
+  }
+}
+
+/* 🔴 關球並掉落彈跳至地面草皮 */
+.flying-pokeball.ball-drop {
+  display: block;
+  animation: ballDropBounce 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes ballDropBounce {
+  0% {
+    left: calc(100% - 195px);
+    top: 45px;
+    transform: scale(1);
+  }
+  55% {
+    left: calc(100% - 175px);
+    top: 135px;
+    transform: scale(1.12, 0.85); /* 落地微扁彈性 */
+  }
+  75% {
+    left: calc(100% - 170px);
+    top: 110px;
+    transform: scale(0.95, 1.05); /* 彈起 */
+  }
+  100% {
+    left: calc(100% - 170px);
+    top: 125px;
+    transform: scale(1);
+  }
+}
+
+/* 🔴 地面左右搖晃三次 */
+.flying-pokeball.ball-wobble-ground {
+  display: block;
+  left: calc(100% - 170px);
+  top: 125px;
+  animation: groundWobble 1.6s ease-in-out forwards;
+}
+
+@keyframes groundWobble {
+  0% { transform: rotate(0deg); }
+  12% { transform: rotate(-28deg); }
+  24% { transform: rotate(0deg); }
+  36% { transform: rotate(28deg); }
+  48% { transform: rotate(0deg); }
+  60% { transform: rotate(-28deg); }
+  72% { transform: rotate(0deg); }
+  85% { transform: rotate(0deg) scale(1.08); }
+  100% {
+    transform: rotate(0deg) scale(1);
+    box-shadow: 0 0 35px #F59E0B, 0 0 15px #FDE047;
+  }
 }
 
 @keyframes pokeHover {
