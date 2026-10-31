@@ -3802,23 +3802,27 @@ const ZHUYIN_DATA = {
           "name": "皮卡丘",
           "icon": "⚡",
           "move": "十萬伏特",
-          "moveFx": "electric"
+          "moveFx": "electric",
+          "image": "assets/pokemon/pikachu.svg"
         },
         {
           "stage": 2,
           "name": "雷丘",
           "icon": "⚡",
           "move": "雷電拳",
-          "moveFx": "electric"
+          "moveFx": "electric",
+          "image": "assets/pokemon/raichu.svg"
         },
         {
           "stage": 3,
           "name": "阿羅拉雷丘",
           "icon": "🏄",
           "move": "終極伏特狂雷",
-          "moveFx": "electric"
+          "moveFx": "electric",
+          "image": "assets/pokemon/raichu.svg"
         }
-      ]
+      ],
+      "image": "assets/pokemon/pikachu.svg"
     },
     {
       "id": "charmander",
@@ -3834,23 +3838,27 @@ const ZHUYIN_DATA = {
           "name": "小火龍",
           "icon": "🔥",
           "move": "噴射火焰",
-          "moveFx": "fire"
+          "moveFx": "fire",
+          "image": "assets/pokemon/charmander.svg"
         },
         {
           "stage": 2,
           "name": "火恐龍",
           "icon": "🦖",
           "move": "大字爆炎",
-          "moveFx": "fire"
+          "moveFx": "fire",
+          "image": "assets/pokemon/charmander.svg"
         },
         {
           "stage": 3,
           "name": "噴火龍",
           "icon": "🐲",
           "move": "閃焰衝鋒",
-          "moveFx": "fire"
+          "moveFx": "fire",
+          "image": "assets/pokemon/charmander.svg"
         }
-      ]
+      ],
+      "image": "assets/pokemon/charmander.svg"
     },
     {
       "id": "squirtle",
@@ -3866,23 +3874,27 @@ const ZHUYIN_DATA = {
           "name": "傑尼龜",
           "icon": "💧",
           "move": "強力水炮",
-          "moveFx": "water"
+          "moveFx": "water",
+          "image": "assets/pokemon/squirtle.svg"
         },
         {
           "stage": 2,
           "name": "卡咪龜",
           "icon": "🐢",
           "move": "水流尾",
-          "moveFx": "water"
+          "moveFx": "water",
+          "image": "assets/pokemon/squirtle.svg"
         },
         {
           "stage": 3,
           "name": "水箭龜",
           "icon": "🐢",
           "move": "加農水炮",
-          "moveFx": "water"
+          "moveFx": "water",
+          "image": "assets/pokemon/squirtle.svg"
         }
-      ]
+      ],
+      "image": "assets/pokemon/squirtle.svg"
     },
     {
       "id": "bulbasaur",
@@ -3898,23 +3910,27 @@ const ZHUYIN_DATA = {
           "name": "妙蛙種子",
           "icon": "🍃",
           "move": "飛葉快刀",
-          "moveFx": "grass"
+          "moveFx": "grass",
+          "image": "assets/pokemon/bulbasaur.svg"
         },
         {
           "stage": 2,
           "name": "妙蛙草",
           "icon": "🌿",
           "move": "瘋狂植物",
-          "moveFx": "grass"
+          "moveFx": "grass",
+          "image": "assets/pokemon/bulbasaur.svg"
         },
         {
           "stage": 3,
           "name": "妙蛙花",
           "icon": "🌺",
           "move": "日光束",
-          "moveFx": "grass"
+          "moveFx": "grass",
+          "image": "assets/pokemon/bulbasaur.svg"
         }
-      ]
+      ],
+      "image": "assets/pokemon/bulbasaur.svg"
     },
     {
       "id": "eevee",
@@ -3930,23 +3946,27 @@ const ZHUYIN_DATA = {
           "name": "伊布",
           "icon": "🌸",
           "move": "高速星星",
-          "moveFx": "star"
+          "moveFx": "star",
+          "image": "assets/pokemon/eevee.svg"
         },
         {
           "stage": 2,
           "name": "仙子伊布",
           "icon": "🦄",
           "move": "月亮之力",
-          "moveFx": "star"
+          "moveFx": "star",
+          "image": "assets/pokemon/eevee.svg"
         },
         {
           "stage": 3,
           "name": "太陽伊布",
           "icon": "☀️",
           "move": "精神強念",
-          "moveFx": "star"
+          "moveFx": "star",
+          "image": "assets/pokemon/eevee.svg"
         }
-      ]
+      ],
+      "image": "assets/pokemon/eevee.svg"
     }
   ],
   "gymBadges": [

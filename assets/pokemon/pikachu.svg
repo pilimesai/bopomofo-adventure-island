@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <!-- 身體主體黃色漸層 -->
+    <linearGradient id="pikaBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF04D" />
+      <stop offset="60%" stop-color="#FFD700" />
+      <stop offset="100%" stop-color="#F5B800" />
+    </linearGradient>
+    <!-- 腮紅發光效果 -->
+    <radialGradient id="cheekGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF3B30" />
+      <stop offset="70%" stop-color="#E02424" />
+      <stop offset="100%" stop-color="#C81E1E" />
+    </radialGradient>
+    <!-- 閃電尾巴漸層 -->
+    <linearGradient id="tailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE600" />
+      <stop offset="70%" stop-color="#FFC000" />
+      <stop offset="100%" stop-color="#935116" />
+    </linearGradient>
+    <!-- 濾鏡立體陰影 -->
+    <filter id="pikaShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <g id="pikachu-character" filter="url(#pikaShadow)">
+    <!-- 閃電尾巴 (背後) -->
+    <!-- 尾根棕色部分 -->
+    <path d="M 60 145 L 45 130 L 40 142 L 55 155 Z" fill="#8B4513" stroke="#2D3748" stroke-width="3" stroke-linejoin="round" />
+    <!-- 閃電折線黃色主體 -->
+    <path d="M 45 130 L 25 110 L 35 105 L 18 85 L 32 80 L 15 50 L 50 72 L 38 78 L 55 98 L 42 103 L 60 120 Z" 
+          fill="url(#tailGrad)" stroke="#2D3748" stroke-width="3.5" stroke-linejoin="round" />
+
+    <!-- 左耳 (長耳 + 黑色耳尖) -->
+    <g transform="rotate(-25 65 50)">
+      <path d="M 52 70 C 45 35, 50 5, 65 0 C 80 5, 82 35, 78 70 Z" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="3.5" />
+      <!-- 黑色斜切耳尖 -->
+      <path d="M 50 18 C 55 5, 65 0, 65 0 C 65 0, 75 5, 80 18 C 72 26, 58 24, 50 18 Z" fill="#222222" />
+    </g>
+
+    <!-- 右耳 (長耳 + 黑色耳尖) -->
+    <g transform="rotate(28 135 50)">
+      <path d="M 122 70 C 118 35, 120 5, 135 0 C 150 5, 155 35, 148 70 Z" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="3.5" />
+      <!-- 黑色斜切耳尖 -->
+      <path d="M 120 18 C 125 5, 135 0, 135 0 C 135 0, 145 5, 150 18 C 142 26, 128 24, 120 18 Z" fill="#222222" />
+    </g>
+
+    <!-- 身體圓滾滾底部 -->
+    <ellipse cx="100" cy="145" rx="52" ry="40" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="3.5" />
+
+    <!-- 雙腳萌萌小短腿 -->
+    <!-- 左腳 -->
+    <ellipse cx="72" cy="180" rx="14" ry="8" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="3" />
+    <!-- 右腳 -->
+    <ellipse cx="128" cy="180" rx="14" ry="8" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="3" />
+
+    <!-- 萌萌大圓頭 -->
+    <ellipse cx="100" cy="100" rx="55" ry="48" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="3.5" />
+
+    <!-- 標誌性經典大紅臉頰 -->
+    <!-- 左紅臉頰 -->
+    <ellipse cx="58" cy="116" rx="13" ry="11" fill="url(#cheekGlow)" />
+    <!-- 右紅臉頰 -->
+    <ellipse cx="142" cy="116" rx="13" ry="11" fill="url(#cheekGlow)" />
+
+    <!-- 閃亮大萌眼 -->
+    <!-- 左眼 -->
+    <g id="leftEye">
+      <ellipse cx="74" cy="94" rx="8.5" ry="10" fill="#222222" />
+      <!-- 白色眼神高光 -->
+      <circle cx="72" cy="91" r="3.8" fill="#FFFFFF" />
+      <circle cx="76" cy="97" r="1.5" fill="#FFFFFF" />
+    </g>
+    <!-- 右眼 -->
+    <g id="rightEye">
+      <ellipse cx="126" cy="94" rx="8.5" ry="10" fill="#222222" />
+      <!-- 白色眼神高光 -->
+      <circle cx="124" cy="91" r="3.8" fill="#FFFFFF" />
+      <circle cx="128" cy="97" r="1.5" fill="#FFFFFF" />
+    </g>
+
+    <!-- 嬌小倒三角黑鼻子 -->
+    <polygon points="100,102 97,99 103,99" fill="#222222" />
+
+    <!-- 經典微笑貓咪嘴（小波浪萌萌嘴巴） -->
+    <path d="M 91 108 C 94 112, 98 112, 100 109 C 102 112, 106 112, 109 108" 
+          fill="none" stroke="#222222" stroke-width="2.5" stroke-linecap="round" />
+    <!-- 微微張開的小舌頭 -->
+    <path d="M 95 110 C 97 116, 103 116, 105 110 Z" fill="#FF6B81" />
+
+    <!-- 軟萌前爪雙手抱拳/揮手萌姿 -->
+    <!-- 左小手 -->
+    <path d="M 82 135 C 80 145, 92 148, 95 138 C 96 134, 90 130, 82 135 Z" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="2.8" />
+    <!-- 右小手 -->
+    <path d="M 118 135 C 120 145, 108 148, 105 138 C 104 134, 110 130, 118 135 Z" fill="url(#pikaBodyGrad)" stroke="#2D3748" stroke-width="2.8" />
+
+    <!-- 側臉頭頂反光高光 -->
+    <ellipse cx="80" cy="72" rx="10" ry="5" fill="#FFFFFF" opacity="0.35" transform="rotate(-15 80 72)" />
+  </g>
+</svg>

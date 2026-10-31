@@ -259,6 +259,13 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * 🌟 取得當前夥伴的最新進化型態與能力
    */
+  function getPokemonAvatarHtml(partner, sizeClass = '') {
+    if (partner.image) {
+      return `<img src="${partner.image}" alt="${partner.name}" class="pokemon-avatar-img ${sizeClass}" />`;
+    }
+    return partner.icon;
+  }
+
   function getCurrentPartnerInfo() {
     const base = ZHUYIN_DATA.starterPokemon.find(p => p.id === state.partner) || ZHUYIN_DATA.starterPokemon[0];
     const level = state.partnerData.level || 1;
@@ -266,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const evo = (base.evolutions && base.evolutions[stageIdx]) ? base.evolutions[stageIdx] : {
       name: base.name,
       icon: base.icon,
+      image: base.image,
       move: base.move,
       moveFx: 'electric'
     };
@@ -274,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
       baseName: base.name,
       name: evo.name,
       icon: evo.icon,
+      image: evo.image || base.image,
       move: evo.move,
       moveFx: evo.moveFx || 'electric',
       type: base.type,
@@ -323,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (expText) expText.textContent = `${state.partnerData.exp} / ${state.partnerData.maxExp}`;
     if (lvEl) lvEl.textContent = `Lv.${state.partnerData.level}`;
     if (nameEl) nameEl.textContent = newPartner.name;
-    if (spriteEl) spriteEl.textContent = newPartner.icon;
+    if (spriteEl) spriteEl.innerHTML = getPokemonAvatarHtml(newPartner);
     if (moveEl) moveEl.textContent = `絕招：${newPartner.move}`;
 
     updateTrainerHeaderUI();
@@ -351,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
           🌟 什麼！？夥伴的樣子...！？
         </h3>
         <div class="evolution-sprite-stage" id="evolution-sprite">
-          ${newPartner.icon}
+          ${getPokemonAvatarHtml(newPartner)}
         </div>
         <h2 style="font-size:28px;color:#FFFFFF;margin:8px 0 12px 0;font-weight:900;">
           恭喜！你的夥伴成功進化成【${newPartner.name}】了！
@@ -440,7 +449,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateTrainerHeaderUI() {
     const partnerObj = getCurrentPartnerInfo();
-    if (dom.playerRankIcon) dom.playerRankIcon.textContent = partnerObj.icon;
+    if (dom.playerRankIcon) {
+      if (partnerObj.image) {
+        dom.playerRankIcon.innerHTML = `<img src="${partnerObj.image}" alt="${partnerObj.name}" class="badge-pokemon-icon-img" />`;
+      } else {
+        dom.playerRankIcon.textContent = partnerObj.icon;
+      }
+    }
     if (dom.playerRankTitle) dom.playerRankTitle.textContent = `夥伴：${partnerObj.name} Lv.${partnerObj.level}`;
     if (dom.ballCount) dom.ballCount.textContent = state.balls;
     if (dom.starCount) dom.starCount.textContent = state.stars;
@@ -489,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.className = `partner-card ${state.partner === p.id ? 'selected' : ''}`;
       card.innerHTML = `
-        <div class="p-icon">${evo.icon}</div>
+        <div class="p-icon">${getPokemonAvatarHtml(evo)}</div>
         <div class="p-name">${evo.name}</div>
         <div class="p-type">${p.type}</div>
         <div style="font-size:11px;color:#D97706;font-weight:800;margin-top:4px;">絕招：${evo.move}</div>
@@ -1112,7 +1127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- 左下方：我方出戰寶可夢 -->
             <div class="poke-player-zone">
               <div class="poke-player-sprite" id="poke-player-sprite" title="點擊換出戰夥伴！">
-                ${partnerObj.icon}
+                ${getPokemonAvatarHtml(partnerObj)}
               </div>
               <div class="poke-player-plate">
                 <div style="display:flex;justify-content:space-between;align-items:center;">

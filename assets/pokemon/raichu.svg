@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <!-- 雷丘主體金橘色漸層 -->
+    <linearGradient id="raichuBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFB347" />
+      <stop offset="60%" stop-color="#FF9900" />
+      <stop offset="100%" stop-color="#E67300" />
+    </linearGradient>
+    <radialGradient id="raichuCheek" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFEA00" />
+      <stop offset="100%" stop-color="#FFB700" />
+    </radialGradient>
+  </defs>
+
+  <!-- 閃電細長尾巴與大閃電尖端 -->
+  <path d="M 60 150 Q 20 170 30 110 T 20 50 L 50 35 L 35 55 L 70 45 L 30 85 L 45 75 Z" 
+        fill="#FFD700" stroke="#2D3748" stroke-width="3" stroke-linejoin="round" />
+
+  <!-- 捲曲大耳朵 -->
+  <g transform="rotate(-25 60 45)">
+    <path d="M 40 70 C 25 30, 45 5, 70 15 C 80 25, 75 55, 65 70 Z" fill="#663300" stroke="#2D3748" stroke-width="3" />
+    <path d="M 50 55 C 40 35, 52 20, 65 25 C 70 32, 68 48, 60 55 Z" fill="#FFCC00" />
+  </g>
+  <g transform="rotate(25 140 45)">
+    <path d="M 135 70 C 125 55, 120 25, 130 15 C 155 5, 175 30, 160 70 Z" fill="#663300" stroke="#2D3748" stroke-width="3" />
+    <path d="M 140 55 C 132 48, 130 32, 135 25 C 148 20, 160 35, 150 55 Z" fill="#FFCC00" />
+  </g>
+
+  <!-- 圓滾身軀與白色肚肚 -->
+  <ellipse cx="100" cy="142" rx="54" ry="42" fill="url(#raichuBodyGrad)" stroke="#2D3748" stroke-width="3.5" />
+  <ellipse cx="100" cy="148" rx="34" ry="26" fill="#FFF8E7" stroke="#E2D4B7" stroke-width="1.5" />
+
+  <!-- 腳腳 -->
+  <ellipse cx="70" cy="180" rx="16" ry="9" fill="#994D00" stroke="#2D3748" stroke-width="3" />
+  <ellipse cx="130" cy="180" rx="16" ry="9" fill="#994D00" stroke="#2D3748" stroke-width="3" />
+
+  <!-- 頭部 -->
+  <ellipse cx="100" cy="95" rx="52" ry="44" fill="url(#raichuBodyGrad)" stroke="#2D3748" stroke-width="3.5" />
+
+  <!-- 金黃圓臉頰電氣袋 -->
+  <ellipse cx="58" cy="108" rx="13" ry="11" fill="url(#raichuCheek)" stroke="#E67300" stroke-width="1.5" />
+  <ellipse cx="142" cy="108" rx="13" ry="11" fill="url(#raichuCheek)" stroke="#E67300" stroke-width="1.5" />
+
+  <!-- 大眼睛 -->
+  <circle cx="75" cy="90" r="9" fill="#3D1C00" />
+  <circle cx="73" cy="87" r="3.5" fill="#FFFFFF" />
+  <circle cx="125" cy="90" r="9" fill="#3D1C00" />
+  <circle cx="123" cy="87" r="3.5" fill="#FFFFFF" />
+
+  <!-- 小鼻子與開心微笑 -->
+  <circle cx="100" cy="98" r="2.5" fill="#3D1C00" />
+  <path d="M 91 104 C 95 109, 105 109, 109 104" fill="none" stroke="#2D3748" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M 95 106 C 97 112, 103 112, 105 106 Z" fill="#FF5252" />
+
+  <!-- 雙手 -->
+  <ellipse cx="80" cy="130" rx="10" ry="7" fill="#994D00" stroke="#2D3748" stroke-width="2.5" />
+  <ellipse cx="120" cy="130" rx="10" ry="7" fill="#994D00" stroke="#2D3748" stroke-width="2.5" />
+</svg>

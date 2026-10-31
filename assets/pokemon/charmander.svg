@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="charGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF7A00" />
+      <stop offset="100%" stop-color="#FF5100" />
+    </linearGradient>
+    <radialGradient id="tailFlame" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFF00" />
+      <stop offset="50%" stop-color="#FF6600" />
+      <stop offset="100%" stop-color="#FF0000" />
+    </radialGradient>
+  </defs>
+
+  <!-- 尾巴與火焰 -->
+  <path d="M 60 145 Q 35 155 30 130 Q 25 110 38 100" fill="none" stroke="#FF6B00" stroke-width="14" stroke-linecap="round" />
+  <!-- 火焰效果 -->
+  <path d="M 38 100 Q 20 75 35 60 Q 55 75 40 100 Z" fill="url(#tailFlame)" />
+  <path d="M 36 90 Q 28 75 35 70 Q 42 75 38 90 Z" fill="#FFFF99" />
+
+  <!-- 身體 -->
+  <ellipse cx="100" cy="142" rx="46" ry="38" fill="url(#charGrad)" stroke="#2D3748" stroke-width="3" />
+  <!-- 淺黃色肚皮 -->
+  <ellipse cx="100" cy="146" rx="30" ry="26" fill="#FFF2B2" stroke="#E6C875" stroke-width="1.5" />
+
+  <!-- 雙腳 -->
+  <ellipse cx="75" cy="178" rx="13" ry="8" fill="url(#charGrad)" stroke="#2D3748" stroke-width="2.5" />
+  <ellipse cx="125" cy="178" rx="13" ry="8" fill="url(#charGrad)" stroke="#2D3748" stroke-width="2.5" />
+
+  <!-- 頭部 -->
+  <ellipse cx="100" cy="92" rx="48" ry="42" fill="url(#charGrad)" stroke="#2D3748" stroke-width="3" />
+
+  <!-- 蔚藍大眼睛 -->
+  <ellipse cx="78" cy="85" rx="9" ry="12" fill="#0EA5E9" stroke="#2D3748" stroke-width="2" />
+  <circle cx="76" cy="80" r="4" fill="#FFFFFF" />
+  <ellipse cx="122" cy="85" rx="9" ry="12" fill="#0EA5E9" stroke="#2D3748" stroke-width="2" />
+  <circle cx="120" cy="80" r="4" fill="#FFFFFF" />
+
+  <!-- 兩個小小鼻孔 -->
+  <circle cx="95" cy="94" r="1.5" fill="#5A2500" />
+  <circle cx="105" cy="94" r="1.5" fill="#5A2500" />
+
+  <!-- 可愛小虎牙大嘴笑 -->
+  <path d="M 88 102 Q 100 114 112 102" fill="none" stroke="#2D3748" stroke-width="2.5" stroke-linecap="round" />
+  <!-- 牙齒 -->
+  <polygon points="92,103 94,107 96,103" fill="#FFFFFF" stroke="#2D3748" stroke-width="1" />
+  <polygon points="104,103 106,107 108,103" fill="#FFFFFF" stroke="#2D3748" stroke-width="1" />
+
+  <!-- 小手手 -->
+  <ellipse cx="78" cy="130" rx="9" ry="6" fill="url(#charGrad)" stroke="#2D3748" stroke-width="2" />
+  <ellipse cx="122" cy="130" rx="9" ry="6" fill="url(#charGrad)" stroke="#2D3748" stroke-width="2" />
+</svg>

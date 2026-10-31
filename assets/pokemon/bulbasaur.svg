@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bulbaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5EEAD4" />
+      <stop offset="100%" stop-color="#14B8A6" />
+    </linearGradient>
+    <linearGradient id="bulbGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#84CC16" />
+      <stop offset="100%" stop-color="#4D7C0F" />
+    </linearGradient>
+  </defs>
+
+  <!-- 背上的神奇種子花苞 -->
+  <path d="M 100 65 C 60 70, 50 115, 75 140 C 95 155, 125 150, 135 125 C 145 100, 130 65, 100 65 Z" 
+        fill="url(#bulbGrad)" stroke="#2D3748" stroke-width="3" />
+  <path d="M 100 65 Q 100 120 105 145" fill="none" stroke="#365314" stroke-width="2" />
+
+  <!-- 圓滾身軀 -->
+  <ellipse cx="100" cy="144" rx="46" ry="38" fill="url(#bulbaGrad)" stroke="#2D3748" stroke-width="3" />
+  <!-- 深綠色斑紋 -->
+  <polygon points="85,135 92,130 96,138 88,142" fill="#0F766E" />
+  <polygon points="112,138 120,132 122,142 115,145" fill="#0F766E" />
+
+  <!-- 可愛小尖耳 -->
+  <polygon points="70,68 62,45 80,58" fill="url(#bulbaGrad)" stroke="#2D3748" stroke-width="2.5" />
+  <polygon points="130,68 138,45 120,58" fill="url(#bulbaGrad)" stroke="#2D3748" stroke-width="2.5" />
+
+  <!-- 頭部 -->
+  <ellipse cx="100" cy="95" rx="48" ry="40" fill="url(#bulbaGrad)" stroke="#2D3748" stroke-width="3" />
+  <!-- 額頭斑紋 -->
+  <polygon points="96,72 104,72 102,80 98,80" fill="#0F766E" />
+
+  <!-- 鮮紅亮眼 -->
+  <ellipse cx="78" cy="90" rx="9" ry="11" fill="#E11D48" stroke="#2D3748" stroke-width="2" />
+  <circle cx="76" cy="86" r="3.5" fill="#FFFFFF" />
+  <ellipse cx="122" cy="90" rx="9" ry="11" fill="#E11D48" stroke="#2D3748" stroke-width="2" />
+  <circle cx="120" cy="86" r="3.5" fill="#FFFFFF" />
+
+  <!-- 歡樂微笑與兩顆小尖牙 -->
+  <path d="M 88 106 Q 100 118 112 106" fill="none" stroke="#2D3748" stroke-width="2.5" stroke-linecap="round" />
+  <polygon points="92,107 94,111 96,107" fill="#FFFFFF" stroke="#2D3748" stroke-width="1" />
+  <polygon points="104,107 106,111 108,107" fill="#FFFFFF" stroke="#2D3748" stroke-width="1" />
+
+  <!-- 四隻粗壯小短腿 -->
+  <ellipse cx="70" cy="176" rx="13" ry="8" fill="url(#bulbaGrad)" stroke="#2D3748" stroke-width="2.5" />
+  <ellipse cx="130" cy="176" rx="13" ry="8" fill="url(#bulbaGrad)" stroke="#2D3748" stroke-width="2.5" />
+</svg>

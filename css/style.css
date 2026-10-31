@@ -2173,6 +2173,47 @@ body {
   animation: pokeBounce 1.8s infinite ease-in-out;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
+}
+
+.poke-player-sprite img.pokemon-avatar-img {
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
+  pointer-events: none;
+  user-select: none;
+}
+
+.partner-card .p-icon {
+  font-size: 48px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+}
+
+.partner-card .p-icon img.pokemon-avatar-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18));
+}
+
+.player-level-badge .badge-pokemon-icon-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  vertical-align: middle;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+}
+
+.evolution-sprite-stage img.pokemon-avatar-img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
 }
 
 .poke-player-plate {
