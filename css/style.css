@@ -4107,3 +4107,102 @@ html, body {
     align-items: stretch;
   }
 }
+
+/* ==========================================================================
+   國小一年級標準國語注音 Ruby 標註樣式 (Taiwan Grade 1 Zhuyin Ruby Styling)
+   ========================================================================== */
+ruby.zhuyin-ruby {
+  display: inline-flex !important;
+  flex-direction: column-reverse !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+  margin: 0 2px !important;
+  cursor: inherit !important;
+}
+ruby.zhuyin-ruby rt {
+  display: block !important;
+  font-size: 0.52em !important;
+  font-weight: 900 !important;
+  color: #DC2626 !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+  letter-spacing: 0 !important;
+  user-select: none !important;
+  font-family: "BpmfGenSenRounded", "BpmfIansui", "DFKai-SB", "BiauKai", "PingFang TC", "Microsoft JhengHei", sans-serif !important;
+}
+ruby.zhuyin-ruby span.rb {
+  font-weight: 900 !important;
+  color: inherit !important;
+  line-height: 1.1 !important;
+}
+
+/* 兒歌短文卡片排版注音大字化 */
+.poetry-body ruby.zhuyin-ruby,
+.reading-passage-text ruby.zhuyin-ruby {
+  margin: 2px 3px !important;
+  vertical-align: bottom !important;
+}
+.poetry-body ruby.zhuyin-ruby rt,
+.reading-passage-text ruby.zhuyin-ruby rt {
+  font-size: 0.56em !important;
+  font-weight: 900 !important;
+  color: #B45309 !important;
+  line-height: 1.15 !important;
+}
+.reading-passage-text {
+  line-height: 2.3 !important;
+}
+
+/* 題目提示文字注音樣式 */
+.question-prompt-text {
+  line-height: 2.1 !important;
+}
+.question-prompt-text ruby.zhuyin-ruby {
+  margin: 1px 2px !important;
+  vertical-align: bottom !important;
+}
+.question-prompt-text ruby.zhuyin-ruby rt {
+  font-size: 0.52em !important;
+  font-weight: 900 !important;
+  color: #DC2626 !important;
+}
+
+/* 各題型圖片標籤與填空格注音 */
+.exam-check-pic-label ruby.zhuyin-ruby,
+.fill-box ruby.zhuyin-ruby {
+  margin: 0 2px !important;
+  vertical-align: middle !important;
+}
+.exam-check-pic-label ruby.zhuyin-ruby rt,
+.fill-box ruby.zhuyin-ruby rt {
+  font-size: 0.52em !important;
+  color: #B91C1C !important;
+}
+
+/* 選項按鈕注音大字化 */
+.battle-opt-btn ruby.zhuyin-ruby,
+.reading-opt-btn ruby.zhuyin-ruby,
+.connect-peg ruby.zhuyin-ruby {
+  margin: 0 3px !important;
+}
+.battle-opt-btn ruby.zhuyin-ruby rt,
+.reading-opt-btn ruby.zhuyin-ruby rt,
+.connect-peg ruby.zhuyin-ruby rt {
+  font-size: 0.52em !important;
+  color: #B91C1C !important;
+}
+
+/* 兒歌閱讀測驗選項排版 */
+.reading-options-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 14px !important;
+  width: 100% !important;
+}
+@media (max-width: 640px) {
+  .reading-options-row {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+}
