@@ -1040,12 +1040,18 @@ document.addEventListener('DOMContentLoaded', () => {
     state.adventure.mistakes = 0;
     state.adventure.isAnswering = false;
 
-    // 依據選擇的段考難度載入題目
+    // 依據選擇的段考難度與考古題大題庫池進行「動態隨機抽題」
     const isFinal = state.examDifficulty === 'final';
-    const stageQuestions = (isFinal && stage.finalQuestions && stage.finalQuestions.length > 0)
+    const rawPool = (isFinal && stage.finalQuestions && stage.finalQuestions.length > 0)
       ? stage.finalQuestions
-      : stage.questions;
-    state.adventure.activeQuestions = stageQuestions;
+      : (stage.questions || []);
+
+    // 隨機洗牌演算法（Fisher-Yates Shuffle），每次進入道館隨機抽取 5~6 題
+    const shuffledPool = [...rawPool].sort(() => Math.random() - 0.5);
+    const targetCount = stage.id === 10 ? Math.min(4, shuffledPool.length) : Math.min(6, shuffledPool.length);
+    const selectedQuestions = shuffledPool.slice(0, targetCount);
+
+    state.adventure.activeQuestions = selectedQuestions;
 
     if (dom.advMapView) dom.advMapView.style.display = 'none';
     if (dom.advBattleView) dom.advBattleView.style.display = 'block';
