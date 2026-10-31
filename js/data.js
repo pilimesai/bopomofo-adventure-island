@@ -2534,11 +2534,76 @@ const ZHUYIN_DATA = {
 
   // 🎒 訓練家可選出戰寶可夢夥伴 (Starter Pokémon)
   starterPokemon: [
-    { id: 'pikachu', name: '皮卡丘', icon: '⚡', type: '電氣系', move: '十萬伏特', hp: 100, desc: '最忠實的電氣夥伴，臉頰兩側有儲電的紅臉頰！' },
-    { id: 'charmander', name: '小火龍', icon: '🔥', type: '火系', move: '噴射火焰', hp: 100, desc: '尾巴上的火焰代表牠旺盛的生命力！' },
-    { id: 'squirtle', name: '傑尼龜', icon: '💧', type: '水系', move: '強力水炮', hp: 100, desc: '圓圓的龜殼非常堅硬，擅長從口中噴出水流！' },
-    { id: 'bulbasaur', name: '妙蛙種子', icon: '🍃', type: '草系', move: '飛葉快刀', hp: 100, desc: '背上背著一顆神奇的植物種子，生機勃勃！' },
-    { id: 'eevee', name: '伊布', icon: '🌸', type: '一般系', move: '高速星星', hp: 100, desc: '擁有無限進化可能的可愛寶可夢，深受大家喜愛！' }
+    {
+      id: 'pikachu',
+      name: '皮卡丘',
+      icon: '⚡',
+      type: '電氣系',
+      move: '十萬伏特',
+      hp: 100,
+      desc: '最忠實的電氣夥伴，臉頰兩側有儲電的紅臉頰！',
+      evolutions: [
+        { stage: 1, name: '皮卡丘', icon: '⚡', move: '十萬伏特', moveFx: 'electric' },
+        { stage: 2, name: '雷丘', icon: '⚡', move: '雷電拳', moveFx: 'electric' },
+        { stage: 3, name: '阿羅拉雷丘', icon: '🏄', move: '終極伏特狂雷', moveFx: 'electric' }
+      ]
+    },
+    {
+      id: 'charmander',
+      name: '小火龍',
+      icon: '🔥',
+      type: '火系',
+      move: '噴射火焰',
+      hp: 100,
+      desc: '尾巴上的火焰代表牠旺盛的生命力！',
+      evolutions: [
+        { stage: 1, name: '小火龍', icon: '🔥', move: '噴射火焰', moveFx: 'fire' },
+        { stage: 2, name: '火恐龍', icon: '🦖', move: '大字爆炎', moveFx: 'fire' },
+        { stage: 3, name: '噴火龍', icon: '🐲', move: '閃焰衝鋒', moveFx: 'fire' }
+      ]
+    },
+    {
+      id: 'squirtle',
+      name: '傑尼龜',
+      icon: '💧',
+      type: '水系',
+      move: '強力水炮',
+      hp: 100,
+      desc: '圓圓的龜殼非常堅硬，擅長從口中噴出水流！',
+      evolutions: [
+        { stage: 1, name: '傑尼龜', icon: '💧', move: '強力水炮', moveFx: 'water' },
+        { stage: 2, name: '卡咪龜', icon: '🐢', move: '水流尾', moveFx: 'water' },
+        { stage: 3, name: '水箭龜', icon: '🐢', move: '加農水炮', moveFx: 'water' }
+      ]
+    },
+    {
+      id: 'bulbasaur',
+      name: '妙蛙種子',
+      icon: '🍃',
+      type: '草系',
+      move: '飛葉快刀',
+      hp: 100,
+      desc: '背上背著一顆神奇的植物種子，生機勃勃！',
+      evolutions: [
+        { stage: 1, name: '妙蛙種子', icon: '🍃', move: '飛葉快刀', moveFx: 'grass' },
+        { stage: 2, name: '妙蛙草', icon: '🌿', move: '瘋狂植物', moveFx: 'grass' },
+        { stage: 3, name: '妙蛙花', icon: '🌺', move: '日光束', moveFx: 'grass' }
+      ]
+    },
+    {
+      id: 'eevee',
+      name: '伊布',
+      icon: '🌸',
+      type: '一般系',
+      move: '高速星星',
+      hp: 100,
+      desc: '擁有無限進化可能的可愛寶可夢，深受大家喜愛！',
+      evolutions: [
+        { stage: 1, name: '伊布', icon: '🌸', move: '高速星星', moveFx: 'star' },
+        { stage: 2, name: '仙子伊布', icon: '🦄', move: '月亮之力', moveFx: 'star' },
+        { stage: 3, name: '太陽伊布', icon: '☀️', move: '精神強念', moveFx: 'star' }
+      ]
+    }
   ],
 
   // 🏅 寶可夢 10 大道館徽章 (Gym Badges)

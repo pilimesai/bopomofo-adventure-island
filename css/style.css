@@ -2660,3 +2660,401 @@ body {
   border: 2px solid #F87171;
 }
 
+
+/* ========================================================
+   🎮 寶可夢大冒險：極致趣味化戰鬥特效與道具系統
+   ======================================================== */
+
+/* 招式大絕招動畫特效層 */
+.attack-fx-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 25;
+  overflow: hidden;
+}
+
+/* 玩家夥伴發動大招向前突進衝刺 */
+.player-attack-dash {
+  animation: playerDash 0.5s ease-out !important;
+}
+
+@keyframes playerDash {
+  0% { transform: scale(1) translate(0, 0); }
+  35% { transform: scale(1.22) translate(55px, -35px) rotate(-6deg); }
+  70% { transform: scale(1.1) translate(40px, -25px); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+/* 招式名稱橫幅飄過舞台 */
+.move-banner {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  background: linear-gradient(135deg, #1E1B4B, #312E81);
+  color: #FDE047;
+  padding: 8px 24px;
+  border-radius: var(--radius-round);
+  font-size: 20px;
+  font-weight: 900;
+  border: 3px solid #FACC15;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.6), 0 6px 16px rgba(0,0,0,0.4);
+  white-space: nowrap;
+  opacity: 0;
+  animation: moveBannerPop 1s ease forwards;
+  z-index: 30;
+}
+
+@keyframes moveBannerPop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  25% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  70% { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
+  100% { opacity: 0; transform: translate(-50%, -70%) scale(0.9); }
+}
+
+/* 電氣系：十萬伏特電弧閃電 */
+.fx-electric-bolt {
+  position: absolute;
+  font-size: 42px;
+  filter: drop-shadow(0 0 12px #FBBF24);
+  animation: boltFly 0.55s ease-out forwards;
+}
+
+@keyframes boltFly {
+  0% { left: 25%; bottom: 25%; opacity: 0; transform: scale(0.4) rotate(0deg); }
+  30% { opacity: 1; transform: scale(1.3) rotate(20deg); }
+  75% { left: 75%; bottom: 65%; opacity: 1; transform: scale(1.5) rotate(-20deg); }
+  100% { left: 82%; bottom: 72%; opacity: 0; transform: scale(0.6); }
+}
+
+/* 火系：噴射火焰火球浪潮 */
+.fx-fire-ball {
+  position: absolute;
+  font-size: 44px;
+  filter: drop-shadow(0 0 14px #EF4444);
+  animation: fireStream 0.6s ease-out forwards;
+}
+
+@keyframes fireStream {
+  0% { left: 22%; bottom: 25%; opacity: 0; transform: scale(0.4) rotate(-30deg); }
+  40% { opacity: 1; transform: scale(1.35) rotate(15deg); }
+  80% { left: 78%; bottom: 68%; opacity: 1; transform: scale(1.6) rotate(35deg); }
+  100% { left: 82%; bottom: 70%; opacity: 0; transform: scale(0.5); }
+}
+
+/* 水系：強力水炮水浪狂湧 */
+.fx-water-wave {
+  position: absolute;
+  font-size: 44px;
+  filter: drop-shadow(0 0 14px #38BDF8);
+  animation: waterSurge 0.6s ease-out forwards;
+}
+
+@keyframes waterSurge {
+  0% { left: 22%; bottom: 25%; opacity: 0; transform: scale(0.4); }
+  50% { opacity: 1; transform: scale(1.4) rotate(-25deg); }
+  80% { left: 78%; bottom: 68%; opacity: 1; transform: scale(1.5) rotate(15deg); }
+  100% { left: 82%; bottom: 70%; opacity: 0; transform: scale(0.5); }
+}
+
+/* 草系：飛葉快刀迴旋旋風 */
+.fx-razor-leaf {
+  position: absolute;
+  font-size: 38px;
+  filter: drop-shadow(0 0 12px #34D399);
+  animation: leafSpiral 0.55s ease-out forwards;
+}
+
+@keyframes leafSpiral {
+  0% { left: 22%; bottom: 25%; opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.3) rotate(360deg); }
+  80% { left: 78%; bottom: 68%; opacity: 1; transform: scale(1.4) rotate(720deg); }
+  100% { left: 82%; bottom: 70%; opacity: 0; transform: scale(0.6); }
+}
+
+/* 一般/仙子系：高速星星彩虹光彈 */
+.fx-swift-star {
+  position: absolute;
+  font-size: 36px;
+  filter: drop-shadow(0 0 12px #F472B6);
+  animation: starBurst 0.55s ease-out forwards;
+}
+
+@keyframes starBurst {
+  0% { left: 22%; bottom: 25%; opacity: 0; transform: scale(0.4) rotate(0deg); }
+  45% { opacity: 1; transform: scale(1.4) rotate(180deg); }
+  80% { left: 78%; bottom: 68%; opacity: 1; transform: scale(1.5) rotate(360deg); }
+  100% { left: 82%; bottom: 70%; opacity: 0; transform: scale(0.5); }
+}
+
+/* 戰鬥浮動傷害飄字 */
+.combat-damage-pop {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: 900;
+  color: #DC2626;
+  background: #FFFFFF;
+  border: 2px solid #EF4444;
+  padding: 4px 12px;
+  border-radius: var(--radius-round);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25), 0 0 15px rgba(239, 68, 68, 0.4);
+  animation: floatDamageText 1.25s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  z-index: 35;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.combat-damage-pop.crit {
+  color: #B91C1C;
+  background: #FEF3C7;
+  border-color: #F59E0B;
+  font-size: 23px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 20px rgba(245, 158, 11, 0.7);
+}
+
+@keyframes floatDamageText {
+  0% { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.6); }
+  25% { opacity: 1; transform: translateX(-50%) translateY(-22px) scale(1.2); }
+  75% { opacity: 1; transform: translateX(-50%) translateY(-44px) scale(1.0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-65px) scale(0.85); }
+}
+
+/* 經驗值條 (EXP Bar) */
+.poke-exp-wrapper {
+  margin-top: 4px;
+}
+.poke-exp-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 900;
+  color: #0284C7;
+  margin-bottom: 2px;
+}
+.poke-exp-track {
+  width: 100%;
+  height: 6px;
+  background: #E0F2FE;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #7DD3FC;
+}
+.poke-exp-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #38BDF8, #0284C7);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* ✨ 稀有閃光精靈特效 */
+.is-shiny-pokemon .poke-opponent-plate {
+  animation: shinyRainbowGlow 2.5s infinite alternate !important;
+  border: 3px solid #F59E0B !important;
+}
+
+.shiny-tag-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #FEF08A, #F59E0B);
+  color: #78350F;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 8px;
+  border: 1px solid #D97706;
+  margin-left: 6px;
+  animation: pulseScale 1.5s infinite alternate;
+}
+
+@keyframes shinyRainbowGlow {
+  0% { box-shadow: 0 0 16px rgba(245, 158, 11, 0.9), 0 0 30px rgba(236, 72, 153, 0.4); }
+  50% { box-shadow: 0 0 22px rgba(16, 185, 129, 0.9), 0 0 35px rgba(59, 130, 246, 0.5); }
+  100% { box-shadow: 0 0 16px rgba(139, 92, 246, 0.9), 0 0 30px rgba(239, 68, 68, 0.5); }
+}
+
+@keyframes pulseScale {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+/* 🎒 冒險家道具背包條 */
+.poke-trainer-bag-bar {
+  background: #F8FAFC;
+  border: 2px dashed #94A3B8;
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bag-bar-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bag-items-row {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.bag-item-btn {
+  background: #FFFFFF;
+  border: 2px solid #CBD5E1;
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1E293B;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 0 #94A3B8;
+  user-select: none;
+}
+
+.bag-item-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 0 #64748B;
+  border-color: #3B82F6;
+}
+
+.bag-item-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #64748B;
+}
+
+.bag-item-btn:disabled {
+  opacity: 0.45;
+  filter: grayscale(85%);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.bag-item-btn .item-count {
+  background: #1E293B;
+  color: #F8FAFC;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.bag-item-btn.item-great-ball {
+  border-color: #60A5FA;
+}
+.bag-item-btn.item-master-ball {
+  border-color: #C084FC;
+  background: #FAF5FF;
+}
+.bag-item-btn.item-potion {
+  border-color: #34D399;
+}
+.bag-item-btn.item-loupe {
+  border-color: #FBBF24;
+}
+
+/* 超級球煙霧消去錯誤選項動畫 */
+.btn-smoke-out {
+  animation: smokeOut 0.45s forwards !important;
+  pointer-events: none !important;
+}
+
+@keyframes smokeOut {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15) rotate(6deg); opacity: 0.5; filter: blur(3px); }
+  100% { transform: scale(0.65); opacity: 0.22; filter: blur(5px); }
+}
+
+/* 治癒愛心光芒 */
+.heal-sparkle {
+  animation: healGlow 0.8s ease-out;
+}
+
+@keyframes healGlow {
+  0% { filter: drop-shadow(0 0 0 #10B981); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 24px #34D399); transform: scale(1.2); }
+  100% { filter: drop-shadow(0 0 0 #10B981); transform: scale(1); }
+}
+
+/* 升級與神奇進化彈窗 */
+.evolution-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.98));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 20px;
+}
+
+.evolution-card {
+  background: linear-gradient(145deg, #1E1B4B, #0F172A);
+  border: 4px solid #FACC15;
+  border-radius: 28px;
+  padding: 32px 24px;
+  text-align: center;
+  max-width: 440px;
+  width: 100%;
+  color: #FFFFFF;
+  box-shadow: 0 0 40px rgba(250, 204, 21, 0.5), 0 20px 40px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.evolution-sprite-stage {
+  font-size: 96px;
+  margin: 16px 0;
+  display: inline-block;
+  animation: evolvePulse 1.2s infinite alternate;
+}
+
+@keyframes evolvePulse {
+  0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 10px #F59E0B); }
+  50% { transform: scale(1.3) rotate(8deg); filter: drop-shadow(0 0 35px #FDE047); }
+  100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 10px #F59E0B); }
+}
+
+/* 道館大寶箱卡片 */
+.mystery-chest-box {
+  background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+  border: 3px dashed #F59E0B;
+  border-radius: 18px;
+  padding: 20px;
+  margin: 16px 0;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+
+.mystery-chest-box:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+  border-color: #D97706;
+}
+
+.mystery-chest-icon {
+  font-size: 64px;
+  display: inline-block;
+  animation: chestBounce 1.5s infinite;
+}
+
+@keyframes chestBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}

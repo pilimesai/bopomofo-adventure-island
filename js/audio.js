@@ -677,6 +677,201 @@ class ZhuyinAudioEngine {
   playBadgeGet() {
     this.playFanfare();
   }
+
+  /**
+   * ⚡ 寶可夢大絕招發動音效 (招式音效：電/火/水/草/星星)
+   */
+  playPokeAttack(fxType = 'electric') {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    if (fxType === 'electric') {
+      // 電氣十萬伏特嗡鳴碎裂音
+      for (let i = 0; i < 4; i++) {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(400 + i * 220, now + i * 0.04);
+        gain.gain.setValueAtTime(0.2, now + i * 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + (i + 1) * 0.05);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now + i * 0.04);
+        osc.stop(now + (i + 1) * 0.05);
+      }
+    } else if (fxType === 'fire') {
+      // 噴射火焰呼嘯爆鳴
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(120, now);
+      osc.frequency.linearRampToValueAtTime(320, now + 0.15);
+      osc.frequency.exponentialRampToValueAtTime(60, now + 0.35);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.35);
+    } else if (fxType === 'water') {
+      // 強力水炮旋渦浪濤音
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(280, now);
+      osc.frequency.linearRampToValueAtTime(650, now + 0.12);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.32);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.32);
+    } else if (fxType === 'grass') {
+      // 飛葉快刀破空切削音
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.exponentialRampToValueAtTime(200, now + 0.18);
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.2);
+    } else {
+      // 高速星星清脆星光連發音
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+        gain.gain.setValueAtTime(0.2, now + idx * 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now + idx * 0.05);
+        osc.stop(now + idx * 0.05 + 0.12);
+      });
+    }
+  }
+
+  /**
+   * 🎉 夥伴升級音效 (Classic Pokémon Level-Up Chime)
+   */
+  playLevelUp() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const notes = [
+      { f: 523.25, d: 0.08 }, // C5
+      { f: 659.25, d: 0.08 }, // E5
+      { f: 783.99, d: 0.08 }, // G5
+      { f: 1046.50, d: 0.10 }, // C6
+      { f: 1318.51, d: 0.12 }, // E6
+      { f: 1567.98, d: 0.32 }  // G6
+    ];
+    let offset = 0;
+    const now = this.ctx.currentTime;
+    notes.forEach(note => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(note.f, now + offset);
+      gain.gain.setValueAtTime(0.25, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + offset + note.d);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + offset);
+      osc.stop(now + offset + note.d);
+      offset += note.d * 0.85;
+    });
+  }
+
+  /**
+   * 🧪 寶可夢中心治癒/傷藥回血音效 (Pokémon Center Recovery Tone)
+   */
+  playHeal() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const notes = [
+      { f: 659.25, d: 0.12 }, // E5
+      { f: 587.33, d: 0.12 }, // D5
+      { f: 659.25, d: 0.12 }, // E5
+      { f: 783.99, d: 0.28 }, // G5
+      { f: 987.77, d: 0.35 }  // B5
+    ];
+    let offset = 0;
+    const now = this.ctx.currentTime;
+    notes.forEach(note => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(note.f, now + offset);
+      gain.gain.setValueAtTime(0.25, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + offset + note.d);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + offset);
+      osc.stop(now + offset + note.d);
+      offset += note.d * 0.82;
+    });
+  }
+
+  /**
+   * 🎒 使用道具精靈球或道具音效
+   */
+  playItemUse() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(587.33, now);
+    osc.frequency.exponentialRampToValueAtTime(1174.66, now + 0.14);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.16);
+  }
+
+  /**
+   * 🎁 道館寶箱開啟大驚喜音效
+   */
+  playChestOpen() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    [440, 554.37, 659.25, 880, 1108.73, 1318.51].forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+      gain.gain.setValueAtTime(0.22, now + idx * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.25);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + idx * 0.06);
+      osc.stop(now + idx * 0.06 + 0.25);
+    });
+  }
+
 }
 
 // 建立全域音效實例
