@@ -1335,29 +1335,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const readingText = document.getElementById('reading-passage-text');
 
     if (q.qType === 'reading' && q.passage) {
-      if (promptTag) promptTag.innerHTML = '📖 ' + addZhuyinRuby('段考兒歌閱讀測驗') + '：';
+      if (promptTag) promptTag.textContent = '📖 段考兒歌閱讀測驗：';
       if (readingCard) readingCard.style.display = 'block';
       if (readingText) readingText.innerHTML = addZhuyinRuby(q.passage);
     } else {
       if (readingCard) readingCard.style.display = 'none';
       if (q.qType === 'choice') {
-        if (promptTag) promptTag.innerHTML = '📝 ' + addZhuyinRuby('段考觀念選擇題') + '：';
+        if (promptTag) promptTag.textContent = '📝 段考觀念選擇題：';
       } else if (q.qType === 'fill_in') {
-        if (promptTag) promptTag.innerHTML = '✏️ ' + addZhuyinRuby('語詞注音填空題') + '：';
+        if (promptTag) promptTag.textContent = '✏️ 語詞注音填空題：';
       } else {
-        if (promptTag) promptTag.innerHTML = '🔴 ' + addZhuyinRuby('道館考核題目') + '：';
+        if (promptTag) promptTag.textContent = '🔴 道館考核題目：';
       }
     }
 
-    // 確保題目文字絕不出現注音答案（填空題保留已知字注音與【 ？ 】提示，僅過濾正解）
+    // 題目文字絕不標註注音，避免直接洩漏答案；由正音班老師清晰語音朗讀
     let safePrompt = q.prompt || '';
     if (q.qType === 'choice' || q.qType === 'reading' || q.qType === 'fill_in') {
-      // 選擇題、閱讀測驗與填空題已設計為標準考卷題型，直接呈現題意，不盲目將整段文字的注音打上問號
       safePrompt = q.prompt;
     } else {
       safePrompt = safePrompt.replace(/[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]/g, '❓');
     }
-    if (promptText) promptText.innerHTML = addZhuyinRuby(safePrompt);
+    if (promptText) promptText.textContent = safePrompt;
     
 
     // 依據國小段考真實 7 大題型動態渲染專屬交互介面
@@ -1465,7 +1464,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = `
           <div class="exam-check-pic-wrapper">
             <span class="exam-check-pic-emoji">${q.icon || '🐊'}</span>
-            <span class="exam-check-pic-label">${addZhuyinRuby(q.word || '')}</span>
+            <span class="exam-check-pic-label">${q.word || ''}</span>
           </div>
           <div style="font-size:15px;font-weight:900;color:#475569;">👇 請在正確的注音括號中打「✔」：</div>
           <div class="exam-check-options-row" id="exam-check-row"></div>
@@ -1507,7 +1506,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const card = document.createElement('button');
           card.className = 'exam-circle-card';
           card.innerHTML = `
-            <span class="circle-card-text">${addZhuyinRuby(optText)}</span>
+            <span class="circle-card-text">${optText}</span>
             <svg class="red-circle-stroke" viewBox="0 0 160 80">
               <ellipse cx="80" cy="40" rx="74" ry="34" />
             </svg>
@@ -1534,7 +1533,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = `
           <div class="connect-left-col">
             <div class="connect-peg source-peg">
-              <span class="peg-text">${addZhuyinRuby(sourceText)}</span>
+              <span class="peg-text">${sourceText}</span>
               <span class="peg-dot">●</span>
             </div>
           </div>
@@ -1547,7 +1546,7 @@ document.addEventListener('DOMContentLoaded', () => {
           peg.className = 'connect-peg target-peg';
           peg.innerHTML = `
             <span class="peg-dot">●</span>
-            <span class="peg-text">${addZhuyinRuby(optText)}</span>
+            <span class="peg-text">${optText}</span>
           `;
           peg.addEventListener('click', () => {
             peg.classList.add('connected');
@@ -1571,7 +1570,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="fill-pic-icon">${q.icon || '🖼️'}</span>
             <div class="fill-slots-row">
               <div class="fill-box empty-slot" id="target-fill-slot">❓</div>
-              <div class="fill-box">${addZhuyinRuby(targetWord)}</div>
+              <div class="fill-box">${targetWord}</div>
             </div>
           </div>
           <div style="font-size:15px;font-weight:900;color:#475569;">👇 點選正確注音推進空格中：</div>
@@ -1627,7 +1626,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shuffled.forEach(optText => {
           const btn = document.createElement('button');
           btn.className = 'combine-opt-btn';
-          btn.innerHTML = addZhuyinRuby(optText);
+          btn.textContent = optText;
           btn.addEventListener('click', () => {
             const slot = document.getElementById('combine-res-slot');
             if (slot) slot.textContent = optText;
@@ -1653,8 +1652,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="tone-sentence-card">
             <span class="sentence-icon">${q.icon || '🎶'}</span>
             <div class="sentence-text-display">
-              ${addZhuyinRuby((q.prompt || '').replace(/【[^】]+】/, ''))}
-              <span class="tone-target-highlight" id="tone-target-box">【 ${addZhuyinRuby(targetChar || '標調目標')} 】</span>
+              ${(q.prompt || '').replace(/【[^】]+】/, '')}
+              <span class="tone-target-highlight" id="tone-target-box">【 ${targetChar || '標調目標'} 】</span>
             </div>
           </div>
           <div style="font-size:15px;font-weight:900;color:#475569;">🔘 選擇要蓋上的聲調印章：</div>
@@ -1674,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const mark = toneMarksMap[optText] || '？';
           stampBtn.innerHTML = `
             <span class="stamp-mark">${mark}</span>
-            <span class="stamp-name">${addZhuyinRuby(optText)}</span>
+            <span class="stamp-name">${optText}</span>
           `;
           stampBtn.addEventListener('click', () => {
             const box = document.getElementById('tone-target-box');
@@ -1722,7 +1721,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shuffled.forEach(optText => {
           const btn = document.createElement('button');
           btn.className = `battle-opt-btn ${optText.length > 3 ? 'long-text' : ''}`;
-          btn.innerHTML = addZhuyinRuby(optText);
+          btn.textContent = optText;
           btn.addEventListener('click', () => {
             onAnswer(btn, optText, q);
           });
