@@ -205,19 +205,16 @@ class ZhuyinAudioEngine {
 
     const cleanKey = text.trim();
     const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
-    const targetPitch = options.pitch || this.speechPitch;
+    const targetPitch = (options.pitch !== undefined) ? options.pitch : (this.speechPitch || 1.12);
 
     const baseManifest = window.AUDIO_MANIFEST || {};
     const cuteManifest = window.AUDIO_CUTE_MANIFEST || {};
 
-    const targetManifest = (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35)
-      ? cuteManifest
-      : baseManifest;
-    const fallbackManifest = (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35)
-      ? baseManifest
-      : cuteManifest;
+    const isCute = (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35);
+    const targetManifest = isCute ? cuteManifest : baseManifest;
+    const fallbackManifest = isCute ? baseManifest : cuteManifest;
 
-    let audioUrl = targetManifest[cleanKey] || fallbackManifest[cleanKey];
+    let audioUrl = targetManifest[cleanKey];
 
     // 若符號或標點有微小差異，嘗試標點正規化比對以確保 100% 播放真人高畫質音檔
     if (!audioUrl) {
@@ -228,13 +225,9 @@ class ZhuyinAudioEngine {
           break;
         }
       }
-      if (!audioUrl) {
-        for (const [k, url] of Object.entries(fallbackManifest)) {
-          if (k.replace(/[，。！？、～~\s]/g, '') === simplifiedKey) {
-            audioUrl = url;
-            break;
-          }
-        }
+      // 僅在目標庫完全找不到時才作為後備
+      if (!audioUrl && fallbackManifest[cleanKey]) {
+        audioUrl = fallbackManifest[cleanKey];
       }
     }
 
@@ -243,8 +236,9 @@ class ZhuyinAudioEngine {
         const audio = new Audio(audioUrl);
         this.currentAudio = audio;
         // 連動語速調整滑桿 (Speech Rate)
-        const currentRate = options.rate || this.speechRate || 0.88;
-        audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / 0.88));
+        const currentRate = options.rate || this.speechRate || (isCute ? 0.92 : 0.86);
+        const baseRate = isCute ? 0.92 : 0.86;
+        audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / baseRate));
 
         if (options.onEnd) {
           audio.onended = options.onEnd;
@@ -275,9 +269,10 @@ class ZhuyinAudioEngine {
     }
 
     const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
+    const isCute = (voiceRole === 'PERSONA::CUTE_GIRL' || (this.speechPitch && this.speechPitch >= 1.35));
     // 連動使用者自訂的語速與音調設定
-    utterance.rate = options.rate || this.speechRate || (voiceRole === 'PERSONA::CUTE_GIRL' ? 0.95 : 0.88);
-    utterance.pitch = options.pitch || this.speechPitch || (voiceRole === 'PERSONA::CUTE_GIRL' ? 1.45 : 1.15);
+    utterance.rate = options.rate || this.speechRate || (isCute ? 0.95 : 0.88);
+    utterance.pitch = options.pitch || this.speechPitch || (isCute ? 1.45 : 1.15);
 
     if (options.onEnd) {
       utterance.onend = options.onEnd;

@@ -710,9 +710,8 @@ document.addEventListener('DOMContentLoaded', () => {
       window.audioEngine.playPop();
       populateVoicePicker();
       dom.sliderSpeechRate.value = window.audioEngine.speechRate;
-      dom.speechRateLabel.textContent = `${window.audioEngine.speechRate}x (${window.audioEngine.speechRate < 0.8 ? '慢速清楚' : '親切教學'})`;
       dom.sliderSpeechPitch.value = window.audioEngine.speechPitch;
-      dom.speechPitchLabel.textContent = `${window.audioEngine.speechPitch} (${window.audioEngine.speechPitch > 1.2 ? '輕快明亮' : '活潑溫柔'})`;
+      updateSliderLabels(window.audioEngine.speechRate, window.audioEngine.speechPitch);
 
       dom.voiceModal.classList.add('open');
       dom.voiceModal.setAttribute('aria-hidden', 'false');
