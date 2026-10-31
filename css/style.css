@@ -974,7 +974,7 @@ body {
 /* 遊戲2：翻牌記憶連連看 (Card Memory Matching) */
 .memory-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   max-width: 600px;
   width: 100%;
@@ -2469,7 +2469,7 @@ body {
 /* 經典對戰指令列 (Pokémon Command Menu) */
 .poke-battle-actions {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-top: 16px;
 }

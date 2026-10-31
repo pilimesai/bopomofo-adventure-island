@@ -140,8 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
     battleQWord: document.getElementById('battle-q-word'),
     battleQPrompt: document.getElementById('battle-q-prompt'),
     btnBattleListen: document.getElementById('btn-battle-listen'),
-    btnBattleHint: document.getElementById('btn-battle-hint'),
-    battleHintToast: document.getElementById('battle-hint-toast'),
     battleOptionsGrid: document.getElementById('battle-options-grid'),
     
     // Gallery
@@ -924,20 +922,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // 老師小提示按鈕
-    if (dom.btnBattleHint) {
-      dom.btnBattleHint.addEventListener('click', () => {
-        window.audioEngine.playPop();
-        const stg = state.adventure.activeStage;
-        if (!stg) return;
-        const q = stg.questions[state.adventure.qIndex];
-        if (q && dom.battleHintToast) {
-          dom.battleHintToast.textContent = `💡 老師提示：${q.hint}`;
-          dom.battleHintToast.style.display = 'block';
-          window.audioEngine.speak(`老師提示你：${q.hint}`);
-        }
-      });
-    }
+
 
     renderAdventureMap();
   }
@@ -1173,46 +1158,18 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3 class="question-prompt-text" id="battle-q-prompt" style="font-size:20px;margin:0;"></h3>
           </div>
 
-          <!-- 4 個經典寶可夢對戰指令 -->
+          <!-- 3 個清晰考核指令 (已全面移除提示與作弊道具) -->
           <div class="poke-battle-actions">
             <button class="poke-cmd-btn catch-btn" id="btn-poke-catch">
               <span>🔴</span> 投擲精靈球
             </button>
             <button class="poke-cmd-btn listen-btn" id="btn-poke-listen">
-              <span>🔊</span> 聽老師發音
-            </button>
-            <button class="poke-cmd-btn hint-btn" id="btn-poke-hint">
-              <span>💡</span> 圖鑑秘笈提示
+              <span>🔊</span> 聽老師清晰朗讀題目
             </button>
             <button class="poke-cmd-btn run-btn" id="btn-poke-run">
               <span>🏃</span> 撤退回地圖
             </button>
           </div>
-
-          <!-- 🎒 冒險家道具背包條 (Trainer Bag) -->
-          <div class="poke-trainer-bag-bar" id="poke-trainer-bag-bar">
-            <div class="bag-bar-title">🎒 背包道具：</div>
-            <div class="bag-items-row">
-              <button class="bag-item-btn item-great-ball" id="btn-bag-great-ball" title="超級球：利用雷達自動消除錯誤選項">
-                <span>🔵 超級球</span>
-                <span class="item-count" id="count-great-ball">x${state.bag.greatBall}</span>
-              </button>
-              <button class="bag-item-btn item-master-ball" id="btn-bag-master-ball" title="大師球：100% 絕對命中必中收服">
-                <span>🟣 大師球</span>
-                <span class="item-count" id="count-master-ball">x${state.bag.masterBall}</span>
-              </button>
-              <button class="bag-item-btn item-potion" id="btn-bag-potion" title="活力傷藥：立刻恢復 1 顆愛心">
-                <span>🧪 活力傷藥</span>
-                <span class="item-count" id="count-potion">x${state.bag.potion}</span>
-              </button>
-              <button class="bag-item-btn item-loupe" id="btn-bag-loupe" title="聽音放大鏡：超慢速超清晰聽音">
-                <span>🔍 放大鏡</span>
-                <span class="item-count" id="count-loupe">x${state.bag.loupe}</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="battle-hint-toast" id="battle-hint-toast" style="display:none;margin-top:14px;"></div>
 
           <div style="font-size:15px;font-weight:900;color:#374151;margin:14px 0 8px 0;">
             ⚡ 選擇你的收服攻擊招式：
@@ -1247,21 +1204,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (q) window.audioEngine.speak(q.speakText);
         });
       }
-
-      const btnHint = document.getElementById('btn-poke-hint');
-      if (btnHint) {
-        btnHint.addEventListener('click', () => {
-          window.audioEngine.playPop();
-          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
-          const toast = document.getElementById('battle-hint-toast');
-          if (q && toast) {
-            toast.textContent = `💡 大木博士提示：${q.hint}`;
-            toast.style.display = 'block';
-            window.audioEngine.speak(`老師提示你：${q.hint}`);
-          }
-        });
-      }
-
       const playerSprite = document.getElementById('poke-player-sprite');
       if (playerSprite) {
         playerSprite.addEventListener('click', () => {
@@ -1278,137 +1220,9 @@ document.addEventListener('DOMContentLoaded', () => {
           if (q) window.audioEngine.speak('準備投擲寶貝球！請仔細聽老師的發音！');
         });
       }
-
-      // 🎒 道具背包按鈕互動邏輯
-      function updateBagButtonsUI() {
-        const cGb = document.getElementById('count-great-ball');
-        const cMb = document.getElementById('count-master-ball');
-        const cPot = document.getElementById('count-potion');
-        const cLp = document.getElementById('count-loupe');
-        const bGb = document.getElementById('btn-bag-great-ball');
-        const bMb = document.getElementById('btn-bag-master-ball');
-        const bPot = document.getElementById('btn-bag-potion');
-        const bLp = document.getElementById('btn-bag-loupe');
-
-        if (cGb) cGb.textContent = `x${state.bag.greatBall}`;
-        if (cMb) cMb.textContent = `x${state.bag.masterBall}`;
-        if (cPot) cPot.textContent = `x${state.bag.potion}`;
-        if (cLp) cLp.textContent = `x${state.bag.loupe}`;
-
-        if (bGb) bGb.disabled = state.bag.greatBall <= 0;
-        if (bMb) bMb.disabled = state.bag.masterBall <= 0;
-        if (bPot) bPot.disabled = state.bag.potion <= 0 || state.adventure.hearts >= 3;
-        if (bLp) bLp.disabled = state.bag.loupe <= 0;
-      }
-
-      const btnGreatBall = document.getElementById('btn-bag-great-ball');
-      if (btnGreatBall) {
-        btnGreatBall.addEventListener('click', () => {
-          if (state.bag.greatBall <= 0) return;
-          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
-          if (!q) return;
-
-          const optBtns = Array.from(document.querySelectorAll('.battle-opt-btn')).filter(b => b.textContent !== q.answer && !b.disabled);
-          if (optBtns.length === 0) return;
-
-          state.bag.greatBall--;
-          localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
-          window.audioEngine.playItemUse();
-          updateBagButtonsUI();
-
-          // 隨機消除最多2個錯誤選項
-          const toRemove = optBtns.sort(() => Math.random() - 0.5).slice(0, 2);
-          toRemove.forEach(b => {
-            b.classList.add('btn-smoke-out');
-            b.disabled = true;
-          });
-
-          const toast = document.getElementById('battle-hint-toast');
-          if (toast) {
-            toast.textContent = '🔵 超級球發射電磁波！成功消除了錯誤干擾選項！';
-            toast.style.display = 'block';
-          }
-        });
-      }
-
-      const btnMasterBall = document.getElementById('btn-bag-master-ball');
-      if (btnMasterBall) {
-        btnMasterBall.addEventListener('click', () => {
-          if (state.bag.masterBall <= 0 || state.adventure.isAnswering) return;
-          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
-          if (!q) return;
-
-          state.bag.masterBall--;
-          localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
-          window.audioEngine.playItemUse();
-          updateBagButtonsUI();
-
-          const toast = document.getElementById('battle-hint-toast');
-          if (toast) {
-            toast.textContent = '🟣 大師球發動神威！100% 必定命中收服！';
-            toast.style.display = 'block';
-          }
-
-          const correctBtn = Array.from(document.querySelectorAll('.battle-opt-btn')).find(b => b.textContent === q.answer);
-          handleBattleAnswer(correctBtn || document.createElement('button'), q.answer, q);
-        });
-      }
-
-      const btnPotion = document.getElementById('btn-bag-potion');
-      if (btnPotion) {
-        btnPotion.addEventListener('click', () => {
-          if (state.bag.potion <= 0 || state.adventure.hearts >= 3) return;
-          state.bag.potion--;
-          state.adventure.hearts = Math.min(3, state.adventure.hearts + 1);
-          localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
-          window.audioEngine.playHeal();
-          updateBattleHeaderUI();
-          updateBagButtonsUI();
-
-          const sprite = document.getElementById('poke-player-sprite');
-          if (sprite) {
-            sprite.classList.add('heal-sparkle');
-            setTimeout(() => sprite.classList.remove('heal-sparkle'), 800);
-          }
-
-          const toast = document.getElementById('battle-hint-toast');
-          if (toast) {
-            toast.textContent = '🧪 使用了活力傷藥！夥伴恢復了 1 顆愛心！';
-            toast.style.display = 'block';
-          }
-        });
-      }
-
-      const btnLoupe = document.getElementById('btn-bag-loupe');
-      if (btnLoupe) {
-        btnLoupe.addEventListener('click', () => {
-          if (state.bag.loupe <= 0) return;
-          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
-          if (!q) return;
-
-          state.bag.loupe--;
-          localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
-          window.audioEngine.playItemUse();
-          updateBagButtonsUI();
-
-          window.audioEngine.speak(q.speakText, { rate: 0.72 });
-
-          const promptEl = document.getElementById('battle-q-prompt');
-          if (promptEl) {
-            promptEl.style.color = '#B45309';
-            promptEl.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-              promptEl.style.color = '';
-              promptEl.style.transform = '';
-            }, 1200);
-          }
-        });
-      }
-
-      updateBagButtonsUI();
     }
 
-    updateBattleHeaderUI();
+        updateBattleHeaderUI();
     renderCurrentStageQuestion();
   }
 
@@ -1513,7 +1327,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const oppType = document.getElementById('poke-opp-type');
     const oppLevel = document.getElementById('poke-opp-level');
     const promptText = document.getElementById('battle-q-prompt');
-    const toast = document.getElementById('battle-hint-toast');
 
     if (oppSprite) oppSprite.textContent = q.icon || (sym ? sym.icon : stage.icon);
     // 嚴格防止洩漏答案：答題前對手名稱絕不顯示注音符號！
@@ -1549,7 +1362,7 @@ document.addEventListener('DOMContentLoaded', () => {
       safePrompt = safePrompt.replace(/[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]/g, '❓');
     }
     if (promptText) promptText.textContent = safePrompt;
-    if (toast) toast.style.display = 'none';
+    
 
     // 隨機打亂選項順序
     const shuffled = [...q.options].sort(() => Math.random() - 0.5);
@@ -1659,10 +1472,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 addStars(starBonus, false);
                 state.balls = Math.min(99, state.balls + (isShiny ? 3 : 1));
                 localStorage.setItem('zhuyin_balls', state.balls.toString());
-                if (isShiny) {
-                  state.bag.masterBall = Math.min(9, state.bag.masterBall + 1);
-                  localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
-                }
+
                 updateTrainerHeaderUI();
 
                 const oppNameEl = document.getElementById('poke-opp-name');
@@ -1671,7 +1481,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   oppNameEl.textContent = sym ? `收服成功：【${sym.char}】${sym.pokeName}` : `收服成功！`;
                 }
                 setMascotSpeech(isShiny
-                  ? `✨ 太神了！收服了【稀有閃光精靈】！獲得雙倍星星與大師球！`
+                  ? `✨ 太神了！收服了【稀有閃光精靈】！獲得雙倍星星與精靈球！`
                   : `✨ 叮！太棒了！成功收服【${q.answer}】！圖鑑已登錄！`
                 );
 
@@ -1705,14 +1515,8 @@ document.addEventListener('DOMContentLoaded', () => {
       updateBattleHeaderUI();
 
       window.audioEngine.playWrong();
-      const toast = document.getElementById('battle-hint-toast');
-      if (toast) {
-        toast.textContent = `💡 大木博士秘笈：${q.hint}`;
-        toast.style.display = 'block';
-      }
-
-      setMascotSpeech(`「哎呀！野生精靈掙脫了！再聽一次老師的小提示吧！」`);
-      window.audioEngine.speak('這題不對，別灰心，看老師提示再試一次！');
+      setMascotSpeech('「哎呀！野生精靈掙脫了！再仔細聽一次題目發音吧！」');
+      window.audioEngine.speak('這個不對，再聽一次！');
     }
   }
 
@@ -1806,13 +1610,11 @@ document.addEventListener('DOMContentLoaded', () => {
           window.audioEngine.playChestOpen();
           if (window.confetti) window.confetti.trigger(80);
 
-          state.bag.masterBall = Math.min(9, state.bag.masterBall + 1);
-          state.bag.greatBall = Math.min(20, state.bag.greatBall + 2);
-          state.bag.potion = Math.min(20, state.bag.potion + 2);
-          state.bag.loupe = Math.min(20, state.bag.loupe + 2);
-          localStorage.setItem('zhuyin_trainer_bag', JSON.stringify(state.bag));
-
-          addPartnerExp(60);
+          addStars(3, false);
+          state.balls = Math.min(99, state.balls + 5);
+          localStorage.setItem('zhuyin_balls', state.balls.toString());
+          addPartnerExp(100);
+          updateTrainerHeaderUI();
 
           const chestIcon = document.getElementById('chest-icon');
           const chestTitle = document.getElementById('chest-title');
@@ -1820,16 +1622,14 @@ document.addEventListener('DOMContentLoaded', () => {
           const rewardsRow = document.getElementById('chest-rewards-row');
 
           if (chestIcon) chestIcon.textContent = '🎉';
-          if (chestTitle) chestTitle.textContent = '🎊 獲得道館補給物資大豐收！';
-          if (chestDesc) chestDesc.textContent = '道具已自動存放至你的冒險背包中！';
+          if (chestTitle) chestTitle.textContent = '🎊 獲得道館過關大獎賞！';
+          if (chestDesc) chestDesc.textContent = '冒險星星與精靈球已全數發放！';
           if (rewardsRow) {
             rewardsRow.style.display = 'flex';
             rewardsRow.innerHTML = `
-              <span style="background:#FAF5FF;border:2px solid #C084FC;color:#6B21A8;padding:4px 10px;border-radius:12px;font-weight:900;font-size:14px;">🟣 大師球 +1</span>
-              <span style="background:#EFF6FF;border:2px solid #60A5FA;color:#1E40AF;padding:4px 10px;border-radius:12px;font-weight:900;font-size:14px;">🔵 超級球 +2</span>
-              <span style="background:#ECFDF5;border:2px solid #34D399;color:#065F46;padding:4px 10px;border-radius:12px;font-weight:900;font-size:14px;">🧪 活力傷藥 +2</span>
-              <span style="background:#FFFBEB;border:2px solid #FBBF24;color:#92400E;padding:4px 10px;border-radius:12px;font-weight:900;font-size:14px;">🔍 聽音放大鏡 +2</span>
-              <span style="background:#FEF3C7;border:2px solid #F59E0B;color:#78350F;padding:4px 10px;border-radius:12px;font-weight:900;font-size:14px;">⚡ 夥伴經驗值 +60</span>
+              <span style="background:#FEF3C7;border:2px solid #F59E0B;color:#78350F;padding:6px 14px;border-radius:12px;font-weight:900;font-size:15px;">⭐ 過關星星 +3</span>
+              <span style="background:#FEE2E2;border:2px solid #EF4444;color:#B91C1C;padding:6px 14px;border-radius:12px;font-weight:900;font-size:15px;">🔴 精靈球 +5</span>
+              <span style="background:#EFF6FF;border:2px solid #3B82F6;color:#1D4ED8;padding:6px 14px;border-radius:12px;font-weight:900;font-size:15px;">⚡ 夥伴親密度經驗 +100</span>
             `;
           }
         });
@@ -2329,12 +2129,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const balloonColors = ['#FF6B6B', '#4DABF7', '#51CF66', '#FF922B'];
     const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
     const symData = ZHUYIN_DATA.symbols.find(s => s.char === question.target);
-    const visualWordHint = symData ? `${symData.icon} ${symData.word}` : '仔細聽發音';
-
+    
     dom.gameArena.innerHTML = `
       <div class="game-status-bar">
         <div class="game-prompt-large">
-          <span>🎧 仔細聽老師唸的聲音，戳破正確的注音氣球！（提示詞：<strong>${visualWordHint}</strong>）</span>
+          <span>🎧 仔細聽老師唸的聲音，戳破正確的注音氣球！</span>
           <button class="replay-audio-btn" id="btn-replay-game-audio" title="重聽發音">🔊</button>
         </div>
         <div class="score-badge">第 ${state.game.round} / ${state.game.maxRounds} 關 | 得分：⭐ ${state.game.score}</div>
@@ -2481,12 +2280,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     state.game.round++;
     const questions = [
-      { word: '太陽', targetPart: '太', toneId: 4, zhuyin: 'ㄊㄞˋ', hint: '四聲溜滑梯往下衝' },
-      { word: '小魚', targetPart: '魚', toneId: 2, zhuyin: 'ㄩˊ', hint: '二聲往上爬山坡' },
-      { word: '小鳥', targetPart: '鳥', toneId: 3, zhuyin: 'ㄋㄧㄠˇ', hint: '三聲轉個彎' },
-      { word: '媽媽', targetPart: '媽(前字)', toneId: 1, zhuyin: 'ㄇㄚ', hint: '一聲平平的一條線' },
-      { word: '白鵝', targetPart: '鵝', toneId: 2, zhuyin: 'ㄜˊ', hint: '二聲往上爬山坡' },
-      { word: '斑馬', targetPart: '斑', toneId: 1, zhuyin: 'ㄅㄢ', hint: '一聲平平的一條線' }
+      { word: '太陽', targetPart: '太', toneId: 4, zhuyin: 'ㄊㄞˋ' },
+      { word: '小魚', targetPart: '魚', toneId: 2, zhuyin: 'ㄩˊ' },
+      { word: '小鳥', targetPart: '鳥', toneId: 3, zhuyin: 'ㄋㄧㄠˇ' },
+      { word: '媽媽', targetPart: '媽(前字)', toneId: 1, zhuyin: 'ㄇㄚ' },
+      { word: '白鵝', targetPart: '鵝', toneId: 2, zhuyin: 'ㄜˊ' },
+      { word: '斑馬', targetPart: '斑', toneId: 1, zhuyin: 'ㄅㄢ' }
     ];
     const q = questions[Math.floor(Math.random() * questions.length)];
 
@@ -2515,10 +2314,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const choices = [
-      { id: 1, text: '第一聲 (平平 ˉ)' },
-      { id: 2, text: '第二聲 (往上爬 ˊ)' },
-      { id: 3, text: '第三聲 (轉個彎 ˇ)' },
-      { id: 4, text: '第四聲 (溜滑梯 ˋ)' }
+      { id: 1, text: '第一聲' },
+      { id: 2, text: '第二聲' },
+      { id: 3, text: '第三聲' },
+      { id: 4, text: '第四聲' }
     ];
 
     choices.forEach(ch => {
