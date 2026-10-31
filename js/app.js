@@ -821,7 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('click', () => {
         if (!unlocked) {
           window.audioEngine.playWrong();
-          window.audioEngine.speak(`要先通過第 ${stage.id - 1} 道館，才能挑戰這一座道館！也可以開啟自由選關！`);
+          window.audioEngine.speak('要先通過前面的道館，才能挑戰這一座道館！也可以開啟自由選關！');
           return;
         }
         window.audioEngine.playPop();
@@ -1018,7 +1018,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnCatch.addEventListener('click', () => {
           window.audioEngine.playPokeThrow();
           const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
-          if (q) window.audioEngine.speak(`準備投擲寶貝球！請仔細聽：${q.prompt}`);
+          if (q) window.audioEngine.speak('準備投擲寶貝球！請仔細聽老師的發音！');
         });
       }
     }
@@ -1225,7 +1225,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       setMascotSpeech(`「哎呀！野生精靈掙脫了！再聽一次老師的小提示吧！」`);
-      window.audioEngine.speak(`這題不是 ${chosenText}！提示你：${q.hint}，再試一次！`);
+      window.audioEngine.speak('這題不對，別灰心，看老師提示再試一次！');
     }
   }
 
@@ -1372,7 +1372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isCaught) {
           openSymbolModal(ZHUYIN_DATA.symbols.indexOf(sym));
         } else {
-          window.audioEngine.speak(`這是${sym.dexNo || ''}神秘注音寶可夢，快前往道館挑戰收服牠吧！`);
+          window.audioEngine.speak('這是神秘注音寶可夢，快前往道館挑戰收服牠吧！');
           setMascotSpeech(`🔒 這是【${sym.char}】神秘注音寶可夢，快去道館挑戰收服牠點亮圖鑑！`);
         }
       });
@@ -1844,7 +1844,7 @@ document.addEventListener('DOMContentLoaded', () => {
           window.audioEngine.playWrong();
           balloon.style.transform = 'translateX(-10px)';
           setTimeout(() => { balloon.style.transform = ''; }, 200);
-          window.audioEngine.speak(`這個是 ${opt}！再聽一次～請找出 ${question.target}`);
+          window.audioEngine.speak('這個不對，再聽一次！');
         }
       });
 
@@ -2002,7 +2002,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           window.audioEngine.playWrong();
           btn.style.background = '#FFE3E3';
-          window.audioEngine.speak(`不對～再想想看！提示你：${q.hint}！`);
+          window.audioEngine.speak('不對，再想想看！');
         }
       });
 

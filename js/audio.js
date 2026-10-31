@@ -208,14 +208,34 @@ class ZhuyinAudioEngine {
     const targetPitch = options.pitch || this.speechPitch;
 
     const baseManifest = window.AUDIO_MANIFEST || {};
-    const duetManifest = window.AUDIO_DUET_MANIFEST || {};
     const cuteManifest = window.AUDIO_CUTE_MANIFEST || {};
 
-    let audioUrl = null;
-    if (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35) {
-      audioUrl = cuteManifest[cleanKey] || baseManifest[cleanKey];
-    } else {
-      audioUrl = baseManifest[cleanKey];
+    const targetManifest = (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35)
+      ? cuteManifest
+      : baseManifest;
+    const fallbackManifest = (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35)
+      ? baseManifest
+      : cuteManifest;
+
+    let audioUrl = targetManifest[cleanKey] || fallbackManifest[cleanKey];
+
+    // 若符號或標點有微小差異，嘗試標點正規化比對以確保 100% 播放真人高畫質音檔
+    if (!audioUrl) {
+      const simplifiedKey = cleanKey.replace(/[，。！？、～~\s]/g, '');
+      for (const [k, url] of Object.entries(targetManifest)) {
+        if (k.replace(/[，。！？、～~\s]/g, '') === simplifiedKey) {
+          audioUrl = url;
+          break;
+        }
+      }
+      if (!audioUrl) {
+        for (const [k, url] of Object.entries(fallbackManifest)) {
+          if (k.replace(/[，。！？、～~\s]/g, '') === simplifiedKey) {
+            audioUrl = url;
+            break;
+          }
+        }
+      }
     }
 
     if (audioUrl) {
@@ -232,7 +252,7 @@ class ZhuyinAudioEngine {
         });
         return;
       } catch (e) {
-        // fallback to browser TTS
+        // fallback to browser TTS with preserved voice
       }
     }
 
@@ -243,14 +263,24 @@ class ZhuyinAudioEngine {
     if (!this.synth) return;
     const clearText = this.normalizeZhuyinForSpeech(text);
     const utterance = new SpeechSynthesisUtterance(clearText);
+
+    // 嚴格確保使用已保存的台灣女聲選項（絕不允許生硬機器聲或非保存語音）
     if (this.taiwanVoice) {
       utterance.voice = this.taiwanVoice;
       utterance.lang = this.taiwanVoice.lang;
     } else {
       utterance.lang = 'zh-TW';
     }
-    utterance.rate = options.rate || this.speechRate;
-    utterance.pitch = options.pitch || this.speechPitch;
+
+    const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
+    if (voiceRole === 'PERSONA::CUTE_GIRL') {
+      utterance.rate = options.rate || 0.95;
+      utterance.pitch = options.pitch || 1.45;
+    } else {
+      utterance.rate = options.rate || 0.88;
+      utterance.pitch = options.pitch || 1.15;
+    }
+
     if (options.onEnd) {
       utterance.onend = options.onEnd;
     }
