@@ -2510,6 +2510,17 @@ body {
   color: white;
   border-color: #1E40AF;
   box-shadow: 0 4px 0 #1E3A8A;
+  transition: all 0.2s ease;
+}
+.poke-cmd-btn.listen-btn.reading-now {
+  background: linear-gradient(135deg, #10B981, #059669);
+  border-color: #047857;
+  box-shadow: 0 4px 0 #065F46, 0 0 16px rgba(16, 185, 129, 0.6);
+  animation: pulseListenBtn 1.2s infinite alternate ease-in-out;
+}
+@keyframes pulseListenBtn {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
 }
 .poke-cmd-btn.hint-btn {
   background: linear-gradient(135deg, #F59E0B, #D97706);
