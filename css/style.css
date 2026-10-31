@@ -3655,16 +3655,18 @@ html, body {
 .exam-check-options-row {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 14px;
   width: 100%;
 }
 .exam-check-card {
-  flex: 1;
-  max-width: 240px;
+  flex: 0 1 calc(50% - 14px);
+  min-width: 140px;
+  max-width: 250px;
   background: #FFFFFF;
   border: 3px solid #CBD5E1;
   border-radius: 16px;
-  padding: 16px 20px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3723,18 +3725,20 @@ html, body {
 .exam-circle-choices-row {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
   width: 100%;
 }
 .exam-circle-card {
   position: relative;
-  flex: 1;
-  max-width: 260px;
+  flex: 0 1 calc(50% - 16px);
+  min-width: 140px;
+  max-width: 250px;
   background: #FFFBEB;
   border: 3px solid #FCD34D;
   border-radius: 18px;
-  padding: 22px 16px;
-  font-size: 30px;
+  padding: 16px 14px;
+  font-size: 26px;
   font-weight: 900;
   color: #78350F;
   letter-spacing: 4px;
@@ -4239,4 +4243,67 @@ ruby.zhuyin-ruby span.rb {
 
 .reading-passage-badge ruby.zhuyin-ruby {
   vertical-align: -0.1em !important;
+}
+
+
+/* ========================================================
+   4選項與答錯鎖定、正解高亮及得分計分板樣式
+   ======================================================== */
+.options-locked {
+  pointer-events: none !important;
+}
+
+.battle-score-pill {
+  animation: pulseScore 0.3s ease;
+}
+
+@keyframes pulseScore {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* 答對與正解揭露樣式 */
+.correct-choice,
+.reveal-correct,
+.battle-opt-btn.correct-choice,
+.battle-opt-btn.reveal-correct,
+.exam-check-card.correct-choice,
+.exam-check-card.reveal-correct,
+.exam-circle-card.correct-choice,
+.exam-circle-card.reveal-correct,
+.fill-candidate-tile.correct-choice,
+.fill-candidate-tile.reveal-correct,
+.combine-opt-btn.correct-choice,
+.combine-opt-btn.reveal-correct,
+.tone-stamp-btn.correct-choice,
+.tone-stamp-btn.reveal-correct,
+.connect-peg.correct-choice,
+.connect-peg.reveal-correct {
+  background: #D3F9D8 !important;
+  border-color: #40C057 !important;
+  color: #2B8A3E !important;
+  box-shadow: 0 6px 0 #2B8A3E !important;
+}
+
+.reveal-correct {
+  position: relative;
+  outline: 3px dashed #16A34A !important;
+  outline-offset: 2px;
+}
+
+/* 答錯反饋樣式 */
+.wrong-choice,
+.battle-opt-btn.wrong-choice,
+.exam-check-card.wrong-choice,
+.exam-circle-card.wrong-choice,
+.fill-candidate-tile.wrong-choice,
+.combine-opt-btn.wrong-choice,
+.tone-stamp-btn.wrong-choice,
+.connect-peg.wrong-choice {
+  background: #FEE2E2 !important;
+  border-color: #EF4444 !important;
+  color: #DC2626 !important;
+  box-shadow: 0 6px 0 #B91C1C !important;
+  animation: bossShake 0.4s ease;
 }
