@@ -9,7 +9,12 @@ class ZhuyinAudioEngine {
     this.synth = window.speechSynthesis;
     this.currentAudio = null; // 預錄正音班神經語音 MP3 播放器
     this.taiwanVoice = null;
-    this.selectedVoiceName = localStorage.getItem('zhuyin_selected_voice') || 'PERSONA::DUET';
+    let saved = localStorage.getItem('zhuyin_selected_voice');
+    if (saved !== 'PERSONA::CUTE_GIRL' && saved !== 'PERSONA::TEACHER') {
+      saved = 'PERSONA::TEACHER';
+      localStorage.setItem('zhuyin_selected_voice', saved);
+    }
+    this.selectedVoiceName = saved;
     this.isMuted = false;
     this.speechRate = parseFloat(localStorage.getItem('zhuyin_speech_rate') || '0.86');
     this.speechPitch = parseFloat(localStorage.getItem('zhuyin_speech_pitch') || '1.12'); // 台灣國小溫柔親切的老師音調
@@ -112,35 +117,19 @@ class ZhuyinAudioEngine {
       // 嚴格過濾出純台灣女聲清單（完全不含男聲）
       const taiwanVoices = voices.filter(v => this.isTaiwanVoice(v));
 
-      // 若之前存到已刪除的男聲，自動重設為可愛女聲或雅婷老師
-      if (this.selectedVoiceName && (this.selectedVoiceName.includes('Zhiwei') || this.selectedVoiceName.includes('志偉') || this.selectedVoiceName.includes('YunJhe') || this.selectedVoiceName.toLowerCase().includes('google'))) {
-        this.selectedVoiceName = 'PERSONA::DUET';
-        localStorage.removeItem('zhuyin_selected_voice');
+      if (this.selectedVoiceName !== 'PERSONA::CUTE_GIRL' && this.selectedVoiceName !== 'PERSONA::TEACHER') {
+        this.selectedVoiceName = 'PERSONA::TEACHER';
+        localStorage.setItem('zhuyin_selected_voice', 'PERSONA::TEACHER');
       }
 
-      // 若選擇的是「🍓 小莓姐姐」或「🎀 糖糖學姊」可愛女生專屬角色模式
-      if (this.selectedVoiceName === 'PERSONA::CUTE_GIRL' || this.selectedVoiceName === 'PERSONA::SWEET_SISTER') {
-        // 優先挑選音色最甜美的台灣女聲基底 (曉臻 / 曉雨 / 雅婷 / Google 台灣女聲)
+      if (this.selectedVoiceName === 'PERSONA::CUTE_GIRL') {
         this.taiwanVoice =
           taiwanVoices.find(v => v.name.includes('HsiaoChen') || v.name.includes('曉臻')) ||
           taiwanVoices.find(v => v.name.includes('HsiaoYu') || v.name.includes('曉雨')) ||
-          taiwanVoices.find(v => v.name.includes('Yating') || v.name.includes('雅婷')) ||
           this.getBestBaseFemaleVoice(taiwanVoices);
         return;
       }
 
-      // 如果使用者有指定過特定台灣女聲
-      if (this.selectedVoiceName) {
-        const found = taiwanVoices.find(v => v.name === this.selectedVoiceName);
-        if (found) {
-          this.taiwanVoice = found;
-          return;
-        }
-      }
-
-      // 台灣在地女聲優先順序：
-      // 1. Microsoft 雅婷 (Yating) -> 台北錄製、道地台灣腔調、溫柔親切國小女老師首選！
-      // 2. Microsoft 曉臻 (HsiaoChen) / 曉雨 (HsiaoYu) -> 甜美自然台灣女生
       this.taiwanVoice = this.getBestBaseFemaleVoice(taiwanVoices);
     };
 
@@ -215,7 +204,7 @@ class ZhuyinAudioEngine {
     this.stopSpeaking();
 
     const cleanKey = text.trim();
-    const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::DUET';
+    const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
     const targetPitch = options.pitch || this.speechPitch;
 
     const baseManifest = window.AUDIO_MANIFEST || {};
@@ -225,12 +214,7 @@ class ZhuyinAudioEngine {
     let audioUrl = null;
     if (voiceRole === 'PERSONA::CUTE_GIRL' || targetPitch >= 1.35) {
       audioUrl = cuteManifest[cleanKey] || baseManifest[cleanKey];
-    } else if (voiceRole === 'PERSONA::DUET' || voiceRole === 'PERSONA::SWEET_SISTER') {
-      audioUrl = duetManifest[cleanKey] || baseManifest[cleanKey];
-    } else if (voiceRole === 'PERSONA::TEACHER') {
-      audioUrl = baseManifest[cleanKey];
     } else {
-      // 若選了系統內建語音，仍優先使用與音調對應的高清正音音檔以防注音被截斷
       audioUrl = baseManifest[cleanKey];
     }
 

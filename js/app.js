@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 語音引擎初始化歡迎詞（親切台灣小一老師口吻）
     setTimeout(() => {
-      window.audioEngine.speak('小朋友好！歡迎來到ㄅㄆㄇ冒險島，快點選第一關，跟老師一起闖關打怪獸喔！');
+      window.audioEngine.speak('小朋友好！歡迎來到ㄅㄆㄇ冒險島，快點選第一關，跟老師一起闖關打怪獸！');
     }, 600);
   }
 
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 分頁對應吉祥物貼心提示
         const speeches = {
-          'tab-adventure': '🗺️ 選擇亮起來的島嶼關卡，答對題目就能發射星光魔法收服守護獸喔！',
+          'tab-adventure': '🗺️ 選擇亮起來的島嶼關卡，答對題目就能發射星光魔法收服守護獸！',
           'tab-gallery': '🐱 點擊任何一張注音卡片，來聽聽生活例詞和口訣！',
           'tab-train': '🚂 嗚嗚～小火車要開了！把聲母和韻母拼在一起吧！',
           'tab-tones': '🎢 一聲平、二聲揚、三聲拐彎、四聲降！跟著滑梯唸！',
@@ -383,15 +383,12 @@ document.addEventListener('DOMContentLoaded', () => {
       updateSliderLabels(parseFloat(dom.sliderSpeechRate.value), parseFloat(e.target.value));
     });
 
-    // 當切換下拉選單的角色時，立即生效並自動套用該女生角色的最佳音調與語速
+    // 當切換下拉選單的角色時，立即生效並自動套用該角色的最佳音調與語速
     dom.selectVoicePicker.addEventListener('change', (e) => {
       const val = e.target.value;
       if (val === 'PERSONA::CUTE_GIRL') {
         dom.sliderSpeechRate.value = 0.92;
         dom.sliderSpeechPitch.value = 1.42;
-      } else if (val === 'PERSONA::DUET' || val === 'PERSONA::SWEET_SISTER') {
-        dom.sliderSpeechRate.value = 0.90;
-        dom.sliderSpeechPitch.value = 1.25;
       } else {
         dom.sliderSpeechRate.value = 0.86;
         dom.sliderSpeechPitch.value = 1.12;
@@ -413,11 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
       window.audioEngine.setSpeechParams(rate, pitch);
 
       if (chosenVoiceName === 'PERSONA::CUTE_GIRL') {
-        window.audioEngine.speak('嗨～！我是最喜歡草莓的小莓姐姐！我們一起開開心心闖關學注音唷，耶～！', { voiceName: chosenVoiceName, rate, pitch });
-      } else if (chosenVoiceName === 'PERSONA::DUET' || chosenVoiceName === 'PERSONA::SWEET_SISTER') {
-        window.audioEngine.speak('哈囉小朋友！我是糖糖學姊，答對題目會送你亮晶晶的大星星喔！', { voiceName: chosenVoiceName, rate, pitch });
+        window.audioEngine.speak('嗨～！我是最喜歡草莓的小梅姐姐！我們一起開開心心闖關學注音，耶～！', { voiceName: chosenVoiceName, rate, pitch });
       } else {
-        window.audioEngine.speak('小朋友好！我是雅婷老師，我們一起來快樂學注音喔！', { voiceName: chosenVoiceName, rate, pitch });
+        window.audioEngine.speak('小朋友好！我是正音班女老師，我們一起來快樂學注音！', { voiceName: chosenVoiceName, rate, pitch });
       }
     });
 
@@ -432,9 +427,8 @@ document.addEventListener('DOMContentLoaded', () => {
       window.audioEngine.playCorrect();
 
       closeVoiceModal();
-      const roleName = chosenVoiceName === 'PERSONA::CUTE_GIRL' ? '🍓 小莓妹妹（5歲超萌小女生）' :
-                       (chosenVoiceName === 'PERSONA::DUET' || chosenVoiceName === 'PERSONA::SWEET_SISTER') ? '🌻 小潔姐姐 ＆ 小萌娃（雙人律動）' : '🌸 正音班溫柔女老師';
-      setMascotSpeech(`🎙️ 耶！已經切換成【${roleName}】的聲音囉！`);
+      const roleName = chosenVoiceName === 'PERSONA::CUTE_GIRL' ? '🍓 小梅姐姐（超萌小女生）' : '🌸 台灣正音班女老師';
+      setMascotSpeech(`🎙️ 耶！已經切換成【${roleName}】的聲音！`);
 
       // 若目前正在闖關畫面中，立刻用新切換的聲音重念一次當前題目！
       if (state.adventure && state.adventure.currentStage) {
@@ -452,73 +446,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dom.selectVoicePicker) return;
     dom.selectVoicePicker.innerHTML = '';
 
-    const currentVoice = window.audioEngine.selectedVoiceName || 'PERSONA::DUET';
+    const currentVoice = window.audioEngine.selectedVoiceName || 'PERSONA::TEACHER';
 
-    // 1. 三大專屬真人級台灣女聲與萌娃角色（皆擁有完整獨立錄製的闖關與圖鑑語音庫！）
-    const cutePersonas = [
+    // 依使用者需求：僅保留「🌸 台灣正音班女老師」與「🍓 小梅姐姐」
+    const personas = [
       {
-        value: 'PERSONA::DUET',
-        label: '🌻 小潔姐姐 ＆ 小萌娃（三拍律動口訣＋5歲萌娃雙人跟讀 ✨激推！）'
+        value: 'PERSONA::TEACHER',
+        label: '🌸 台灣正音班女老師（標準第一聲清楚教學）'
       },
       {
         value: 'PERSONA::CUTE_GIRL',
-        label: '🍓 小莓妹妹（5歲超萌可愛小女生童音獨唱 ✨新登場！）'
-      },
-      {
-        value: 'PERSONA::TEACHER',
-        label: '🌸 台灣正音班女老師（YMCA標準第一聲溫柔單人女老師 ✨）'
+        label: '🍓 小梅姐姐（超萌可愛小女生）'
       }
     ];
 
-    cutePersonas.forEach(p => {
+    personas.forEach(p => {
       const opt = document.createElement('option');
       opt.value = p.value;
       opt.textContent = p.label;
-      if (currentVoice === p.value || (currentVoice === 'PERSONA::SWEET_SISTER' && p.value === 'PERSONA::DUET')) {
-        opt.selected = true;
-      }
-      dom.selectVoicePicker.appendChild(opt);
-    });
-
-    // 2. 系統內建台灣女聲清單（已全面刪除所有男聲）
-    const voices = window.audioEngine.getAvailableTaiwanVoices();
-    if (!voices || voices.length === 0) {
-      return;
-    }
-
-    // 依台灣在地女聲推薦排序：雅婷老師 -> 曉臻/曉雨 -> Google 台灣女聲 -> 美佳
-    voices.sort((a, b) => {
-      const score = (v) => {
-        if (v.name.includes('Yating') || v.name.includes('雅婷')) return 100;
-        if (v.name.includes('HsiaoChen') || v.name.includes('曉臻')) return 95;
-        if (v.name.includes('HsiaoYu') || v.name.includes('曉雨')) return 92;
-        if (v.name.includes('Meijia') || v.name.includes('美佳')) return 85;
-        if (v.name.includes('Hanhan')) return 20;
-        return 50;
-      };
-      return score(b) - score(a);
-    });
-
-    voices.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v.name;
-
-      // 友好女聲別名標註（已完全移除男聲）
-      let label = v.name;
-      if (v.name.includes('Yating') || v.name.includes('雅婷')) {
-        label = '🌸 系統內建：Microsoft 雅婷老師（純台灣口音）';
-      } else if (v.name.includes('HsiaoChen') || v.name.includes('曉臻')) {
-        label = '👧 系統內建：晨晨姐姐（Microsoft 曉臻）';
-      } else if (v.name.includes('HsiaoYu') || v.name.includes('曉雨')) {
-        label = '🌺 系統內建：小雨姐姐（Microsoft 曉雨）';
-      } else if (v.name.includes('Meijia') || v.name.includes('美佳')) {
-        label = '🍎 系統內建：美佳老師（Apple 台灣女聲）';
-      } else if (v.name.includes('Hanhan')) {
-        label = '🌼 系統內建：涵涵老師（台灣女聲）';
-      }
-
-      opt.textContent = label;
-      if (!currentVoice.startsWith('PERSONA::') && currentVoice === v.name) {
+      if (currentVoice === p.value) {
         opt.selected = true;
       }
       dom.selectVoicePicker.appendChild(opt);
@@ -548,7 +494,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           dom.btnToggleUnlockAll.textContent = '🔓 自由選關模式：關閉';
           dom.btnToggleUnlockAll.classList.remove('unlocked-mode');
-          setMascotSpeech('🗺️ 恢復循序漸進闖關模式！一關一關挑戰更有成就感喔！');
+          setMascotSpeech('🗺️ 恢復循序漸進闖關模式！一關一關挑戰更有成就感！');
         }
         renderAdventureMap();
       });
@@ -584,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (q && dom.battleHintToast) {
           dom.battleHintToast.textContent = `💡 老師提示：${q.hint}`;
           dom.battleHintToast.style.display = 'block';
-          window.audioEngine.speak(`老師提示你喔：${q.hint}`);
+          window.audioEngine.speak(`老師提示你：${q.hint}`);
         }
       });
     }
@@ -679,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.addEventListener('click', () => {
         if (!unlocked) {
           window.audioEngine.playWrong();
-          window.audioEngine.speak(`要先通過第 ${stage.id - 1} 關，才能解鎖這一關喔！或是按右上角的自由選關按鈕！`);
+          window.audioEngine.speak(`要先通過第 ${stage.id - 1} 關，才能解鎖這一關！或是按右上角的自由選關按鈕！`);
           return;
         }
         window.audioEngine.playPop();
@@ -742,7 +688,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (q && dom.battleHintToast) {
           dom.battleHintToast.textContent = `💡 老師提示：${q.hint}`;
           dom.battleHintToast.style.display = 'block';
-          window.audioEngine.speak(`老師提示你喔：${q.hint}`);
+          window.audioEngine.speak(`老師提示你：${q.hint}`);
         }
       });
     }
@@ -750,7 +696,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.battleStageTitle.textContent = `${stage.icon} ${stage.name}・${stage.subtitle}`;
     dom.bossEmoji.textContent = stage.bossIcon;
     dom.bossNameTag.textContent = `守關精靈：${stage.bossName}`;
-    dom.bossDialogue.textContent = `「我是${stage.bossName}！答對 ${stage.questions.length} 題就能過關拿星星喔！」`;
+    dom.bossDialogue.textContent = `「我是${stage.bossName}！答對 ${stage.questions.length} 題就能過關拿星星！」`;
 
     updateBattleHeaderUI();
     renderCurrentStageQuestion();
@@ -851,7 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '「哇！好強的星光魔法，你答對了！」',
         '「太厲害了吧！完全正確！」',
         '「嗚哇～被你的注音閃電擊中了！」',
-        '「好棒喔！耳朵超級靈敏！」'
+        '「好棒！耳朵超級靈敏！」'
       ];
       dom.bossDialogue.textContent = praises[state.adventure.qIndex % praises.length];
 
@@ -876,7 +822,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dom.battleHintToast.style.display = 'block';
       dom.bossDialogue.textContent = `「差一點點！看下面的老師小提示再選一次吧！」`;
 
-      window.audioEngine.speak(`這題不是 ${chosenText} 喔！提示你：${q.hint}，再試一次！`);
+      window.audioEngine.speak(`這題不是 ${chosenText}！提示你：${q.hint}，再試一次！`);
     }
   }
 
@@ -969,7 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnAllClear.addEventListener('click', () => {
         window.audioEngine.playFanfare();
         if (window.confetti) window.confetti.trigger(120);
-        window.audioEngine.speak('太了不起了！你已經把十個關卡全部破關，成為真正的注音大勇者囉！');
+        window.audioEngine.speak('太了不起了！你已經把十個關卡全部破關，成為真正的注音大勇者！');
         showAdventureMap();
       });
     }
@@ -1435,7 +1381,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const speakTarget = () => {
       const wordPart = symData ? `${symData.word}的，` : '';
-      window.audioEngine.speak(`仔細聽喔：${question.target}，${question.target}！${wordPart}${question.target}，${question.target}！請找出正確的氣球！`);
+      window.audioEngine.speak(`仔細聽：${question.target}，${question.target}！${wordPart}${question.target}，${question.target}！請找出正確的氣球！`);
     };
     speakTarget();
 
@@ -1470,7 +1416,7 @@ document.addEventListener('DOMContentLoaded', () => {
           window.audioEngine.playWrong();
           balloon.style.transform = 'translateX(-10px)';
           setTimeout(() => { balloon.style.transform = ''; }, 200);
-          window.audioEngine.speak(`這個是 ${opt} 喔！再聽一次～請找出 ${question.target}`);
+          window.audioEngine.speak(`這個是 ${opt}！再聽一次～請找出 ${question.target}`);
         }
       });
 
@@ -1543,7 +1489,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.game.flippedCards = [];
         if (state.game.matchedPairs === 4) {
           setTimeout(() => {
-            renderGameVictory('哇！翻牌記憶大成功！好棒喔！');
+            renderGameVictory('哇！翻牌記憶大成功！好棒！');
           }, 600);
         }
       } else {
@@ -1581,7 +1527,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dom.gameArena.innerHTML = `
       <div class="game-status-bar">
         <div class="game-prompt-large">
-          <span>🎯 聽聽看喔：【${q.word}】的「${q.targetPart}」是第幾聲呢？</span>
+          <span>🎯 聽聽看：【${q.word}】的「${q.targetPart}」是第幾聲呢？</span>
           <button class="replay-audio-btn" id="btn-replay-tone-quiz" title="重聽發音">🔊</button>
         </div>
         <div class="score-badge">第 ${state.game.round} / ${state.game.maxRounds} 關 | 得分：⭐ ${state.game.score}</div>
@@ -1593,7 +1539,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionsRow = document.getElementById('tone-options-row');
 
     const speakPrompt = () => {
-      window.audioEngine.speak(`聽聽看喔！${q.word}的${q.targetPart}，請問是第幾聲呢？`);
+      window.audioEngine.speak(`聽聽看！${q.word}的${q.targetPart}，請問是第幾聲呢？`);
     };
     speakPrompt();
 
@@ -1628,7 +1574,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           window.audioEngine.playWrong();
           btn.style.background = '#FFE3E3';
-          window.audioEngine.speak(`不對喔～再想想看！提示你：${q.hint}喔！`);
+          window.audioEngine.speak(`不對～再想想看！提示你：${q.hint}！`);
         }
       });
 
@@ -1644,7 +1590,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div style="text-align:center;animation:fadeIn 0.4s ease;">
         <div style="font-size:72px;margin-bottom:12px;">🏆</div>
         <h2 style="font-size:32px;font-weight:900;color:#D9480F;margin-bottom:10px;">${title}</h2>
-        <p style="font-size:20px;font-weight:800;color:#2B2D42;margin-bottom:24px;">哇！太厲害了！你全部挑戰成功，獲得好多閃亮亮星星喔！⭐</p>
+        <p style="font-size:20px;font-weight:800;color:#2B2D42;margin-bottom:24px;">哇！太厲害了！你全部挑戰成功，獲得好多閃亮亮星星！⭐</p>
         <button class="big-action-btn" id="btn-play-again" style="margin:0 auto;">
           <span>🔄</span>
           <span>再玩一次</span>
@@ -1698,13 +1644,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 蓋章領星星
     dom.btnCanvasStamp.addEventListener('click', () => {
       if (!state.canvas.hasDrawn) {
-        window.audioEngine.speak('要先用彩色筆把注音描好，才可以蓋好棒章喔！');
+        window.audioEngine.speak('要先用彩色筆把注音描好，才可以蓋好棒章！');
         return;
       }
       unlockAchievement('calligraphy_star');
       window.audioEngine.playCorrect();
       addStars(1, true);
-      setMascotSpeech(`⭐ 哇！寫得好漂亮喔！送你一顆亮晶晶的星星！`);
+      setMascotSpeech(`⭐ 哇！寫得好漂亮！送你一顆亮晶晶的星星！`);
 
       // 在畫布上畫上金色讚美大星星章
       drawStarStamp(ctx, 170, 170);
