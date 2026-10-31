@@ -1160,9 +1160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <!-- 3 個清晰考核指令 (已全面移除提示與作弊道具) -->
           <div class="poke-battle-actions">
-            <button class="poke-cmd-btn catch-btn" id="btn-poke-catch">
-              <span>🔴</span> 投擲精靈球
-            </button>
+            
             <button class="poke-cmd-btn listen-btn" id="btn-poke-listen">
               <span>🔊</span> 聽老師清晰朗讀題目
             </button>
@@ -1212,14 +1210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      const btnCatch = document.getElementById('btn-poke-catch');
-      if (btnCatch) {
-        btnCatch.addEventListener('click', () => {
-          window.audioEngine.playPokeThrow();
-          const q = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
-          if (q) window.audioEngine.speak('準備投擲寶貝球！請仔細聽老師的發音！');
-        });
-      }
+
     }
 
         updateBattleHeaderUI();
