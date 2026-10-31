@@ -530,6 +530,123 @@ class ZhuyinAudioEngine {
     osc.connect(gain);
     gain.connect(this.ctx.destination);
   }
+
+  /**
+   * 🔴 寶可夢精靈球投擲音效 (Pokéball Throw)
+   */
+  playPokeThrow() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(780, now + 0.18);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  }
+
+  /**
+   * 🔴 寶可夢精靈球晃動音效 (Pokéball Wobble Click)
+   */
+  playPokeShake() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(440, now);
+    osc.frequency.exponentialRampToValueAtTime(220, now + 0.08);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  /**
+   * ✨ 寶可夢成功收服大成功音效 (Classic Pokémon Catch Fanfare)
+   */
+  playPokeCaught() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    // 經典四音收服完成 Jingle (G5, B5, D6, G6)
+    const notes = [
+      { f: 783.99, t: 0, d: 0.14 },
+      { f: 987.77, t: 0.14, d: 0.14 },
+      { f: 1174.66, t: 0.28, d: 0.16 },
+      { f: 1567.98, t: 0.44, d: 0.55 }
+    ];
+
+    const now = this.ctx.currentTime;
+    notes.forEach(n => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const start = now + n.t;
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(n.f, start);
+
+      gain.gain.setValueAtTime(0.22, start);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + n.d);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(start);
+      osc.stop(start + n.d);
+    });
+  }
+
+  /**
+   * ⚡ 效果絕佳 / 招式擊中音效 (Super Effective Hit)
+   */
+  playPokeSuperEffective() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(150, now);
+    osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
+
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  /**
+   * 🏅 獲得道館徽章熱烈慶祝音效
+   */
+  playBadgeGet() {
+    this.playFanfare();
+  }
 }
 
 // 建立全域音效實例

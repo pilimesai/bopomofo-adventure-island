@@ -2046,3 +2046,540 @@ body {
     padding: 16px;
   }
 }
+
+
+/* ========================================================
+   POKÉMON THEME STYLES (寶可夢風格介面與戰鬥系統)
+   ======================================================== */
+
+/* 經典精靈球圖示元件 (CSS Authentic Pokéball) */
+.pokeball-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #EF4444 50%, #FFFFFF 50%);
+  border: 3px solid #1E293B;
+  position: relative;
+  display: inline-block;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.2s;
+  vertical-align: middle;
+}
+.pokeball-icon-btn:hover {
+  transform: rotate(20deg) scale(1.1);
+}
+.pokeball-icon-btn::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 2px);
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #1E293B;
+}
+.pokeball-icon-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #FFFFFF;
+  border: 3px solid #1E293B;
+  border-radius: 50%;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.4);
+}
+
+/* 經典寶可夢對戰舞台 (Pokémon Battle Stadium) */
+.pokemon-battle-field {
+  background: radial-gradient(ellipse at center, #E8F5E9 0%, #C8E6C9 65%, #A5D6A7 100%);
+  border: 5px solid #2E7D32;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(46, 125, 50, 0.2), 0 12px 28px rgba(0,0,0,0.12);
+  margin-bottom: 20px;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 雙方戰鬥對峙平台 */
+.pokemon-stadium-platforms {
+  position: relative;
+  height: 280px;
+  width: 100%;
+}
+
+/* 右上方：對手/野生寶可夢區 */
+.poke-opponent-zone {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.poke-opponent-plate {
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid #374151;
+  border-radius: 16px 4px 16px 4px;
+  padding: 10px 18px;
+  box-shadow: 4px 4px 0 #1F2937;
+  min-width: 220px;
+}
+
+.poke-opponent-sprite {
+  width: 110px;
+  height: 110px;
+  background: radial-gradient(circle, #FFFFFF 30%, #E8F5E9 70%);
+  border-radius: 50%;
+  border: 4px solid #4CAF50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  animation: pokeHover 2s infinite ease-in-out;
+  position: relative;
+}
+
+/* 左下方：玩家出戰夥伴區 */
+.poke-player-zone {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.poke-player-sprite {
+  width: 110px;
+  height: 110px;
+  background: radial-gradient(circle, #FFFFFF 30%, #FFF3E0 70%);
+  border-radius: 50%;
+  border: 4px solid #FF9800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  animation: pokeBounce 1.8s infinite ease-in-out;
+  cursor: pointer;
+  position: relative;
+}
+
+.poke-player-plate {
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid #374151;
+  border-radius: 4px 16px 4px 16px;
+  padding: 10px 18px;
+  box-shadow: 4px 4px 0 #1F2937;
+  min-width: 220px;
+}
+
+/* 寶可夢血條 (Pokémon HP Bar) */
+.poke-hp-wrapper {
+  margin-top: 6px;
+}
+.poke-hp-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 900;
+  color: #1F2937;
+  margin-bottom: 2px;
+}
+.poke-hp-track {
+  height: 14px;
+  background: #E5E7EB;
+  border-radius: 999px;
+  border: 2px solid #374151;
+  overflow: hidden;
+  position: relative;
+}
+.poke-hp-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #22C55E, #16A34A);
+  border-radius: 999px;
+  transition: width 0.5s ease-out, background 0.3s;
+}
+.poke-hp-bar.mid {
+  background: linear-gradient(90deg, #EAB308, #CA8A04);
+}
+.poke-hp-bar.low {
+  background: linear-gradient(90deg, #EF4444, #DC2626);
+}
+
+/* 經典精靈球投擲與晃動動畫 (Pokéball Throw Animation) */
+.pokeball-throw-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flying-pokeball {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #EF4444 50%, #FFFFFF 50%);
+  border: 4px solid #1E293B;
+  position: absolute;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  display: none;
+}
+.flying-pokeball::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 3px);
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: #1E293B;
+}
+.flying-pokeball::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  background: #FFFFFF;
+  border: 4px solid #1E293B;
+  border-radius: 50%;
+}
+
+.flying-pokeball.throw-arc {
+  display: block;
+  animation: pokeThrow 0.75s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.flying-pokeball.wobble {
+  display: block;
+  animation: pokeWobble 1.6s forwards ease-in-out;
+}
+
+@keyframes pokeThrow {
+  0% {
+    left: 20%;
+    bottom: 20%;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    left: 55%;
+    bottom: 60%;
+    transform: scale(1.1) rotate(360deg);
+  }
+  100% {
+    left: 75%;
+    bottom: 50%;
+    transform: scale(1) rotate(720deg);
+  }
+}
+
+@keyframes pokeWobble {
+  0% { transform: scale(1) rotate(0deg); left: 75%; bottom: 50%; }
+  15% { transform: scale(1.05) rotate(-26deg); }
+  30% { transform: scale(1) rotate(0deg); }
+  45% { transform: scale(1.05) rotate(26deg); }
+  60% { transform: scale(1) rotate(0deg); }
+  75% { transform: scale(1.05) rotate(-26deg); }
+  90% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 30px #F59E0B; }
+}
+
+@keyframes pokeHover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pokeBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.03); }
+}
+
+/* 經典對戰指令列 (Pokémon Command Menu) */
+.poke-battle-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.poke-cmd-btn {
+  background: white;
+  border: 3px solid #374151;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 900;
+  color: #1F2937;
+  box-shadow: 0 4px 0 #1F2937;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.poke-cmd-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #1F2937;
+}
+.poke-cmd-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #1F2937;
+}
+.poke-cmd-btn.catch-btn {
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  color: white;
+  border-color: #991B1B;
+  box-shadow: 0 4px 0 #7F1D1D;
+}
+.poke-cmd-btn.listen-btn {
+  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  color: white;
+  border-color: #1E40AF;
+  box-shadow: 0 4px 0 #1E3A8A;
+}
+.poke-cmd-btn.hint-btn {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: white;
+  border-color: #B45309;
+  box-shadow: 0 4px 0 #92400E;
+}
+.poke-cmd-btn.run-btn {
+  background: #F3F4F6;
+  color: #4B5563;
+  border-color: #9CA3AF;
+  box-shadow: 0 4px 0 #6B7280;
+}
+
+/* 🔴 寶可夢大圖鑑專區 (Pokédex Style) */
+.pokedex-banner {
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  border: 4px solid #991B1B;
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  color: white;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.25);
+}
+
+.pokedex-title h2 {
+  font-size: 24px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pokedex-progress-box {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-round);
+  padding: 6px 18px;
+  font-size: 16px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pokedex-bar-track {
+  width: 140px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.pokedex-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: #FBBF24;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+/* 圖鑑卡片：未收服（剪影黑影）與已收服（彩色精靈） */
+.symbol-card.uncaught {
+  background: #E5E7EB;
+  border: 3px dashed #9CA3AF !important;
+  opacity: 0.85;
+}
+.symbol-card.uncaught .card-icon {
+  filter: brightness(0) opacity(0.35);
+}
+.symbol-card.uncaught .card-word {
+  color: #6B7280;
+}
+.symbol-card.caught {
+  border: 3px solid #10B981 !important;
+  box-shadow: 0 6px 0 #059669;
+  position: relative;
+}
+.symbol-card .poke-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  background: #1F2937;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.symbol-card .poke-caught-ball {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+}
+
+/* 🏅 道館徽章展示盒 (Gym Badge Case) */
+.gym-badge-case {
+  background: linear-gradient(135deg, #1E293B, #0F172A);
+  border: 6px solid #475569;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: inset 0 4px 20px rgba(0,0,0,0.5), 0 12px 30px rgba(0,0,0,0.25);
+  margin-bottom: 30px;
+}
+.gym-badge-title {
+  color: #F8FAFC;
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gym-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+.gym-badge-slot {
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  padding: 16px 8px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.gym-badge-slot.obtained {
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.05));
+  border: 2px solid #F59E0B;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
+}
+.gym-badge-slot .badge-img {
+  font-size: 40px;
+  margin-bottom: 6px;
+  filter: grayscale(1) opacity(0.35);
+  transition: transform 0.2s;
+}
+.gym-badge-slot.obtained .badge-img {
+  filter: none;
+  animation: badgeGlow 2.5s infinite alternate;
+}
+.gym-badge-slot:hover .badge-img {
+  transform: scale(1.15);
+}
+.gym-badge-slot .badge-text {
+  font-size: 13px;
+  font-weight: 800;
+  color: #94A3B8;
+}
+.gym-badge-slot.obtained .badge-text {
+  color: #FCD34D;
+}
+
+@keyframes badgeGlow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px #F59E0B); }
+  100% { transform: scale(1.06); filter: drop-shadow(0 0 10px #F59E0B); }
+}
+
+/* 夥伴切換彈出面板 (Starter Pokémon Selector) */
+.partner-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+.partner-card {
+  background: white;
+  border: 3px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 16px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.partner-card:hover {
+  transform: translateY(-4px);
+  border-color: #3B82F6;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+}
+.partner-card.selected {
+  border-color: #EF4444;
+  background: #FEF2F2;
+  box-shadow: 0 6px 0 #DC2626;
+}
+.partner-card .p-icon {
+  font-size: 48px;
+  margin-bottom: 6px;
+}
+.partner-card .p-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1E293B;
+}
+.partner-card .p-type {
+  font-size: 12px;
+  font-weight: 800;
+  color: #64748B;
+}
+
+/* 響應式微調 */
+@media (max-width: 768px) {
+  .poke-opponent-zone, .poke-player-zone {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin-bottom: 12px;
+  }
+  .pokemon-stadium-platforms {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .gym-badge-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .poke-battle-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

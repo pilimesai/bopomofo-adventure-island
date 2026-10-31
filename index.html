@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ㄅㄆㄇ 快樂冒險島 | 台灣教育部小一注音生動教學系統</title>
+  <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=6">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -19,23 +19,29 @@
   <!-- 頂部導航列 -->
   <header class="app-header">
     <div class="logo-container" id="btn-home-logo" title="回首頁">
-      <div class="logo-badge">ㄅ</div>
+      <div class="pokeball-icon-btn" style="width:42px;height:42px;margin-right:4px;"></div>
       <div class="logo-text">
-        <h1>ㄅㄆㄇ 快樂冒險島 <span class="logo-tag">小一教育部專用</span></h1>
+        <h1>ㄅㄆㄇ 寶可夢大冒險 <span class="logo-tag">注音道館挑戰</span></h1>
       </div>
     </div>
 
     <div class="header-right">
       <div class="mascot-bubble" id="mascot-speech">
-        🐱 喵～歡迎來到ㄅㄆㄇ冒險島，準備好開始闖關了嗎？
+        ⚡ 皮卡！歡迎來到ㄅㄆㄇ寶可夢大冒險，準備好收服注音寶可夢了嗎？
       </div>
 
-      <div class="player-level-badge" id="player-level-badge" title="冒險者等級">
-        <span id="player-rank-icon">🛡️</span>
-        <span id="player-rank-title">Lv.1 見習小勇者</span>
+      <div class="player-level-badge" id="player-level-badge" title="點擊切換出戰夥伴！" style="cursor:pointer;border-color:#EF4444;">
+        <span id="player-rank-icon">⚡</span>
+        <span id="player-rank-title">夥伴：皮卡丘 Lv.5</span>
       </div>
 
-      <div class="star-counter" id="header-star-btn" title="查看榮譽星光榜">
+      <div class="star-counter" id="header-ball-counter" title="擁有寶貝球" style="border-color:#EF4444;background:#FFF5F5;">
+        <span class="pokeball-icon-btn" style="width:20px;height:20px;margin-right:2px;"></span>
+        <span id="global-ball-count" style="color:#E11D48;font-weight:900;">20</span>
+        <span style="font-size:12px;opacity:0.85;">球</span>
+      </div>
+
+      <div class="star-counter" id="header-star-btn" title="查看道館徽章與榮譽榜">
         <span>⭐</span>
         <span id="global-star-count">0</span>
         <span style="font-size:12px;opacity:0.85;">顆星</span>
@@ -55,11 +61,11 @@
   <nav class="tab-navigation" aria-label="學習專區切換">
     <button class="tab-btn active" data-tab="tab-adventure">
       <span class="tab-icon">🗺️</span>
-      <span>闖關大冒險</span>
+      <span>道館闖關挑戰</span>
     </button>
     <button class="tab-btn" data-tab="tab-gallery">
-      <span class="tab-icon">🌈</span>
-      <span>37注音圖鑑</span>
+      <span class="tab-icon">🔴</span>
+      <span>寶可夢大圖鑑</span>
     </button>
     <button class="tab-btn" data-tab="tab-train">
       <span class="tab-icon">🚂</span>
@@ -71,15 +77,15 @@
     </button>
     <button class="tab-btn" data-tab="tab-games">
       <span class="tab-icon">🎮</span>
-      <span>趣味小遊樂園</span>
+      <span>寶可夢遊樂園</span>
     </button>
     <button class="tab-btn" data-tab="tab-canvas">
       <span class="tab-icon">✍️</span>
-      <span>筆順小畫家</span>
+      <span>筆順修煉場</span>
     </button>
     <button class="tab-btn" data-tab="tab-achievements">
       <span class="tab-icon">🏆</span>
-      <span>榮譽星光榜</span>
+      <span>道館徽章館</span>
     </button>
   </nav>
 
@@ -94,8 +100,8 @@
       <div id="adventure-map-view" class="adventure-map-container">
         <div class="adventure-hero-banner">
           <div class="hero-left">
-            <h2>🗺️ ㄅㄆㄇ 勇者闖關大冒險</h2>
-            <p>跟著小一前十週進度，一關一關收服注音守護獸，打敗第十關黃金巨龍！</p>
+            <h2>🗺️ ㄅㄆㄇ 寶可夢道館巡迴大挑戰</h2>
+            <p>挑戰 10 大屬性道館館主，收集 10 枚道館徽章，用寶貝球收服 37 隻野生注音寶可夢！</p>
           </div>
           <div class="hero-stats-box">
             <div class="stat-pill">
@@ -198,12 +204,27 @@
          PAGE 1: 37注音探險圖鑑
          ======================================================== -->
     <section class="tab-pane" id="tab-gallery">
+      <!-- 🔴 寶可夢大圖鑑收集條 (Pokédex Progress) -->
+      <div class="pokedex-banner">
+        <div class="pokedex-title">
+          <h2>🔴 ㄅㄆㄇ 寶可夢大圖鑑 (Pokédex)</h2>
+          <p style="font-size:14px;opacity:0.9;font-weight:700;margin-top:4px;">每通過道館或挑戰收服一隻注音精靈，就能點亮圖鑑領取能力介紹！</p>
+        </div>
+        <div class="pokedex-progress-box">
+          <span>收服進度：</span>
+          <strong id="pokedex-progress-text" style="color:#FDE047;">0 / 37 隻</strong>
+          <div class="pokedex-bar-track">
+            <div class="pokedex-bar-fill" id="pokedex-bar-fill" style="width:0%;"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- 篩選列 -->
       <div class="gallery-filter-bar">
-        <button class="filter-chip active" data-filter="all">🌟 全部符號 (37個)</button>
-        <button class="filter-chip" data-filter="initial">🎈 聲母家族 (21個)</button>
-        <button class="filter-chip" data-filter="medial">🤝 介音夥伴 (3個)</button>
-        <button class="filter-chip" data-filter="final">🧚 韻母精靈 (13個)</button>
+        <button class="filter-chip active" data-filter="all">🌟 全部寶可夢 (37隻)</button>
+        <button class="filter-chip" data-filter="initial">⚡ 聲母精靈 (21隻)</button>
+        <button class="filter-chip" data-filter="medial">🤝 介音夥伴 (3隻)</button>
+        <button class="filter-chip" data-filter="final">🧚 韻母小仙 (13隻)</button>
       </div>
 
       <!-- 注音卡片網格 -->
@@ -449,6 +470,20 @@
          PAGE 6: 榮譽星光榜
          ======================================================== -->
     <section class="tab-pane" id="tab-achievements">
+      <!-- 🏅 10 大道館徽章盒 (Gym Badge Case) -->
+      <div class="gym-badge-case">
+        <div class="gym-badge-title">
+          <span>🏅 訓練家道館徽章展示盒 (Gym Badges)</span>
+          <span style="font-size:15px;color:#FCD34D;" id="badge-count-text">已獲得：0 / 10 枚</span>
+        </div>
+        <div class="gym-badge-grid" id="gym-badge-grid">
+          <!-- 由 JS 動態渲染 10 個徽章槽位 -->
+        </div>
+      </div>
+
+      <div style="font-size:22px;font-weight:900;color:#1E293B;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+        <span>🏆 訓練家榮譽成就殿堂</span>
+      </div>
       <div class="achieve-container" id="achievements-list">
         <!-- 由 JS 動態生成榮譽勳章卡片 -->
       </div>
@@ -570,11 +605,38 @@
     </div>
   </div>
 
+  <!-- ========================================================
+       MODAL: 出戰寶可夢夥伴選擇視窗 (Starter Partner Picker)
+       ======================================================== -->
+  <div class="modal-backdrop" id="partner-modal" aria-hidden="true">
+    <div class="modal-card" style="max-width:560px;border-color:#EF4444;">
+      <button class="modal-close-btn" id="partner-modal-close-btn" aria-label="關閉視窗">✕</button>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div class="pokeball-icon-btn" style="width:48px;height:48px;"></div>
+        <div>
+          <h2 style="font-size:22px;font-weight:900;color:#DC2626;">選擇你的出戰寶可夢夥伴！</h2>
+          <p style="font-size:13px;color:#868E96;font-weight:700;">挑選最喜歡的精靈，陪伴你在注音道館中並肩作戰！</p>
+        </div>
+      </div>
+
+      <div class="partner-selector-grid" id="partner-picker-list">
+        <!-- 由 JS 動態填入初始寶可夢 -->
+      </div>
+
+      <div style="text-align:right;">
+        <button class="big-action-btn" id="btn-confirm-partner" style="padding:10px 24px;font-size:16px;">
+          <span>⚡</span> 就決定是你了！
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=5"></script>
-  <script src="js/audio_manifest.js?v=5"></script>
-  <script src="js/audio.js?v=5"></script>
-  <script src="js/confetti.js?v=5"></script>
-  <script src="js/app.js?v=5"></script>
+  <script src="js/data.js?v=6"></script>
+  <script src="js/audio_manifest.js?v=6"></script>
+  <script src="js/audio.js?v=6"></script>
+  <script src="js/confetti.js?v=6"></script>
+  <script src="js/app.js?v=6"></script>
 </body>
 </html>
