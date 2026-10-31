@@ -1077,7 +1077,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ❤️❤️❤️
             </div>
             <div class="battle-progress-pill" id="battle-progress-pill">
-              道館考核 1 / ${stageQuestions.length}
+              道館考核 1 / ${selectedQuestions.length}
             </div>
           </div>
         </div>
