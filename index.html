@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=33">
+  <link rel="stylesheet" href="css/style.css?v=34">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -39,7 +39,7 @@
 
       <div class="player-level-badge" id="player-level-badge" title="點擊切換出戰夥伴！" style="cursor:pointer;border-color:#EF4444;">
         <span id="player-rank-icon">⚡</span>
-        <span id="player-rank-title">夥伴：皮卡丘 Lv.5</span>
+        <span id="player-rank-title">夥伴：皮卡丘 Lv.1</span>
       </div>
 
       <div class="star-counter" id="header-ball-counter" title="擁有寶貝球" style="border-color:#EF4444;background:#FFF5F5;">
@@ -668,6 +668,11 @@
         <!-- 由 JS 動態渲染角色預設選項 -->
       </div>
 
+      <div style="font-size:14px;font-weight:900;color:#334155;margin-top:14px;">⚡ 選擇你的初始出戰寶可夢（皆為 Lv.1 最初形態）：</div>
+      <div class="starter-select-grid" id="starter-preset-grid">
+        <!-- 由 JS 動態渲染初始寶可夢（皮卡丘、小火龍、傑尼龜、妙蛙種子、伊布） -->
+      </div>
+
       <div class="char-name-group">
         <label for="char-name-input" style="display:block;font-size:14px;font-weight:900;color:#334155;margin-bottom:8px;">
           ✏️ 輸入你的探險家名字：
@@ -775,10 +780,10 @@
   </div>
 
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=33"></script>
-  <script src="js/audio_manifest.js?v=33"></script>
-  <script src="js/audio.js?v=33"></script>
-  <script src="js/confetti.js?v=33"></script>
-  <script src="js/app.js?v=33"></script>
+  <script src="js/data.js?v=34"></script>
+  <script src="js/audio_manifest.js?v=34"></script>
+  <script src="js/audio.js?v=34"></script>
+  <script src="js/confetti.js?v=34"></script>
+  <script src="js/app.js?v=34"></script>
 </body>
 </html>

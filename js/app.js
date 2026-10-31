@@ -438,6 +438,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
 
   function init() {
+    // 確保未創角或無紀錄時，出戰夥伴徹底回歸最初階形態（皮卡丘 Lv.1，絕非進化的雷丘）
+    if (!localStorage.getItem('zhuyin_profile')) {
+      state.partner = 'pikachu';
+      state.partnerData = {
+        level: 1,
+        exp: 0,
+        maxExp: 100,
+        stage: 0
+      };
+      localStorage.setItem('zhuyin_partner', 'pikachu');
+      localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
+    }
 
     initCharacterModule();
 
@@ -980,6 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   let selectedCharacterPreset = CHARACTER_PRESETS[0];
+  let selectedStarterPokemon = null;
 
   function initCharacterModule() {
     state.profile = JSON.parse(localStorage.getItem('zhuyin_profile') || 'null');
@@ -1101,7 +1114,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nameInput) nameInput.value = selectedCharacterPreset.name;
     }
 
+    selectedStarterPokemon = (ZHUYIN_DATA.starterPokemon ? ZHUYIN_DATA.starterPokemon.find(p => p.id === state.partner) : null) || (ZHUYIN_DATA.starterPokemon ? ZHUYIN_DATA.starterPokemon[0] : null);
     renderCharacterPresetCards();
+    renderStarterPokemonCards();
     modal.classList.add('open');
   }
 
@@ -1139,6 +1154,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function renderStarterPokemonCards() {
+    const grid = document.getElementById('starter-preset-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const starters = ZHUYIN_DATA.starterPokemon || [];
+    starters.forEach(starter => {
+      const isSelected = selectedStarterPokemon && selectedStarterPokemon.id === starter.id;
+      const card = document.createElement('div');
+      card.className = `starter-select-card ${isSelected ? 'selected' : ''}`;
+      card.innerHTML = `
+        <div class="starter-card-icon">${starter.icon}</div>
+        <div class="starter-card-name">${starter.name}</div>
+        <div class="starter-card-tag">Lv.1 初階</div>
+      `;
+
+      card.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        selectedStarterPokemon = starter;
+        renderStarterPokemonCards();
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
   function handleSaveCharacterProfile() {
     const input = document.getElementById('char-name-input');
     const entered = (input ? input.value : '').trim();
@@ -1157,7 +1198,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     localStorage.setItem('zhuyin_profile', JSON.stringify(state.profile));
+
+    // 新創角色時，夥伴必定回歸選取的最初階形態 Lv.1（經驗歸零，絕非進化形態）
+    if (isNew) {
+      const starterId = selectedStarterPokemon ? selectedStarterPokemon.id : 'pikachu';
+      state.partner = starterId;
+      state.partnerData = {
+        level: 1,
+        exp: 0,
+        maxExp: 100,
+        stage: 0
+      };
+      localStorage.setItem('zhuyin_partner', starterId);
+      localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
+    }
+
     updateCharacterHeaderUI();
+    updateTrainerHeaderUI();
     closeCharacterCreationModal();
 
     window.audioEngine.playFanfare();
@@ -1232,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('zhuyin_caught_symbols');
     localStorage.removeItem('zhuyin_stars');
     localStorage.removeItem('zhuyin_balls');
-    localStorage.removeItem('zhuyin_current_partner');
+    localStorage.removeItem('zhuyin_partner');
     localStorage.removeItem('zhuyin_partner_data');
     localStorage.removeItem('zhuyin_trainer_bag');
 
@@ -1245,6 +1302,17 @@ document.addEventListener('DOMContentLoaded', () => {
     state.pokedexCaught = [];
     state.stars = 5;
     state.balls = 20;
+
+    // ⚡ 徹底重設出戰夥伴回歸第 1 級幼年初始形態（皮卡丘 Lv.1，經驗 0，絕非進化的雷丘）
+    state.partner = 'pikachu';
+    state.partnerData = {
+      level: 1,
+      exp: 0,
+      maxExp: 100,
+      stage: 0
+    };
+    localStorage.setItem('zhuyin_partner', 'pikachu');
+    localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
 
     // 回到地圖畫面並重繪介面
     showAdventureMap();
@@ -1511,55 +1579,14 @@ function setupPartnerModal() {
 
 
   function updateStarDisplay() {
-
     if (dom.starCount) {
-
       dom.starCount.textContent = state.stars;
-
     }
-
-    updatePlayerRankDisplay();
-
+    updateTrainerHeaderUI();
   }
 
-
-
   function updatePlayerRankDisplay() {
-
-    if (!dom.playerRankIcon || !dom.playerRankTitle) return;
-
-    const clearedStages = Object.keys(state.adventure.stageStars).filter(k => state.adventure.stageStars[k] > 0).length;
-
-    const ranks = [
-
-      { min: 0, icon: '🛡️', title: 'Lv.1 見習小勇者' },
-
-      { min: 1, icon: '🌲', title: 'Lv.2 森林探險員' },
-
-      { min: 3, icon: '🦖', title: 'Lv.4 恐龍馴獸師' },
-
-      { min: 5, icon: '🦢', title: 'Lv.6 湖畔大精靈' },
-
-      { min: 7, icon: '🚂', title: 'Lv.8 魔法列車長' },
-
-      { min: 9, icon: '🏰', title: 'Lv.9 水晶聖騎士' },
-
-      { min: 10, icon: '👑', title: 'Lv.10 黃金注音王' }
-
-    ];
-
-    let currentRank = ranks[0];
-
-    ranks.forEach(r => {
-
-      if (clearedStages >= r.min) currentRank = r;
-
-    });
-
-    dom.playerRankIcon.textContent = currentRank.icon;
-
-    dom.playerRankTitle.textContent = currentRank.title;
-
+    updateTrainerHeaderUI();
   }
 
 
