@@ -4115,7 +4115,7 @@ ruby.zhuyin-ruby {
   display: inline-flex !important;
   flex-direction: column-reverse !important;
   align-items: center !important;
-  vertical-align: middle !important;
+  vertical-align: -0.15em !important;
   line-height: 1 !important;
   margin: 0 2px !important;
   cursor: inherit !important;
@@ -4205,4 +4205,27 @@ ruby.zhuyin-ruby span.rb {
     grid-template-columns: 1fr !important;
     gap: 10px !important;
   }
+}
+
+/* 確保標點符號與注音文字水平垂直居中對齊，防止文字高低跳動錯位 */
+.reading-passage-text,
+.question-prompt-text,
+.battle-stage-title,
+.exam-reading-container {
+  display: block !important;
+  line-height: 2.4 !important;
+  word-break: break-word !important;
+}
+
+.reading-passage-text ruby.zhuyin-ruby,
+.question-prompt-text ruby.zhuyin-ruby {
+  display: inline-flex !important;
+  flex-direction: column-reverse !important;
+  align-items: center !important;
+  vertical-align: -0.18em !important;
+  margin: 0 2px !important;
+}
+
+.reading-passage-badge ruby.zhuyin-ruby {
+  vertical-align: -0.1em !important;
 }
