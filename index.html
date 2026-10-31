@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=35">
+  <link rel="stylesheet" href="css/style.css?v=36">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -54,6 +54,13 @@
         <span style="font-size:12px;opacity:0.85;">顆星</span>
       </div>
 
+      <div class="star-counter coin-counter-btn" id="header-coin-btn" title="💰 冒險金幣：點擊前往寶可夢培育商店換購禮物！" style="cursor:pointer;border-color:#F59E0B;background:#FFFBEB;">
+        <span>💰</span>
+        <span id="global-coin-count" style="color:#D97706;font-weight:900;">60</span>
+        <span style="font-size:12px;opacity:0.85;">幣</span>
+        <span class="shop-badge-pill" style="margin-left:4px;font-size:11px;background:#F59E0B;color:#FFF;padding:1px 6px;border-radius:10px;font-weight:900;">🛍️ 培育商店</span>
+      </div>
+
       <button class="audio-toggle-btn" id="btn-voice-settings" title="自然老師語音設定" aria-label="語音設定">
         🎙️
       </button>
@@ -93,6 +100,10 @@
     <button class="tab-btn" data-tab="tab-achievements">
       <span class="tab-icon">🏆</span>
       <span>道館徽章館</span>
+    </button>
+    <button class="tab-btn" data-tab="tab-shop" id="nav-tab-shop">
+      <span class="tab-icon">🛍️</span>
+      <span>寶可夢培育商店</span>
     </button>
   </nav>
 
@@ -505,6 +516,71 @@
       </div>
     </section>
 
+    <!-- ========================================================
+         PAGE 7: 🛍️ 寶可夢培育商店與禮物換購 (Pokemon Nurture Shop)
+         ======================================================== -->
+    <section class="tab-pane" id="tab-shop">
+      <div class="shop-container">
+        <!-- 頂部：寶可夢夥伴親密培育工作台 -->
+        <div class="nurture-workbench-card">
+          <div class="nurture-partner-showcase">
+            <div class="nurture-avatar-stage" id="shop-partner-stage">
+              <div class="nurture-partner-avatar" id="shop-partner-avatar">⚡</div>
+              <div class="nurture-heart-floater" id="shop-heart-floater">💖</div>
+            </div>
+            <div class="nurture-partner-meta">
+              <div class="nurture-name-row">
+                <h2 id="shop-partner-name">皮卡丘</h2>
+                <span class="nurture-level-badge" id="shop-partner-level">Lv.1</span>
+                <span class="nurture-crown-badge" id="shop-crown-badge" style="display:none;">👑 冠軍之冠</span>
+              </div>
+              <div class="nurture-status-desc" id="shop-partner-status-desc">
+                🌱 活潑健康！準備好接受美味甜點與神奇糖果的培育了嗎？
+              </div>
+              <!-- 經驗值進度條 -->
+              <div class="nurture-exp-container">
+                <div class="nurture-exp-labels">
+                  <span>親密度與等級經驗成長</span>
+                  <span id="shop-exp-text">0 / 100 EXP</span>
+                </div>
+                <div class="nurture-exp-track">
+                  <div class="nurture-exp-fill" id="shop-exp-fill" style="width: 0%;"></div>
+                </div>
+              </div>
+              <!-- 下一階段進化目標提示 -->
+              <div class="nurture-evolution-target" id="shop-evolution-target">
+                🌟 達成 Lv.3 即將進化為：【雷丘】！
+              </div>
+            </div>
+          </div>
+
+          <!-- 訓練家金幣錢包看板 -->
+          <div class="trainer-wallet-board">
+            <div class="wallet-coin-icon">💰</div>
+            <div class="wallet-coin-info">
+              <div class="wallet-label">我的冒險金幣</div>
+              <div class="wallet-amount" id="shop-wallet-amount">60</div>
+            </div>
+            <div class="wallet-tip">
+              💡 通過道館考核獲得 100 分，或在對戰中連續答對，可獲得豐厚金幣！
+            </div>
+          </div>
+        </div>
+
+        <!-- 商品換購區 -->
+        <div class="shop-catalog-section">
+          <div class="shop-catalog-header">
+            <h3>🎁 寶可夢培育禮物與神奇道具</h3>
+            <p>挑選最合適的點心與道具餵食夥伴，讓寶可夢實力大爆發！</p>
+          </div>
+          <div class="shop-items-grid" id="shop-items-grid">
+            <!-- 由 JS 動態生成培育商品卡片 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
   </main>
 
   <!-- ========================================================
@@ -780,10 +856,10 @@
   </div>
 
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=35"></script>
-  <script src="js/audio_manifest.js?v=35"></script>
-  <script src="js/audio.js?v=35"></script>
-  <script src="js/confetti.js?v=35"></script>
-  <script src="js/app.js?v=35"></script>
+  <script src="js/data.js?v=36"></script>
+  <script src="js/audio_manifest.js?v=36"></script>
+  <script src="js/audio.js?v=36"></script>
+  <script src="js/confetti.js?v=36"></script>
+  <script src="js/app.js?v=36"></script>
 </body>
 </html>

@@ -845,6 +845,10 @@ class ZhuyinAudioEngine {
   /**
    * 🎒 使用道具精靈球或道具音效
    */
+  playPowerUp() {
+    this.playItemUse();
+  }
+
   playItemUse() {
     if (this.isMuted) return;
     this.ensureAudioContext();

@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 🔴 寶可夢訓練家狀態 (Pokémon Trainer State)
 
     balls: parseInt(localStorage.getItem('zhuyin_balls') || '20', 10),
+    coins: parseInt(localStorage.getItem('zhuyin_coins') || '60', 10),
 
     // 🎒 冒險家道具背包 (Trainer Bag)
 
@@ -200,6 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const dom = {
 
     starCount: document.getElementById('global-star-count'),
+    coinCount: document.getElementById('global-coin-count'),
+    headerCoinBtn: document.getElementById('header-coin-btn'),
 
     ballCount: document.getElementById('global-ball-count'),
 
@@ -437,6 +440,288 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================
 
+  
+  // ==========================================
+  // 🛍️ 寶可夢夥伴培育商店與禮物換購系統 (Nurture Shop System)
+  // ==========================================
+  const POKEMON_NURTURE_ITEMS = [
+    {
+      id: 'rare_candy',
+      name: '神奇經驗糖果',
+      icon: '🍬',
+      tag: '⭐ 快速升級',
+      tagColor: '#3B82F6',
+      tagBg: '#EFF6FF',
+      price: 50,
+      exp: 60,
+      desc: '寶可夢最愛的星形糖果，餵食夥伴一口氣獲得 +60 點經驗值，加速升級與突破！',
+      actionText: '換購餵食',
+      sound: 'playPowerUp'
+    },
+    {
+      id: 'hearty_cake',
+      name: '元氣愛心蛋糕',
+      icon: '🍰',
+      tag: '💖 滿腹大補',
+      tagColor: '#EC4899',
+      tagBg: '#FDF2F8',
+      price: 100,
+      exp: 150,
+      desc: '甜點名師烘焙的元氣愛心蛋糕，餵食夥伴直接吸收 +150 點超量經驗，等級大幅飛升！',
+      actionText: '換購餵食',
+      sound: 'playPowerUp'
+    },
+    {
+      id: 'evolution_stone',
+      name: '屬性神奇進化石',
+      icon: '⚡',
+      tag: '💥 突破進化',
+      tagColor: '#D97706',
+      tagBg: '#FFFBEB',
+      price: 180,
+      exp: 300,
+      desc: '凝聚自然元素神力的石頭！餵食注入 +300 點巨量經驗，達到門檻將引發震撼大進化！',
+      actionText: '激發進化',
+      sound: 'playBadgeGet'
+    },
+    {
+      id: 'berry_box',
+      name: '甜甜蜜莓果盒',
+      icon: '🍓',
+      tag: '🌱 平價美味',
+      tagColor: '#059669',
+      tagBg: '#ECFDF5',
+      price: 30,
+      exp: 35,
+      desc: '樹果森林摘採的甜美莓果拼盤，一口氣獲得 +35 經驗值並大幅提升夥伴親密度！',
+      actionText: '換購餵食',
+      sound: 'playPop'
+    },
+    {
+      id: 'rainbow_jelly',
+      name: '彩虹能量果凍',
+      icon: '🌈',
+      tag: '✨ 元氣滿分',
+      tagColor: '#7C3AED',
+      tagBg: '#F5F3FF',
+      price: 130,
+      exp: 200,
+      desc: '閃耀七彩光芒的晶瑩果凍，瞬間充填充沛體力，餵食夥伴獲得 +200 點高額經驗！',
+      actionText: '換購餵食',
+      sound: 'playPowerUp'
+    },
+    {
+      id: 'champion_crown',
+      name: '王者冠軍王冠',
+      icon: '👑',
+      tag: '🏆 榮耀光環',
+      tagColor: '#DC2626',
+      tagBg: '#FEF2F2',
+      price: 250,
+      type: 'crown',
+      desc: '象徵道館最強王者的榮耀禮物！配戴後頭頂發光，答對題目金幣翻倍（每題 +20 幣）！',
+      actionText: '榮耀配戴',
+      sound: 'playBadgeGet'
+    }
+  ];
+
+  function updateCoinsDisplay() {
+    const coinEl = document.getElementById('global-coin-count');
+    const walletEl = document.getElementById('shop-wallet-amount');
+    if (coinEl) {
+      coinEl.textContent = state.coins || 0;
+      if (coinEl.parentElement) {
+        coinEl.parentElement.classList.remove('coin-bump');
+        void coinEl.parentElement.offsetWidth; // reflow
+        coinEl.parentElement.classList.add('coin-bump');
+      }
+    }
+    if (walletEl) walletEl.textContent = state.coins || 0;
+  }
+
+  function addCoins(amount, showFloat = true) {
+    state.coins = Math.max(0, (state.coins || 0) + amount);
+    localStorage.setItem('zhuyin_coins', state.coins.toString());
+    updateCoinsDisplay();
+
+    if (showFloat && amount > 0) {
+      showFloatingCoinsReward(amount);
+    }
+  }
+
+  function showFloatingCoinsReward(amount) {
+    const badge = document.createElement('div');
+    badge.className = 'floating-coin-badge';
+    badge.innerHTML = `+${amount} 💰 金幣`;
+    badge.style.left = '50%';
+    badge.style.top = '40%';
+    document.body.appendChild(badge);
+    setTimeout(() => {
+      badge.remove();
+    }, 1200);
+  }
+
+  function renderNurtureShop() {
+    const partner = getCurrentPartnerInfo();
+    const baseStarter = (ZHUYIN_DATA.starterPokemon || []).find(p => p.id === state.partner) || (ZHUYIN_DATA.starterPokemon && ZHUYIN_DATA.starterPokemon[0]) || { name: '皮卡丘' };
+
+    const avatarEl = document.getElementById('shop-partner-avatar');
+    const nameEl = document.getElementById('shop-partner-name');
+    const levelEl = document.getElementById('shop-partner-level');
+    const crownBadge = document.getElementById('shop-crown-badge');
+    const expText = document.getElementById('shop-exp-text');
+    const expFill = document.getElementById('shop-exp-fill');
+    const evoTargetEl = document.getElementById('shop-evolution-target');
+    const statusDescEl = document.getElementById('shop-partner-status-desc');
+    const walletEl = document.getElementById('shop-wallet-amount');
+
+    if (avatarEl) avatarEl.innerHTML = getPokemonAvatarHtml(partner);
+    if (nameEl) nameEl.textContent = partner.name;
+    if (levelEl) levelEl.textContent = `Lv.${partner.level}`;
+    if (crownBadge) crownBadge.style.display = (state.partnerData && state.partnerData.crown) ? 'inline-flex' : 'none';
+
+    const pct = Math.min(100, Math.round((partner.exp / (partner.maxExp || 100)) * 100));
+    if (expFill) expFill.style.width = `${pct}%`;
+    if (expText) expText.textContent = `${partner.exp} / ${partner.maxExp} EXP`;
+
+    if (walletEl) walletEl.textContent = state.coins || 0;
+
+    // 進化目標提示
+    if (evoTargetEl) {
+      if (partner.stageIdx === 0) {
+        const evoName = (baseStarter.evolutions && baseStarter.evolutions[1]) ? baseStarter.evolutions[1].name : '下一階形態';
+        const neededLv = Math.max(1, 3 - partner.level);
+        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.3</strong> 即將進化為：【${evoName}】！（還差 ${neededLv} 級）`;
+      } else if (partner.stageIdx === 1) {
+        const evoName = (baseStarter.evolutions && baseStarter.evolutions[2]) ? baseStarter.evolutions[2].name : '最終究極形態';
+        const neededLv = Math.max(1, 7 - partner.level);
+        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.7</strong> 即將究極進化為：【${evoName}】！（還差 ${neededLv} 級）`;
+      } else {
+        evoTargetEl.innerHTML = `👑 恭喜！【${partner.name}】已達到全島最強的究極最終形態！`;
+      }
+    }
+
+    if (statusDescEl) {
+      if (partner.level >= 7) {
+        statusDescEl.textContent = `⚡ 戰力巔峰！神獸級的氣勢，隨時可以在道館中施展最強奧義【${partner.move}】！`;
+      } else if (partner.level >= 3) {
+        statusDescEl.textContent = `🔥 實力強勁！正朝著最終究極進化全速前進，多吃經驗糖果即可突破！`;
+      } else {
+        statusDescEl.textContent = `🌱 活潑健康！準備好接受美味甜點與神奇糖果的培育了嗎？`;
+      }
+    }
+
+    // 渲染商品清單
+    const gridEl = document.getElementById('shop-items-grid');
+    if (!gridEl) return;
+    gridEl.innerHTML = '';
+
+    POKEMON_NURTURE_ITEMS.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'shop-item-card';
+
+      const isCrown = (item.type === 'crown');
+      const hasCrown = Boolean(state.partnerData && state.partnerData.crown);
+      const canAfford = (state.coins >= item.price);
+
+      let btnClass = 'shop-item-btn';
+      let btnText = '';
+      let btnDisabled = false;
+
+      if (isCrown && hasCrown) {
+        btnClass += ' owned-crown';
+        btnText = '✨ 已配戴王者之冠';
+        btnDisabled = true;
+      } else if (!canAfford) {
+        btnClass += ' cant-buy';
+        btnText = `💰 金幣不足 (${item.price}幣)`;
+        btnDisabled = true;
+      } else {
+        btnClass += ' can-buy';
+        btnText = `💰 ${item.price} ${item.actionText}`;
+      }
+
+      card.innerHTML = `
+        <div class="shop-item-top">
+          <span class="shop-item-badge" style="background:${item.tagBg};color:${item.tagColor};border:1.5px solid ${item.tagColor};">${item.tag}</span>
+          <span class="shop-item-price-pill">💰 ${item.price} 幣</span>
+        </div>
+        <div class="shop-item-body">
+          <div class="shop-item-icon-box">${item.icon}</div>
+          <div class="shop-item-info">
+            <h4>${item.name}</h4>
+            <p>${item.desc}</p>
+          </div>
+        </div>
+        <button class="${btnClass}" ${btnDisabled ? 'disabled' : ''}>
+          ${btnText}
+        </button>
+      `;
+
+      if (!btnDisabled) {
+        const btn = card.querySelector('button');
+        btn.addEventListener('click', () => {
+          buyAndUseShopItem(item);
+        });
+      }
+
+      gridEl.appendChild(card);
+    });
+  }
+
+  function buyAndUseShopItem(item) {
+    if (state.coins < item.price) {
+      window.audioEngine.playWrong();
+      setMascotSpeech(`💰 金幣不足喔！快去挑戰道館獲得 100 分賺取更多金幣吧！`);
+      return;
+    }
+
+    // 扣除金幣
+    state.coins -= item.price;
+    localStorage.setItem('zhuyin_coins', state.coins.toString());
+    updateCoinsDisplay();
+
+    const partner = getCurrentPartnerInfo();
+
+    if (item.type === 'crown') {
+      state.partnerData.crown = true;
+      localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
+
+      window.audioEngine.playBadgeGet();
+      if (window.confetti) window.confetti.trigger(100);
+
+      setMascotSpeech(`👑 哇！【${partner.name}】配戴了【王者冠軍王冠】！頭頂閃耀黃金光芒，每次答對題目金幣獎勵翻倍！`);
+      window.audioEngine.speak(`太帥氣了！${partner.name}戴上了王者冠軍王冠，答題獲得金幣翻倍！`);
+    } else {
+      // 餵食經驗道具
+      const avatarEl = document.getElementById('shop-partner-avatar');
+      const heartFloater = document.getElementById('shop-heart-floater');
+
+      if (avatarEl) {
+        avatarEl.classList.remove('feed-jump-anim');
+        void avatarEl.offsetWidth; // reflow
+        avatarEl.classList.add('feed-jump-anim');
+      }
+
+      if (heartFloater) {
+        heartFloater.textContent = item.icon === '🍓' ? '🍓' : '💖';
+        heartFloater.classList.remove('heart-float-anim');
+        void heartFloater.offsetWidth;
+        heartFloater.classList.add('heart-float-anim');
+      }
+
+      if (window.audioEngine.playPowerUp) window.audioEngine.playPowerUp(); else window.audioEngine.playPop();
+      addPartnerExp(item.exp);
+
+      const updatedPartner = getCurrentPartnerInfo();
+      setMascotSpeech(`😋 好吃好吃！【${updatedPartner.name}】享用了【${item.name}】，親密度大幅上升，獲得了 +${item.exp} 經驗值！`);
+    }
+
+    renderNurtureShop();
+    updateTrainerHeaderUI();
+  }
+
+
   function init() {
     // 確保未創角或無紀錄時，出戰夥伴徹底回歸最初階形態（皮卡丘 Lv.1，絕非進化的雷丘）
     if (!localStorage.getItem('zhuyin_profile')) {
@@ -454,6 +739,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCharacterModule();
 
     updateStarDisplay();
+    updateCoinsDisplay();
 
     updateTrainerHeaderUI();
 
@@ -932,6 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dom.ballCount) dom.ballCount.textContent = state.balls;
 
     if (dom.starCount) dom.starCount.textContent = state.stars;
+    if (dom.coinCount) dom.coinCount.textContent = state.coins || 0;
 
   }
 
@@ -1302,6 +1589,8 @@ document.addEventListener('DOMContentLoaded', () => {
     state.pokedexCaught = [];
     state.stars = 5;
     state.balls = 20;
+    state.coins = 60;
+    localStorage.setItem('zhuyin_coins', '60');
 
     // ⚡ 徹底重設出戰夥伴回歸第 1 級幼年初始形態（皮卡丘 Lv.1，經驗 0，絕非進化的雷丘）
     state.partner = 'pikachu';
@@ -1665,11 +1954,19 @@ function setupPartnerModal() {
 
         }
 
+        if (tabTarget === 'tab-shop') {
+
+          renderNurtureShop();
+
+        }
+
 
 
         // 分頁對應吉祥物貼心提示
 
         const speeches = {
+
+          'tab-shop': '🛍️ 歡迎光臨寶可夢培育商店！用道館考核贏得的金幣換購美味甜點與神奇糖果，培育升級你的出戰夥伴吧！',
 
           'tab-adventure': '🗺️ 選擇亮起來的島嶼關卡，答對題目就能發射星光魔法收服守護獸！',
 
@@ -1713,6 +2010,18 @@ function setupPartnerModal() {
 
       });
 
+    }
+
+    // 點擊頂部金幣錢包按鈕前往培育商店
+    const btnCoin = document.getElementById('header-coin-btn');
+    if (btnCoin) {
+      btnCoin.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        const shopTab = Array.from(dom.tabBtns).find(b => b.dataset.tab === 'tab-shop');
+        if (shopTab) {
+          shopTab.click();
+        }
+      });
     }
 
 
@@ -3926,6 +4235,11 @@ function setupPartnerModal() {
       }
       updateBattleHeaderUI();
 
+      // 💰 答對獲得金幣獎勵（若擁有王者冠軍之冠則翻倍）
+      const hasCrown = Boolean(state.partnerData && state.partnerData.crown);
+      const coinGain = hasCrown ? 20 : 10;
+      addCoins(coinGain, true);
+
       if (btn) btn.classList.add('correct-choice');
 
       const partnerObj = getCurrentPartnerInfo();
@@ -4065,6 +4379,7 @@ function setupPartnerModal() {
       addStars(6, true);
       state.balls = Math.min(99, state.balls + 9);
       localStorage.setItem('zhuyin_balls', state.balls.toString());
+      addCoins(150, false); // 💯 滿分通關金幣大獎勵！
       updateTrainerHeaderUI();
 
       window.audioEngine.playBadgeGet();
@@ -4094,7 +4409,7 @@ function setupPartnerModal() {
               ⭐⭐⭐
             </div>
             <p style="font-size:16px;font-weight:800;color:#475569;margin-bottom:14px;">
-              擊敗道館館主【${stage.bossIcon} ${stage.bossName}】，獲得 <strong>+6 顆金星星</strong> 與 <strong>+9 顆寶貝球</strong>！
+              擊敗道館館主【${stage.bossIcon} ${stage.bossName}】，獲得 <strong>+6 顆金星星</strong>、<strong>+9 顆寶貝球</strong> 與 <strong style="color:#D97706;">+150 💰 冒險金幣</strong>！
             </p>
 
             <!-- 🎁 道館神秘大寶箱 -->
@@ -4115,6 +4430,10 @@ function setupPartnerModal() {
               </button>
               <button class="secondary-action-btn" id="btn-victory-retry">
                 🔄 再次挑戰
+              </button>
+              <button class="big-action-btn" id="btn-victory-shop" style="background:#F59E0B;border-color:#D97706;box-shadow:0 6px 0 #B45309;">
+                <span>🛍️</span>
+                <span>前往培育商店升級夥伴</span>
               </button>
               ${nextStage ? `
                 <button class="big-action-btn" id="btn-victory-next">
@@ -4143,6 +4462,7 @@ function setupPartnerModal() {
             addStars(3, false);
             state.balls = Math.min(99, state.balls + 5);
             localStorage.setItem('zhuyin_balls', state.balls.toString());
+            addCoins(100, true); // 🎁 神秘大寶箱金幣獎勵！
             addPartnerExp(100);
             updateTrainerHeaderUI();
 
@@ -4160,6 +4480,7 @@ function setupPartnerModal() {
                 <span style="background:#FEF3C7;border:2px solid #F59E0B;color:#78350F;padding:6px 14px;border-radius:12px;font-weight:900;font-size:15px;">⭐ 過關星星 +3</span>
                 <span style="background:#FEE2E2;border:2px solid #EF4444;color:#B91C1C;padding:6px 14px;border-radius:12px;font-weight:900;font-size:15px;">🔴 精靈球 +5</span>
                 <span style="background:#EFF6FF;border:2px solid #3B82F6;color:#1D4ED8;padding:6px 14px;border-radius:12px;font-weight:900;font-size:15px;">⚡ 夥伴親密度經驗 +100</span>
+                <span style="background:#FFFBEB;border:2px solid #F59E0B;color:#B45309;padding:6px 14px;border-radius:12px;font-weight:900;font-size:15px;">💰 冒險金幣 +100</span>
               `;
             }
           });
@@ -4194,6 +4515,16 @@ function setupPartnerModal() {
             if (window.confetti) window.confetti.trigger(150);
             window.audioEngine.speak('太了不起了！你已經收服了全部十座道館，榮獲注音寶可夢大師稱號！');
             showAdventureMap();
+          });
+        }
+        const btnVictoryShop = document.getElementById('btn-victory-shop');
+        if (btnVictoryShop) {
+          btnVictoryShop.addEventListener('click', () => {
+            window.audioEngine.playPop();
+            const shopTab = Array.from(dom.tabBtns).find(b => b.dataset.tab === 'tab-shop');
+            if (shopTab) {
+              shopTab.click();
+            }
           });
         }
       }
@@ -6035,6 +6366,10 @@ function setupPartnerModal() {
 
 
   // 啟動主流程
+
+  window.handleStageVictory = handleStageVictory;
+  window.renderNurtureShop = renderNurtureShop;
+  window.addCoins = addCoins;
 
   init();
 
