@@ -1533,13 +1533,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (readingCard) readingCard.style.display = 'none';
       if (q.qType === 'choice') {
         if (promptTag) promptTag.textContent = '📝 段考觀念選擇題：';
+      } else if (q.qType === 'fill_in') {
+        if (promptTag) promptTag.textContent = '✏️ 語詞注音填空題：';
       } else {
         if (promptTag) promptTag.textContent = '🔴 道館考核題目：';
       }
     }
 
-    // 確保題目文字絕不出現注音答案
-    const safePrompt = (q.prompt || '').replace(/[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]/g, '❓');
+    // 確保題目文字絕不出現注音答案（填空題保留已知字注音與【 ？ 】提示，僅過濾正解）
+    let safePrompt = q.prompt || '';
+    if (q.qType === 'choice' || q.qType === 'reading' || q.qType === 'fill_in') {
+      // 選擇題、閱讀測驗與填空題已設計為標準考卷題型，直接呈現題意，不盲目將整段文字的注音打上問號
+      safePrompt = q.prompt;
+    } else {
+      safePrompt = safePrompt.replace(/[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]/g, '❓');
+    }
     if (promptText) promptText.textContent = safePrompt;
     if (toast) toast.style.display = 'none';
 
