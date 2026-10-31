@@ -242,7 +242,9 @@ class ZhuyinAudioEngine {
       try {
         const audio = new Audio(audioUrl);
         this.currentAudio = audio;
-        audio.playbackRate = 1.0;
+        // 連動語速調整滑桿 (Speech Rate)
+        const currentRate = options.rate || this.speechRate || 0.88;
+        audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / 0.88));
 
         if (options.onEnd) {
           audio.onended = options.onEnd;
@@ -273,13 +275,9 @@ class ZhuyinAudioEngine {
     }
 
     const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
-    if (voiceRole === 'PERSONA::CUTE_GIRL') {
-      utterance.rate = options.rate || 0.95;
-      utterance.pitch = options.pitch || 1.45;
-    } else {
-      utterance.rate = options.rate || 0.88;
-      utterance.pitch = options.pitch || 1.15;
-    }
+    // 連動使用者自訂的語速與音調設定
+    utterance.rate = options.rate || this.speechRate || (voiceRole === 'PERSONA::CUTE_GIRL' ? 0.95 : 0.88);
+    utterance.pitch = options.pitch || this.speechPitch || (voiceRole === 'PERSONA::CUTE_GIRL' ? 1.45 : 1.15);
 
     if (options.onEnd) {
       utterance.onend = options.onEnd;
