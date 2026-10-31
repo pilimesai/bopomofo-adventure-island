@@ -1355,22 +1355,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (promptText) promptText.textContent = safePrompt;
     
 
-    // 隨機打亂選項順序
+    // 依據國小段考真實 7 大題型動態渲染專屬交互介面
     const shuffled = [...q.options].sort(() => Math.random() - 0.5);
     const optionsGrid = document.getElementById('battle-options-grid');
     if (optionsGrid) {
       optionsGrid.innerHTML = '';
-      shuffled.forEach(optText => {
-        const btn = document.createElement('button');
-        btn.className = `battle-opt-btn ${optText.length > 3 ? 'long-text' : ''}`;
-        btn.textContent = optText;
-
-        btn.addEventListener('click', () => {
-          handleBattleAnswer(btn, optText, q);
-        });
-
-        optionsGrid.appendChild(btn);
-      });
+      renderAuthenticExamInteraction(optionsGrid, q, stage, shuffled, handleBattleAnswer, safePrompt);
     }
 
     // 自動朗讀題目
@@ -1378,6 +1368,305 @@ document.addEventListener('DOMContentLoaded', () => {
       window.audioEngine.speak(q.speakText);
     }, 250);
   }
+
+
+  // =========================================================================
+  // 國小正式段考 7 大真實題型專屬互動渲染器 (Authentic Exam Interaction Renderer)
+  // =========================================================================
+  function detectExamFormat(q, stage) {
+    if (q.examFormat) return q.examFormat;
+    const p = q.prompt || '';
+    if (p.includes('看圖選注音') || p.includes('看圖選音')) return 'check';
+    if (p.includes('圈出正確注音') || p.includes('圈出正確語詞')) return 'circle';
+    if (p.includes('連連看')) return 'connect';
+    if (p.includes('看圖填拼音') || p.includes('看圖填一填')) return 'fill';
+    if (p.includes('拼音造詞') || (p.includes('聲母') && p.includes('加上'))) return 'combine';
+    if (p.includes('句子聲調') || p.includes('第幾聲')) return 'tone';
+    if (q.qType === 'reading' || q.passage || p.includes('兒歌') || p.includes('故事')) return 'reading';
+    return 'standard';
+  }
+
+  function renderAuthenticExamInteraction(optionsGrid, q, stage, shuffled, onAnswer, safePrompt) {
+    const format = detectExamFormat(q, stage);
+
+    switch (format) {
+      case 'check': {
+        // 1. 【看圖選注音·對的打 ✔】
+        const container = document.createElement('div');
+        container.className = 'exam-check-container';
+        container.innerHTML = `
+          <div class="exam-check-pic-wrapper">
+            <span class="exam-check-pic-emoji">${q.icon || '🐊'}</span>
+            <span class="exam-check-pic-label">${q.word || ''}</span>
+          </div>
+          <div style="font-size:15px;font-weight:900;color:#475569;">👇 請在正確的注音括號中打「✔」：</div>
+          <div class="exam-check-options-row" id="exam-check-row"></div>
+        `;
+        const row = container.querySelector('#exam-check-row');
+        shuffled.forEach(optText => {
+          const card = document.createElement('button');
+          card.className = 'exam-check-card';
+          card.innerHTML = `
+            <span class="check-box-bracket">( <span class="check-mark-sym">&nbsp;&nbsp;</span> )</span>
+            <span class="check-opt-zhuyin">${optText}</span>
+          `;
+          card.addEventListener('click', () => {
+            card.classList.add('checked-active');
+            const sym = card.querySelector('.check-mark-sym');
+            if (sym) sym.textContent = '✔';
+            window.audioEngine.playPop();
+            onAnswer(card, optText, q);
+          });
+          row.appendChild(card);
+        });
+        optionsGrid.appendChild(container);
+        break;
+      }
+
+      case 'circle': {
+        // 2. 【圈出正確的注音·紅筆圈詞 ⭕】
+        const container = document.createElement('div');
+        container.className = 'exam-circle-container';
+        container.innerHTML = `
+          <div class="exam-circle-header">
+            <span style="font-size:24px;">${q.icon || '✏️'}</span>
+            <span>請用紅筆圈出完全正確的注音：</span>
+          </div>
+          <div class="exam-circle-choices-row" id="exam-circle-row"></div>
+        `;
+        const row = container.querySelector('#exam-circle-row');
+        shuffled.forEach(optText => {
+          const card = document.createElement('button');
+          card.className = 'exam-circle-card';
+          card.innerHTML = `
+            <span class="circle-card-text">${optText}</span>
+            <svg class="red-circle-stroke" viewBox="0 0 160 80">
+              <ellipse cx="80" cy="40" rx="74" ry="34" />
+            </svg>
+          `;
+          card.addEventListener('click', () => {
+            card.classList.add('circled-active');
+            window.audioEngine.playPop();
+            onAnswer(card, optText, q);
+          });
+          row.appendChild(card);
+        });
+        optionsGrid.appendChild(container);
+        break;
+      }
+
+      case 'connect': {
+        // 3. 【連連看·拉線配對 ➔】
+        const container = document.createElement('div');
+        container.className = 'exam-connect-container';
+
+        let sourceText = q.word || '連連看';
+        if (sourceText.includes('→')) sourceText = sourceText.split('→')[0].trim();
+
+        container.innerHTML = `
+          <div class="connect-left-col">
+            <div class="connect-peg source-peg">
+              <span class="peg-text">${sourceText}</span>
+              <span class="peg-dot">●</span>
+            </div>
+          </div>
+          <div style="font-size:28px;color:#3B82F6;font-weight:900;">➔ 連向 ➔</div>
+          <div class="connect-right-col" id="connect-right-col"></div>
+        `;
+        const rightCol = container.querySelector('#connect-right-col');
+        shuffled.forEach(optText => {
+          const peg = document.createElement('button');
+          peg.className = 'connect-peg target-peg';
+          peg.innerHTML = `
+            <span class="peg-dot">●</span>
+            <span class="peg-text">${optText}</span>
+          `;
+          peg.addEventListener('click', () => {
+            peg.classList.add('connected');
+            window.audioEngine.playPop();
+            onAnswer(peg, optText, q);
+          });
+          rightCol.appendChild(peg);
+        });
+        optionsGrid.appendChild(container);
+        break;
+      }
+
+      case 'fill': {
+        // 4. 【看圖填一填·九宮格填字 ❓】
+        const container = document.createElement('div');
+        container.className = 'exam-fill-container';
+
+        let targetWord = q.word || '';
+        container.innerHTML = `
+          <div class="exam-fill-target-card">
+            <span class="fill-pic-icon">${q.icon || '🖼️'}</span>
+            <div class="fill-slots-row">
+              <div class="fill-box empty-slot" id="target-fill-slot">❓</div>
+              <div class="fill-box">${targetWord}</div>
+            </div>
+          </div>
+          <div style="font-size:15px;font-weight:900;color:#475569;">👇 點選正確注音推進空格中：</div>
+          <div class="exam-fill-candidates-row" id="exam-fill-row"></div>
+        `;
+        const candidatesRow = container.querySelector('#exam-fill-row');
+        shuffled.forEach(optText => {
+          const tile = document.createElement('button');
+          tile.className = 'fill-candidate-tile';
+          tile.textContent = optText;
+          tile.addEventListener('click', () => {
+            const slot = document.getElementById('target-fill-slot');
+            if (slot) {
+              slot.textContent = optText;
+              slot.classList.remove('empty-slot');
+              slot.style.background = '#D1FAE5';
+              slot.style.borderColor = '#10B981';
+            }
+            window.audioEngine.playPop();
+            onAnswer(tile, optText, q);
+          });
+          candidatesRow.appendChild(tile);
+        });
+        optionsGrid.appendChild(container);
+        break;
+      }
+
+      case 'combine': {
+        // 5. 【先拼音再造詞·加法合成板 ＋】
+        const container = document.createElement('div');
+        container.className = 'exam-combine-container';
+
+        let p = q.prompt || '';
+        let partA = '聲母', partB = '韻母';
+        const m = p.match(/「([ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ])」[\s\S]*?「([ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]+)」/);
+        if (m) {
+          partA = m[1];
+          partB = m[2];
+        }
+
+        container.innerHTML = `
+          <div class="combine-formula-board">
+            <div class="formula-block">${partA}</div>
+            <span class="formula-symbol">＋</span>
+            <div class="formula-block">${partB}</div>
+            <span class="formula-symbol">＝</span>
+            <div class="formula-block result-slot" id="combine-res-slot">❓</div>
+          </div>
+          <div style="font-size:15px;font-weight:900;color:#475569;">👇 點選拼出的完整組合：</div>
+          <div class="exam-combine-options-row" id="combine-options-row"></div>
+        `;
+        const optRow = container.querySelector('#combine-options-row');
+        shuffled.forEach(optText => {
+          const btn = document.createElement('button');
+          btn.className = 'combine-opt-btn';
+          btn.textContent = optText;
+          btn.addEventListener('click', () => {
+            const slot = document.getElementById('combine-res-slot');
+            if (slot) slot.textContent = optText;
+            window.audioEngine.playPop();
+            onAnswer(btn, optText, q);
+          });
+          optRow.appendChild(btn);
+        });
+        optionsGrid.appendChild(container);
+        break;
+      }
+
+      case 'tone': {
+        // 6. 【填上聲調符號·蓋聲調印章 🔘】
+        const container = document.createElement('div');
+        container.className = 'exam-tone-container';
+
+        let targetChar = '';
+        const m = (q.prompt || '').match(/「([^」]+)」是第幾聲/);
+        if (m) targetChar = m[1];
+
+        container.innerHTML = `
+          <div class="tone-sentence-card">
+            <span class="sentence-icon">${q.icon || '🎶'}</span>
+            <div class="sentence-text-display">
+              ${(q.prompt || '').replace(/【[^】]+】/, '')}
+              <span class="tone-target-highlight" id="tone-target-box">【 ${targetChar || '標調目標'} 】</span>
+            </div>
+          </div>
+          <div style="font-size:15px;font-weight:900;color:#475569;">🔘 選擇要蓋上的聲調印章：</div>
+          <div class="stamps-grid" id="tone-stamps-grid"></div>
+        `;
+        const stampsGrid = container.querySelector('#tone-stamps-grid');
+        const toneMarksMap = {
+          '第一聲': 'ˉ',
+          '第二聲': 'ˊ',
+          '第三聲': 'ˇ',
+          '第四聲': 'ˋ',
+          '輕聲': '˙'
+        };
+        shuffled.forEach(optText => {
+          const stampBtn = document.createElement('button');
+          stampBtn.className = 'tone-stamp-btn';
+          const mark = toneMarksMap[optText] || '？';
+          stampBtn.innerHTML = `
+            <span class="stamp-mark">${mark}</span>
+            <span class="stamp-name">${optText}</span>
+          `;
+          stampBtn.addEventListener('click', () => {
+            const box = document.getElementById('tone-target-box');
+            if (box) {
+              box.textContent = `【 ${targetChar} ${mark} 】`;
+              box.style.background = '#FCA5A5';
+              box.style.color = '#991B1B';
+            }
+            window.audioEngine.playPop();
+            onAnswer(stampBtn, optText, q);
+          });
+          stampsGrid.appendChild(stampBtn);
+        });
+        optionsGrid.appendChild(container);
+        break;
+      }
+
+      case 'reading': {
+        // 7. 【兒歌閱讀測驗·課文賞析 📜】
+        const container = document.createElement('div');
+        container.className = 'exam-reading-container';
+        container.innerHTML = `
+          <div class="reading-poetry-scroll">
+            <div class="poetry-header">📜 兒歌閱讀小天地</div>
+            <div class="poetry-body">${q.passage || ''}</div>
+          </div>
+          <div style="font-size:16px;font-weight:900;color:#1E293B;margin-top:6px;">${safePrompt}</div>
+          <div class="reading-options-row" id="reading-options-row"></div>
+        `;
+        const optRow = container.querySelector('#reading-options-row');
+        shuffled.forEach(optText => {
+          const btn = document.createElement('button');
+          btn.className = 'reading-opt-btn';
+          btn.textContent = optText;
+          btn.addEventListener('click', () => {
+            window.audioEngine.playPop();
+            onAnswer(btn, optText, q);
+          });
+          optRow.appendChild(btn);
+        });
+        optionsGrid.appendChild(container);
+        break;
+      }
+
+      default: {
+        // 標準招式選項
+        shuffled.forEach(optText => {
+          const btn = document.createElement('button');
+          btn.className = `battle-opt-btn ${optText.length > 3 ? 'long-text' : ''}`;
+          btn.textContent = optText;
+          btn.addEventListener('click', () => {
+            onAnswer(btn, optText, q);
+          });
+          optionsGrid.appendChild(btn);
+        });
+        break;
+      }
+    }
+  }
+
 
   function handleBattleAnswer(btn, chosenText, q) {
     if (state.adventure.isAnswering) return;

@@ -3600,3 +3600,510 @@ html, body {
     flex: 1 1 100%;
   }
 }
+
+/* ==========================================================================
+   國小正式段考 7 大真實題型互動樣式 (Authentic Elementary Exam Interactions)
+   ========================================================================== */
+
+/* 共通作答互動外框 */
+.exam-interactive-arena {
+  margin-top: 14px;
+  background: #FFFFFF;
+  border: 3px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* 1. 【看圖選注音·打勾題】 (Check Format) */
+.exam-check-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.exam-check-pic-wrapper {
+  background: #F8FAFC;
+  border: 2px dashed #94A3B8;
+  border-radius: 16px;
+  padding: 12px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.exam-check-pic-emoji {
+  font-size: 56px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+.exam-check-pic-label {
+  font-size: 15px;
+  font-weight: 800;
+  color: #475569;
+}
+.exam-check-options-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+.exam-check-card {
+  flex: 1;
+  max-width: 240px;
+  background: #FFFFFF;
+  border: 3px solid #CBD5E1;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.exam-check-card:hover {
+  border-color: #3B82F6;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+}
+.check-box-bracket {
+  font-size: 24px;
+  font-family: monospace;
+  font-weight: 900;
+  color: #475569;
+}
+.check-mark-sym {
+  display: inline-block;
+  min-width: 24px;
+  color: #EF4444;
+  font-size: 26px;
+}
+.check-opt-zhuyin {
+  font-size: 28px;
+  font-weight: 900;
+  color: #1E293B;
+  letter-spacing: 2px;
+}
+.exam-check-card.checked-active {
+  border-color: #EF4444 !important;
+  background: #FEF2F2 !important;
+  transform: scale(1.04) !important;
+}
+
+/* 2. 【圈出正確的注音·手繪紅圈題】 (Circle Format) */
+.exam-circle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.exam-circle-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 900;
+  color: #334155;
+  background: #F1F5F9;
+  padding: 8px 18px;
+  border-radius: 12px;
+}
+.exam-circle-choices-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+}
+.exam-circle-card {
+  position: relative;
+  flex: 1;
+  max-width: 260px;
+  background: #FFFBEB;
+  border: 3px solid #FCD34D;
+  border-radius: 18px;
+  padding: 22px 16px;
+  font-size: 30px;
+  font-weight: 900;
+  color: #78350F;
+  letter-spacing: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.12);
+}
+.exam-circle-card:hover {
+  transform: translateY(-3px);
+  border-color: #F59E0B;
+  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.22);
+}
+.red-circle-stroke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  height: 125%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.red-circle-stroke ellipse {
+  fill: none;
+  stroke: #DC2626;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+}
+.exam-circle-card.circled-active .red-circle-stroke {
+  opacity: 1;
+}
+.exam-circle-card.circled-active .red-circle-stroke ellipse {
+  animation: drawRedCircle 0.45s forwards ease-out;
+}
+@keyframes drawRedCircle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 3. 【連連看·拉線配對題】 (Connect Format) */
+.exam-connect-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 20px;
+  background: #F8FAFC;
+  border-radius: 16px;
+}
+.connect-left-col, .connect-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.connect-peg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFFFFF;
+  border: 3px solid #CBD5E1;
+  border-radius: 14px;
+  padding: 12px 20px;
+  font-size: 24px;
+  font-weight: 900;
+  color: #1E293B;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.connect-peg.source-peg {
+  border-color: #3B82F6;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  cursor: default;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+.connect-peg.target-peg:hover {
+  border-color: #10B981;
+  transform: translateX(-4px);
+  background: #ECFDF5;
+}
+.connect-peg.target-peg.connected {
+  border-color: #10B981;
+  background: #D1FAE5;
+  color: #065F46;
+}
+.peg-dot {
+  font-size: 16px;
+  color: #94A3B8;
+}
+.connect-peg.source-peg .peg-dot {
+  color: #3B82F6;
+}
+.connect-peg.target-peg:hover .peg-dot,
+.connect-peg.target-peg.connected .peg-dot {
+  color: #10B981;
+}
+
+/* 4. 【看圖填一填·九宮格填字】 (Fill Format) */
+.exam-fill-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.exam-fill-target-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #F1F5F9;
+  border-radius: 16px;
+  padding: 12px 24px;
+}
+.fill-pic-icon {
+  font-size: 48px;
+}
+.fill-slots-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fill-box {
+  min-width: 64px;
+  height: 64px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 3px solid #94A3B8;
+  border-radius: 12px;
+  font-size: 26px;
+  font-weight: 900;
+  color: #1E293B;
+}
+.fill-box.empty-slot {
+  border: 3px dashed #F59E0B;
+  background: #FEF3C7;
+  color: #D97706;
+  animation: pulseSlot 1.5s infinite;
+}
+@keyframes pulseSlot {
+  0%, 100% { border-color: #F59E0B; }
+  50% { border-color: #EF4444; }
+}
+.exam-fill-candidates-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+}
+.fill-candidate-tile {
+  background: #FFFFFF;
+  border: 3px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 12px 20px;
+  font-size: 26px;
+  font-weight: 900;
+  color: #1E293B;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+.fill-candidate-tile:hover {
+  border-color: #3B82F6;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+}
+
+/* 5. 【先拼音再造詞·加法合成板】 (Combine Format) */
+.exam-combine-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.combine-formula-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #EFF6FF;
+  border: 3px solid #93C5FD;
+  border-radius: 18px;
+  padding: 14px 28px;
+}
+.formula-block {
+  min-width: 54px;
+  height: 54px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 2px solid #3B82F6;
+  border-radius: 12px;
+  font-size: 26px;
+  font-weight: 900;
+  color: #1D4ED8;
+}
+.formula-block.result-slot {
+  border: 3px dashed #F59E0B;
+  background: #FEF3C7;
+  color: #B45309;
+}
+.formula-symbol {
+  font-size: 24px;
+  font-weight: 900;
+  color: #3B82F6;
+}
+.exam-combine-options-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+}
+.combine-opt-btn {
+  background: #FFFFFF;
+  border: 3px solid #CBD5E1;
+  border-radius: 14px;
+  padding: 12px 22px;
+  font-size: 26px;
+  font-weight: 900;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.combine-opt-btn:hover {
+  border-color: #2563EB;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.2);
+}
+
+/* 6. 【填上聲調符號·蓋聲調印章】 (Tone Format) */
+.exam-tone-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.tone-sentence-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #FAF5FF;
+  border: 2px solid #E9D5FF;
+  border-radius: 16px;
+  padding: 14px 24px;
+  width: 100%;
+  max-width: 560px;
+}
+.sentence-icon {
+  font-size: 38px;
+}
+.sentence-text-display {
+  font-size: 22px;
+  font-weight: 900;
+  color: #581C87;
+  line-height: 1.4;
+}
+.tone-target-highlight {
+  background: #FDE047;
+  color: #713F12;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border-bottom: 3px solid #CA8A04;
+}
+.stamps-grid {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+.tone-stamp-btn {
+  background: #FFFFFF;
+  border: 3px solid #DC2626;
+  border-radius: 16px;
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+}
+.tone-stamp-btn:hover {
+  transform: translateY(-4px) scale(1.08);
+  background: #FEF2F2;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.25);
+}
+.stamp-mark {
+  font-size: 28px;
+  font-weight: 900;
+  color: #DC2626;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stamp-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #991B1B;
+}
+
+/* 7. 【兒歌閱讀測驗】 (Reading Format) */
+.exam-reading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.reading-poetry-scroll {
+  background: #FFFBEB;
+  border: 3px solid #FCD34D;
+  border-radius: 18px;
+  padding: 16px 24px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+}
+.poetry-header {
+  font-size: 14px;
+  font-weight: 900;
+  color: #92400E;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.poetry-body {
+  font-size: 20px;
+  font-weight: 800;
+  color: #78350F;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+.reading-options-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+.reading-opt-btn {
+  background: #FFFFFF;
+  border: 3px solid #CBD5E1;
+  border-radius: 14px;
+  padding: 12px 22px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #1E293B;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.reading-opt-btn:hover {
+  border-color: #3B82F6;
+  transform: translateY(-3px);
+  background: #EFF6FF;
+}
+
+@media (max-width: 640px) {
+  .exam-check-options-row,
+  .exam-circle-choices-row,
+  .exam-fill-candidates-row,
+  .exam-combine-options-row,
+  .reading-options-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .stamps-grid {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .exam-connect-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
