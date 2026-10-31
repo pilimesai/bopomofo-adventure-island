@@ -1150,6 +1150,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <div style="font-size:14px;color:#DC2626;font-weight:900;" id="poke-battle-prompt-tag">🔴 道館考核題目：</div>
               <span id="poke-shiny-badge" class="shiny-tag-badge" style="display:none;">✨ 稀有閃光神獸 ✨</span>
             </div>
+            <!-- 📖 閱讀測驗故事小天地 -->
+            <div id="battle-reading-card" class="reading-passage-card" style="display:none;">
+              <div class="reading-passage-badge">📖 兒歌短文：</div>
+              <div class="reading-passage-text" id="reading-passage-text"></div>
+            </div>
             <h3 class="question-prompt-text" id="battle-q-prompt" style="font-size:20px;margin:0;"></h3>
           </div>
 
@@ -1500,6 +1505,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (oppName) oppName.textContent = isShiny ? '✨ 稀有閃光【神秘注音精靈】 ✨' : '野生的【神秘注音精靈】';
     if (oppType) oppType.textContent = sym ? `${sym.pokeTypeIcon} ${sym.pokeType}` : `🌟 屬性：綜合考核`;
     if (oppLevel) oppLevel.textContent = `Lv.${stage.id * 3 + state.adventure.qIndex + 1}`;
+
+    const promptTag = document.getElementById('poke-battle-prompt-tag');
+    const readingCard = document.getElementById('battle-reading-card');
+    const readingText = document.getElementById('reading-passage-text');
+
+    if (q.qType === 'reading' && q.passage) {
+      if (promptTag) promptTag.textContent = '📖 段考兒歌閱讀測驗：';
+      if (readingCard) readingCard.style.display = 'block';
+      if (readingText) readingText.textContent = q.passage;
+    } else {
+      if (readingCard) readingCard.style.display = 'none';
+      if (q.qType === 'choice') {
+        if (promptTag) promptTag.textContent = '📝 段考觀念選擇題：';
+      } else {
+        if (promptTag) promptTag.textContent = '🔴 道館考核題目：';
+      }
+    }
+
     // 確保題目文字絕不出現注音答案
     const safePrompt = (q.prompt || '').replace(/[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]/g, '❓');
     if (promptText) promptText.textContent = safePrompt;
@@ -1512,7 +1535,7 @@ document.addEventListener('DOMContentLoaded', () => {
       optionsGrid.innerHTML = '';
       shuffled.forEach(optText => {
         const btn = document.createElement('button');
-        btn.className = 'battle-opt-btn';
+        btn.className = `battle-opt-btn ${optText.length > 3 ? 'long-text' : ''}`;
         btn.textContent = optText;
 
         btn.addEventListener('click', () => {

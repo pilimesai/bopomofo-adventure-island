@@ -3170,3 +3170,50 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px) rotate(5deg); }
 }
+
+/* ========================================================
+   📖 段考兒歌短文閱讀測驗與觀念選擇題卡
+   ======================================================== */
+.reading-passage-card {
+  background: linear-gradient(135deg, #FFFDF0, #FEF9C3);
+  border: 3px solid #F59E0B;
+  border-radius: 18px;
+  padding: 16px 20px;
+  margin: 10px 0 14px 0;
+  box-shadow: 0 4px 0 #D97706, 0 8px 16px rgba(245, 158, 11, 0.15);
+  text-align: left;
+  position: relative;
+}
+
+.reading-passage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 900;
+  padding: 3px 12px;
+  border-radius: var(--radius-round);
+  margin-bottom: 10px;
+  box-shadow: 0 2px 0 #B45309;
+}
+
+.reading-passage-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1E293B;
+  line-height: 1.85;
+  white-space: pre-line;
+  letter-spacing: 1.2px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border-left: 5px solid #F59E0B;
+}
+
+.battle-opt-btn.long-text {
+  font-size: 19px !important;
+  padding: 14px 10px !important;
+  line-height: 1.35;
+}
