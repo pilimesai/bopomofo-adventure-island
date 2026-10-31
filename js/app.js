@@ -864,8 +864,8 @@ document.addEventListener('DOMContentLoaded', () => {
         state.examDifficulty = 'midterm';
         localStorage.setItem('zhuyin_exam_difficulty', 'midterm');
         updateDiffButtons();
-        setMascotSpeech('🐣 已切換至【期中考難度】！專注於首冊 37 注音符號形音與基礎聲調辨識！');
-        window.audioEngine.speak('已切換為期中考難度！');
+        setMascotSpeech('🏛️ 已切換至【新北安和國小 111學年度段考真題】！100% 原卷完整收錄！');
+        window.audioEngine.speak('已切換為安和國小段考真題！');
         renderAdventureMap();
       });
     }
@@ -985,7 +985,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 道館 ${stage.id}
               </span>
               <span class="battle-diff-badge ${state.examDifficulty === 'final' ? 'final' : 'midterm'}" style="font-size:11px;padding:2px 8px;">
-                ${state.examDifficulty === 'final' ? '🦅 期末段考題' : '🐣 期中首冊題'}
+                ${state.examDifficulty === 'final' ? '🦅 期末段考題' : '🏛️ 安和國小 1:1 原卷'}
               </span>
             </div>
             <span class="stage-stars-row" style="color:${earnedStars > 0 ? '#FCC419' : '#CED4DA'};">
@@ -1061,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ⬅️ 返回道館地圖
           </button>
           <div class="battle-stage-title" id="battle-stage-title">
-            ${stage.icon} ${badge ? badge.gym : stage.name}・${stage.subtitle} <span class="battle-diff-badge ${isFinal ? 'final' : 'midterm'}" style="margin-left:8px;">${isFinal ? '🦅 期末考難度' : '🐣 期中考難度'}</span>
+            ${stage.icon} ${badge ? badge.gym : stage.name}・${stage.subtitle} <span class="battle-diff-badge ${isFinal ? 'final' : 'midterm'}" style="margin-left:8px;">${isFinal ? '🦅 期末考難度' : '🏛️ 安和國小 1:1 原卷真題'}</span>
           </div>
           <div class="battle-status-right">
             <div class="battle-combo-badge" id="battle-combo-badge" style="display:none;">
