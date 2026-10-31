@@ -4307,3 +4307,240 @@ ruby.zhuyin-ruby span.rb {
   box-shadow: 0 6px 0 #B91C1C !important;
   animation: bossShake 0.4s ease;
 }
+
+/* ========================================================
+   探險家角色系統與重創角色樣式 (Character Profile & Reset)
+   ======================================================== */
+.character-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  border: 2px solid #3B82F6;
+  border-radius: var(--radius-round);
+  padding: 5px 12px;
+  box-shadow: 0 3px 0 #2563EB;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.character-profile-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 #2563EB;
+  background: #E0E7FF;
+}
+
+.char-avatar-bubble {
+  font-size: 24px;
+  width: 34px;
+  height: 34px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.char-header-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.char-header-name {
+  font-size: 14px;
+  font-weight: 900;
+  color: #1E3A8A;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-header-rank {
+  font-size: 11px;
+  font-weight: 800;
+  color: #3B82F6;
+}
+
+/* 角色選擇卡片網格 */
+.char-select-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+@media (max-width: 600px) {
+  .char-select-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.char-select-card {
+  background: #F8FAFC;
+  border: 3px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 12px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.char-select-card:hover {
+  border-color: #3B82F6;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.15);
+}
+
+.char-select-card.selected {
+  border-color: #3B82F6 !important;
+  background: #EFF6FF !important;
+  box-shadow: 0 6px 0 #2563EB !important;
+  transform: scale(1.04);
+}
+
+.char-card-avatar {
+  font-size: 40px;
+  width: 56px;
+  height: 56px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.char-card-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1E293B;
+}
+
+.char-card-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #64748B;
+  background: #E2E8F0;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* 姓名輸入組件 */
+.char-name-group {
+  margin: 16px 0;
+  background: #F1F5F9;
+  padding: 14px 16px;
+  border-radius: 16px;
+}
+
+.char-name-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 18px;
+  font-weight: 900;
+  color: #1E293B;
+  background: #FFFFFF;
+  border: 2px solid #CBD5E1;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.char-name-input:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.quick-name-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.quick-chip-btn {
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quick-chip-btn:hover {
+  background: #3B82F6;
+  border-color: #3B82F6;
+  color: #FFFFFF;
+}
+
+/* 角色檔案面板統計卡片 */
+.char-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.char-stat-card {
+  background: #F8FAFC;
+  border: 2px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.char-stat-icon {
+  font-size: 26px;
+}
+
+.char-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.char-stat-label {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 800;
+}
+
+.char-stat-val {
+  font-size: 18px;
+  font-weight: 900;
+  color: #0F172A;
+}
+
+.char-danger-reset-btn {
+  background: #FEE2E2 !important;
+  border: 2px solid #EF4444 !important;
+  color: #DC2626 !important;
+  padding: 10px 18px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.char-danger-reset-btn:hover {
+  background: #DC2626 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}

@@ -439,6 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function init() {
 
+    initCharacterModule();
+
     updateStarDisplay();
 
     updateTrainerHeaderUI();
@@ -923,7 +925,344 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  function setupPartnerModal() {
+    // ==========================================
+  // 🌟 探險家角色系統與重創角色管理模組 (Character System & Reset)
+  // ==========================================
+  const CHARACTER_PRESETS = [
+    {
+      id: 'char_boy',
+      name: '小宏',
+      avatar: '👦',
+      color: '#3B82F6',
+      title: '熱血小勇者',
+      desc: '充滿勇氣，立志收服全島注音精靈！'
+    },
+    {
+      id: 'char_girl',
+      name: '小美',
+      avatar: '👧',
+      color: '#EC4899',
+      title: '活潑探險家',
+      desc: '觀察力第一名，最喜歡可愛的寶可夢！'
+    },
+    {
+      id: 'char_wizard',
+      name: '星兒',
+      avatar: '🧙‍♂️',
+      color: '#8B5CF6',
+      title: '拼音小魔法師',
+      desc: '運用注音星光魔法，每題都發射必殺技！'
+    },
+    {
+      id: 'char_hero',
+      name: '安安',
+      avatar: '🦸‍♀️',
+      color: '#F59E0B',
+      title: '守護小英雌',
+      desc: '充滿正義感，保護冒險島上的小夥伴！'
+    },
+    {
+      id: 'char_dino',
+      name: '阿龍',
+      avatar: '🦖',
+      color: '#10B981',
+      title: '巨龍馴獸師',
+      desc: '元氣滿滿，跟隨龍王守護者展開對決！'
+    },
+    {
+      id: 'char_star',
+      name: '小晴',
+      avatar: '🦄',
+      color: '#6366F1',
+      title: '夢幻精靈使',
+      desc: '細心又聰明，立志考取 100 分滿分！'
+    }
+  ];
+
+  let selectedCharacterPreset = CHARACTER_PRESETS[0];
+
+  function initCharacterModule() {
+    state.profile = JSON.parse(localStorage.getItem('zhuyin_profile') || 'null');
+
+    // 綁定頂部導航角色徽章點擊
+    const btnProfile = document.getElementById('btn-character-profile');
+    if (btnProfile) {
+      btnProfile.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        openCharacterProfileModal();
+      });
+    }
+
+    // 關閉按鈕
+    const createCloseBtn = document.getElementById('char-create-close-btn');
+    if (createCloseBtn) {
+      createCloseBtn.addEventListener('click', closeCharacterCreationModal);
+    }
+
+    const profileCloseBtn = document.getElementById('char-profile-close-btn');
+    if (profileCloseBtn) {
+      profileCloseBtn.addEventListener('click', closeCharacterProfileModal);
+    }
+
+    // 修改角色按鈕
+    const btnEdit = document.getElementById('btn-edit-char-profile');
+    if (btnEdit) {
+      btnEdit.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        closeCharacterProfileModal();
+        openCharacterCreationModal(true, true);
+      });
+    }
+
+    // 重創角色與重置流程
+    const btnTriggerReset = document.getElementById('btn-trigger-reset-game');
+    if (btnTriggerReset) {
+      btnTriggerReset.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        openResetConfirmModal();
+      });
+    }
+
+    const btnCancelReset = document.getElementById('btn-cancel-reset');
+    if (btnCancelReset) {
+      btnCancelReset.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        closeResetConfirmModal();
+      });
+    }
+
+    const btnConfirmReset = document.getElementById('btn-confirm-reset-game');
+    if (btnConfirmReset) {
+      btnConfirmReset.addEventListener('click', () => {
+        executeResetAndRecreate();
+      });
+    }
+
+    // 快速選名標籤
+    const quickChips = document.querySelectorAll('.quick-chip-btn');
+    quickChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        const input = document.getElementById('char-name-input');
+        if (input) {
+          input.value = chip.dataset.name || '';
+          input.focus();
+        }
+      });
+    });
+
+    // 確認創建角色
+    const btnConfirmChar = document.getElementById('btn-confirm-char');
+    if (btnConfirmChar) {
+      btnConfirmChar.addEventListener('click', handleSaveCharacterProfile);
+    }
+
+    // 首次進入遊戲若無角色，強制跳出創角選單
+    if (!state.profile) {
+      openCharacterCreationModal(false, false);
+    } else {
+      updateCharacterHeaderUI();
+    }
+  }
+
+  function updateCharacterHeaderUI() {
+    if (!state.profile) return;
+    const avatarEl = document.getElementById('header-char-avatar');
+    const nameEl = document.getElementById('header-char-name');
+    const titleEl = document.getElementById('header-char-title');
+
+    if (avatarEl) avatarEl.textContent = state.profile.avatar || '👦';
+    if (nameEl) nameEl.textContent = state.profile.name || '探險家';
+    if (titleEl) titleEl.textContent = state.profile.title || '小勇者';
+  }
+
+  function openCharacterCreationModal(canClose = true, isEditing = false) {
+    const modal = document.getElementById('char-create-modal');
+    if (!modal) return;
+
+    const titleEl = document.getElementById('char-modal-title');
+    const descEl = document.getElementById('char-modal-desc');
+    const closeBtn = document.getElementById('char-create-close-btn');
+    const confirmBtnText = document.getElementById('btn-confirm-char-text');
+    const nameInput = document.getElementById('char-name-input');
+
+    if (titleEl) titleEl.textContent = isEditing ? '✏️ 修改探險家角色資料' : '🌟 創建你的注音探險家角色';
+    if (descEl) descEl.textContent = isEditing ? '挑選喜歡的新外觀或更換大名：' : '選擇你最喜歡的角色形象，輸入你的大名，開始ㄅㄆㄇ挑戰吧！';
+    if (closeBtn) closeBtn.style.display = canClose ? 'block' : 'none';
+    if (confirmBtnText) confirmBtnText.textContent = isEditing ? '儲存修改' : '開始冒險！進入注音島';
+
+    // 預設選取當前角色或第一個預設
+    if (state.profile && isEditing) {
+      const match = CHARACTER_PRESETS.find(p => p.avatar === state.profile.avatar) || CHARACTER_PRESETS[0];
+      selectedCharacterPreset = match;
+      if (nameInput) nameInput.value = state.profile.name || '';
+    } else {
+      selectedCharacterPreset = CHARACTER_PRESETS[0];
+      if (nameInput) nameInput.value = selectedCharacterPreset.name;
+    }
+
+    renderCharacterPresetCards();
+    modal.classList.add('open');
+  }
+
+  function closeCharacterCreationModal() {
+    const modal = document.getElementById('char-create-modal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function renderCharacterPresetCards() {
+    const grid = document.getElementById('char-preset-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    CHARACTER_PRESETS.forEach(preset => {
+      const isSelected = selectedCharacterPreset && selectedCharacterPreset.id === preset.id;
+      const card = document.createElement('div');
+      card.className = `char-select-card ${isSelected ? 'selected' : ''}`;
+      card.innerHTML = `
+        <div class="char-card-avatar">${preset.avatar}</div>
+        <div class="char-card-name">${preset.name}</div>
+        <div class="char-card-title">${preset.title}</div>
+      `;
+
+      card.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        selectedCharacterPreset = preset;
+        renderCharacterPresetCards();
+        const input = document.getElementById('char-name-input');
+        if (input && (!input.value || CHARACTER_PRESETS.some(p => p.name === input.value))) {
+          input.value = preset.name;
+        }
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function handleSaveCharacterProfile() {
+    const input = document.getElementById('char-name-input');
+    const entered = (input ? input.value : '').trim();
+    const finalName = entered.length > 0 ? entered : (selectedCharacterPreset ? selectedCharacterPreset.name : '小勇者');
+    const preset = selectedCharacterPreset || CHARACTER_PRESETS[0];
+
+    const isNew = !state.profile;
+    state.profile = {
+      id: preset.id,
+      name: finalName,
+      avatar: preset.avatar,
+      title: preset.title,
+      color: preset.color,
+      desc: preset.desc,
+      updatedAt: Date.now()
+    };
+
+    localStorage.setItem('zhuyin_profile', JSON.stringify(state.profile));
+    updateCharacterHeaderUI();
+    closeCharacterCreationModal();
+
+    window.audioEngine.playFanfare();
+    if (window.confetti) window.confetti.trigger(80);
+
+    setMascotSpeech(`⚡ 皮卡！探險家【${state.profile.name}】歡迎加入冒險！點擊島嶼道館開始挑戰吧！`);
+    if (isNew) {
+      window.audioEngine.speak(`太棒了！歡迎你，${state.profile.name}！一起展開ㄅㄆㄇ冒險之旅吧！`);
+    } else {
+      window.audioEngine.speak(`資料已更新，探險家${state.profile.name}，繼續加油！`);
+    }
+  }
+
+  function openCharacterProfileModal() {
+    if (!state.profile) {
+      openCharacterCreationModal(false, false);
+      return;
+    }
+
+    const modal = document.getElementById('char-profile-modal');
+    if (!modal) return;
+
+    const avatarEl = document.getElementById('profile-display-avatar');
+    const nameEl = document.getElementById('profile-display-name');
+    const titleEl = document.getElementById('profile-display-title');
+    const descEl = document.getElementById('profile-display-desc');
+
+    if (avatarEl) avatarEl.textContent = state.profile.avatar || '👦';
+    if (nameEl) nameEl.textContent = state.profile.name || '探險家';
+    if (titleEl) titleEl.textContent = state.profile.title || '小勇者';
+    if (descEl) descEl.textContent = state.profile.desc || '充滿勇氣，立志成為注音寶可夢大師！';
+
+    // 戰績更新
+    const clearedStagesCount = Object.keys(state.adventure.stageStars || {}).filter(k => (state.adventure.stageStars[k] || 0) > 0).length;
+    const badgesCount = (ZHUYIN_DATA.gymBadges || []).filter(b => (state.adventure.stageStars[String(b.stageId)] || 0) > 0).length;
+
+    const stagesEl = document.getElementById('profile-stat-stages');
+    const starsEl = document.getElementById('profile-stat-stars');
+    const badgesEl = document.getElementById('profile-stat-badges');
+    const dexEl = document.getElementById('profile-stat-dex');
+
+    if (stagesEl) stagesEl.textContent = `${clearedStagesCount} / 10 座`;
+    if (starsEl) starsEl.textContent = `${state.stars || 0} 顆`;
+    if (badgesEl) badgesEl.textContent = `${badgesCount} / 10 枚`;
+    if (dexEl) dexEl.textContent = `${(state.pokedexCaught || []).length} / 37 隻`;
+
+    modal.classList.add('open');
+  }
+
+  function closeCharacterProfileModal() {
+    const modal = document.getElementById('char-profile-modal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function openResetConfirmModal() {
+    const modal = document.getElementById('char-reset-confirm-modal');
+    if (modal) modal.classList.add('open');
+  }
+
+  function closeResetConfirmModal() {
+    const modal = document.getElementById('char-reset-confirm-modal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function executeResetAndRecreate() {
+    closeResetConfirmModal();
+    closeCharacterProfileModal();
+
+    // 清空所有儲存紀錄，讓遊戲完全重來
+    localStorage.removeItem('zhuyin_profile');
+    localStorage.removeItem('zhuyin_stage_progress');
+    localStorage.removeItem('zhuyin_caught_symbols');
+    localStorage.removeItem('zhuyin_stars');
+    localStorage.removeItem('zhuyin_balls');
+    localStorage.removeItem('zhuyin_current_partner');
+    localStorage.removeItem('zhuyin_partner_data');
+    localStorage.removeItem('zhuyin_trainer_bag');
+
+    // 重設記憶體中狀態
+    state.profile = null;
+    state.adventure.stageStars = {};
+    state.adventure.score = 0;
+    state.adventure.mistakes = 0;
+    state.adventure.combo = 0;
+    state.pokedexCaught = [];
+    state.stars = 5;
+    state.balls = 20;
+
+    // 回到地圖畫面並重繪介面
+    showAdventureMap();
+    renderAdventureMap();
+    renderGallery();
+    renderGymBadges();
+    updateTrainerHeaderUI();
+    updatePokedexProgressUI();
+    updateStarDisplay();
+
+    window.audioEngine.playBadgeGet();
+    window.audioEngine.speak('遊戲進度已全數重置！請為你的新探險家挑選角色並輸入名字！');
+
+    // 開啟創角畫面引導建立新角色
+    openCharacterCreationModal(false, false);
+  }
+
+function setupPartnerModal() {
 
     if (dom.playerLevelBadge) {
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=32">
+  <link rel="stylesheet" href="css/style.css?v=33">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -26,6 +26,13 @@
     </div>
 
     <div class="header-right">
+      <div class="character-profile-badge" id="btn-character-profile" title="點擊查看探險家資料或重創新角色">
+        <span class="char-avatar-bubble" id="header-char-avatar">👦</span>
+        <div class="char-header-info">
+          <span class="char-header-name" id="header-char-name">探險家</span>
+          <span class="char-header-rank" id="header-char-title">小勇者</span>
+        </div>
+      </div>
       <div class="mascot-bubble" id="mascot-speech">
         ⚡ 皮卡！歡迎來到ㄅㄆㄇ寶可夢大冒險，準備好收服注音寶可夢了嗎？
       </div>
@@ -641,11 +648,137 @@
     </div>
   </div>
 
+  <!-- ========================================================
+       🌟 角色創建與選擇視窗 (Character Selection & Setup Modal)
+       ======================================================== -->
+  <div class="modal-backdrop" id="char-create-modal" aria-hidden="true">
+    <div class="modal-card" style="max-width:580px;border-color:#3B82F6;">
+      <button class="modal-close-btn" id="char-create-close-btn" aria-label="關閉視窗" style="display:none;">✕</button>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="font-size:36px;">🌟</span>
+        <div>
+          <h2 style="font-size:22px;font-weight:900;color:#1E3A8A;margin:0;" id="char-modal-title">創建你的注音探險家角色</h2>
+          <p style="font-size:13px;color:#64748B;font-weight:700;margin:4px 0 0;" id="char-modal-desc">選擇你最喜歡的角色形象，輸入你的大名，開始ㄅㄆㄇ挑戰吧！</p>
+        </div>
+      </div>
+
+      <div style="font-size:14px;font-weight:900;color:#334155;margin-top:10px;">👇 點選你最喜歡的角色形象：</div>
+      <div class="char-select-grid" id="char-preset-grid">
+        <!-- 由 JS 動態渲染角色預設選項 -->
+      </div>
+
+      <div class="char-name-group">
+        <label for="char-name-input" style="display:block;font-size:14px;font-weight:900;color:#334155;margin-bottom:8px;">
+          ✏️ 輸入你的探險家名字：
+        </label>
+        <input type="text" id="char-name-input" class="char-name-input" maxlength="8" placeholder="輸入名字（例如：小寶）">
+        <div class="quick-name-chips">
+          <span style="font-size:12px;color:#64748B;font-weight:800;">快速選名：</span>
+          <button type="button" class="quick-chip-btn" data-name="小寶">小寶</button>
+          <button type="button" class="quick-chip-btn" data-name="安安">安安</button>
+          <button type="button" class="quick-chip-btn" data-name="皮皮">皮皮</button>
+          <button type="button" class="quick-chip-btn" data-name="小晴">小晴</button>
+          <button type="button" class="quick-chip-btn" data-name="阿龍">阿龍</button>
+        </div>
+      </div>
+
+      <div style="text-align:right;margin-top:16px;">
+        <button class="big-action-btn" id="btn-confirm-char" style="padding:12px 28px;font-size:17px;">
+          <span>🚀</span> <span id="btn-confirm-char-text">開始冒險！進入注音島</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       👤 探險家個人檔案與角色管理視窗 (Profile & Reset Modal)
+       ======================================================== -->
+  <div class="modal-backdrop" id="char-profile-modal" aria-hidden="true">
+    <div class="modal-card" style="max-width:540px;border-color:#3B82F6;">
+      <button class="modal-close-btn" id="char-profile-close-btn" aria-label="關閉視窗">✕</button>
+
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;background:#EFF6FF;padding:16px;border-radius:18px;border:2px solid #BFDBFE;">
+        <div class="char-card-avatar" id="profile-display-avatar" style="width:68px;height:68px;font-size:48px;">👦</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <h2 style="font-size:24px;font-weight:900;color:#1E3A8A;margin:0;" id="profile-display-name">小寶</h2>
+            <span class="char-card-title" id="profile-display-title">熱血小勇者</span>
+          </div>
+          <p style="font-size:13px;color:#3B82F6;font-weight:800;margin:4px 0 0;" id="profile-display-desc">充滿勇氣，立志成為注音寶可夢大師！</p>
+        </div>
+      </div>
+
+      <div style="font-size:15px;font-weight:900;color:#1E293B;margin-bottom:6px;">📊 當前闖關與收服紀錄：</div>
+      <div class="char-stats-grid">
+        <div class="char-stat-card">
+          <span class="char-stat-icon">🗺️</span>
+          <div class="char-stat-info">
+            <span class="char-stat-label">已通關道館</span>
+            <span class="char-stat-val" id="profile-stat-stages">0 / 10 座</span>
+          </div>
+        </div>
+        <div class="char-stat-card">
+          <span class="char-stat-icon">⭐</span>
+          <div class="char-stat-info">
+            <span class="char-stat-label">累積金星星</span>
+            <span class="char-stat-val" id="profile-stat-stars">0 顆</span>
+          </div>
+        </div>
+        <div class="char-stat-card">
+          <span class="char-stat-icon">🏅</span>
+          <div class="char-stat-info">
+            <span class="char-stat-label">道館榮譽徽章</span>
+            <span class="char-stat-val" id="profile-stat-badges">0 / 10 枚</span>
+          </div>
+        </div>
+        <div class="char-stat-card">
+          <span class="char-stat-icon">📖</span>
+          <div class="char-stat-info">
+            <span class="char-stat-label">收服注音圖鑑</span>
+            <span class="char-stat-val" id="profile-stat-dex">0 / 37 隻</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:20px;padding-top:14px;border-top:2px solid #E2E8F0;">
+        <button class="secondary-action-btn" id="btn-edit-char-profile" style="font-size:14px;">
+          ✏️ 修改名字與頭像
+        </button>
+        <button class="char-danger-reset-btn" id="btn-trigger-reset-game">
+          🔄 重創新角色（重新開始遊戲）
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       ⚠️ 重創新角色二次確認視窗 (Reset Confirmation Modal)
+       ======================================================== -->
+  <div class="modal-backdrop" id="char-reset-confirm-modal" aria-hidden="true">
+    <div class="modal-card" style="max-width:460px;border-color:#EF4444;text-align:center;">
+      <div style="font-size:54px;margin-bottom:8px;">⚠️</div>
+      <h2 style="font-size:22px;font-weight:900;color:#DC2626;margin-bottom:8px;">確定要重創新角色嗎？</h2>
+      <p style="font-size:15px;color:#475569;line-height:1.6;font-weight:700;margin-bottom:20px;">
+        重創新角色後，<strong>目前的道館闖關進度、100分滿分紀錄、榮譽徽章與寶可夢圖鑑將全數清空</strong>，讓你可以重新從第 1 關開始挑戰！
+      </p>
+
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+        <button class="secondary-action-btn" id="btn-cancel-reset" style="padding:10px 18px;">
+          ❌ 暫時不要，繼續冒險
+        </button>
+        <button class="big-action-btn" id="btn-confirm-reset-game" style="background:#DC2626;border-color:#B91C1C;box-shadow:0 6px 0 #991B1B;padding:10px 20px;">
+          <span>🔄</span> 確定重創，重新開始！
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=32"></script>
-  <script src="js/audio_manifest.js?v=32"></script>
-  <script src="js/audio.js?v=32"></script>
-  <script src="js/confetti.js?v=32"></script>
-  <script src="js/app.js?v=32"></script>
+  <script src="js/data.js?v=33"></script>
+  <script src="js/audio_manifest.js?v=33"></script>
+  <script src="js/audio.js?v=33"></script>
+  <script src="js/confetti.js?v=33"></script>
+  <script src="js/app.js?v=33"></script>
 </body>
 </html>
