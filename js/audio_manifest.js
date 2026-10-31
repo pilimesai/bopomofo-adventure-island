@@ -1,4 +1,4 @@
-// 🌸 YMCA 正音班溫柔單人女老師高清音訊清單 (新北市安和國小 100% 原卷段考真題錄音)
+// 🌸 YMCA 正音班溫柔單人女老師高清音訊清單 (國小一年級 100% 原卷段考真題錄音)
 window.AUDIO_MANIFEST = {
   "已切換為安和國小段考真題！": "assets/audio/v_355e1a8af3b2.mp3",
   "蜘蛛，蜘蛛": "assets/audio/cute_edba2bf1337d.mp3",
