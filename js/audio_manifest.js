@@ -3117,5 +3117,857 @@ window.AUDIO_MANIFEST = {
   "桌上放著新書本的書，請問是第幾聲呢？": {
     "teacher": "assets/audio/v_74ad5a8a4122.mp3",
     "cute": "assets/audio/cute_74ad5a8a4122.mp3"
+  },
+  "正確答案是：亮。注音念作：ㄩㄝˋ。": {
+    "teacher": "assets/audio/v_937038be3caa.mp3",
+    "cute": "assets/audio/cute_937038be3caa.mp3"
+  },
+  "正確答案是：小鳥。注音念作：ㄋㄧㄠˇ。": {
+    "teacher": "assets/audio/v_1af138b21ed7.mp3",
+    "cute": "assets/audio/cute_1af138b21ed7.mp3"
+  },
+  "正確答案是：池塘。注音念作：ㄔˊ，　ㄊㄤˊ。": {
+    "teacher": "assets/audio/v_cf034f69363a.mp3",
+    "cute": "assets/audio/cute_cf034f69363a.mp3"
+  },
+  "正確答案是：檯燈。注音念作：ㄉㄥ。": {
+    "teacher": "assets/audio/v_261a840b710b.mp3",
+    "cute": "assets/audio/cute_261a840b710b.mp3"
+  },
+  "正確答案是：蝴蝶。注音念作：ㄏㄨˊ，　ㄉㄧㄝˊ。": {
+    "teacher": "assets/audio/v_98ced2ad454a.mp3",
+    "cute": "assets/audio/cute_98ced2ad454a.mp3"
+  },
+  "正確答案是：快樂。注音念作：ㄎㄨㄞˋ，　ㄌㄜˋ。": {
+    "teacher": "assets/audio/v_a7ba62cff7ac.mp3",
+    "cute": "assets/audio/cute_a7ba62cff7ac.mp3"
+  },
+  "正確答案是：老虎。注音念作：ㄌㄠˇ，　ㄏㄨˇ。": {
+    "teacher": "assets/audio/v_5899edc6d888.mp3",
+    "cute": "assets/audio/cute_5899edc6d888.mp3"
+  },
+  "正確答案是：蝸牛注音填空。注音念作：ㄋㄧㄡˊ。": {
+    "teacher": "assets/audio/v_8344ee27cd94.mp3",
+    "cute": "assets/audio/cute_8344ee27cd94.mp3"
+  },
+  "正確答案是：向日葵。注音念作：ㄒㄧㄤˋ，　ㄖˋ，　ㄎㄨㄟˊ。": {
+    "teacher": "assets/audio/v_9d1c89631332.mp3",
+    "cute": "assets/audio/cute_9d1c89631332.mp3"
+  },
+  "正確答案是：荷花。注音念作：ㄏㄨㄚ。": {
+    "teacher": "assets/audio/v_bff92b151975.mp3",
+    "cute": "assets/audio/cute_bff92b151975.mp3"
+  },
+  "正確答案是：池塘盛開的花朵。注音念作：第三聲。": {
+    "teacher": "assets/audio/v_7a7b06158eac.mp3",
+    "cute": "assets/audio/cute_7a7b06158eac.mp3"
+  },
+  "正確答案是：拼音結構判斷。注音念作：花。": {
+    "teacher": "assets/audio/v_9049cf5ad0e9.mp3",
+    "cute": "assets/audio/cute_9049cf5ad0e9.mp3"
+  },
+  "正確答案是：日葵。注音念作：ㄒㄧㄤˋ。": {
+    "teacher": "assets/audio/v_187a0c7bf246.mp3",
+    "cute": "assets/audio/cute_187a0c7bf246.mp3"
+  },
+  "正確答案是：白鵝。注音念作：ㄅㄞˊ，　ㄜˊ。": {
+    "teacher": "assets/audio/v_1e8555b4fc0a.mp3",
+    "cute": "assets/audio/cute_1e8555b4fc0a.mp3"
+  },
+  "正確答案是：樹木。注音念作：ㄕㄨˋ，　ㄇㄨˋ。": {
+    "teacher": "assets/audio/v_dd751f0b9e89.mp3",
+    "cute": "assets/audio/cute_dd751f0b9e89.mp3"
+  },
+  "正確答案是：繩。注音念作：ㄊㄧㄠˋ。": {
+    "teacher": "assets/audio/v_7f2bf4c1eaeb.mp3",
+    "cute": "assets/audio/cute_7f2bf4c1eaeb.mp3"
+  },
+  "正確答案是：青草。注音念作：ㄑㄧㄥ。": {
+    "teacher": "assets/audio/v_7685b45d9467.mp3",
+    "cute": "assets/audio/cute_7685b45d9467.mp3"
+  },
+  "正確答案是：介音三人組判斷。注音念作：ㄨ。": {
+    "teacher": "assets/audio/v_2933b0018515.mp3",
+    "cute": "assets/audio/cute_2933b0018515.mp3"
+  },
+  "正確答案是：長高。注音念作：ㄍㄠ。": {
+    "teacher": "assets/audio/v_7a45f9bcbc63.mp3",
+    "cute": "assets/audio/cute_7a45f9bcbc63.mp3"
+  },
+  "正確答案是：爬山。注音念作：ㄆㄚˊ，　ㄕㄢ。": {
+    "teacher": "assets/audio/v_1a9708b99922.mp3",
+    "cute": "assets/audio/cute_1a9708b99922.mp3"
+  },
+  "正確答案是：刺蝟。注音念作：ㄘˋ，　ㄨㄟˋ。": {
+    "teacher": "assets/audio/v_c9cd5331cb07.mp3",
+    "cute": "assets/audio/cute_c9cd5331cb07.mp3"
+  },
+  "正確答案是：陽光。注音念作：ㄧㄤˊ，　ㄍㄨㄤ。": {
+    "teacher": "assets/audio/v_9ebf35a9f79d.mp3",
+    "cute": "assets/audio/cute_9ebf35a9f79d.mp3"
+  },
+  "正確答案是：白鵝美白鵝爽。注音念作：第三聲。": {
+    "teacher": "assets/audio/v_e182494b785e.mp3",
+    "cute": "assets/audio/cute_e182494b785e.mp3"
+  },
+  "正確答案是：小鴨。注音念作：ㄒㄧㄠˇ，　ㄧㄚ。": {
+    "teacher": "assets/audio/v_2b69fdbf799c.mp3",
+    "cute": "assets/audio/cute_2b69fdbf799c.mp3"
+  },
+  "正確答案是：無尾熊。注音念作：ㄨˊ，　ㄨㄟˇ，　ㄒㄩㄥˊ。": {
+    "teacher": "assets/audio/v_b2305b414844.mp3",
+    "cute": "assets/audio/cute_b2305b414844.mp3"
+  },
+  "正確答案是：白雪。注音念作：ㄅㄞˊ，　ㄒㄩㄝˇ。": {
+    "teacher": "assets/audio/v_abcc50b71c29.mp3",
+    "cute": "assets/audio/cute_abcc50b71c29.mp3"
+  },
+  "正確答案是：螞蟻。注音念作：ㄇㄚˇ。": {
+    "teacher": "assets/audio/v_600e6aed59ad.mp3",
+    "cute": "assets/audio/cute_600e6aed59ad.mp3"
+  },
+  "正確答案是：聲調連續判斷。注音念作：第一聲和第一聲。": {
+    "teacher": "assets/audio/v_3e2bb0557851.mp3",
+    "cute": "assets/audio/cute_3e2bb0557851.mp3"
+  },
+  "正確答案是：剪刀。注音念作：ㄐㄧㄢˇ，　ㄉㄠ。": {
+    "teacher": "assets/audio/v_f67e050cadcc.mp3",
+    "cute": "assets/audio/cute_f67e050cadcc.mp3"
+  },
+  "正確答案是：朋友。注音念作：二聲。": {
+    "teacher": "assets/audio/v_ef2445a4872a.mp3",
+    "cute": "assets/audio/cute_ef2445a4872a.mp3"
+  },
+  "正確答案是：時鐘。注音念作：時鐘。": {
+    "teacher": "assets/audio/v_14e3d33af2cd.mp3",
+    "cute": "assets/audio/cute_14e3d33af2cd.mp3"
+  },
+  "正確答案是：氣球。注音念作：ㄑㄧㄡˊ。": {
+    "teacher": "assets/audio/v_c7026b4bf424.mp3",
+    "cute": "assets/audio/cute_c7026b4bf424.mp3"
+  },
+  "正確答案是：小狗。注音念作：ㄒㄧㄠˇ，　ㄍㄡˇ。": {
+    "teacher": "assets/audio/v_63166584c628.mp3",
+    "cute": "assets/audio/cute_63166584c628.mp3"
+  },
+  "正確答案是：海豚。注音念作：ㄊㄨㄣˊ。": {
+    "teacher": "assets/audio/v_73cf1e14ef5d.mp3",
+    "cute": "assets/audio/cute_73cf1e14ef5d.mp3"
+  },
+  "正確答案是：蘋果。注音念作：ㄆㄧㄥˊ。": {
+    "teacher": "assets/audio/v_0bf44aae5d79.mp3",
+    "cute": "assets/audio/cute_0bf44aae5d79.mp3"
+  },
+  "正確答案是：糖果。注音念作：ㄊㄤˊ，　ㄍㄨㄛˇ。": {
+    "teacher": "assets/audio/v_70937995eb60.mp3",
+    "cute": "assets/audio/cute_70937995eb60.mp3"
+  },
+  "正確答案是：水池注音填空。注音念作：ㄔˊ。": {
+    "teacher": "assets/audio/v_3ab2d1ba100a.mp3",
+    "cute": "assets/audio/cute_3ab2d1ba100a.mp3"
+  },
+  "正確答案是：雨。注音念作：ㄙㄢˇ。": {
+    "teacher": "assets/audio/v_82467d7b0e50.mp3",
+    "cute": "assets/audio/cute_82467d7b0e50.mp3"
+  },
+  "正確答案是：有小鳥在唱歌。注音念作：第一聲。": {
+    "teacher": "assets/audio/v_85a45ec190f1.mp3",
+    "cute": "assets/audio/cute_85a45ec190f1.mp3"
+  },
+  "正確答案是：自行車注音填空。注音念作：ㄗˋ。": {
+    "teacher": "assets/audio/v_9d0dae3567ca.mp3",
+    "cute": "assets/audio/cute_9d0dae3567ca.mp3"
+  },
+  "正確答案是：眼鏡。注音念作：ㄧㄢˇ，　ㄐㄧㄥˋ。": {
+    "teacher": "assets/audio/v_1e2194b815ca.mp3",
+    "cute": "assets/audio/cute_1e2194b815ca.mp3"
+  },
+  "正確答案是：唱歌。注音念作：ㄔㄤˋ，　ㄍㄜ。": {
+    "teacher": "assets/audio/v_4d9eb4d3e20a.mp3",
+    "cute": "assets/audio/cute_4d9eb4d3e20a.mp3"
+  },
+  "正確答案是：書本。注音念作：ㄕㄨ。": {
+    "teacher": "assets/audio/v_dd3a2843e856.mp3",
+    "cute": "assets/audio/cute_dd3a2843e856.mp3"
+  },
+  "正確答案是：金。注音念作：ㄩˊ。": {
+    "teacher": "assets/audio/v_1c812836684b.mp3",
+    "cute": "assets/audio/cute_1c812836684b.mp3"
+  },
+  "正確答案是：落葉。注音念作：ㄌㄨㄛˋ，　ㄧㄝˋ。": {
+    "teacher": "assets/audio/v_fd186eb3ff88.mp3",
+    "cute": "assets/audio/cute_fd186eb3ff88.mp3"
+  },
+  "正確答案是：松鼠。注音念作：ㄙㄨㄥ，　ㄕㄨˇ。": {
+    "teacher": "assets/audio/v_331a881089b6.mp3",
+    "cute": "assets/audio/cute_331a881089b6.mp3"
+  },
+  "正確答案是：輪船。注音念作：ㄌㄨㄣˊ，　ㄔㄨㄢˊ。": {
+    "teacher": "assets/audio/v_7a33d3991750.mp3",
+    "cute": "assets/audio/cute_7a33d3991750.mp3"
+  },
+  "正確答案是：國小。注音念作：ㄍㄨㄛˊ，　ㄒㄧㄠˇ。": {
+    "teacher": "assets/audio/v_19243feb7586.mp3",
+    "cute": "assets/audio/cute_19243feb7586.mp3"
+  },
+  "正確答案是：游泳。注音念作：ㄧㄡˊ，　ㄩㄥˇ。": {
+    "teacher": "assets/audio/v_97c29c838154.mp3",
+    "cute": "assets/audio/cute_97c29c838154.mp3"
+  },
+  "正確答案是：蟬。注音念作：ㄔㄢˊ。": {
+    "teacher": "assets/audio/v_18c588f35947.mp3",
+    "cute": "assets/audio/cute_18c588f35947.mp3"
+  },
+  "正確答案是：介紹。注音念作：ㄕㄠˋ。": {
+    "teacher": "assets/audio/v_3927fd4f2598.mp3",
+    "cute": "assets/audio/cute_3927fd4f2598.mp3"
+  },
+  "正確答案是：彩。注音念作：ㄏㄨㄥˊ。": {
+    "teacher": "assets/audio/v_bf129f842296.mp3",
+    "cute": "assets/audio/cute_bf129f842296.mp3"
+  },
+  "正確答案是：一片。注音念作：ㄧ，　ㄆㄧㄢˋ。": {
+    "teacher": "assets/audio/v_52fdb1619e71.mp3",
+    "cute": "assets/audio/cute_52fdb1619e71.mp3"
+  },
+  "正確答案是：花朵。注音念作：ㄏㄨㄚ，　ㄉㄨㄛˇ。": {
+    "teacher": "assets/audio/v_a217d723b890.mp3",
+    "cute": "assets/audio/cute_a217d723b890.mp3"
+  },
+  "正確答案是：蛋糕。注音念作：ㄉㄢˋ。": {
+    "teacher": "assets/audio/v_9cc1bbccab99.mp3",
+    "cute": "assets/audio/cute_9cc1bbccab99.mp3"
+  },
+  "正確答案是：海豚。注音念作：ㄏㄞˇ，　ㄊㄨㄣˊ。": {
+    "teacher": "assets/audio/v_519dfde5a678.mp3",
+    "cute": "assets/audio/cute_519dfde5a678.mp3"
+  },
+  "正確答案是：小熊注音填空。注音念作：ㄒㄩㄥˊ。": {
+    "teacher": "assets/audio/v_c88ab48bef1d.mp3",
+    "cute": "assets/audio/cute_c88ab48bef1d.mp3"
+  },
+  "正確答案是：猴子注音填空。注音念作：ㄏㄡˊ。": {
+    "teacher": "assets/audio/v_e453c3b61f3f.mp3",
+    "cute": "assets/audio/cute_e453c3b61f3f.mp3"
+  },
+  "正確答案是：月亮。注音念作：ㄩㄝˋ，　˙ㄌㄧㄤ。": {
+    "teacher": "assets/audio/v_ddf4a928cb24.mp3",
+    "cute": "assets/audio/cute_ddf4a928cb24.mp3"
+  },
+  "正確答案是：襪子。注音念作：ㄨㄚˋ，　˙ㄗ。": {
+    "teacher": "assets/audio/v_a75e85158f5b.mp3",
+    "cute": "assets/audio/cute_a75e85158f5b.mp3"
+  },
+  "正確答案是：小鳥。注音念作：ㄒㄧㄠˇ，　ㄋㄧㄠˇ。": {
+    "teacher": "assets/audio/v_3df77574daef.mp3",
+    "cute": "assets/audio/cute_3df77574daef.mp3"
+  },
+  "正確答案是：白鴿。注音念作：ㄅㄞˊ，　ㄍㄜ。": {
+    "teacher": "assets/audio/v_775b4b6b4f8d.mp3",
+    "cute": "assets/audio/cute_775b4b6b4f8d.mp3"
+  },
+  "正確答案是：賽跑。注音念作：ㄙㄞˋ，　ㄆㄠˇ。": {
+    "teacher": "assets/audio/v_cb4a3b046bbe.mp3",
+    "cute": "assets/audio/cute_cb4a3b046bbe.mp3"
+  },
+  "正確答案是：開會。注音念作：ㄎㄞ，　ㄏㄨㄟˋ。": {
+    "teacher": "assets/audio/v_2d35acac73dc.mp3",
+    "cute": "assets/audio/cute_2d35acac73dc.mp3"
+  },
+  "正確答案是：書包。注音念作：ㄕㄨ，　ㄅㄠ。": {
+    "teacher": "assets/audio/v_df5f7be1cc99.mp3",
+    "cute": "assets/audio/cute_df5f7be1cc99.mp3"
+  },
+  "正確答案是：踢球。注音念作：ㄊㄧ，　ㄑㄧㄡˊ。": {
+    "teacher": "assets/audio/v_1436e876ea11.mp3",
+    "cute": "assets/audio/cute_1436e876ea11.mp3"
+  },
+  "正確答案是：鴨子。注音念作：ㄧㄚ，　˙ㄗ。": {
+    "teacher": "assets/audio/v_b4724080990d.mp3",
+    "cute": "assets/audio/cute_b4724080990d.mp3"
+  },
+  "正確答案是：牙刷。注音念作：牙刷。": {
+    "teacher": "assets/audio/v_6b2d3d0c4312.mp3",
+    "cute": "assets/audio/cute_6b2d3d0c4312.mp3"
+  },
+  "正確答案是：人。注音念作：ㄒㄩㄝˇ。": {
+    "teacher": "assets/audio/v_7f2e054f2f7e.mp3",
+    "cute": "assets/audio/cute_7f2e054f2f7e.mp3"
+  },
+  "正確答案是：烏龜。注音念作：ㄨ，　ㄍㄨㄟ。": {
+    "teacher": "assets/audio/v_4734abb3dac4.mp3",
+    "cute": "assets/audio/cute_4734abb3dac4.mp3"
+  },
+  "正確答案是：溜梯。注音念作：ㄏㄨㄚˊ。": {
+    "teacher": "assets/audio/v_ccb6dc4379ba.mp3",
+    "cute": "assets/audio/cute_ccb6dc4379ba.mp3"
+  },
+  "正確答案是：剪刀。注音念作：剪刀。": {
+    "teacher": "assets/audio/v_c3e0e82124cf.mp3",
+    "cute": "assets/audio/cute_c3e0e82124cf.mp3"
+  },
+  "正確答案是：風箏。注音念作：ㄈㄥ，　ㄓㄥ。": {
+    "teacher": "assets/audio/v_c85480efc7a9.mp3",
+    "cute": "assets/audio/cute_c85480efc7a9.mp3"
+  },
+  "正確答案是：時鐘。注音念作：ㄕˊ，　ㄓㄨㄥ。": {
+    "teacher": "assets/audio/v_74d76b591516.mp3",
+    "cute": "assets/audio/cute_74d76b591516.mp3"
+  },
+  "正確答案是：玉米。注音念作：ㄩˋ，　ㄇㄧˇ。": {
+    "teacher": "assets/audio/v_0007657a0801.mp3",
+    "cute": "assets/audio/cute_0007657a0801.mp3"
+  },
+  "正確答案是：飛機。注音念作：ㄈㄟ。": {
+    "teacher": "assets/audio/v_e505178caa1e.mp3",
+    "cute": "assets/audio/cute_e505178caa1e.mp3"
+  },
+  "正確答案是：香蕉。注音念作：ㄒㄧㄤ，　ㄐㄧㄠ。": {
+    "teacher": "assets/audio/v_6d72c72a06ed.mp3",
+    "cute": "assets/audio/cute_6d72c72a06ed.mp3"
+  },
+  "正確答案是：高聳。注音念作：ㄙㄨㄥˇ。": {
+    "teacher": "assets/audio/v_171528199ad7.mp3",
+    "cute": "assets/audio/cute_171528199ad7.mp3"
+  },
+  "正確答案是：螢火蟲。注音念作：ㄧㄥˊ，　ㄏㄨㄛˇ，　ㄔㄨㄥˊ。": {
+    "teacher": "assets/audio/v_5772d66df722.mp3",
+    "cute": "assets/audio/cute_5772d66df722.mp3"
+  },
+  "正確答案是：單韻母辨析。注音念作：ㄜˊ。": {
+    "teacher": "assets/audio/v_e95ab1dbb0a6.mp3",
+    "cute": "assets/audio/cute_e95ab1dbb0a6.mp3"
+  },
+  "正確答案是：斑馬。注音念作：ㄅㄢ，　ㄇㄚˇ。": {
+    "teacher": "assets/audio/v_822094381c06.mp3",
+    "cute": "assets/audio/cute_822094381c06.mp3"
+  },
+  "正確答案是：兔子。注音念作：ㄊㄨˋ，　˙ㄗ。": {
+    "teacher": "assets/audio/v_54a8bca5f923.mp3",
+    "cute": "assets/audio/cute_54a8bca5f923.mp3"
+  },
+  "正確答案是：美麗的公園裡。注音念作：第四聲。": {
+    "teacher": "assets/audio/v_dbc95d526a05.mp3",
+    "cute": "assets/audio/cute_dbc95d526a05.mp3"
+  },
+  "正確答案是：彩虹。注音念作：ㄘㄞˇ，　ㄏㄨㄥˊ。": {
+    "teacher": "assets/audio/v_fa1de377af94.mp3",
+    "cute": "assets/audio/cute_fa1de377af94.mp3"
+  },
+  "正確答案是：貓咪。注音念作：ㄇㄠ，　ㄇㄧ。": {
+    "teacher": "assets/audio/v_a76174cff380.mp3",
+    "cute": "assets/audio/cute_a76174cff380.mp3"
+  },
+  "正確答案是：萄。注音念作：ㄆㄨˊ。": {
+    "teacher": "assets/audio/v_eea0bc862b07.mp3",
+    "cute": "assets/audio/cute_eea0bc862b07.mp3"
+  },
+  "正確答案是：草莓。注音念作：ㄘㄠˇ，　ㄇㄟˊ。": {
+    "teacher": "assets/audio/v_3599a4e9c181.mp3",
+    "cute": "assets/audio/cute_3599a4e9c181.mp3"
+  },
+  "正確答案是：葡萄。注音念作：ㄆㄨˊ，　˙ㄊㄠ。": {
+    "teacher": "assets/audio/v_cbe8c3437033.mp3",
+    "cute": "assets/audio/cute_cbe8c3437033.mp3"
+  },
+  "正確答案是：太陽。注音念作：ㄊㄞˋ，　ㄧㄤˊ。": {
+    "teacher": "assets/audio/v_800e8962c3a6.mp3",
+    "cute": "assets/audio/cute_800e8962c3a6.mp3"
+  },
+  "正確答案是：螃。注音念作：ㄒㄧㄝˋ。": {
+    "teacher": "assets/audio/v_23418da55a24.mp3",
+    "cute": "assets/audio/cute_23418da55a24.mp3"
+  },
+  "正確答案是：紫葡萄。注音念作：ㄗˇ，　ㄆㄨˊ，　˙ㄊㄠ。": {
+    "teacher": "assets/audio/v_3e3669815241.mp3",
+    "cute": "assets/audio/cute_3e3669815241.mp3"
+  },
+  "正確答案是：台灣最棒。注音念作：ㄊㄞˊ，　ㄨㄢ，　ㄗㄨㄟˋ，　ㄅㄤˋ。": {
+    "teacher": "assets/audio/v_8bca0fc8e6ee.mp3",
+    "cute": "assets/audio/cute_8bca0fc8e6ee.mp3"
+  },
+  "正確答案是：海。注音念作：ㄊㄨㄣˊ。": {
+    "teacher": "assets/audio/v_5c03e23ffff5.mp3",
+    "cute": "assets/audio/cute_5c03e23ffff5.mp3"
+  },
+  "正確答案是：螃蟹。注音念作：ㄆㄤˊ，　ㄒㄧㄝˋ。": {
+    "teacher": "assets/audio/v_46fe0ec24603.mp3",
+    "cute": "assets/audio/cute_46fe0ec24603.mp3"
+  },
+  "正確答案是：蝴。注音念作：ㄉㄧㄝˊ。": {
+    "teacher": "assets/audio/v_7778cebbac90.mp3",
+    "cute": "assets/audio/cute_7778cebbac90.mp3"
+  },
+  "正確答案是：輪。注音念作：ㄔㄨㄢˊ。": {
+    "teacher": "assets/audio/v_69f419a27ae5.mp3",
+    "cute": "assets/audio/cute_69f419a27ae5.mp3"
+  },
+  "正確答案是：太陽注音填空。注音念作：ㄧㄤˊ。": {
+    "teacher": "assets/audio/v_a2df243ace66.mp3",
+    "cute": "assets/audio/cute_a2df243ace66.mp3"
+  },
+  "正確答案是：臺灣。注音念作：ㄨㄢ。": {
+    "teacher": "assets/audio/v_a5859ddb76c0.mp3",
+    "cute": "assets/audio/cute_a5859ddb76c0.mp3"
+  },
+  "正確答案是：烏龜。注音念作：ㄍㄨㄟ。": {
+    "teacher": "assets/audio/v_6a6c3f803c98.mp3",
+    "cute": "assets/audio/cute_6a6c3f803c98.mp3"
+  },
+  "正確答案是：鱷魚。注音念作：ㄜˋ。": {
+    "teacher": "assets/audio/v_f6338d3fe1e7.mp3",
+    "cute": "assets/audio/cute_f6338d3fe1e7.mp3"
+  },
+  "正確答案是：老師。注音念作：三聲。": {
+    "teacher": "assets/audio/v_00c7c34dd249.mp3",
+    "cute": "assets/audio/cute_00c7c34dd249.mp3"
+  },
+  "正確答案是：白雲。注音念作：ㄩㄣˊ。": {
+    "teacher": "assets/audio/v_e983c23b39b2.mp3",
+    "cute": "assets/audio/cute_e983c23b39b2.mp3"
+  },
+  "正確答案是：皮革。注音念作：ㄆㄧˊ，　ㄍㄜˊ。": {
+    "teacher": "assets/audio/v_919022d9ab80.mp3",
+    "cute": "assets/audio/cute_919022d9ab80.mp3"
+  },
+  "正確答案是：鼠。注音念作：ㄙㄨㄥ。": {
+    "teacher": "assets/audio/v_61e9a9a450df.mp3",
+    "cute": "assets/audio/cute_61e9a9a450df.mp3"
+  },
+  "正確答案是：前後鼻音判斷。注音念作：風，　和，　星。": {
+    "teacher": "assets/audio/v_16c279290457.mp3",
+    "cute": "assets/audio/cute_16c279290457.mp3"
+  },
+  "正確答案是：鉛筆。注音念作：ㄑㄧㄢ，　ㄅㄧˇ。": {
+    "teacher": "assets/audio/v_01d9a5cae54a.mp3",
+    "cute": "assets/audio/cute_01d9a5cae54a.mp3"
+  },
+  "正確答案是：蜻蜓。注音念作：ㄑㄧㄥ，　ㄊㄧㄥˊ。": {
+    "teacher": "assets/audio/v_8a9cc61abca3.mp3",
+    "cute": "assets/audio/cute_8a9cc61abca3.mp3"
+  },
+  "正確答案是：斑馬聲調判斷。注音念作：第一聲。": {
+    "teacher": "assets/audio/v_f3c800eb6a0c.mp3",
+    "cute": "assets/audio/cute_f3c800eb6a0c.mp3"
+  },
+  "正確答案是：婆。注音念作：ㄨ。": {
+    "teacher": "assets/audio/v_f968691c9f85.mp3",
+    "cute": "assets/audio/cute_f968691c9f85.mp3"
+  },
+  "正確答案是：汽車。注音念作：ㄑㄧˋ，　ㄔㄜ。": {
+    "teacher": "assets/audio/v_ad6ca92f9cf5.mp3",
+    "cute": "assets/audio/cute_ad6ca92f9cf5.mp3"
+  },
+  "正確答案是：跳繩。注音念作：ㄊㄧㄠˋ，　ㄕㄥˊ。": {
+    "teacher": "assets/audio/v_f62c7ff1eb5b.mp3",
+    "cute": "assets/audio/cute_f62c7ff1eb5b.mp3"
+  },
+  "正確答案是：小。注音念作：ㄋㄧㄠˇ。": {
+    "teacher": "assets/audio/v_4bb534d8da03.mp3",
+    "cute": "assets/audio/cute_4bb534d8da03.mp3"
+  },
+  "正確答案是：快樂的下午。注音念作：第四聲。": {
+    "teacher": "assets/audio/v_a2f97acc4ce9.mp3",
+    "cute": "assets/audio/cute_a2f97acc4ce9.mp3"
+  },
+  "正確答案是：雨傘。注音念作：ㄩˇ，　ㄙㄢˇ。": {
+    "teacher": "assets/audio/v_189a1c9155c2.mp3",
+    "cute": "assets/audio/cute_189a1c9155c2.mp3"
+  },
+  "正確答案是：老師。注音念作：ㄌㄠˇ，　ㄕ。": {
+    "teacher": "assets/audio/v_902b7b8bdd0a.mp3",
+    "cute": "assets/audio/cute_902b7b8bdd0a.mp3"
+  },
+  "正確答案是：操場。注音念作：ㄘㄠ，　ㄔㄤˇ。": {
+    "teacher": "assets/audio/v_86e299d69b44.mp3",
+    "cute": "assets/audio/cute_86e299d69b44.mp3"
+  },
+  "正確答案是：說你好。注音念作：第三聲。": {
+    "teacher": "assets/audio/v_af83d0e9c9d3.mp3",
+    "cute": "assets/audio/cute_af83d0e9c9d3.mp3"
+  },
+  "正確答案是：書本。注音念作：一聲。": {
+    "teacher": "assets/audio/v_bbd7b5df1510.mp3",
+    "cute": "assets/audio/cute_bbd7b5df1510.mp3"
+  },
+  "正確答案是：火車。注音念作：ㄏㄨㄛˇ，　ㄔㄜ。": {
+    "teacher": "assets/audio/v_5b3bc05ae45a.mp3",
+    "cute": "assets/audio/cute_5b3bc05ae45a.mp3"
+  },
+  "正確答案是：睡覺。注音念作：ㄕㄨㄟˋ，　ㄐㄧㄠˋ。": {
+    "teacher": "assets/audio/v_73a7af2f6ec1.mp3",
+    "cute": "assets/audio/cute_73a7af2f6ec1.mp3"
+  },
+  "正確答案是：翹舌音聲母辨析。注音念作：樹木。": {
+    "teacher": "assets/audio/v_2433d433a8d3.mp3",
+    "cute": "assets/audio/cute_2433d433a8d3.mp3"
+  },
+  "正確答案是：海鷗注音填空。注音念作：ㄡ。": {
+    "teacher": "assets/audio/v_737231506b0b.mp3",
+    "cute": "assets/audio/cute_737231506b0b.mp3"
+  },
+  "正確答案是：球。注音念作：ㄑㄧˋ。": {
+    "teacher": "assets/audio/v_1c8909e0f8f7.mp3",
+    "cute": "assets/audio/cute_1c8909e0f8f7.mp3"
+  },
+  "正確答案是：鉛筆。注音念作：三聲。": {
+    "teacher": "assets/audio/v_460f9ecf0f64.mp3",
+    "cute": "assets/audio/cute_460f9ecf0f64.mp3"
+  },
+  "正確答案是：帽子。注音念作：ㄇㄠˋ，　˙ㄗ。": {
+    "teacher": "assets/audio/v_85560b56ff0a.mp3",
+    "cute": "assets/audio/cute_85560b56ff0a.mp3"
+  },
+  "正確答案是：貓。注音念作：ㄒㄩㄥˊ。": {
+    "teacher": "assets/audio/v_8b0a1bb89047.mp3",
+    "cute": "assets/audio/cute_8b0a1bb89047.mp3"
+  },
+  "正確答案是：音符。注音念作：ㄧㄣ。": {
+    "teacher": "assets/audio/v_4248ee594bcd.mp3",
+    "cute": "assets/audio/cute_4248ee594bcd.mp3"
+  },
+  "正確答案是：長頸鹿。注音念作：ㄔㄤˊ，　ㄐㄧㄥˇ，　ㄌㄨˋ。": {
+    "teacher": "assets/audio/v_f4eb87188383.mp3",
+    "cute": "assets/audio/cute_f4eb87188383.mp3"
+  },
+  "正確答案是：背包。注音念作：背包。": {
+    "teacher": "assets/audio/v_4cb51307e587.mp3",
+    "cute": "assets/audio/cute_4cb51307e587.mp3"
+  },
+  "正確答案是：大家開心跳舞。注音念作：第四聲。": {
+    "teacher": "assets/audio/v_26a645a2132d.mp3",
+    "cute": "assets/audio/cute_26a645a2132d.mp3"
+  },
+  "正確答案是：豚。注音念作：ㄏㄞˇ。": {
+    "teacher": "assets/audio/v_3799199d6b05.mp3",
+    "cute": "assets/audio/cute_3799199d6b05.mp3"
+  },
+  "正確答案是：我們。注音念作：ㄨㄛˇ，　˙ㄇㄣ。": {
+    "teacher": "assets/audio/v_8dd43da764a4.mp3",
+    "cute": "assets/audio/cute_8dd43da764a4.mp3"
+  },
+  "正確答案是：雪人。注音念作：ㄒㄩㄝˇ，　ㄖㄣˊ。": {
+    "teacher": "assets/audio/v_bf32cf193cae.mp3",
+    "cute": "assets/audio/cute_bf32cf193cae.mp3"
+  },
+  "正確答案是：臺灣。注音念作：ㄊㄞˊ，　ㄨㄢ。": {
+    "teacher": "assets/audio/v_e64db41ab5cb.mp3",
+    "cute": "assets/audio/cute_e64db41ab5cb.mp3"
+  },
+  "正確答案是：早餐。注音念作：ㄗㄠˇ，　ㄘㄢ。": {
+    "teacher": "assets/audio/v_a05c27dd03ab.mp3",
+    "cute": "assets/audio/cute_a05c27dd03ab.mp3"
+  },
+  "正確答案是：公雞。注音念作：ㄍㄨㄥ，　ㄐㄧ。": {
+    "teacher": "assets/audio/v_3087567f892a.mp3",
+    "cute": "assets/audio/cute_3087567f892a.mp3"
+  },
+  "正確答案是：青蛙。注音念作：ㄑㄧㄥ，　ㄨㄚ。": {
+    "teacher": "assets/audio/v_3943f1967e04.mp3",
+    "cute": "assets/audio/cute_3943f1967e04.mp3"
+  },
+  "正確答案是：長頸鹿。注音念作：ㄓㄤˇ，　ㄐㄧㄥˇ，　ㄌㄨˋ。": {
+    "teacher": "assets/audio/v_9b17e479bd39.mp3",
+    "cute": "assets/audio/cute_9b17e479bd39.mp3"
+  },
+  "正確答案是：茶壺。注音念作：ㄔㄚˊ，　ㄏㄨˊ。": {
+    "teacher": "assets/audio/v_b2d15bb69dac.mp3",
+    "cute": "assets/audio/cute_b2d15bb69dac.mp3"
+  },
+  "正確答案是：荷葉。注音念作：ㄏㄜˊ，　ㄧㄝˋ。": {
+    "teacher": "assets/audio/v_5d55c8803d58.mp3",
+    "cute": "assets/audio/cute_5d55c8803d58.mp3"
+  },
+  "正確答案是：蜂。注音念作：ㄇㄧˋ。": {
+    "teacher": "assets/audio/v_c59df014a3d1.mp3",
+    "cute": "assets/audio/cute_c59df014a3d1.mp3"
+  },
+  "正確答案是：小雞。注音念作：ㄐㄧ。": {
+    "teacher": "assets/audio/v_ff4c8ce6308e.mp3",
+    "cute": "assets/audio/cute_ff4c8ce6308e.mp3"
+  },
+  "正確答案是：蝌蚪。注音念作：ㄉㄡˇ。": {
+    "teacher": "assets/audio/v_116a5c782872.mp3",
+    "cute": "assets/audio/cute_116a5c782872.mp3"
+  },
+  "正確答案是：西瓜。注音念作：ㄒㄧ。": {
+    "teacher": "assets/audio/v_244172c8eab9.mp3",
+    "cute": "assets/audio/cute_244172c8eab9.mp3"
+  },
+  "正確答案是：白雲。注音念作：ㄅㄞˊ，　ㄩㄣˊ。": {
+    "teacher": "assets/audio/v_13f16ea9dd4a.mp3",
+    "cute": "assets/audio/cute_13f16ea9dd4a.mp3"
+  },
+  "正確答案是：溜滑梯。注音念作：ㄌㄧㄡ，　ㄏㄨㄚˊ，　ㄊㄧ。": {
+    "teacher": "assets/audio/v_c4ad3469f670.mp3",
+    "cute": "assets/audio/cute_c4ad3469f670.mp3"
+  },
+  "正確答案是：讀書。注音念作：ㄉㄨˊ，　ㄕㄨ。": {
+    "teacher": "assets/audio/v_9ab064e3a96e.mp3",
+    "cute": "assets/audio/cute_9ab064e3a96e.mp3"
+  },
+  "正確答案是：番茄。注音念作：ㄈㄢ，　ㄑㄧㄝˊ。": {
+    "teacher": "assets/audio/v_23f1c140a13a.mp3",
+    "cute": "assets/audio/cute_23f1c140a13a.mp3"
+  },
+  "正確答案是：老虎注音填空。注音念作：ㄌㄠˇ。": {
+    "teacher": "assets/audio/v_07c005c6aa07.mp3",
+    "cute": "assets/audio/cute_07c005c6aa07.mp3"
+  },
+  "正確答案是：太。注音念作：ㄧㄤˊ。": {
+    "teacher": "assets/audio/v_cffd08a1e419.mp3",
+    "cute": "assets/audio/cute_cffd08a1e419.mp3"
+  },
+  "正確答案是：筷子。注音念作：ㄎㄨㄞˋ，　˙ㄗ。": {
+    "teacher": "assets/audio/v_506f7e57957f.mp3",
+    "cute": "assets/audio/cute_506f7e57957f.mp3"
+  },
+  "正確答案是：白雲注音填空。注音念作：ㄩㄣˊ。": {
+    "teacher": "assets/audio/v_bf39fa6e6aa8.mp3",
+    "cute": "assets/audio/cute_bf39fa6e6aa8.mp3"
+  },
+  "正確答案是：西。注音念作：ㄍㄨㄚ。": {
+    "teacher": "assets/audio/v_00a216a87fd3.mp3",
+    "cute": "assets/audio/cute_00a216a87fd3.mp3"
+  },
+  "正確答案是：牛奶。注音念作：ㄋㄧㄡˊ，　ㄋㄞˇ。": {
+    "teacher": "assets/audio/v_3c2304fd1e0f.mp3",
+    "cute": "assets/audio/cute_3c2304fd1e0f.mp3"
+  },
+  "正確答案是：雞蛋。注音念作：ㄐㄧ，　ㄉㄢˋ。": {
+    "teacher": "assets/audio/v_03f372bbb669.mp3",
+    "cute": "assets/audio/cute_03f372bbb669.mp3"
+  },
+  "正確答案是：烏。注音念作：ㄍㄨㄟ。": {
+    "teacher": "assets/audio/v_b010dfb9e601.mp3",
+    "cute": "assets/audio/cute_b010dfb9e601.mp3"
+  },
+  "正確答案是：牙刷。注音念作：ㄧㄚˊ，　ㄕㄨㄚ。": {
+    "teacher": "assets/audio/v_aa0998267423.mp3",
+    "cute": "assets/audio/cute_aa0998267423.mp3"
+  },
+  "正確答案是：飛機注音填空。注音念作：ㄈㄟ。": {
+    "teacher": "assets/audio/v_09fe1f802d6a.mp3",
+    "cute": "assets/audio/cute_09fe1f802d6a.mp3"
+  },
+  "正確答案是：冰淇淋。注音念作：ㄅㄧㄥ，　ㄑㄧˊ，　ㄌㄧㄣˊ。": {
+    "teacher": "assets/audio/v_1e2b12abdbc9.mp3",
+    "cute": "assets/audio/cute_1e2b12abdbc9.mp3"
+  },
+  "正確答案是：大。注音念作：ㄒㄧㄤˋ。": {
+    "teacher": "assets/audio/v_0b6fdc823846.mp3",
+    "cute": "assets/audio/cute_0b6fdc823846.mp3"
+  },
+  "正確答案是：布丁。注音念作：ㄅㄨˋ，　ㄉㄧㄥ。": {
+    "teacher": "assets/audio/v_f647eb7471b1.mp3",
+    "cute": "assets/audio/cute_f647eb7471b1.mp3"
+  },
+  "正確答案是：棒棒糖。注音念作：ㄅㄤˋ，　ㄅㄤˋ，　ㄊㄤˊ。": {
+    "teacher": "assets/audio/v_53d7ced1a1fb.mp3",
+    "cute": "assets/audio/cute_53d7ced1a1fb.mp3"
+  },
+  "正確答案是：雨天。注音念作：ㄩˇ，　ㄊㄧㄢ。": {
+    "teacher": "assets/audio/v_505d2615d097.mp3",
+    "cute": "assets/audio/cute_505d2615d097.mp3"
+  },
+  "正確答案是：公園。注音念作：ㄩㄢˊ。": {
+    "teacher": "assets/audio/v_e34c09d72416.mp3",
+    "cute": "assets/audio/cute_e34c09d72416.mp3"
+  },
+  "正確答案是：雪人。注音念作：ㄖㄣˊ。": {
+    "teacher": "assets/audio/v_d8107a2465b8.mp3",
+    "cute": "assets/audio/cute_d8107a2465b8.mp3"
+  },
+  "正確答案是：車。注音念作：ㄏㄨㄛˇ。": {
+    "teacher": "assets/audio/v_72245166b393.mp3",
+    "cute": "assets/audio/cute_72245166b393.mp3"
+  },
+  "正確答案是：朋友。注音念作：ㄆㄥˊ，　ㄧㄡˇ。": {
+    "teacher": "assets/audio/v_a8e64a19bf35.mp3",
+    "cute": "assets/audio/cute_a8e64a19bf35.mp3"
+  },
+  "正確答案是：早晨。注音念作：ㄗㄠˇ，　ㄔㄣˊ。": {
+    "teacher": "assets/audio/v_b3e5f35eaba7.mp3",
+    "cute": "assets/audio/cute_b3e5f35eaba7.mp3"
+  },
+  "正確答案是：學生。注音念作：ㄒㄩㄝˊ，　ㄕㄥ。": {
+    "teacher": "assets/audio/v_3c2b5f79655e.mp3",
+    "cute": "assets/audio/cute_3c2b5f79655e.mp3"
+  },
+  "正確答案是：龍。注音念作：ㄎㄨㄥˇ。": {
+    "teacher": "assets/audio/v_4f6ad3923760.mp3",
+    "cute": "assets/audio/cute_4f6ad3923760.mp3"
+  },
+  "正確答案是：畫畫。注音念作：ㄏㄨㄚˋ，　ㄏㄨㄚˋ。": {
+    "teacher": "assets/audio/v_0d5941cba72e.mp3",
+    "cute": "assets/audio/cute_0d5941cba72e.mp3"
+  },
+  "正確答案是：企鵝。注音念作：ㄑㄧˋ，　ㄜˊ。": {
+    "teacher": "assets/audio/v_ecbe83c0ac7a.mp3",
+    "cute": "assets/audio/cute_ecbe83c0ac7a.mp3"
+  },
+  "正確答案是：聲調符號判斷。注音念作：第三聲。": {
+    "teacher": "assets/audio/v_c659506514ae.mp3",
+    "cute": "assets/audio/cute_c659506514ae.mp3"
+  },
+  "正確答案是：獅子。注音念作：ㄕ，　˙ㄗ。": {
+    "teacher": "assets/audio/v_d923387dbcdd.mp3",
+    "cute": "assets/audio/cute_d923387dbcdd.mp3"
+  },
+  "正確答案是：蛙。注音念作：ㄑㄧㄥ。": {
+    "teacher": "assets/audio/v_23df573836ac.mp3",
+    "cute": "assets/audio/cute_23df573836ac.mp3"
+  },
+  "正確答案是：椅子。注音念作：ㄧˇ，　˙ㄗ。": {
+    "teacher": "assets/audio/v_062ec92e9601.mp3",
+    "cute": "assets/audio/cute_062ec92e9601.mp3"
+  },
+  "正確答案是：晚上。注音念作：ㄨㄢˇ，　˙ㄕㄤ。": {
+    "teacher": "assets/audio/v_870314aa050d.mp3",
+    "cute": "assets/audio/cute_870314aa050d.mp3"
+  },
+  "正確答案是：眼鏡。注音念作：眼鏡。": {
+    "teacher": "assets/audio/v_87129976bf3e.mp3",
+    "cute": "assets/audio/cute_87129976bf3e.mp3"
+  },
+  "正確答案是：跳。注音念作：ㄨˇ。": {
+    "teacher": "assets/audio/v_e15428821fdd.mp3",
+    "cute": "assets/audio/cute_e15428821fdd.mp3"
+  },
+  "正確答案是：風箏。注音念作：ㄈㄥ。": {
+    "teacher": "assets/audio/v_e5317a448a2f.mp3",
+    "cute": "assets/audio/cute_e5317a448a2f.mp3"
+  },
+  "正確答案是：西瓜。注音念作：ㄒㄧ，　ㄍㄨㄚ。": {
+    "teacher": "assets/audio/v_7dc31e9ef373.mp3",
+    "cute": "assets/audio/cute_7dc31e9ef373.mp3"
+  },
+  "正確答案是：相機。注音念作：相機。": {
+    "teacher": "assets/audio/v_1f5fbce25802.mp3",
+    "cute": "assets/audio/cute_1f5fbce25802.mp3"
+  },
+  "正確答案是：聲母分類判斷。注音念作：大象。": {
+    "teacher": "assets/audio/v_00ef9aeb184d.mp3",
+    "cute": "assets/audio/cute_00ef9aeb184d.mp3"
+  },
+  "正確答案是：手錶。注音念作：ㄕㄡˇ，　ㄅㄧㄠˇ。": {
+    "teacher": "assets/audio/v_e3541fa2f1b7.mp3",
+    "cute": "assets/audio/cute_e3541fa2f1b7.mp3"
+  },
+  "正確答案是：拼音綜合考核。注音念作：跳是三拼音，繩是雙拼音。": {
+    "teacher": "assets/audio/v_a856df056f26.mp3",
+    "cute": "assets/audio/cute_a856df056f26.mp3"
+  },
+  "正確答案是：恐龍。注音念作：ㄎㄨㄥˇ，　ㄌㄨㄥˊ。": {
+    "teacher": "assets/audio/v_f6e840a7cde5.mp3",
+    "cute": "assets/audio/cute_f6e840a7cde5.mp3"
+  },
+  "正確答案是：鋼。注音念作：ㄑㄧㄣˊ。": {
+    "teacher": "assets/audio/v_ef03f43d49f9.mp3",
+    "cute": "assets/audio/cute_ef03f43d49f9.mp3"
+  },
+  "正確答案是：跳舞。注音念作：ㄊㄧㄠˋ，　ㄨˇ。": {
+    "teacher": "assets/audio/v_032cc6f467c3.mp3",
+    "cute": "assets/audio/cute_032cc6f467c3.mp3"
+  },
+  "正確答案是：水果。注音念作：ㄕㄨㄟˇ，　ㄍㄨㄛˇ。": {
+    "teacher": "assets/audio/v_c28a37dc1f89.mp3",
+    "cute": "assets/audio/cute_c28a37dc1f89.mp3"
+  },
+  "正確答案是：一朵一朵白鵝爽爽游。注音念作：第二聲。": {
+    "teacher": "assets/audio/v_03c7a75d4497.mp3",
+    "cute": "assets/audio/cute_03c7a75d4497.mp3"
+  },
+  "正確答案是：彩虹。注音念作：ㄏㄨㄥˊ。": {
+    "teacher": "assets/audio/v_9955e27d1878.mp3",
+    "cute": "assets/audio/cute_9955e27d1878.mp3"
+  },
+  "正確答案是：西瓜。注音念作：ㄍㄨㄚ。": {
+    "teacher": "assets/audio/v_360b3d13fce9.mp3",
+    "cute": "assets/audio/cute_360b3d13fce9.mp3"
+  },
+  "正確答案是：蘋果。注音念作：ㄆㄧㄥˊ，　ㄍㄨㄛˇ。": {
+    "teacher": "assets/audio/v_a3cb07551a18.mp3",
+    "cute": "assets/audio/cute_a3cb07551a18.mp3"
+  },
+  "正確答案是：微風。注音念作：ㄨㄟˊ，　ㄈㄥ。": {
+    "teacher": "assets/audio/v_bc9becf1d701.mp3",
+    "cute": "assets/audio/cute_bc9becf1d701.mp3"
+  },
+  "正確答案是：吃飯用的筷子。注音念作：輕聲。": {
+    "teacher": "assets/audio/v_d126b7e965f8.mp3",
+    "cute": "assets/audio/cute_d126b7e965f8.mp3"
+  },
+  "正確答案是：青蛙。注音念作：ㄨㄚ。": {
+    "teacher": "assets/audio/v_a24d2a561b9a.mp3",
+    "cute": "assets/audio/cute_a24d2a561b9a.mp3"
+  },
+  "正確答案是：我們一起玩沙。注音念作：第一聲。": {
+    "teacher": "assets/audio/v_d7dabd6867b9.mp3",
+    "cute": "assets/audio/cute_d7dabd6867b9.mp3"
+  },
+  "正確答案是：白鵝游過來。注音念作：第二聲。": {
+    "teacher": "assets/audio/v_90c37c1d07ce.mp3",
+    "cute": "assets/audio/cute_90c37c1d07ce.mp3"
+  },
+  "正確答案是：操場。注音念作：三聲。": {
+    "teacher": "assets/audio/v_811fd102232b.mp3",
+    "cute": "assets/audio/cute_811fd102232b.mp3"
+  },
+  "正確答案是：學校。注音念作：四聲。": {
+    "teacher": "assets/audio/v_22325a22db80.mp3",
+    "cute": "assets/audio/cute_22325a22db80.mp3"
+  },
+  "正確答案是：麵包。注音念作：ㄇㄧㄢˋ，　ㄅㄠ。": {
+    "teacher": "assets/audio/v_ce84d2a7f492.mp3",
+    "cute": "assets/audio/cute_ce84d2a7f492.mp3"
+  },
+  "正確答案是：相機。注音念作：ㄒㄧㄤˋ，　ㄐㄧ。": {
+    "teacher": "assets/audio/v_a7d74cad8d13.mp3",
+    "cute": "assets/audio/cute_a7d74cad8d13.mp3"
+  },
+  "正確答案是：鴨子。注音念作：ㄧㄚ。": {
+    "teacher": "assets/audio/v_9ee3f09c2292.mp3",
+    "cute": "assets/audio/cute_9ee3f09c2292.mp3"
+  },
+  "正確答案是：葡萄。注音念作：ㄆㄨˊ。": {
+    "teacher": "assets/audio/v_f7b27a76b87e.mp3",
+    "cute": "assets/audio/cute_f7b27a76b87e.mp3"
+  },
+  "正確答案是：企鵝。注音念作：ㄑㄧˋ。": {
+    "teacher": "assets/audio/v_4d44ddf71d6b.mp3",
+    "cute": "assets/audio/cute_4d44ddf71d6b.mp3"
+  },
+  "正確答案是：風。注音念作：ㄓㄥ。": {
+    "teacher": "assets/audio/v_bcf98303166e.mp3",
+    "cute": "assets/audio/cute_bcf98303166e.mp3"
+  },
+  "正確答案是：白。注音念作：ㄩㄣˊ。": {
+    "teacher": "assets/audio/v_70fc6f16c4d9.mp3",
+    "cute": "assets/audio/cute_70fc6f16c4d9.mp3"
+  },
+  "正確答案是：蜜蜂。注音念作：ㄇㄧˋ，　ㄈㄥ。": {
+    "teacher": "assets/audio/v_04de452507be.mp3",
+    "cute": "assets/audio/cute_04de452507be.mp3"
+  },
+  "正確答案是：教室。注音念作：ㄐㄧㄠˋ，　ㄕˋ。": {
+    "teacher": "assets/audio/v_b8977390c970.mp3",
+    "cute": "assets/audio/cute_b8977390c970.mp3"
+  },
+  "正確答案是：大象。注音念作：ㄉㄚˋ，　ㄒㄧㄤˋ。": {
+    "teacher": "assets/audio/v_9541e725c676.mp3",
+    "cute": "assets/audio/cute_9541e725c676.mp3"
+  },
+  "正確答案是：天上照耀的太陽。注音念作：第二聲。": {
+    "teacher": "assets/audio/v_b64c6b209c5f.mp3",
+    "cute": "assets/audio/cute_b64c6b209c5f.mp3"
+  },
+  "正確答案是：馬。注音念作：ㄅㄢ。": {
+    "teacher": "assets/audio/v_557d93974c01.mp3",
+    "cute": "assets/audio/cute_557d93974c01.mp3"
+  },
+  "正確答案是：蛋糕。注音念作：ㄉㄢˋ，　ㄍㄠ。": {
+    "teacher": "assets/audio/v_c43f30a9a050.mp3",
+    "cute": "assets/audio/cute_c43f30a9a050.mp3"
   }
 };

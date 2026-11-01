@@ -9,27 +9,21 @@ const manifest = sandbox.window.AUDIO_MANIFEST;
 
 const ZHUYIN_DATA = require('../js/data.js');
 
-let totalQ = 0;
-let missingManifest = 0;
-let missingFile = 0;
-
-function checkText(text, desc) {
-  if (!text) return;
-  if (!manifest[text]) {
-    missingManifest++;
-    console.log(`[MISSING MANIFEST] ${desc}: ${text}`);
-    return;
+function resolveAudioUrl(entry, isCute = false) {
+  if (!entry) return null;
+  if (typeof entry === 'object') {
+    if (isCute && entry.cute) return entry.cute;
+    if (entry.teacher) return entry.teacher;
+    if (entry.cute) return entry.cute;
+    return null;
   }
-  const tFile = manifest[text].teacher;
-  const cFile = manifest[text].cute;
-  if (!fs.existsSync(tFile)) {
-    missingFile++;
-    console.log(`[MISSING FILE TEACHER] ${tFile} for ${text}`);
+  if (typeof entry === 'string') {
+    if (isCute && entry.includes('/v_')) {
+      return entry.replace('/v_', '/cute_');
+    }
+    return entry;
   }
-  if (!fs.existsSync(cFile)) {
-    missingFile++;
-    console.log(`[MISSING FILE CUTE] ${cFile} for ${text}`);
-  }
+  return null;
 }
 
 function extractTarget(q) {
@@ -45,33 +39,59 @@ function extractTarget(q) {
   return '';
 }
 
-function getAnswerSpeech(q) {
-  const target = extractTarget(q);
-  if (target && q.qType !== 'reading') {
-    return `正確答案是：${target}，${q.answer}。`;
-  }
-  return `正確答案是：${q.answer}。`;
+function formatSlowZhuyin(ans) {
+  if (!ans) return '';
+  const parts = ans.split(/\s+/).filter(Boolean);
+  return parts.join('，　');
 }
 
-// 檢查 Adventure Stages
-ZHUYIN_DATA.adventureStages.forEach(s => {
+function getTeachingSpeech(q) {
+  if (q.qType === 'reading') return `正確答案是：${q.answer}。`;
+  const t = extractTarget(q);
+  const slow = formatSlowZhuyin(q.answer);
+  if (t) return `正確答案是：${t}。注音念作：${slow}。`;
+  return `正確答案是：${slow}。`;
+}
+
+let totalQuestions = 0;
+let missingPromptFiles = 0;
+let missingAnswerFiles = 0;
+
+function checkText(text, label) {
+  const entry = manifest[text];
+  if (!entry) {
+    console.log(`[MISSING IN MANIFEST] ${label}: "${text}"`);
+    return false;
+  }
+  const teacherUrl = resolveAudioUrl(entry, false);
+  const cuteUrl = resolveAudioUrl(entry, true);
+
+  if (!teacherUrl || !fs.existsSync(teacherUrl)) {
+    console.log(`[MISSING TEACHER FILE] ${label}: ${teacherUrl}`);
+    return false;
+  }
+  if (!cuteUrl || !fs.existsSync(cuteUrl)) {
+    console.log(`[MISSING CUTE FILE] ${label}: ${cuteUrl}`);
+    return false;
+  }
+  return true;
+}
+
+[...ZHUYIN_DATA.adventureStages, ...ZHUYIN_DATA.finalStages].forEach(s => {
   s.questions.forEach((q, idx) => {
-    totalQ++;
-    checkText(q.speakText, `Stage ${s.id} Q${idx+1} Prompt`);
-    checkText(getAnswerSpeech(q), `Stage ${s.id} Q${idx+1} Answer`);
+    totalQuestions++;
+    if (!checkText(q.speakText, `Stage ${s.id} Q${idx+1} Prompt`)) {
+      missingPromptFiles++;
+    }
+    const teaching = getTeachingSpeech(q);
+    if (!checkText(teaching, `Stage ${s.id} Q${idx+1} Teaching Answer`)) {
+      missingAnswerFiles++;
+    }
   });
 });
 
-// 檢查 Final Stages
-ZHUYIN_DATA.finalStages.forEach(s => {
-  s.questions.forEach((q, idx) => {
-    totalQ++;
-    checkText(q.speakText, `Final Stage ${s.id} Q${idx+1} Prompt`);
-    checkText(getAnswerSpeech(q), `Final Stage ${s.id} Q${idx+1} Answer`);
-  });
-});
-
-console.log(`\n=== VERIFICATION RESULT ===`);
-console.log(`Total questions checked: ${totalQ}`);
-console.log(`Missing manifest entries: ${missingManifest}`);
-console.log(`Missing mp3 files: ${missingFile}`);
+console.log("\n==========================================");
+console.log(`Verified total questions: ${totalQuestions}`);
+console.log(`Missing prompt audio files: ${missingPromptFiles}`);
+console.log(`Missing teaching answer audio files: ${missingAnswerFiles}`);
+console.log("==========================================");

@@ -5786,16 +5786,25 @@ function openCurrentPartnerDetailModal() {
         return '';
       }
 
+      function formatSlowZhuyinTeaching(ans) {
+        if (!ans) return '';
+        const parts = ans.split(/\s+/).filter(Boolean);
+        return parts.join('，　');
+      }
+
       const targetWord = extractTarget(q);
-      const answerSpeech = targetWord
-        ? `正確答案是：${targetWord}，${q.answer}。`
-        : `正確答案是：${q.answer}。`;
+      const slowAns = formatSlowZhuyinTeaching(q.answer);
+      const answerSpeech = (q.qType === 'reading')
+        ? `正確答案是：${q.answer}。`
+        : (targetWord
+            ? `正確答案是：${targetWord}。注音念作：${slowAns}。`
+            : `正確答案是：${slowAns}。`);
 
-      setMascotSpeech(`「哎呀！野生的【${opp ? opp.name : '寶可夢'}】趁機逃跑了！本題正確答案是【${q.answer}】${targetWord ? `(${targetWord})` : ''}，聽聽正確發音，準備好請前往下一題繼續冒險！」`);
+      setMascotSpeech(`「哎呀！野生的【${opp ? opp.name : '寶可夢'}】趁機逃跑了！本題正確答案是【${q.answer}】${targetWord ? `(${targetWord})` : ''}，老師正在慢速示範正確拼音教學，聽清楚後前往下一題繼續挑戰！」`);
 
-      // 延遲 0.4 秒等逃跑與答錯提示音結束，清晰朗讀真人正確答案發音
+      // 延遲 0.4 秒等逃跑與答錯提示音結束，由正音班老師清晰慢速教學發音
       setTimeout(() => {
-        window.audioEngine.speak(answerSpeech);
+        window.audioEngine.speak(answerSpeech, { rate: 0.88 });
       }, 400);
 
       // 畫面停住：建立「野生寶可夢逃跑覆盤與前往下一題」控制面板
@@ -5840,7 +5849,7 @@ function openCurrentPartnerDetailModal() {
 
             <div class="wrong-review-actions">
               <button class="review-replay-audio-btn" id="btn-replay-correct-audio" type="button">
-                <span>🔊</span> 再聽一次正確答案
+                <span>🔊</span> 再聽老師慢速示範發音
               </button>
               <button class="review-next-q-btn" id="btn-next-question-manual" type="button">
                 <span>👉</span> ${nextBtnText} <span>${nextBtnIcon}</span>
@@ -5855,7 +5864,7 @@ function openCurrentPartnerDetailModal() {
             window.audioEngine.playPop();
             window.audioEngine.stopSpeaking();
             setTimeout(() => {
-              window.audioEngine.speak(answerSpeech);
+              window.audioEngine.speak(answerSpeech, { rate: 0.88 });
             }, 100);
           });
         }

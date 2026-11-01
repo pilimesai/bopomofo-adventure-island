@@ -65,6 +65,26 @@ class ZhuyinAudioEngine {
   }
 
   /**
+   * 從 Manifest 項目中正確解析出音訊 URL（支援 string 與 {teacher, cute} 物件結構）
+   */
+  resolveAudioUrl(entry, isCute = false) {
+    if (!entry) return null;
+    if (typeof entry === 'object') {
+      if (isCute && entry.cute) return entry.cute;
+      if (entry.teacher) return entry.teacher;
+      if (entry.cute) return entry.cute;
+      return null;
+    }
+    if (typeof entry === 'string') {
+      if (isCute && entry.includes('/v_')) {
+        return entry.replace('/v_', '/cute_');
+      }
+      return entry;
+    }
+    return null;
+  }
+
+  /**
    * 預先載入題目的語音 MP3 至記憶體快取，切題換題時 0 延遲零漏音
    */
   preloadAudio(text) {
@@ -72,7 +92,11 @@ class ZhuyinAudioEngine {
     const cleanKey = text.trim();
     const baseManifest = window.AUDIO_MANIFEST || {};
     const cuteManifest = window.AUDIO_CUTE_MANIFEST || {};
-    const url = baseManifest[cleanKey] || cuteManifest[cleanKey];
+    const isCute = (this.selectedVoiceName === 'PERSONA::CUTE_GIRL');
+    const targetManifest = isCute ? cuteManifest : baseManifest;
+    const fallbackManifest = isCute ? baseManifest : cuteManifest;
+    const raw = targetManifest[cleanKey] || fallbackManifest[cleanKey];
+    const url = this.resolveAudioUrl(raw, isCute);
     if (url && typeof fetch !== 'undefined') {
       fetch(url, { cache: 'force-cache' }).catch(() => {});
     }
@@ -263,26 +287,28 @@ class ZhuyinAudioEngine {
     const targetManifest = isCute ? cuteManifest : baseManifest;
     const fallbackManifest = isCute ? baseManifest : cuteManifest;
 
-    let audioUrl = targetManifest[cleanKey];
+    let rawEntry = targetManifest[cleanKey];
 
     // 若符號或標點有微小差異，嘗試標點正規化比對以確保 100% 播放真人高畫質音檔
-    if (!audioUrl) {
+    if (!rawEntry) {
       const simplifiedKey = cleanKey.replace(/[，。！？、～~\s「」『』【】（）()]/g, '');
-      for (const [k, url] of Object.entries(targetManifest)) {
+      for (const [k, val] of Object.entries(targetManifest)) {
         if (k.replace(/[，。！？、～~\s「」『』【】（）()]/g, '') === simplifiedKey) {
-          audioUrl = url;
+          rawEntry = val;
           break;
         }
       }
-      if (!audioUrl) {
-        for (const [k, url] of Object.entries(fallbackManifest)) {
+      if (!rawEntry) {
+        for (const [k, val] of Object.entries(fallbackManifest)) {
           if (k.replace(/[，。！？、～~\s「」『』【】（）()]/g, '') === simplifiedKey) {
-            audioUrl = url;
+            rawEntry = val;
             break;
           }
         }
       }
     }
+
+    const audioUrl = this.resolveAudioUrl(rawEntry, isCute);
 
     if (audioUrl) {
       this.playVoiceAudioUrl(audioUrl, options);
@@ -334,6 +360,7 @@ class ZhuyinAudioEngine {
 
     try {
       audio.src = audioUrl;
+      audio.preservesPitch = true;
       audio.playbackRate = options.rate ? options.rate : 1.0;
 
       const playPromise = audio.play();
