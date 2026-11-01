@@ -870,7 +870,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderNurtureShop();
       updateTrainerHeaderUI();
     if (typeof ensureStartersInGen1Caught === 'function') {
-      ensureStartersInGen1Caught();
+          ensureStartersInGen1Caught();
+    validateCurrentPartnerCaught();
     }
       return;
     } else {
@@ -7623,6 +7624,21 @@ function setupPartnerModal() {
     return false;
   }
 
+    function validateCurrentPartnerCaught() {
+    ensureStartersInGen1Caught();
+    if (typeof state.partner === 'string' && state.partner.startsWith('gen1_')) {
+      const pid = parseInt(state.partner.replace('gen1_', ''), 10);
+      const isStarter = [1, 4, 7, 25, 133].includes(pid);
+      if (!isStarter && !state.unlockAllPokemon && !(state.gen1Caught && state.gen1Caught.includes(pid))) {
+        // 尚未收服，不能出戰，安全回退至初始夥伴伊布
+        state.partner = 'eevee';
+        localStorage.setItem('zhuyin_main_partner', 'eevee');
+        localStorage.setItem('zhuyin_partner', 'eevee');
+        updateTrainerHeaderUI();
+      }
+    }
+  }
+
   function ensureStartersInGen1Caught() {
     if (!Array.isArray(state.gen1Caught)) {
       try {
@@ -7711,16 +7727,25 @@ function setupPartnerModal() {
 
       btnUnlockPoke.addEventListener('click', () => {
         window.audioEngine.playPop();
-        state.unlockAllPokemon = !state.unlockAllPokemon;
-        localStorage.setItem('zhuyin_unlock_all_pokemon', state.unlockAllPokemon.toString());
-        updateUnlockBtn();
-        updatePokedexProgressUI();
-        renderGen1Pokedex();
-        if (state.unlockAllPokemon) {
-          if (window.confetti) window.confetti.trigger(80);
-          setMascotSpeech('🌟 已開啟【全 151 隻寶可夢自由探索模式】！可以隨意查看並派出任何神獸出戰！');
+        if (!state.unlockAllPokemon) {
+          // 家長算術門檻防跳過挑戰
+          openParentMathGateModal(() => {
+            state.unlockAllPokemon = true;
+            localStorage.setItem('zhuyin_unlock_all_pokemon', 'true');
+            updateUnlockBtn();
+            updatePokedexProgressUI();
+            renderGen1Pokedex();
+            if (window.confetti) window.confetti.trigger(80);
+            setMascotSpeech('🌟 家長驗證通過！已開啟【全 151 隻寶可夢自由檢閱模式】！');
+          });
         } else {
-          setMascotSpeech('🔒 已切換回一般道館闖關收服模式！');
+          state.unlockAllPokemon = false;
+          localStorage.setItem('zhuyin_unlock_all_pokemon', 'false');
+          validateCurrentPartnerCaught();
+          updateUnlockBtn();
+          updatePokedexProgressUI();
+          renderGen1Pokedex();
+          setMascotSpeech('🔒 已切換回一般道館闖關收服模式！未收服的寶可夢需在道館挑戰獲勝後才可派牠出戰！');
         }
       });
     }
@@ -7914,7 +7939,32 @@ function setupPartnerModal() {
     }
     if (descEl) descEl.textContent = p.desc;
 
-    // 🔴 渲染主力夥伴培育與等級數值卡片
+    // 🔴 嚴格驗證是否已收服：初始5大夥伴、已在道館收服、或全解鎖模式
+    const actuallyCaught = Boolean(
+      state.unlockAllPokemon ||
+      (state.gen1Caught && state.gen1Caught.includes(p.id)) ||
+      [1, 4, 7, 25, 133].includes(p.id) ||
+      (isCaught === true)
+    );
+
+    // 未收服時，在圖片與頂部標記鎖定狀態
+    if (imgEl) {
+      if (actuallyCaught) {
+        imgEl.style.filter = 'drop-shadow(0 8px 14px rgba(0,0,0,0.15))';
+        imgEl.style.opacity = '1';
+      } else {
+        imgEl.style.filter = 'grayscale(85%) opacity(0.75)';
+        imgEl.style.opacity = '0.75';
+      }
+    }
+
+    if (titleEl) {
+      titleEl.innerHTML = p.name + (actuallyCaught 
+        ? ' <span style="font-size:13px;background:#10B981;color:#FFFFFF;padding:2px 8px;border-radius:10px;vertical-align:middle;font-weight:900;">✓ 已收服</span>'
+        : ' <span style="font-size:13px;background:#94A3B8;color:#FFFFFF;padding:2px 8px;border-radius:10px;vertical-align:middle;font-weight:900;">🔒 尚未收服</span>');
+    }
+
+    // 🔴 渲染主力夥伴培育與等級數值卡片（僅限已收服時顯示）
     const partnerCard = document.getElementById('gen1-modal-partner-card');
     const partnerLvlEl = document.getElementById('gen1-modal-partner-level-badge');
     const partnerExpText = document.getElementById('gen1-modal-partner-exp-text');
@@ -7926,9 +7976,9 @@ function setupPartnerModal() {
     let matchedPartnerData = null;
     if (isCurrent) {
       matchedPartnerData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
-    } else if (allPartners['gen1_' + p.id]) {
+    } else if (actuallyCaught && allPartners['gen1_' + p.id]) {
       matchedPartnerData = allPartners['gen1_' + p.id];
-    } else {
+    } else if (actuallyCaught) {
       const STARTER_ID_MAP = { 1: 'bulbasaur', 2: 'bulbasaur', 3: 'bulbasaur', 4: 'charmander', 5: 'charmander', 6: 'charmander', 7: 'squirtle', 8: 'squirtle', 9: 'squirtle', 25: 'pikachu', 26: 'pikachu', 133: 'eevee' };
       if (STARTER_ID_MAP[p.id] && allPartners[STARTER_ID_MAP[p.id]]) {
         matchedPartnerData = allPartners[STARTER_ID_MAP[p.id]];
@@ -7936,7 +7986,7 @@ function setupPartnerModal() {
     }
 
     if (partnerCard) {
-      if (isCurrent || matchedPartnerData) {
+      if (actuallyCaught && (isCurrent || matchedPartnerData)) {
         partnerCard.style.display = 'block';
         const pLevel = (matchedPartnerData && matchedPartnerData.level) || 1;
         const pExp = (matchedPartnerData && matchedPartnerData.exp) || 0;
@@ -7946,7 +7996,7 @@ function setupPartnerModal() {
         if (partnerLvlEl) {
           partnerLvlEl.innerHTML = isCurrent 
             ? `⭐ 當前出戰夥伴・等級 Lv.${pLevel}` 
-            : `🎖️ 已培育夥伴檔案・等級 Lv.${pLevel}`;
+            : `🎖️ 已收服夥伴檔案・等級 Lv.${pLevel}`;
         }
         if (partnerExpText) {
           partnerExpText.textContent = `EXP ${pExp} / ${pMaxExp} (${expPct}%)`;
@@ -7966,7 +8016,6 @@ function setupPartnerModal() {
     if (btnSpeak) {
       btnSpeak.onclick = () => {
         window.audioEngine.playPop();
-        // 優先播放預錄音檔
         const audioSrc = 'assets/audio/pokemon/poke_' + p.id + '.mp3';
         const a = new Audio(audioSrc);
         a.play().catch(() => {
@@ -7988,42 +8037,51 @@ function setupPartnerModal() {
       };
     }
 
-    // 設為主力夥伴按鈕
+    // 🔴 設為主力夥伴按鈕：未收服怪獸絕對不可派牠出戰！
     if (btnSetPartner) {
-      const isCurrent = isCurrentPartnerPokemon(p.id);
-      if (isCurrent) {
+      if (!actuallyCaught) {
+        btnSetPartner.innerHTML = `<span>🔒</span> 尚未收服！闖關挑戰獲勝後才能派牠出戰`;
+        btnSetPartner.classList.remove('active');
+        btnSetPartner.style.background = '#94A3B8';
+        btnSetPartner.style.color = '#FFFFFF';
+        btnSetPartner.style.cursor = 'not-allowed';
+        btnSetPartner.onclick = () => {
+          window.audioEngine.playWrong();
+          setMascotSpeech(`🔒【${p.name}】尚未收服！請前往道館挑戰中答對題目捕捉牠，收服後才能派牠出戰喔！`);
+        };
+      } else if (isCurrent) {
         const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
         btnSetPartner.innerHTML = `<span>⚡</span> 目前出戰主力夥伴（Lv.${pData.level || 1}）`;
         btnSetPartner.classList.add('active');
         btnSetPartner.style.background = '#10B981';
+        btnSetPartner.style.color = '#FFFFFF';
+        btnSetPartner.style.cursor = 'default';
+        btnSetPartner.onclick = () => {
+          window.audioEngine.playPop();
+          modal.style.display = 'none';
+        };
       } else {
         btnSetPartner.innerHTML = `<span>⚡</span> 派牠出戰！設為主力與培育夥伴`;
         btnSetPartner.classList.remove('active');
         btnSetPartner.style.background = '';
+        btnSetPartner.style.color = '';
+        btnSetPartner.style.cursor = 'pointer';
+        btnSetPartner.onclick = () => {
+          window.audioEngine.playPokeCaught();
+          state.partner = 'gen1_' + p.id;
+          localStorage.setItem('zhuyin_main_partner', state.partner);
+          localStorage.setItem('zhuyin_partner', state.partner);
+
+          updateTrainerHeaderUI();
+          renderNurtureShop();
+          renderGen1Pokedex();
+          updatePokedexProgressUI();
+          modal.style.display = 'none';
+
+          if (window.confetti) window.confetti.trigger(100);
+          setMascotSpeech('⚡ 太棒了！【' + p.name + '】已成為你的出戰主力夥伴！一起前往道館冒險吧！');
+        };
       }
-      btnSetPartner.onclick = () => {
-        window.audioEngine.playPokeCaught();
-        state.partner = 'gen1_' + p.id;
-        localStorage.setItem('zhuyin_main_partner', state.partner);
-        
-        // 確保在已收服清單中
-        if (!state.gen1Caught.includes(p.id)) {
-          state.gen1Caught.push(p.id);
-          localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
-        }
-
-        updateTrainerHeaderUI();
-    if (typeof ensureStartersInGen1Caught === 'function') {
-      ensureStartersInGen1Caught();
-    }
-        renderNurtureShop();
-        renderGen1Pokedex();
-        updatePokedexProgressUI();
-        modal.style.display = 'none';
-
-        if (window.confetti) window.confetti.trigger(100);
-        setMascotSpeech('⚡ 太棒了！【' + p.name + '】已成為你的出戰主力夥伴！一起前往道館冒險吧！');
-      };
     }
 
     modal.style.display = 'flex';
