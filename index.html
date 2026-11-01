@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=68">
+  <link rel="stylesheet" href="css/style.css?v=69">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -37,7 +37,7 @@
         ⚡ 皮卡！歡迎來到ㄅㄆㄇ寶可夢大冒險，準備好收服注音寶可夢了嗎？
       </div>
 
-      <div class="player-level-badge" id="player-level-badge" title="點擊查看當前出戰寶可夢檔案（大圖、等級、屬性、招式）！" style="cursor:pointer;border-color:#EF4444;">
+      <div class="player-level-badge" id="player-level-badge" title="點擊查看當前出戰寶可夢檔案（大圖、等級、屬性、招式）！" style="cursor:pointer;border-color:#EF4444;" onclick="window.openCurrentPartnerDetailModal && window.openCurrentPartnerDetailModal()">
         <span id="player-rank-icon">⚡</span>
         <span id="player-rank-title">夥伴：皮卡丘 Lv.1</span>
       </div>
@@ -816,6 +816,9 @@
             <button class="gen1-set-partner-btn" id="gen1-btn-set-partner" type="button" style="flex:1;">
               ⚡ 派牠出戰！設為主力與培育夥伴
             </button>
+            <button class="gen1-nurture-btn" id="gen1-btn-nurture" type="button" style="display:none;padding:10px 16px;background:#F59E0B;border:none;border-radius:12px;font-weight:900;color:#FFF;cursor:pointer;font-size:14px;box-shadow:0 3px 0 #D97706;white-space:nowrap;">
+              🛍️ 前往培育商店升級
+            </button>
             <button class="gen1-switch-pokedex-btn" id="gen1-btn-switch-pokedex" type="button" style="padding:10px 16px;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:12px;font-weight:700;color:#475569;cursor:pointer;font-size:14px;">
               📖 前往 151 大圖鑑
             </button>
@@ -828,13 +831,13 @@
 
 
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=68"></script>
-  <script src="js/gen1_pokemon.js?v=68"></script>
-  <script src="js/question_generator.js?v=68"></script>
-  <script src="js/audio_manifest.js?v=68"></script>
-  <script src="js/audio.js?v=68"></script>
-  <script src="js/confetti.js?v=68"></script>
-  <script src="js/app.js?v=68"></script>
+  <script src="js/data.js?v=69"></script>
+  <script src="js/gen1_pokemon.js?v=69"></script>
+  <script src="js/question_generator.js?v=69"></script>
+  <script src="js/audio_manifest.js?v=69"></script>
+  <script src="js/audio.js?v=69"></script>
+  <script src="js/confetti.js?v=69"></script>
+  <script src="js/app.js?v=69"></script>
 
 </body>
 </html>

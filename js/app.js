@@ -2148,40 +2148,39 @@ document.addEventListener('DOMContentLoaded', () => {
     openCharacterCreationModal(false, false);
   }
 
-function setupPartnerModal() {
+function openCurrentPartnerDetailModal() {
+    window.audioEngine.playPop();
+    const partnerInfo = getCurrentPartnerInfo();
+    let g1P = null;
+    if (typeof GEN1_POKEMON_LIST !== 'undefined') {
+      if (partnerInfo && partnerInfo.gen1Id) {
+        g1P = GEN1_POKEMON_LIST.find(p => p.id === partnerInfo.gen1Id);
+      }
+      if (!g1P && partnerInfo && partnerInfo.name) {
+        g1P = GEN1_POKEMON_LIST.find(p => p.name === partnerInfo.name || p.name === partnerInfo.baseName);
+      }
+      if (!g1P) {
+        const pid = (typeof state.partner === 'string' && state.partner.startsWith('gen1_'))
+          ? parseInt(state.partner.replace('gen1_', ''), 10)
+          : 133;
+        g1P = GEN1_POKEMON_LIST.find(p => p.id === pid) || GEN1_POKEMON_LIST[0];
+      }
+    }
 
+    if (g1P && typeof openGen1DetailModal === 'function') {
+      openGen1DetailModal(g1P, true);
+    } else {
+      openPartnerModal();
+    }
+  }
+  window.openCurrentPartnerDetailModal = openCurrentPartnerDetailModal;
+
+  function setupPartnerModal() {
     if (dom.playerLevelBadge) {
-
-      dom.playerLevelBadge.addEventListener('click', () => {
-
-        window.audioEngine.playPop();
-
-        // 🔴 點擊頂部出戰夥伴圓格，直接彈出該主力寵物的大圖與完整檔案（屬性、招式、等級、進化）
-        const partnerInfo = getCurrentPartnerInfo();
-        let g1P = null;
-        if (typeof GEN1_POKEMON_LIST !== 'undefined') {
-          if (partnerInfo && partnerInfo.gen1Id) {
-            g1P = GEN1_POKEMON_LIST.find(p => p.id === partnerInfo.gen1Id);
-          }
-          if (!g1P && partnerInfo && partnerInfo.name) {
-            g1P = GEN1_POKEMON_LIST.find(p => p.name === partnerInfo.name || p.name === partnerInfo.baseName);
-          }
-          if (!g1P) {
-            const pid = (typeof state.partner === 'string' && state.partner.startsWith('gen1_'))
-              ? parseInt(state.partner.replace('gen1_', ''), 10)
-              : 133;
-            g1P = GEN1_POKEMON_LIST.find(p => p.id === pid) || GEN1_POKEMON_LIST[0];
-          }
-        }
-
-        if (g1P && typeof openGen1DetailModal === 'function') {
-          openGen1DetailModal(g1P, true);
-        } else {
-          openPartnerModal();
-        }
-
+      dom.playerLevelBadge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openCurrentPartnerDetailModal();
       });
-
     }
 
 
@@ -8150,17 +8149,48 @@ function setupPartnerModal() {
       }
     }
 
-        // 🔴 點圖鑑念出名字、屬性、進化條件
+        // 🔴 點圖鑑播放經典叫聲，並接續朗讀名字、屬性、進化條件
+    let activeGen1CryAudio = null;
+
     const playPokemonIntro = () => {
       stopPokemonIntroAudio();
+      if (activeGen1CryAudio) {
+        try { activeGen1CryAudio.pause(); } catch (e) {}
+        activeGen1CryAudio = null;
+      }
+
       const speech = getPokemonSpeechText(p);
-      const audioSrc = 'assets/audio/pokemon/poke_' + p.id + '.mp3';
-      const a = new Audio(audioSrc);
-      activeGen1PokemonAudio = a;
-      a.play().catch(() => {
-        if (window.audioEngine) {
-          window.audioEngine.speak(speech);
-        }
+      const crySrc = 'assets/audio/cries/cry_' + p.id + '.ogg';
+      const introSrc = 'assets/audio/pokemon/poke_' + p.id + '.mp3';
+
+      const playVoice = () => {
+        const introAudio = new Audio(introSrc);
+        activeGen1PokemonAudio = introAudio;
+        introAudio.play().catch(() => {
+          if (window.audioEngine) {
+            window.audioEngine.speak(speech);
+          }
+        });
+      };
+
+      // 先播放寶可夢經典叫聲
+      const cryAudio = new Audio(crySrc);
+      activeGen1CryAudio = cryAudio;
+
+      let voiceStarted = false;
+      const startVoiceOnce = () => {
+        if (voiceStarted) return;
+        voiceStarted = true;
+        setTimeout(playVoice, 150);
+      };
+
+      cryAudio.onended = startVoiceOnce;
+      // 最長等叫聲播放 1.2 秒即接續語音，避免叫聲檔案過長延遲
+      const cryTimer = setTimeout(startVoiceOnce, 1200);
+
+      cryAudio.play().catch(() => {
+        clearTimeout(cryTimer);
+        playVoice();
       });
     };
 
@@ -8186,36 +8216,60 @@ function setupPartnerModal() {
     }
 
     // 🔴 設為主力夥伴按鈕：未收服怪獸絕對不可派牠出戰！
+    // 前往培育商店按鈕
+    const btnNurture = document.getElementById('gen1-btn-nurture');
+    if (btnNurture) {
+      if (actuallyCaught) {
+        btnNurture.style.display = 'inline-flex';
+        btnNurture.onclick = () => {
+          window.audioEngine.playPop();
+          stopPokemonIntroAudio();
+          modal.style.display = 'none';
+          if (typeof switchTab === 'function') {
+            switchTab('tab-shop');
+          }
+        };
+      } else {
+        btnNurture.style.display = 'none';
+      }
+    }
+
+    // 🔴 設為主力夥伴／更換出戰夥伴按鈕
     if (btnSetPartner) {
       if (!actuallyCaught) {
-        btnSetPartner.innerHTML = `<span>🔒</span> 尚未收服！闖關挑戰獲勝後才能派牠出戰`;
+        btnSetPartner.innerHTML = '<span>🔒</span> 尚未收服！闖關挑戰獲勝後才能派牠出戰';
         btnSetPartner.classList.remove('active');
         btnSetPartner.style.background = '#94A3B8';
         btnSetPartner.style.color = '#FFFFFF';
         btnSetPartner.style.cursor = 'not-allowed';
         btnSetPartner.onclick = () => {
           window.audioEngine.playWrong();
-          setMascotSpeech(`🔒【${p.name}】尚未收服！請前往道館挑戰中答對題目捕捉牠，收服後才能派牠出戰喔！`);
+          setMascotSpeech('🔒【' + p.name + '】尚未收服！請前往道館挑戰中答對題目捕捉牠，收服後才能派牠出戰喔！');
         };
       } else if (isCurrent) {
         const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
-        btnSetPartner.innerHTML = `<span>⚡</span> 目前出戰主力夥伴（Lv.${pData.level || 1}）`;
-        btnSetPartner.classList.add('active');
-        btnSetPartner.style.background = '#10B981';
+        btnSetPartner.innerHTML = '<span>🔄</span> 更換出戰夥伴（目前主力：Lv.' + (pData.level || 1) + '）';
+        btnSetPartner.classList.remove('active');
+        btnSetPartner.style.background = '#6366F1';
         btnSetPartner.style.color = '#FFFFFF';
-        btnSetPartner.style.cursor = 'default';
+        btnSetPartner.style.cursor = 'pointer';
         btnSetPartner.onclick = () => {
           window.audioEngine.playPop();
+          stopPokemonIntroAudio();
           modal.style.display = 'none';
+          if (typeof openPartnerModal === 'function') {
+            openPartnerModal();
+          }
         };
       } else {
-        btnSetPartner.innerHTML = `<span>⚡</span> 派牠出戰！設為主力與培育夥伴`;
+        btnSetPartner.innerHTML = '<span>⚡</span> 派牠出戰！設為主力與培育夥伴';
         btnSetPartner.classList.remove('active');
-        btnSetPartner.style.background = '';
-        btnSetPartner.style.color = '';
+        btnSetPartner.style.background = '#EF4444';
+        btnSetPartner.style.color = '#FFFFFF';
         btnSetPartner.style.cursor = 'pointer';
         btnSetPartner.onclick = () => {
           window.audioEngine.playPokeCaught();
+          stopPokemonIntroAudio();
           state.partner = 'gen1_' + p.id;
           localStorage.setItem('zhuyin_main_partner', state.partner);
           localStorage.setItem('zhuyin_partner', state.partner);
