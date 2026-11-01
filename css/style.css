@@ -193,56 +193,40 @@ body {
   box-shadow: none;
 }
 
-/* 主分頁切換選單 (Top Tabs) */
+/* 主分頁切換選單 (Top Tabs - 4大核心專區) */
 .tab-navigation {
-  max-width: 1240px;
-  margin: 12px auto 10px auto;
-  padding: 4px 12px 6px 12px;
+  max-width: 1080px;
+  margin: 12px auto 14px auto;
+  padding: 4px 12px;
   display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(203, 213, 225, 0.6) transparent;
-}
-.tab-navigation::after {
-  content: '';
-  display: none;
-}
-.tab-navigation::-webkit-scrollbar {
-  height: 4px;
-}
-.tab-navigation::-webkit-scrollbar-thumb {
-  background: rgba(203, 213, 225, 0.7);
-  border-radius: 4px;
+  gap: 12px;
+  justify-content: center;
 }
 
 .tab-btn {
   flex: 1 1 0;
-  min-width: 86px;
+  max-width: 250px;
   white-space: nowrap;
   background: white;
   border: none;
-  padding: 10px 6px;
+  padding: 12px 14px;
   border-radius: var(--radius-md);
   font-family: inherit;
-  font-size: 14.5px;
+  font-size: 16px;
   font-weight: 800;
   color: #495057;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 8px;
   cursor: pointer;
   box-shadow: 0 4px 0 #DEE2E6;
   transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
-  flex-shrink: 0;
 }
 
 .tab-btn .tab-icon {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .tab-btn:hover {
@@ -3361,13 +3345,10 @@ html, body {
     font-size: 13px;
   }
 
-  /* 分頁標籤欄響應式自動換行（4+4排列，保證培育商店與所有分頁絕不被切斷） */
+  /* 分頁標籤欄（4大核心專區自適應） */
   .tab-navigation {
-    flex-wrap: wrap;
-    justify-content: center;
-    overflow-x: visible;
-    padding: 4px 8px;
-    gap: 6px;
+    padding: 2px 8px;
+    gap: 8px;
   }
 
   .tab-navigation::after {
@@ -3375,16 +3356,16 @@ html, body {
   }
 
   .tab-btn {
-    flex: 1 1 calc(25% - 8px);
-    max-width: calc(25% - 5px);
+    flex: 1 1 0;
+    max-width: none;
     min-width: 0;
-    font-size: 13.5px;
-    padding: 9px 4px;
-    gap: 4px;
+    font-size: 14px;
+    padding: 10px 6px;
+    gap: 6px;
     box-shadow: 0 3px 0 #DEE2E6;
   }
   .tab-btn .tab-icon {
-    font-size: 18px;
+    font-size: 19px;
   }
 
   /* 道館地圖頂部橫幅 */
@@ -3639,6 +3620,22 @@ html, body {
     display: none;
   }
 
+  .tab-navigation {
+    gap: 6px;
+    padding: 2px 4px;
+  }
+
+  .tab-btn {
+    font-size: 13px;
+    padding: 8px 4px;
+    gap: 4px;
+  }
+  .tab-btn .tab-icon {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 400px) {
   .tab-btn {
     font-size: 11.5px;
     padding: 7px 2px;
@@ -3647,6 +3644,7 @@ html, body {
   .tab-btn .tab-icon {
     font-size: 15px;
   }
+}
 
   .battle-options-grid {
     grid-template-columns: 1fr !important;
