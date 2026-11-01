@@ -976,6 +976,58 @@ class ZhuyinAudioEngine {
   /**
    * 🎁 道館寶箱開啟大驚喜音效
    */
+  /**
+   * 💨 野生寶可夢溜走/掙脫逃跑音效 (Pokémon Flee Sound Effect)
+   */
+  playPokeFlee() {
+    if (this.isMuted) return;
+    this.ensureAudioContext();
+    if (!this.ctx) return;
+
+    try {
+      const now = this.ctx.currentTime;
+      // 1. 驚嚇逃跑滑音 (Down-sweep flee whistle)
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(680, now);
+      osc.frequency.exponentialRampToValueAtTime(160, now + 0.38);
+
+      gain.gain.setValueAtTime(0.22, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.39);
+
+      // 2. 煙霧陣風噗噗聲 (Puff of dust/smoke noise)
+      const bufferSize = Math.floor(this.ctx.sampleRate * 0.28);
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.09));
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+      const noiseFilter = this.ctx.createBiquadFilter();
+      noiseFilter.type = 'lowpass';
+      noiseFilter.frequency.setValueAtTime(900, now + 0.04);
+      noiseFilter.frequency.exponentialRampToValueAtTime(180, now + 0.32);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.28, now + 0.04);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noise.start(now + 0.04);
+    } catch (e) {
+      console.warn('Audio playPokeFlee error', e);
+    }
+  }
+
   playChestOpen() {
     if (this.isMuted) return;
     this.ensureAudioContext();

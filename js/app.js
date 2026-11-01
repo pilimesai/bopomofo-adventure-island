@@ -221,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     playerRankIcon: document.getElementById('player-rank-icon'),
 
     playerRankTitle: document.getElementById('player-rank-title'),
+    playerPartnerLvl: document.getElementById('player-partner-lvl'),
 
     playerLevelBadge: document.getElementById('player-level-badge'),
 
@@ -1734,7 +1735,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    if (dom.playerRankTitle) dom.playerRankTitle.textContent = `夥伴：${partnerObj.name} Lv.${partnerObj.level}`;
+    if (dom.playerPartnerLvl) {
+      dom.playerPartnerLvl.textContent = `Lv.${partnerObj.level || 1}`;
+    }
+
+    if (dom.playerRankTitle) {
+      if (typeof formatZhuyinDisplay === 'function') {
+        dom.playerRankTitle.innerHTML = formatZhuyinDisplay(partnerObj.name);
+      } else {
+        dom.playerRankTitle.textContent = partnerObj.name;
+      }
+    }
 
     if (dom.ballCount) dom.ballCount.textContent = state.balls;
 
@@ -4382,6 +4393,7 @@ function openCurrentPartnerDetailModal() {
     const promptText = document.getElementById('battle-q-prompt');
 
     if (opp && oppSprite) {
+      oppSprite.classList.remove('pokemon-fleeing-away');
       oppSprite.innerHTML = `
         <img src="assets/pokemon/gen1/${opp.id}.png" alt="${opp.name}" class="pokemon-opponent-img ${q.isShiny ? 'shiny-glow' : ''}" onerror="this.onerror=null;this.src='${opp.image}';" />
         ${q.isShiny ? '<span class="shiny-star-badge" style="position:absolute;top:-4px;right:-4px;background:#F59E0B;color:#FFF;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:900;box-shadow:0 2px 4px rgba(0,0,0,0.2);">✨ 閃光</span>' : ''}
@@ -5468,6 +5480,22 @@ function openCurrentPartnerDetailModal() {
 
       window.audioEngine.playWrong();
 
+      // 💨 野生寶可夢掙脫逃跑動畫與音效
+      const opp = q.oppPokemon || state.adventure.currentOpponentPokemon || (typeof GEN1_POKEMON_LIST !== 'undefined' ? GEN1_POKEMON_LIST[0] : null);
+      const oppSprite = document.getElementById('poke-opp-sprite');
+      if (oppSprite) {
+        oppSprite.classList.add('pokemon-fleeing-away');
+      }
+      if (window.audioEngine.playPokeFlee) {
+        setTimeout(() => {
+          window.audioEngine.playPokeFlee();
+        }, 120);
+      }
+      const oppNameEl = document.getElementById('poke-opp-name');
+      if (oppNameEl && opp) {
+        oppNameEl.innerHTML = `<span style="color:#DC2626;">💨 沒抓到！野生的【${opp.name}】掙脫逃跑了！</span>`;
+      }
+
       function extractTarget(qObj) {
         if (qObj.word) {
           const clean = qObj.word.replace(/[^\u4e00-\u9fa5]/g, '').trim();
@@ -5486,14 +5514,14 @@ function openCurrentPartnerDetailModal() {
         ? `正確答案是：${targetWord}，${q.answer}。`
         : `正確答案是：${q.answer}。`;
 
-      setMascotSpeech(`「哎呀選錯了！本題 0 分。正確答案是【${q.answer}】${targetWord ? `(${targetWord})` : ''}，聽聽正確發音，準備好請點選下方『前往下一題』！」`);
+      setMascotSpeech(`「哎呀！野生的【${opp ? opp.name : '寶可夢'}】趁機逃跑了！本題正確答案是【${q.answer}】${targetWord ? `(${targetWord})` : ''}，聽聽正確發音，準備好請前往下一題繼續冒險！」`);
 
-      // 延遲 0.35 秒等答錯提示音完整結束，清晰朗讀真人正確答案發音
+      // 延遲 0.4 秒等逃跑與答錯提示音結束，清晰朗讀真人正確答案發音
       setTimeout(() => {
         window.audioEngine.speak(answerSpeech);
-      }, 350);
+      }, 400);
 
-      // 畫面停住：建立「學習覆盤與前往下一題」控制面板
+      // 畫面停住：建立「野生寶可夢逃跑覆盤與前往下一題」控制面板
       let feedbackEl = document.getElementById('battle-wrong-feedback');
       if (!feedbackEl && optionsGrid) {
         feedbackEl = document.createElement('div');
@@ -5507,17 +5535,32 @@ function openCurrentPartnerDetailModal() {
 
       if (feedbackEl) {
         feedbackEl.style.display = 'block';
+        const oppImgUrl = opp ? (opp.localImage || `assets/pokemon/gen1/${opp.id}.png`) : 'assets/pokemon/gen1/1.png';
+        const oppNameStr = opp ? opp.name : '寶可夢';
+
         feedbackEl.innerHTML = `
-          <div class="wrong-answer-review-card">
+          <div class="wrong-answer-review-card pokemon-fled-mode">
+            <div class="fled-pokemon-banner">
+              <div class="fled-pokemon-avatar-box">
+                <img src="${oppImgUrl}" alt="${oppNameStr}" onerror="this.onerror=null;this.src='${opp ? opp.image : ''}';" />
+                <span class="fled-smoke-puff">💨</span>
+              </div>
+              <div class="fled-pokemon-info">
+                <div class="fled-pokemon-title">💨 沒抓到！野生的【${oppNameStr}】逃跑了！</div>
+                <div class="fled-pokemon-desc">寶可夢掙脫球溜回草叢了～不要灰心，把正確發音記起來，下一隻一定能抓到！</div>
+              </div>
+            </div>
+
             <div class="wrong-review-header">
               <span class="wrong-cross-icon">❌</span>
               <div class="wrong-review-text">
-                <strong style="font-size:17px;color:#DC2626;">這題答錯囉！不要灰心！</strong>
-                <div style="font-size:16px;color:#1E293B;font-weight:900;margin-top:4px;">
+                <strong style="font-size:16px;color:#DC2626;">本題正確發音學習覆盤：</strong>
+                <div style="font-size:17px;color:#1E293B;font-weight:900;margin-top:4px;">
                   正確答案是：<span class="correct-highlight-val">【${q.answer}】${targetWord ? `(${targetWord})` : ''}</span>
                 </div>
               </div>
             </div>
+
             <div class="wrong-review-actions">
               <button class="review-replay-audio-btn" id="btn-replay-correct-audio" type="button">
                 <span>🔊</span> 再聽一次正確答案
@@ -5546,6 +5589,7 @@ function openCurrentPartnerDetailModal() {
             window.audioEngine.playPop();
             window.audioEngine.stopSpeaking(); // 確保停止上一題殘留語音
             feedbackEl.style.display = 'none';
+            if (oppSprite) oppSprite.classList.remove('pokemon-fleeing-away');
             state.adventure.qIndex++;
             updateBattleHeaderUI();
             if (optionsGrid) optionsGrid.classList.remove('options-locked');

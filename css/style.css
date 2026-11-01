@@ -152,6 +152,17 @@ body {
   gap: 8px;
   box-shadow: var(--shadow-sm);
   animation: pulseLight 3s infinite;
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+
+@media (max-width: 1280px) {
+  .mascot-bubble {
+    display: none;
+  }
 }
 
 .star-counter {
@@ -1459,30 +1470,108 @@ body {
    MODULE 0: 🗺️ 冒險島 10 大闖關地圖與對戰舞台
    ======================================================== */
 .player-level-badge {
-  background: linear-gradient(135deg, #845EF7, #7048E8);
+  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+  border: 2px solid #C4B5FD;
   color: white;
-  padding: 8px 16px;
+  padding: 4px 14px 4px 6px;
   border-radius: var(--radius-round);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 900;
-  box-shadow: 0 4px 0 #5F3DC4;
-  display: flex;
+  box-shadow: 0 4px 0 #4C1D95;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
   user-select: none;
+  flex-shrink: 0;
+  white-space: nowrap;
   transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .player-level-badge:hover {
   transform: translateY(-2px);
-  filter: brightness(1.1);
-  box-shadow: 0 6px 0 #5F3DC4;
+  filter: brightness(1.08);
+  box-shadow: 0 6px 0 #4C1D95;
 }
 
 .player-level-badge:active {
   transform: translateY(2px);
-  box-shadow: 0 2px 0 #5F3DC4;
+  box-shadow: 0 2px 0 #4C1D95;
+}
+
+.partner-avatar-bubble {
+  width: 36px;
+  height: 36px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.22);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.partner-avatar-bubble .badge-pokemon-icon-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+}
+
+.partner-header-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.partner-header-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.partner-header-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #EDE9FE;
+  letter-spacing: 0.5px;
+}
+
+.partner-header-lvl {
+  font-size: 11px;
+  font-weight: 900;
+  background: #F59E0B;
+  color: #FFFFFF;
+  padding: 0 6px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+
+.partner-header-name {
+  font-size: 15px;
+  font-weight: 900;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.partner-header-name .zy-hanzi-pair {
+  margin-right: 3px;
+}
+
+.partner-header-name .zy-hanzi {
+  font-size: 15px;
+  color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.partner-header-name .zy-char-bopomofo,
+.partner-header-name .zy-vertical-block,
+.partner-header-name .zy-tone-char {
+  color: #FDE68A !important;
 }
 
 .adventure-hero-banner {
@@ -6681,4 +6770,108 @@ html, body {
   font-weight: 800;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   margin-right: 4px;
+}
+
+
+/* ========================================================
+   💨 野生寶可夢逃跑動畫與答錯覆盤 (Pokémon Fleeing on Mistake)
+   ======================================================== */
+@keyframes pokemonFleeDash {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  20% {
+    transform: translate(-18px, -10px) scale(0.95);
+    filter: brightness(1.2);
+  }
+  45% {
+    transform: translate(50px, -6px) scale(0.85) skewX(-15deg);
+    opacity: 0.85;
+  }
+  75% {
+    transform: translate(160px, -16px) scale(0.6) skewX(-25deg);
+    opacity: 0.4;
+    filter: blur(2px);
+  }
+  100% {
+    transform: translate(300px, -22px) scale(0.25) skewX(-35deg);
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+.pokemon-fleeing-away {
+  animation: pokemonFleeDash 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  pointer-events: none;
+}
+
+.wrong-answer-review-card.pokemon-fled-mode {
+  border: 3px solid #F87171 !important;
+  background: linear-gradient(180deg, #FEF2F2 0%, #FFFFFF 100%) !important;
+  box-shadow: 0 10px 28px rgba(239, 68, 68, 0.18) !important;
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+}
+
+.fled-pokemon-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #FFF;
+  border: 2px dashed #FCA5A5;
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  margin-bottom: 14px;
+}
+
+.fled-pokemon-avatar-box {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #FEE2E2;
+  border: 2px solid #FECACA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fled-pokemon-avatar-box img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  filter: grayscale(35%) opacity(0.88);
+}
+
+.fled-smoke-puff {
+  position: absolute;
+  bottom: -4px;
+  right: -6px;
+  font-size: 22px;
+  animation: bounceMini 1.2s infinite ease-in-out;
+}
+
+.fled-pokemon-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fled-pokemon-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #DC2626;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fled-pokemon-desc {
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.45;
+  font-weight: 600;
 }
