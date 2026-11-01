@@ -1029,17 +1029,23 @@ document.addEventListener('DOMContentLoaded', () => {
     140, 142, 143, 144, 145, 146, 147, 150, 151
   ];
 
+  // 🎴《寶可夢卡牌151》（TCG）四大官方稀有度池（越困難的題目出現越稀有的寶可夢！）
+  const POKEMON_TCG_TIERS = {
+    // ⭐️ Tier 1: C (Common 普通卡，共 63 隻，對應基礎容易題目)
+    'C': [1,4,7,10,11,13,14,16,17,19,21,23,25,27,29,32,35,37,39,41,43,46,48,50,52,54,56,58,60,61,63,66,69,70,72,74,77,79,81,83,84,86,88,90,92,96,98,100,102,104,108,109,111,114,116,118,120,125,126,129,133,137,147],
+    // ⭐️⭐️ Tier 2: U (Uncommon 非普通卡，共 51 隻，對應中等進階題目)
+    'U': [2,5,8,12,18,20,22,28,30,31,33,36,42,44,47,49,51,53,55,57,59,62,64,67,71,73,75,78,80,82,87,89,91,93,95,97,99,103,106,107,112,117,119,123,127,128,131,138,140,143,148],
+    // ⭐️⭐️⭐️ Tier 3: R (Rare 稀有閃卡，共 25 隻，對應高難度考題與高階道館)
+    'R': [15,26,34,45,68,85,94,101,105,110,113,121,122,130,132,134,135,136,139,141,142,144,146,149,150],
+    // ⭐️⭐️⭐️⭐️ Tier 4: RR (Double Rare 雙重稀有 ex 終極卡，共 12 隻，對應最難題、Boss壓軸與石英高原期末考)
+    'RR': [3,6,9,24,38,40,65,76,115,124,145,151]
+  };
   const POKEMON_RARITY_TIERS = {
-    // ⭐️ Tier 1: 常見初階野生 (22隻，對應基礎題目：早期森林、草叢與街道常見初階)
-    1: [10, 13, 16, 19, 21, 23, 27, 29, 32, 41, 43, 46, 48, 50, 52, 54, 56, 60, 69, 72, 74, 98],
-    // ⭐️⭐️ Tier 2: 御三家/初階人氣/城鎮與特殊屬性幼年期 (24隻，對應中階題目)
-    2: [1, 4, 7, 25, 35, 37, 39, 58, 63, 66, 77, 79, 81, 84, 86, 88, 90, 92, 96, 100, 102, 104, 109, 116],
-    // ⭐️⭐️⭐️ Tier 3: 稀有原種/洞穴與深海初階/強力格鬥原形 (18隻，對應進階三拼/聲調題目)
-    3: [83, 95, 106, 107, 108, 111, 114, 115, 118, 120, 122, 123, 124, 125, 126, 127, 128, 129],
-    // ⭐️⭐️⭐️⭐️ Tier 4: 化石初階/百變怪/伊布/吉利蛋/迷你龍史詩幼年 (10隻，對應道館高難度題目)
-    4: [113, 131, 132, 133, 137, 138, 140, 142, 143, 147],
-    // ⭐️⭐️⭐️⭐️⭐️ Tier 5: 關都傳說神獸與幻之寶可夢 (5隻，對應石英高原與終極考核：急凍鳥、閃電鳥、火焰鳥、超夢、夢幻)
-    5: [144, 145, 146, 150, 151]
+    1: POKEMON_TCG_TIERS['C'],
+    2: POKEMON_TCG_TIERS['U'],
+    3: POKEMON_TCG_TIERS['R'],
+    4: POKEMON_TCG_TIERS['RR'],
+    5: POKEMON_TCG_TIERS['RR']
   };
 
   function init() {
@@ -1083,36 +1089,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStarDisplay();
         updateCoinsDisplay();
 
-    // 🔴 嚴格資料庫清理：野生對戰僅能收服 79 隻未進化初階寶可夢，其餘 72 隻進化型態必須由玩家親自升級或使用寶石進化！
-    const BASE_POKEMON_SET = new Set(BASE_POKEMON_IDS);
-    if (!state.unlockAllPokemon && Array.isArray(state.gen1Caught)) {
-      const legitEvolvedIds = new Set();
-      const currentPartnerInfo = (typeof getCurrentPartnerInfo === 'function') ? getCurrentPartnerInfo() : null;
-      if (currentPartnerInfo && currentPartnerInfo.gen1Id && !BASE_POKEMON_SET.has(currentPartnerInfo.gen1Id)) {
-        legitEvolvedIds.add(currentPartnerInfo.gen1Id);
-      }
-      const allPartners = (typeof getAllPartnersData === 'function') ? getAllPartnersData() : {};
-      Object.keys(allPartners).forEach(key => {
-        if (key.startsWith('gen1_')) {
-          const pid = parseInt(key.replace('gen1_', ''), 10);
-          if (!isNaN(pid)) legitEvolvedIds.add(pid);
-        }
-      });
-      // 檢查御三家升級
-      const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
-      const pLevel = pData.level || 1;
-      if (state.partner === 'charmander') {
-        if (pLevel >= 16) legitEvolvedIds.add(5);
-        if (pLevel >= 36) legitEvolvedIds.add(6);
-      } else if (state.partner === 'squirtle') {
-        if (pLevel >= 16) legitEvolvedIds.add(8);
-        if (pLevel >= 36) legitEvolvedIds.add(9);
-      } else if (state.partner === 'bulbasaur') {
-        if (pLevel >= 16) legitEvolvedIds.add(2);
-        if (pLevel >= 36) legitEvolvedIds.add(3);
-      }
-
-      state.gen1Caught = state.gen1Caught.filter(id => BASE_POKEMON_SET.has(id) || legitEvolvedIds.has(id));
+    // 🎴 全 151 隻寶可夢依題目難度皆可在道館與段考中遭遇收服
+    if (Array.isArray(state.gen1Caught)) {
+      state.gen1Caught = [...new Set(state.gen1Caught.filter(id => id >= 1 && id <= 151))];
       localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
     }
 
@@ -4106,6 +4085,11 @@ function openCurrentPartnerDetailModal() {
       });
     }
   }
+  // 🎴《寶可夢卡牌151》（TCG）難度匹配規則：越困難的題目與關卡，出現越稀有的寵物！
+  // 基礎題 (難度1) ➔ C 普通卡 (63隻)
+  // 進階題 (難度2) ➔ U 非普通卡 (51隻)
+  // 高難題 (難度3) ➔ R 稀有閃卡 (25隻)
+  // 終極題/Boss題/期末高難 (難度4) ➔ RR 雙重稀有 ex (12隻：妙蛙花ex、噴火龍ex、水箭龜ex、胡地ex、九尾ex、閃電鳥ex、夢幻ex等)
   function assignOpponentPokemonToQuestions(stage, questions, isFinal) {
     if (typeof GEN1_POKEMON_LIST === 'undefined' || !questions || questions.length === 0) return;
 
@@ -4113,92 +4097,69 @@ function openCurrentPartnerDetailModal() {
     const stageId = stage.id || 1;
     const caughtList = state.gen1Caught || [];
 
-    // 🦅 期末考高難秘境專屬：極罕見、傳說神獸與史詩幼年寶可夢池 (全部嚴格保證最初階形態)
-    const FINAL_STAGE_EXCLUSIVE_POOL = {
-      1: [131, 143, 113, 123, 127, 128, 115, 133, 137, 138],
-      2: [143, 131, 113, 123, 127, 128, 115, 133, 137, 140],
-      3: [147, 131, 143, 142, 138, 140, 125, 126, 122, 129],
-      4: [142, 138, 140, 147, 131, 143, 125, 126, 122, 137],
-      5: [132, 147, 142, 131, 143, 113, 125, 126, 127, 128],
-      6: [126, 125, 147, 142, 131, 143, 132, 138, 140, 113],
-      7: [144, 145, 146, 147, 142, 143, 131, 132, 125, 126],
-      8: [145, 144, 146, 147, 142, 143, 131, 132, 125, 126],
-      9: [146, 144, 145, 150, 151, 147, 142, 143, 131, 132],
-      10: [150, 151, 144, 145, 146, 147, 142, 143, 131, 132]
+    // Helper 依稀有度挑選未使用的寶可夢（優先未收服）
+    const pickPokemonFromRarity = (rarity) => {
+      const pool = POKEMON_TCG_TIERS[rarity] || POKEMON_TCG_TIERS['C'];
+      const uncaught = pool.filter(id => !caughtList.includes(id) && !usedIds.has(id));
+      if (uncaught.length > 0) {
+        return uncaught[Math.floor(Math.random() * uncaught.length)];
+      }
+      const unused = pool.filter(id => !usedIds.has(id));
+      if (unused.length > 0) {
+        return unused[Math.floor(Math.random() * unused.length)];
+      }
+      return pool[Math.floor(Math.random() * pool.length)];
     };
 
     questions.forEach((q, i) => {
       const isBossQ = (i === questions.length - 1);
-      let chosenId = null;
+      let targetRarity = 'C';
+
+      // 1. 依據題目難度 (q.difficulty) 與關卡難度 (stageId) 以及期末考 (isFinal) 綜合判定
+      let qDiff = q.difficulty || 1;
+      if (q.qType === 'reading' || q.passage) qDiff = Math.max(qDiff, 3);
 
       if (isFinal) {
-        // 期末考高難：Boss題必定出戰對應關卡之神話Boss
-        if (isBossQ && stage.bossId && BASE_POKEMON_IDS.includes(stage.bossId)) {
-          chosenId = stage.bossId;
-        } else if (isBossQ && stage.id === 3) {
-          chosenId = 147; // 逆鱗神龍：史詩迷你龍！
-        }
-
-        if (!chosenId) {
-          const pool = (FINAL_STAGE_EXCLUSIVE_POOL[stageId] || FINAL_STAGE_EXCLUSIVE_POOL[1]).filter(id => BASE_POKEMON_IDS.includes(id));
-          const uncaught = pool.filter(id => !caughtList.includes(id) && !usedIds.has(id));
-          if (uncaught.length > 0) {
-            chosenId = uncaught[Math.floor(Math.random() * uncaught.length)];
-          } else {
-            const unused = pool.filter(id => !usedIds.has(id));
-            chosenId = (unused.length > 0 ? unused : pool)[Math.floor(Math.random() * (unused.length > 0 ? unused.length : pool.length))];
-          }
+        // 期末考高難秘境：
+        // 前半題出現 U/R，後半題出現 R，Boss題必定出現頂級 RR (雙重稀有 ex)！
+        if (isBossQ) {
+          targetRarity = 'RR';
+        } else if (i >= 2 || stageId >= 6) {
+          targetRarity = 'R';
+        } else {
+          targetRarity = 'U';
         }
       } else {
-        // 段考真題模式：經典關東梯隊分佈
-        let targetTier = 1;
+        // 段考真題道館：
         if (stageId <= 2) {
-          targetTier = isBossQ ? 3 : (i >= 3 ? 2 : 1);
-        } else if (stageId <= 4) {
-          targetTier = isBossQ ? 3 : (i >= 2 ? 3 : 2);
-        } else if (stageId <= 6) {
-          targetTier = isBossQ ? 4 : (i >= 2 ? 3 : 2);
+          // 第1~2關 (基礎認識)：前4題為 C，Boss題為 U
+          targetRarity = isBossQ ? 'U' : (qDiff >= 2 ? 'U' : 'C');
+        } else if (stageId <= 5) {
+          // 第3~5關 (進階拼音與語詞)：前段為 C/U，後段為 U，Boss題為 R 稀有閃卡
+          if (isBossQ) targetRarity = 'R';
+          else if (i >= 3 || qDiff >= 2) targetRarity = 'U';
+          else targetRarity = 'C';
         } else if (stageId <= 8) {
-          targetTier = isBossQ ? 4 : (i >= 2 ? 4 : 3);
-        } else if (stageId === 9) {
-          targetTier = isBossQ ? 5 : (i >= 2 ? 4 : 4);
+          // 第6~8關 (高階拼寫與造詞)：前段為 U，後段為 R，Boss題為 R 或 RR
+          if (isBossQ) targetRarity = (stageId === 8 || qDiff >= 3) ? 'RR' : 'R';
+          else if (i >= 2 || qDiff >= 2) targetRarity = 'R';
+          else targetRarity = 'U';
         } else {
-          targetTier = isBossQ ? 5 : (i >= 2 ? 5 : 4);
+          // 第9~10關 (高難句子標調與兒歌閱讀殿堂)：前段為 R，後段為 R/RR，Boss題必定為 RR 雙重稀有 ex！
+          if (isBossQ) targetRarity = 'RR';
+          else if (i >= 2 || qDiff >= 3) targetRarity = (Math.random() < 0.5 ? 'RR' : 'R');
+          else targetRarity = 'R';
         }
+      }
 
-        if (isBossQ && stage.bossId && !usedIds.has(stage.bossId) && BASE_POKEMON_IDS.includes(stage.bossId)) {
-          if (!caughtList.includes(stage.bossId)) {
-            chosenId = stage.bossId;
-          }
-        }
+      // 若該關卡有指定守護 Boss 且稀有度相符，優先使用
+      let chosenId = null;
+      if (isBossQ && stage.bossId && !usedIds.has(stage.bossId)) {
+        chosenId = stage.bossId;
+      }
 
-        if (!chosenId) {
-          const tierPool = POKEMON_RARITY_TIERS[targetTier] || POKEMON_RARITY_TIERS[1];
-          const uncaughtInTier = tierPool.filter(id => !caughtList.includes(id) && !usedIds.has(id));
-
-          if (uncaughtInTier.length > 0) {
-            chosenId = uncaughtInTier[Math.floor(Math.random() * uncaughtInTier.length)];
-          } else {
-            let anyUncaught = [];
-            for (let t = targetTier; t >= 1; t--) {
-              const pList = POKEMON_RARITY_TIERS[t].filter(id => !caughtList.includes(id) && !usedIds.has(id));
-              if (pList.length > 0) { anyUncaught = pList; break; }
-            }
-            if (anyUncaught.length === 0) {
-              for (let t = targetTier + 1; t <= 5; t++) {
-                const pList = POKEMON_RARITY_TIERS[t].filter(id => !caughtList.includes(id) && !usedIds.has(id));
-                if (pList.length > 0) { anyUncaught = pList; break; }
-              }
-            }
-            if (anyUncaught.length > 0) {
-              chosenId = anyUncaught[Math.floor(Math.random() * anyUncaught.length)];
-            } else {
-              const unusedInTier = tierPool.filter(id => !usedIds.has(id));
-              const finalCandidates = unusedInTier.length > 0 ? unusedInTier : tierPool;
-              chosenId = finalCandidates[Math.floor(Math.random() * finalCandidates.length)];
-            }
-          }
-        }
+      if (!chosenId) {
+        chosenId = pickPokemonFromRarity(targetRarity);
       }
 
       usedIds.add(chosenId);
@@ -4821,7 +4782,8 @@ function openCurrentPartnerDetailModal() {
     if (opp && oppName) {
       const isBossQ = (state.adventure.qIndex === questions.length - 1);
       const prefix = q.isShiny ? '✨ 稀有閃光' : (isBossQ ? '👑 道館守護' : '野生的');
-      oppName.innerHTML = `${prefix}【${formatZhuyinDisplay(opp.name, opp.zhuyin)}】 <span class="opp-dex-badge">${opp.dexNo}</span>`;
+      const buff = getPartnerBuffInfo(opp.id);
+      oppName.innerHTML = `${prefix}【${formatZhuyinDisplay(opp.name, opp.zhuyin)}】 <span class="opp-dex-badge">${opp.dexNo}</span> <span class="tcg-badge-chip tcg-${buff.rarity}" style="font-size:10px;font-weight:900;padding:2px 6px;border-radius:6px;background:${buff.badgeBg};color:${buff.badgeColor};border:1px solid ${buff.badgeColor}40;" title="《寶可夢卡牌151》稀有度：${buff.label}">${buff.label}</span>`;
     }
 
     if (opp && oppType) {
