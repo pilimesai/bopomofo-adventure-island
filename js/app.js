@@ -1032,6 +1032,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const unlockAudioEngine = () => {
       if (window.audioEngine) {
         window.audioEngine.ensureAudioContext();
+        if (window.audioEngine.unlockVoiceAudio) {
+          window.audioEngine.unlockVoiceAudio();
+        }
         if (window.speechSynthesis) {
           try { window.speechSynthesis.cancel(); } catch (e) {}
         }
@@ -4759,44 +4762,33 @@ function openCurrentPartnerDetailModal() {
       window._stageQSpeechTimeout = null;
     }
 
-    // 延遲 220ms 等候切題動畫與新題 DOM 渲染平穩就緒後，100% 由頭清晰自動朗讀考題！
+    // 預先載入下一題語音，確保換題切題時 0 延遲零漏音
+    const nextQ = questions[state.adventure.qIndex + 1];
+    if (nextQ && nextQ.speakText && window.audioEngine && window.audioEngine.preloadAudio) {
+      window.audioEngine.preloadAudio(nextQ.speakText);
+    }
+
+    // 延遲 180ms 等候切題動畫與新題 DOM 渲染平穩就緒後，100% 由頭清晰自動朗讀考題！
     window._stageQSpeechTimeout = setTimeout(() => {
       window._stageQSpeechTimeout = null;
       if (q && q.speakText) {
-
         window.audioEngine.speak(q.speakText, {
-
           onEnd: () => {
-
             const btn = document.getElementById('btn-poke-listen');
-
             if (btn) {
-
               btn.classList.remove('reading-now');
-
               btn.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
-
             }
-
           }
-
         });
-
       } else {
-
         const btn = document.getElementById('btn-poke-listen');
-
         if (btn) {
-
           btn.classList.remove('reading-now');
-
           btn.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
-
         }
-
       }
-
-    }, 220);
+    }, 180);
 
   }
 
@@ -5586,6 +5578,14 @@ function openCurrentPartnerDetailModal() {
     if (state.adventure.isAnswering) return;
     state.adventure.isAnswering = true; // 鎖定不可重選！
 
+    // 藉由使用者答題點擊手勢，即時切斷前題語音並刷新音訊播放授權
+    if (window.audioEngine) {
+      window.audioEngine.stopSpeaking();
+      if (window.audioEngine.unlockVoiceAudio) {
+        window.audioEngine.unlockVoiceAudio();
+      }
+    } // 鎖定不可重選！
+
     const optionsGrid = document.getElementById('battle-options-grid');
     if (optionsGrid) optionsGrid.classList.add('options-locked');
 
@@ -5859,6 +5859,9 @@ function openCurrentPartnerDetailModal() {
           btnNext.addEventListener('click', () => {
             window.audioEngine.playPop();
             window.audioEngine.stopSpeaking(); // 確保停止上一題殘留語音
+            if (window.audioEngine && window.audioEngine.unlockVoiceAudio) {
+              window.audioEngine.unlockVoiceAudio();
+            } // 確保停止上一題殘留語音
             feedbackEl.style.display = 'none';
             if (oppSprite) oppSprite.classList.remove('pokemon-fleeing-away');
             state.adventure.qIndex++;

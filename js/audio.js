@@ -8,6 +8,9 @@ class ZhuyinAudioEngine {
     this.ctx = null;
     this.synth = window.speechSynthesis;
     this.currentAudio = null; // 預錄正音班神經語音 MP3 播放器
+    this.voiceAudio = null; // 常駐已解鎖 HTML5 語音播放器
+    this._currentSourceNode = null; // Web Audio API 播放節點備援
+    this._audioBufferCache = new Map(); // 解碼音訊緩存池
     this.taiwanVoice = null;
     let saved = localStorage.getItem('zhuyin_selected_voice');
     if (saved !== 'PERSONA::CUTE_GIRL' && saved !== 'PERSONA::TEACHER') {
@@ -33,6 +36,45 @@ class ZhuyinAudioEngine {
   ensureAudioContext() {
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
+    }
+  }
+
+  /**
+   * 藉由使用者手勢預先解鎖 HTML5 Audio 標籤，永久杜絕瀏覽器 Autoplay 攔截
+   */
+  unlockVoiceAudio() {
+    this.ensureAudioContext();
+    if (!this.voiceAudio) {
+      try {
+        this.voiceAudio = new Audio();
+        this.voiceAudio.preload = 'auto';
+      } catch (e) {}
+    }
+    if (this.voiceAudio && this.voiceAudio.paused && !this.voiceAudio.src) {
+      try {
+        this.voiceAudio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+        const p = this.voiceAudio.play();
+        if (p !== undefined) {
+          p.then(() => {
+            this.voiceAudio.pause();
+            this.voiceAudio.currentTime = 0;
+          }).catch(() => {});
+        }
+      } catch (e) {}
+    }
+  }
+
+  /**
+   * 預先載入題目的語音 MP3 至記憶體快取，切題換題時 0 延遲零漏音
+   */
+  preloadAudio(text) {
+    if (!text) return;
+    const cleanKey = text.trim();
+    const baseManifest = window.AUDIO_MANIFEST || {};
+    const cuteManifest = window.AUDIO_CUTE_MANIFEST || {};
+    const url = baseManifest[cleanKey] || cuteManifest[cleanKey];
+    if (url && typeof fetch !== 'undefined') {
+      fetch(url, { cache: 'force-cache' }).catch(() => {});
     }
   }
 
@@ -243,53 +285,8 @@ class ZhuyinAudioEngine {
     }
 
     if (audioUrl) {
-      // 立即啟動音檔播放，絕不人為延遲，確保換題與重按朗讀 100% 流暢出聲
-      try {
-        const audio = new Audio(audioUrl);
-        this.currentAudio = audio;
-        audio.playbackRate = options.rate ? options.rate : 1.0;
-
-        audio.onended = () => {
-          this.currentAudio = null;
-          if (options.onEnd) options.onEnd();
-        };
-        audio.onerror = (err) => {
-          console.warn("音檔載入受阻：", err);
-          this.currentAudio = null;
-          if (options.onEnd) {
-            setTimeout(() => {
-              try { options.onEnd(); } catch (e) {}
-            }, 50);
-          }
-        };
-
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((err) => {
-            // 被新的語音操作主動中斷（切題或手動重按）時忽略，避免報錯
-            if (err && (err.name === "AbortError" || err.code === 20)) {
-              return;
-            }
-            console.warn("音檔播放未成功：", err);
-            this.currentAudio = null;
-            if (options.onEnd) {
-              setTimeout(() => {
-                try { options.onEnd(); } catch (e) {}
-              }, 50);
-            }
-          });
-        }
-        return;
-      } catch (e) {
-        console.warn("Audio 實例創建異常：", e);
-        this.currentAudio = null;
-        if (options.onEnd) {
-          setTimeout(() => {
-            try { options.onEnd(); } catch (e) {}
-          }, 50);
-        }
-        return;
-      }
+      this.playVoiceAudioUrl(audioUrl, options);
+      return;
     }
 
     // 🔴 找不到音檔時，為確保絕不出現機器聲，堅決不使用瀏覽器機器合成音！
@@ -298,6 +295,120 @@ class ZhuyinAudioEngine {
       setTimeout(() => {
         try { options.onEnd(); } catch (e) {}
       }, 50);
+    }
+  }
+
+  /**
+   * 雙重引擎無縫播放：優先使用常駐解鎖的 HTML5 Audio，若受瀏覽器策略攔截則 100% 自動透過 WebAudio API 原音解碼播放！
+   */
+  playVoiceAudioUrl(audioUrl, options = {}) {
+    this.ensureAudioContext();
+
+    if (!this.voiceAudio) {
+      try {
+        this.voiceAudio = new Audio();
+        this.voiceAudio.preload = 'auto';
+      } catch (e) {}
+    }
+
+    const audio = this.voiceAudio || new Audio();
+    this.currentAudio = audio;
+
+    let hasEnded = false;
+    const handleEnd = () => {
+      if (hasEnded) return;
+      hasEnded = true;
+      if (this.currentAudio === audio) {
+        this.currentAudio = null;
+      }
+      if (options.onEnd) {
+        try { options.onEnd(); } catch (e) {}
+      }
+    };
+
+    audio.onended = handleEnd;
+    audio.onerror = (err) => {
+      console.warn('[HTML5 Audio] 載入受阻，立即啟動 WebAudio 零延遲原音解碼播放：', err);
+      this.playWithWebAudio(audioUrl, options);
+    };
+
+    try {
+      audio.src = audioUrl;
+      audio.playbackRate = options.rate ? options.rate : 1.0;
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          // 若是被後續切題主動中斷（AbortError），安全忽略
+          if (err && (err.name === 'AbortError' || err.code === 20)) {
+            return;
+          }
+          // 若被瀏覽器 Autoplay 攔截或任何錯誤，100% 透過 Web Audio API 播放同一 MP3 自然原音，絕不漏聲！
+          console.warn('[HTML5 Audio] 播放受阻，啟動 Web Audio API 原聲備援：', err);
+          this.playWithWebAudio(audioUrl, options);
+        });
+      }
+    } catch (e) {
+      console.warn('[HTML5 Audio] 播放調用異常，切換 WebAudio 備援：', e);
+      this.playWithWebAudio(audioUrl, options);
+    }
+  }
+
+  /**
+   * Web Audio API 高性能原音緩存播放器（完全免疫瀏覽器 Autoplay Policy，換題 100% 必出聲）
+   */
+  async playWithWebAudio(audioUrl, options = {}) {
+    try {
+      this.ensureAudioContext();
+      if (!this.ctx) {
+        if (options.onEnd) options.onEnd();
+        return;
+      }
+
+      if (!this._audioBufferCache) {
+        this._audioBufferCache = new Map();
+      }
+
+      let buffer = this._audioBufferCache.get(audioUrl);
+      if (!buffer) {
+        const resp = await fetch(audioUrl);
+        const arrayBuf = await resp.arrayBuffer();
+        buffer = await this.ctx.decodeAudioData(arrayBuf);
+        this._audioBufferCache.set(audioUrl, buffer);
+      }
+
+      if (!buffer) {
+        if (options.onEnd) options.onEnd();
+        return;
+      }
+
+      // 停止上一段正在播放的 WebAudio 節點
+      if (this._currentSourceNode) {
+        try { this._currentSourceNode.stop(); } catch (e) {}
+        this._currentSourceNode = null;
+      }
+
+      const source = this.ctx.createBufferSource();
+      source.buffer = buffer;
+      source.playbackRate.value = options.rate || 1.0;
+      source.connect(this.ctx.destination);
+      this._currentSourceNode = source;
+
+      source.onended = () => {
+        if (this._currentSourceNode === source) {
+          this._currentSourceNode = null;
+        }
+        if (options.onEnd) {
+          try { options.onEnd(); } catch (e) {}
+        }
+      };
+
+      source.start(0);
+    } catch (e) {
+      console.warn('[Web Audio] 播放異常：', e);
+      if (options.onEnd) {
+        try { options.onEnd(); } catch (err) {}
+      }
     }
   }
 
@@ -336,18 +447,29 @@ class ZhuyinAudioEngine {
       } catch (e) {}
       this.currentAudio = null;
     }
+    if (this.voiceAudio && this.voiceAudio !== this.currentAudio) {
+      try {
+        this.voiceAudio.pause();
+        this.voiceAudio.currentTime = 0;
+        this.voiceAudio.onended = null;
+        this.voiceAudio.onerror = null;
+      } catch (e) {}
+    }
+    if (this._currentSourceNode) {
+      try {
+        this._currentSourceNode.stop();
+        this._currentSourceNode.onended = null;
+      } catch (e) {}
+      this._currentSourceNode = null;
+    }
     if (this._activeUtterance) {
       this._activeUtterance.onend = null;
       this._activeUtterance.onerror = null;
       this._activeUtterance = null;
     }
-    // 🔴 關鍵修復：只有在瀏覽器語音確實在播放或佇列排隊時才呼叫 cancel()，避免對閒置狀態發送 cancel() 造成下次 speak() 被系統判定取消
     if (this.synth && (this.synth.speaking || this.synth.pending)) {
       try {
         this.synth.cancel();
-        if (this.synth.paused) {
-          this.synth.resume();
-        }
       } catch (e) {}
     }
   }
