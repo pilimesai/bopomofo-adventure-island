@@ -3232,6 +3232,34 @@ function setupPartnerModal() {
 
 
 
+        // 🔴 依關卡稀有度挑選對手寶可夢（優先遭遇尚未收服的寶可夢，協助玩家集滿 151 圖鑑！）
+    let oppPokemon = null;
+    const pool = stage.wildPool || [stage.bossId || 25];
+    const uncaughtInPool = pool.filter(id => !state.gen1Caught.includes(id));
+    let chosenId = stage.bossId || 25;
+    if (uncaughtInPool.length > 0) {
+      // 優先遭遇未收服野生寶可夢
+      chosenId = uncaughtInPool[Math.floor(Math.random() * uncaughtInPool.length)];
+    } else {
+      // 若本關已全部收服，隨機抽樣或派出道館館主
+      chosenId = (Math.random() < 0.4 && stage.bossId) ? stage.bossId : pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    if (typeof GEN1_POKEMON_LIST !== 'undefined') {
+      oppPokemon = GEN1_POKEMON_LIST.find(p => p.id === chosenId) || GEN1_POKEMON_LIST[0];
+    } else {
+      oppPokemon = {
+        id: chosenId,
+        name: stage.bossName || '寶可夢',
+        zhuyin: '',
+        color: stage.color || '#EF4444',
+        image: '',
+        sprite: '',
+        types: [stage.bossType || '一般']
+      };
+    }
+    state.adventure.currentOpponentPokemon = oppPokemon;
+
     const partnerObj = getCurrentPartnerInfo();
 
     const badge = (ZHUYIN_DATA.gymBadges || []).find(b => b.stageId === stage.id);
@@ -4164,7 +4192,8 @@ function setupPartnerModal() {
 
         `;
 
-        const row = container.querySelector('#exam-check-row');
+        const row = container.querySelector ? container.querySelector('#exam-check-row') : null;
+        if (row)
 
         shuffled.forEach(optText => {
 
@@ -4228,7 +4257,8 @@ function setupPartnerModal() {
 
         `;
 
-        const row = container.querySelector('#exam-circle-row');
+        const row = container.querySelector ? container.querySelector('#exam-circle-row') : null;
+        if (row)
 
         shuffled.forEach(optText => {
 
@@ -4956,6 +4986,16 @@ function setupPartnerModal() {
 
       renderGymBadges();
 
+            // 🔴 收服野生對手寶可夢至 151 寶可夢大圖鑑！
+      const opp = state.adventure.currentOpponentPokemon;
+      let isNewlyCaught = false;
+      if (opp && !state.gen1Caught.includes(opp.id)) {
+        state.gen1Caught.push(opp.id);
+        localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
+        isNewlyCaught = true;
+        updatePokedexProgressUI();
+      }
+
       if (stage.id === 1) unlockAchievement('stage_1_clear');
       if (stage.id === 5) unlockAchievement('stage_5_clear');
       if (stage.id === 10) unlockAchievement('dragon_slayer');
@@ -4980,6 +5020,28 @@ function setupPartnerModal() {
             <p style="font-size:16px;font-weight:800;color:#475569;margin-bottom:14px;">
               擊敗道館館主【${stage.bossIcon} ${stage.bossName}】，獲得 <strong>+6 顆金星星</strong>、<strong>+9 顆寶貝球</strong> 與 <strong style="color:#D97706;">+150 💰 冒險金幣</strong>！
             </p>
+            <!-- 🔴 成功收服寶可夢成果展示卡 -->
+            ${opp ? `
+              <div class="caught-banner-card" style="margin:14px auto;max-width:440px;background:linear-gradient(135deg, #FEF2F2, #FFFBEB);border:3px solid #EF4444;border-radius:18px;padding:14px 18px;box-shadow:0 6px 0 #DC2626;animation:fadeIn 0.5s ease;">
+                <div style="font-size:15px;color:#DC2626;font-weight:900;margin-bottom:6px;">
+                  ${isNewlyCaught ? '🔴 丟出精靈球！成功收服新寶可夢！' : '⚡ 擊敗道館強敵！寶可夢圖鑑確認！'}
+                </div>
+                <div style="display:flex;align-items:center;justify-content:center;gap:16px;">
+                  <img src="${opp.image || opp.sprite}" alt="${opp.name}" style="width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.25));" onerror="this.outerHTML='<div style=\'font-size:42px;\'>${stage.bossIcon || '🐾'}</div>'" />
+                  <div style="text-align:left;">
+                    <div style="font-size:20px;font-weight:900;color:#1F2937;">
+                      ${opp.name} <span style="font-size:13px;color:#64748B;">#${String(opp.id).padStart(3, '0')}</span>
+                    </div>
+                    <div style="font-size:13px;color:#D97706;font-weight:800;margin-top:2px;">
+                      ${isNewlyCaught ? '✨ 已新登錄至「寶可夢大圖鑑」！' : '🎖️ 戰鬥磨練完成！'}
+                    </div>
+                    <div style="font-size:12px;color:#4B5563;margin-top:3px;">
+                      目前 151 圖鑑收集：<strong style="color:#DC2626;font-size:14px;">${state.gen1Caught.length} / 151 隻</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ` : ''}
 
             <!-- 🎁 道館神秘大寶箱 -->
             <div class="mystery-chest-box" id="mystery-chest-box">
@@ -6993,6 +7055,7 @@ function setupPartnerModal() {
   window.handleStageVictory = handleStageVictory;
   window.renderNurtureShop = renderNurtureShop;
   window.addCoins = addCoins;
+  window.startStageBattle = startStageBattle;
   window.initGen1Pokedex = initGen1Pokedex;
   window.renderGen1Pokedex = renderGen1Pokedex;
   window.openGen1DetailModal = openGen1DetailModal;

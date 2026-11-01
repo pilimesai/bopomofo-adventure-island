@@ -2130,13 +2130,32 @@ const ZHUYIN_DATA = {
     {
       "id": 1,
       "name": "第1關：看圖選音道館",
-      "subtitle": "小一段考·第一大題",
+      "subtitle": "深灰道館・聲母基礎辨音",
       "icon": "🌲",
-      "bossIcon": "🦊",
-      "bossName": "小狐狸奇奇",
+      "bossId": 12,
+      "bossLevel": 6,
+      "bossType": "蟲 / 飛行",
+      "wildPool": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        19,
+        20,
+        21,
+        23,
+        27,
+        43,
+        69
+      ],
+      "bossIcon": "🦋",
+      "bossName": "巴大蝶",
       "color": "#51CF66",
       "bgGradient": "linear-gradient(135deg, #D3F9D8, #B2F2BB)",
-      "desc": "小一段考真題第一大題：選出圖片上完全正確的注音符號！",
+      "desc": "青翠森林裡的深灰道館！由優雅的巴大蝶鎮守，考核小一新生基礎聲母（ㄅㄆㄇㄈ）。",
       "questions": [
         {
           "prompt": "【段考真題·看圖選注音】圖片上的「🐊 鱷魚」，選出正確的注音：",
@@ -2398,13 +2417,13 @@ const ZHUYIN_DATA = {
     {
       "id": 2,
       "name": "第2關：辨音圈選道館",
-      "subtitle": "小一段考·第二大題(上)",
-      "icon": "🌻",
-      "bossIcon": "🦁",
-      "bossName": "草原小獅王",
-      "color": "#FCC419",
-      "bgGradient": "linear-gradient(135deg, #FFF3BF, #FFEC99)",
-      "desc": "小一段考真題第二大題：比較兩個注音，圈出完全正確的答案！",
+      "subtitle": "華藍道館・韻母鼻音辨析",
+      "icon": "💧",
+      "bossIcon": "🦊",
+      "bossName": "九尾",
+      "color": "#4DABF7",
+      "bgGradient": "linear-gradient(135deg, #D0EBFF, #A5D8FF)",
+      "desc": "清澈湖畔旁的華藍道館！由華麗的九尾出題，精確分辨前後鼻音（ㄢ/ㄤ、ㄣ/ㄥ）。",
       "questions": [
         {
           "prompt": "【段考真題·圈出正確注音】「🥚 雞蛋」，哪一個注音完全正確？",
@@ -2649,18 +2668,39 @@ const ZHUYIN_DATA = {
             "ㄉㄤˊ ㄍㄨㄛˇ"
           ]
         }
+      ],
+      "bossId": 38,
+      "bossType": "火",
+      "bossLevel": 14,
+      "wildPool": [
+        17,
+        22,
+        24,
+        28,
+        29,
+        32,
+        35,
+        37,
+        38,
+        39,
+        41,
+        44,
+        46,
+        48,
+        52,
+        54
       ]
     },
     {
       "id": 3,
       "name": "第3關：正音除錯道館",
-      "subtitle": "小一段考·第二大題(下)",
-      "icon": "🌋",
-      "bossIcon": "🦖",
-      "bossName": "暴龍阿卡",
+      "subtitle": "枯葉道館・聲調標調正音",
+      "icon": "⚡",
+      "bossIcon": "🐕",
+      "bossName": "風速狗",
       "color": "#FF922B",
       "bgGradient": "linear-gradient(135deg, #FFE8CC, #FFD8A8)",
-      "desc": "小一段考真題第二大題：分辨平翹舌音、前後鼻音與易混聲調！",
+      "desc": "枯葉港口邊的雷火道館！風馳電掣的風速狗鎮守，測驗一聲二聲三聲四聲與輕聲辨別。",
       "questions": [
         {
           "prompt": "【段考真題·圈出正確注音】「👫 我們」，哪一個注音完全正確？",
@@ -2905,18 +2945,40 @@ const ZHUYIN_DATA = {
             "ㄍㄨㄥ ㄑㄧ"
           ]
         }
+      ],
+      "bossId": 59,
+      "bossType": "火",
+      "bossLevel": 22,
+      "wildPool": [
+        26,
+        42,
+        47,
+        49,
+        50,
+        51,
+        53,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63,
+        66,
+        74
       ]
     },
     {
       "id": 4,
       "name": "第4關：拼音連線道館",
-      "subtitle": "小一段考·第三大題(上)",
-      "icon": "🏛️",
-      "bossIcon": "🐉",
-      "bossName": "神殿小青龍",
-      "color": "#339AF0",
-      "bgGradient": "linear-gradient(135deg, #E7F5FF, #D0EBFF)",
-      "desc": "小一段考真題第三大題：將前後字音正確連成完整語詞！",
+      "subtitle": "玉虹道館・二拼連音修煉",
+      "icon": "🌈",
+      "bossIcon": "👻",
+      "bossName": "耿鬼",
+      "color": "#CC5DE8",
+      "bgGradient": "linear-gradient(135deg, #F3D9FA, #EEBEFA)",
+      "desc": "幽秘古塔旁的玉虹道館！調皮強大的耿鬼設下陣勢，挑戰聲母加韻母的快速二拼連音。",
       "questions": [
         {
           "prompt": "【段考真題·連連看】美麗的家園「臺灣」，「ㄊㄞˊ」應該連到哪一個注音？",
@@ -3145,18 +3207,66 @@ const ZHUYIN_DATA = {
             "ㄒㄧㄤ ㄑㄧㄠ"
           ]
         }
+      ],
+      "bossId": 94,
+      "bossType": "幽靈 / 毒",
+      "bossLevel": 30,
+      "wildPool": [
+        64,
+        67,
+        70,
+        72,
+        75,
+        77,
+        78,
+        79,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        88,
+        90,
+        92,
+        93,
+        94
       ]
     },
     {
       "id": 5,
       "name": "第5關：語詞配對道館",
-      "subtitle": "小一段考·第三大題(下)",
-      "icon": "🦢",
-      "bossIcon": "🧚",
-      "bossName": "湖畔水精靈",
+      "subtitle": "淺紅道館・結合韻合體技",
+      "icon": "🐢",
+      "bossId": 9,
+      "bossLevel": 38,
+      "bossType": "水",
+      "wildPool": [
+        2,
+        5,
+        8,
+        9,
+        62,
+        65,
+        68,
+        71,
+        73,
+        76,
+        80,
+        87,
+        89,
+        91,
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "bossIcon": "🐢",
+      "bossName": "水箭龜",
       "color": "#20C997",
-      "bgGradient": "linear-gradient(135deg, #E6FCF5, #C3FAE8)",
-      "desc": "小一段考真題第三大題：將注音符號與正確國語詞彙配對！",
+      "bgGradient": "linear-gradient(135deg, #C3FAE8, #96F2D7)",
+      "desc": "水霧瀰漫的淺紅水之遺跡！重裝水箭龜坐鎮，精通介音與韻母結合韻（ㄧㄚ、ㄨㄢ、ㄩㄝ）。",
       "questions": [
         {
           "prompt": "【段考真題·連連看】「ㄎㄨㄞˋ ˙ㄗ」，是指哪一個生活物品？",
@@ -3390,13 +3500,36 @@ const ZHUYIN_DATA = {
     {
       "id": 6,
       "name": "第6關：看圖填拼音館",
-      "subtitle": "小一段考·第四大題(上)",
-      "icon": "🌈",
-      "bossIcon": "🦄",
-      "bossName": "彩虹獨角獸",
-      "color": "#845EF7",
-      "bgGradient": "linear-gradient(135deg, #F3F0FF, #E5DBFF)",
-      "desc": "小一段考真題第四大題：看著圖片，選出完全正確的注音拼音！",
+      "subtitle": "金黃道館・完整拼音拼讀",
+      "icon": "🌺",
+      "bossId": 3,
+      "bossLevel": 46,
+      "bossType": "草 / 毒",
+      "wildPool": [
+        3,
+        18,
+        30,
+        31,
+        33,
+        34,
+        36,
+        40,
+        45,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108
+      ],
+      "bossIcon": "🌺",
+      "bossName": "妙蛙花",
+      "color": "#FCC419",
+      "bgGradient": "linear-gradient(135deg, #FFF3BF, #FFEC99)",
+      "desc": "繁花盛開的金黃超能植物道館！妙蛙花巨大背花綻放，依生活圖像精確完整拼音寫詞。",
       "questions": [
         {
           "prompt": "【段考真題·看圖填拼音】圖片上的「⛄ 雪人」，「雪」的注音符號是什麼？",
@@ -3574,13 +3707,39 @@ const ZHUYIN_DATA = {
     {
       "id": 7,
       "name": "第7關：拼音拼寫道館",
-      "subtitle": "小一段考·第四大題(下)",
-      "icon": "🎢",
-      "bossIcon": "🐼",
-      "bossName": "功夫貓熊阿寶",
-      "color": "#F06595",
-      "bgGradient": "linear-gradient(135deg, #FFF0F6, #FFDEEB)",
-      "desc": "小一段考真題第四大題：觀察動物與物品，精確填出拼音！",
+      "subtitle": "紅蓮道館・全能拼寫填空",
+      "icon": "🔥",
+      "bossId": 6,
+      "bossLevel": 55,
+      "bossType": "火 / 飛行",
+      "wildPool": [
+        6,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128
+      ],
+      "bossIcon": "🔥",
+      "bossName": "噴火龍",
+      "color": "#FF6B6B",
+      "bgGradient": "linear-gradient(135deg, #FFE3E3, #FFC9C9)",
+      "desc": "岩漿滾燙的紅蓮火山道館！噴火龍振翅長嘯，考驗缺空音符填補與精準發音定位。",
       "questions": [
         {
           "prompt": "【段考真題·看圖填拼音】圖片上的「🐼 貓熊」，「熊」的注音符號是什麼？",
@@ -3758,13 +3917,35 @@ const ZHUYIN_DATA = {
     {
       "id": 8,
       "name": "第8關：拼音造詞道館",
-      "subtitle": "小一段考·第五大題",
-      "icon": "🚂",
-      "bossIcon": "🦉",
-      "bossName": "貓頭鷹站長",
-      "color": "#FD7E14",
-      "bgGradient": "linear-gradient(135deg, #FFF4E6, #FFE8CC)",
-      "desc": "小一段考真題第五大題：聲母與介音、韻母的拼音組合大考驗！",
+      "subtitle": "常磐道館・小一生活語詞殿",
+      "icon": "🐉",
+      "bossId": 149,
+      "bossLevel": 65,
+      "bossType": "龍 / 飛行",
+      "wildPool": [
+        129,
+        130,
+        131,
+        132,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        147,
+        148,
+        149
+      ],
+      "bossIcon": "🐉",
+      "bossName": "快龍",
+      "color": "#845EF7",
+      "bgGradient": "linear-gradient(135deg, #E5DBFF, #D0BFFF)",
+      "desc": "最強大地常磐道館！準神快龍守護關都，綜合測驗小一國語課本必學生活詞彙拼音。",
       "questions": [
         {
           "prompt": "【段考真題·拼音造詞】聲母「ㄇ」加上韻母「ㄛ」，會拼出哪一個注音？",
@@ -3988,13 +4169,21 @@ const ZHUYIN_DATA = {
     {
       "id": 9,
       "name": "第9關：句子標調道館",
-      "subtitle": "小一段考·第六大題",
-      "icon": "🏰",
-      "bossIcon": "🧙‍♂️",
-      "bossName": "水晶大法師",
-      "color": "#15AABF",
-      "bgGradient": "linear-gradient(135deg, #E3FAFC, #C5F6FA)",
-      "desc": "小一段考真題第六大題：在完整句子情境中判斷字音的標準聲調！",
+      "subtitle": "石英神鳥・全句閱讀標調",
+      "icon": "🦅",
+      "bossId": 146,
+      "bossLevel": 78,
+      "bossType": "火 / 飛行",
+      "wildPool": [
+        144,
+        145,
+        146
+      ],
+      "bossIcon": "🦅",
+      "bossName": "火焰鳥",
+      "color": "#339AF0",
+      "bgGradient": "linear-gradient(135deg, #D0EBFF, #A5D8FF)",
+      "desc": "石英高原三大傳說鳥聖地！火焰鳥熾熱雙翼照亮天際，考驗完整長句閱讀與語境標調。",
       "questions": [
         {
           "prompt": "【段考真題·句子聲調】句子「美麗的公園裡」，「麗」是第幾聲？",
@@ -4218,13 +4407,20 @@ const ZHUYIN_DATA = {
     {
       "id": 10,
       "name": "第10關：兒歌閱讀殿堂",
-      "subtitle": "小一段考·第七大題",
+      "subtitle": "究極超夢殿堂・兒歌童詩理解",
       "icon": "👑",
-      "bossIcon": "🐲",
-      "bossName": "黃金注音巨龍",
-      "color": "#FA5252",
-      "bgGradient": "linear-gradient(135deg, #FFE3E3, #FFC9C9)",
-      "desc": "小一段考真題第七大題：讀一讀白鵝兒歌，回答閱讀理解與聲調問題！",
+      "bossId": 150,
+      "bossLevel": 95,
+      "bossType": "超能力",
+      "wildPool": [
+        150,
+        151
+      ],
+      "bossIcon": "👑",
+      "bossName": "超夢",
+      "color": "#FAB005",
+      "bgGradient": "linear-gradient(135deg, #FFF9DB, #FFF3BF)",
+      "desc": "世界最強寶可夢「超夢」與幻之寶可夢「夢幻」的終極試煉殿堂！閱讀精美兒歌童詩奪取總冠軍！",
       "questions": [
         {
           "prompt": "【段考真題·兒歌閱讀測驗】兒歌中的白鵝在做什麼？",
@@ -4616,70 +4812,70 @@ const ZHUYIN_DATA = {
       "name": "微風徽章",
       "icon": "🍃",
       "gym": "草之微風道館",
-      "boss": "小狐狸奇奇"
+      "boss": "巴大蝶"
     },
     {
       "stageId": 2,
       "name": "大地徽章",
       "icon": "🏔️",
       "gym": "岩石大地道館",
-      "boss": "草原小獅王"
+      "boss": "九尾"
     },
     {
       "stageId": 3,
       "name": "雷電徽章",
       "icon": "⚡",
       "gym": "金黃電氣道館",
-      "boss": "跳跳猴皮皮"
+      "boss": "風速狗"
     },
     {
       "stageId": 4,
       "name": "水波徽章",
       "icon": "💧",
       "gym": "湛藍湖泊道館",
-      "boss": "企鵝艦長"
+      "boss": "耿鬼"
     },
     {
       "stageId": 5,
       "name": "心靈徽章",
       "icon": "🔮",
       "gym": "紫晶魔法道館",
-      "boss": "貓頭鷹學者"
+      "boss": "水箭龜"
     },
     {
       "stageId": 6,
       "name": "力量徽章",
       "icon": "🥊",
       "gym": "赤紅格鬥道館",
-      "boss": "功夫熊貓大師"
+      "boss": "妙蛙花"
     },
     {
       "stageId": 7,
       "name": "冰霜徽章",
       "icon": "❄️",
       "gym": "冰川雪山道館",
-      "boss": "北極小白豹"
+      "boss": "噴火龍"
     },
     {
       "stageId": 8,
       "name": "彩虹徽章",
       "icon": "🌈",
       "gym": "彩虹花園道館",
-      "boss": "彩虹獨角獸"
+      "boss": "快龍"
     },
     {
       "stageId": 9,
       "name": "火山徽章",
       "icon": "🔥",
       "gym": "烈焰熾火道館",
-      "boss": "烈焰巨凰"
+      "boss": "火焰鳥"
     },
     {
       "stageId": 10,
       "name": "冠軍大師獎盃",
       "icon": "🏆",
       "gym": "龍神四天王殿堂",
-      "boss": "黃金神龍王"
+      "boss": "超夢"
     }
   ],
   "questionPools": {
