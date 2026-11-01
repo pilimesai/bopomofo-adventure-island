@@ -1007,6 +1007,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof updatePokedexProgressUI === 'function') updatePokedexProgressUI();
   }
 
+  // 🔴 關東地區 79 隻未進化初階寶可夢（所有 72 隻進化型態皆需靠自身培育升級或屬性石進化解鎖）
+  const BASE_POKEMON_IDS = [
+    1, 4, 7, 10, 13, 16, 19, 21, 23, 25, 27, 29, 32, 35, 37, 39, 41, 43, 46, 48,
+    50, 52, 54, 56, 58, 60, 63, 66, 69, 72, 74, 77, 79, 81, 83, 84, 86, 88, 90,
+    92, 95, 96, 98, 100, 102, 104, 106, 107, 108, 109, 111, 113, 114, 115, 116,
+    118, 120, 122, 123, 124, 125, 126, 127, 128, 129, 131, 132, 133, 137, 138,
+    140, 142, 143, 144, 145, 146, 147, 150, 151
+  ];
+
+  const POKEMON_RARITY_TIERS = {
+    // ⭐️ Tier 1: 常見初階野生 (22隻，對應基礎題目：早期森林、草叢與街道常見初階)
+    1: [10, 13, 16, 19, 21, 23, 27, 29, 32, 41, 43, 46, 48, 50, 52, 54, 56, 60, 69, 72, 74, 98],
+    // ⭐️⭐️ Tier 2: 御三家/初階人氣/城鎮與特殊屬性幼年期 (24隻，對應中階題目)
+    2: [1, 4, 7, 25, 35, 37, 39, 58, 63, 66, 77, 79, 81, 84, 86, 88, 90, 92, 96, 100, 102, 104, 109, 116],
+    // ⭐️⭐️⭐️ Tier 3: 稀有原種/洞穴與深海初階/強力格鬥原形 (18隻，對應進階三拼/聲調題目)
+    3: [83, 95, 106, 107, 108, 111, 114, 115, 118, 120, 122, 123, 124, 125, 126, 127, 128, 129],
+    // ⭐️⭐️⭐️⭐️ Tier 4: 化石初階/百變怪/伊布/吉利蛋/迷你龍史詩幼年 (10隻，對應道館高難度題目)
+    4: [113, 131, 132, 133, 137, 138, 140, 142, 143, 147],
+    // ⭐️⭐️⭐️⭐️⭐️ Tier 5: 關都傳說神獸與幻之寶可夢 (5隻，對應石英高原與終極考核：急凍鳥、閃電鳥、火焰鳥、超夢、夢幻)
+    5: [144, 145, 146, 150, 151]
+  };
+
   function init() {
     // 🔴 自動校正：皮卡丘需要雷之石才能進化為雷丘，若未用雷之石誤變雷丘，立即修復回皮卡丘
     if (state.partner === 'gen1_26' || state.partner === 'raichu') {
@@ -3567,7 +3589,15 @@ function openCurrentPartnerDetailModal() {
       window.audioEngine.playPop();
       setTimeout(() => {
         if (bubble) bubble.classList.remove('visible');
-        if (onArrive) onArrive();
+        if (onArrive) {
+          try {
+            onArrive();
+          } catch (err) {
+            console.error('onArrive error:', err);
+          } finally {
+            isTrainerMoving = false;
+          }
+        }
       }, 350);
       return;
     }
@@ -3600,7 +3630,15 @@ function openCurrentPartnerDetailModal() {
       setTimeout(() => {
         isTrainerMoving = false;
         if (bubble) bubble.classList.remove('visible');
-        if (onArrive) onArrive();
+        if (onArrive) {
+          try {
+            onArrive();
+          } catch (err) {
+            console.error('onArrive error:', err);
+          } finally {
+            isTrainerMoving = false;
+          }
+        }
       }, 400);
     }, 900);
   }
