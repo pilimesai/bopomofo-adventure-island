@@ -6859,38 +6859,17 @@ function openCurrentPartnerDetailModal() {
 
 
 
-    // 播放音高溜滑梯
-
-    window.audioEngine.playTonePitchCurve(tone.id);
-
-
-
-    // 播放國語語音朗讀（台灣小一國語教室教學法）
-
-    setTimeout(() => {
-
-      const toneExplanation = 
-
-        tone.id === 1 ? '第一聲，平平的！ㄅㄚ，八個蘋果的八！' :
-
-        tone.id === 2 ? '第二聲，往上爬！ㄅㄚˊ，拔蘿蔔的拔！' :
-
-        tone.id === 3 ? '第三聲，轉個彎！ㄅㄚˇ，一把傘的把！' :
-
-        tone.id === 4 ? '第四聲，溜滑梯！ㄅㄚˋ，爸爸的爸！' :
-
-                        '輕聲，輕輕的！ㄅㄚ˙，爸爸後面的爸！';
-
-      window.audioEngine.speak(toneExplanation);
-
-    }, 400);
-
+    // 播放國語語音朗讀（台灣小一國語教室真人教師標準聲調，絕無電子機器音）
+    const toneExplanation = 
+      tone.id === 1 ? '第一聲，平平的！ㄅㄚ，八個蘋果的八！' :
+      tone.id === 2 ? '第二聲，往上爬！ㄅㄚˊ，拔蘿蔔的拔！' :
+      tone.id === 3 ? '第三聲，轉個彎！ㄅㄚˇ，一把傘的把！' :
+      tone.id === 4 ? '第四聲，溜滑梯！ㄅㄚˋ，爸爸的爸！' :
+                      '輕聲，輕輕的！ㄅㄚ˙，爸爸後面的爸！';
+    window.audioEngine.speak(toneExplanation);
   }
 
-
-
   // ==========================================
-
   // MODULE 4: 趣味注音小遊樂園
 
   // ==========================================
@@ -8215,7 +8194,7 @@ function openCurrentPartnerDetailModal() {
       if (targetP.evolution.method === 'stone') {
         evoStr = '需要使用' + targetP.evolution.stoneName + '進化為【' + targetP.evolution.evolvesToName + '】。';
       } else if (targetP.evolution.method === 'branch_stone') {
-        evoStr = '可以使用水之石、雷之石、或火之石進化為水精靈、雷精靈、或火精靈。';
+        evoStr = '可以使用水之石進化為水伊布、雷之石進化為雷伊布、或火之石進化為火伊布。';
       } else if (targetP.evolution.reqLevel) {
         evoStr = '達成 ' + targetP.evolution.reqLevel + ' 級進化為【' + targetP.evolution.evolvesToName + '】。';
       } else {
@@ -8397,48 +8376,19 @@ function openCurrentPartnerDetailModal() {
       }
     }
 
-        // 🔴 點圖鑑播放經典叫聲，並接續朗讀名字、屬性、進化條件
-    let activeGen1CryAudio = null;
-
+        // 🔴 點圖鑑直接播放標準國語正音班老師語音朗讀（徹底杜絕 8-bit 電子機器叫聲）
     const playPokemonIntro = () => {
       stopPokemonIntroAudio();
-      if (activeGen1CryAudio) {
-        try { activeGen1CryAudio.pause(); } catch (e) {}
-        activeGen1CryAudio = null;
-      }
 
-      const speech = getPokemonSpeechText(p);
-      const crySrc = 'assets/audio/cries/cry_' + p.id + '.ogg';
       const introSrc = 'assets/audio/pokemon/poke_' + p.id + '.mp3';
+      const introAudio = new Audio(introSrc);
+      activeGen1PokemonAudio = introAudio;
 
-      const playVoice = () => {
-        const introAudio = new Audio(introSrc);
-        activeGen1PokemonAudio = introAudio;
-        introAudio.play().catch(() => {
-          if (window.audioEngine) {
-            window.audioEngine.speak(speech);
-          }
-        });
-      };
-
-      // 先播放寶可夢經典叫聲
-      const cryAudio = new Audio(crySrc);
-      activeGen1CryAudio = cryAudio;
-
-      let voiceStarted = false;
-      const startVoiceOnce = () => {
-        if (voiceStarted) return;
-        voiceStarted = true;
-        setTimeout(playVoice, 150);
-      };
-
-      cryAudio.onended = startVoiceOnce;
-      // 最長等叫聲播放 1.2 秒即接續語音，避免叫聲檔案過長延遲
-      const cryTimer = setTimeout(startVoiceOnce, 1200);
-
-      cryAudio.play().catch(() => {
-        clearTimeout(cryTimer);
-        playVoice();
+      introAudio.play().catch(() => {
+        if (window.audioEngine) {
+          const speech = getPokemonSpeechText(p);
+          window.audioEngine.speak(speech);
+        }
       });
     };
 

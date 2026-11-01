@@ -16,8 +16,9 @@ class ZhuyinAudioEngine {
     }
     this.selectedVoiceName = saved;
     this.isMuted = false;
-    this.speechRate = parseFloat(localStorage.getItem('zhuyin_speech_rate') || '0.86');
-    this.speechPitch = parseFloat(localStorage.getItem('zhuyin_speech_pitch') || '1.12'); // 台灣國小溫柔親切的老師音調
+    this.speechRate = 0.92; // 國小一年級溫和適中發音語速
+    this.speechPitch = 1.0; // 嚴格 1.0 自然原音，徹底杜絕變調產生金屬機器音
+    localStorage.setItem('zhuyin_speech_pitch', '1.0');
     this.initAudioContext();
     this.loadVoices();
   }
@@ -65,8 +66,8 @@ class ZhuyinAudioEngine {
       name.includes('雲哲') ||
       name.includes('danny') ||
       name.includes('male') ||
-      // 刪除所有 Google 台灣女聲
-      name.includes('google')
+      // 僅剔除無效音訊
+      false
     );
   }
 
@@ -80,6 +81,8 @@ class ZhuyinAudioEngine {
       name.includes('Taiwan') ||
       name.includes('臺灣') ||
       name.includes('台灣') ||
+      name.includes('Google') ||
+      name.includes('google') ||
       name.includes('Yating') ||
       name.includes('雅婷') ||
       name.includes('HsiaoChen') ||
@@ -98,9 +101,10 @@ class ZhuyinAudioEngine {
   getBestBaseFemaleVoice(taiwanVoices) {
     if (!taiwanVoices || taiwanVoices.length === 0) return null;
     return (
-      taiwanVoices.find(v => v.name.includes('Yating') || v.name.includes('雅婷')) ||
       taiwanVoices.find(v => v.name.includes('HsiaoChen') || v.name.includes('曉臻')) ||
       taiwanVoices.find(v => v.name.includes('HsiaoYu') || v.name.includes('曉雨')) ||
+      taiwanVoices.find(v => (v.name.includes('Google') || v.name.includes('google')) && (v.lang === 'zh-TW' || v.name.includes('Taiwan') || v.name.includes('臺灣') || v.name.includes('台灣'))) ||
+      taiwanVoices.find(v => v.name.includes('Yating') || v.name.includes('雅婷')) ||
       taiwanVoices.find(v => v.name.includes('Meijia') || v.name.includes('美佳')) ||
       taiwanVoices.find(v => v.lang === 'zh-TW' && !v.name.includes('Hanhan')) ||
       taiwanVoices.find(v => v.lang === 'zh-TW') ||
@@ -243,9 +247,7 @@ class ZhuyinAudioEngine {
       try {
         const audio = new Audio(audioUrl);
         this.currentAudio = audio;
-        const currentRate = options.rate || this.speechRate || (isCute ? 0.92 : 0.86);
-        const baseRate = isCute ? 0.92 : 0.86;
-        audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / baseRate));
+        audio.playbackRate = options.rate ? options.rate : 1.0;
 
         audio.onended = () => {
           this.currentAudio = null;
@@ -313,9 +315,8 @@ class ZhuyinAudioEngine {
     }
 
     const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
-    const isCute = (voiceRole === 'PERSONA::CUTE_GIRL' || (this.speechPitch && this.speechPitch >= 1.35));
-    utterance.rate = options.rate || this.speechRate || (isCute ? 0.95 : 0.88);
-    utterance.pitch = options.pitch || this.speechPitch || (isCute ? 1.45 : 1.15);
+    utterance.rate = options.rate || 0.92;
+    utterance.pitch = (options.pitch !== undefined) ? options.pitch : 1.0; // 嚴格 1.0 真人自然發聲音調
 
     let finished = false;
     let rInterval = null;
@@ -600,60 +601,8 @@ class ZhuyinAudioEngine {
    * 輕聲：短降
    */
   playTonePitchCurve(toneId) {
-    if (this.isMuted) return;
-    this.ensureAudioContext();
-    if (!this.ctx) return;
-
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    const now = this.ctx.currentTime;
-    osc.type = 'sine';
-
-    if (toneId === 1) {
-      // 55 平音
-      osc.frequency.setValueAtTime(440, now);
-      gain.gain.setValueAtTime(0.25, now);
-      gain.gain.setValueAtTime(0.25, now + 0.35);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-      osc.start(now);
-      osc.stop(now + 0.45);
-    } else if (toneId === 2) {
-      // 35 向上升
-      osc.frequency.setValueAtTime(330, now);
-      osc.frequency.exponentialRampToValueAtTime(480, now + 0.35);
-      gain.gain.setValueAtTime(0.25, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-      osc.start(now);
-      osc.stop(now + 0.4);
-    } else if (toneId === 3) {
-      // 214 轉個彎
-      osc.frequency.setValueAtTime(320, now);
-      osc.frequency.exponentialRampToValueAtTime(240, now + 0.2);
-      osc.frequency.exponentialRampToValueAtTime(420, now + 0.5);
-      gain.gain.setValueAtTime(0.25, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
-      osc.start(now);
-      osc.stop(now + 0.55);
-    } else if (toneId === 4) {
-      // 51 溜滑梯向下
-      osc.frequency.setValueAtTime(520, now);
-      osc.frequency.exponentialRampToValueAtTime(220, now + 0.3);
-      gain.gain.setValueAtTime(0.25, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-      osc.start(now);
-      osc.stop(now + 0.35);
-    } else {
-      // 輕聲：短而輕
-      osc.frequency.setValueAtTime(380, now);
-      osc.frequency.exponentialRampToValueAtTime(300, now + 0.12);
-      gain.gain.setValueAtTime(0.18, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-      osc.start(now);
-      osc.stop(now + 0.14);
-    }
-
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
+    // 停用高頻電子振盪器合成音，徹底杜絕機器聲干擾兒童聽辨標準國語聲調
+    return;
   }
 
   /**
