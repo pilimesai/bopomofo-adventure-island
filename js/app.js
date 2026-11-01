@@ -1945,6 +1945,9 @@ function setupPartnerModal() {
 
 
         btn.classList.add('active');
+        try {
+          btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        } catch (e) {}
 
         const targetPane = document.getElementById(tabTarget);
 
