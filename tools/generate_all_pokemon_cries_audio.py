@@ -188,9 +188,13 @@ def get_speech_text(p):
     if evo:
         method = evo.get('method', 'level')
         if method == 'stone':
-            evo_str = f"需要使用{evo.get('stoneName')}才能進化為{evo.get('evolvesToName')}。"
+            evo_str = f"達成滿級一百級並使用{evo.get('stoneName')}進化為{evo.get('evolvesToName')}。"
         elif method == 'branch_stone':
-            evo_str = "可以使用水之石進化為水伊布、雷之石進化為雷伊布、或火之石進化為火伊布。"
+            evo_str = "達成滿級一百級，可以使用水之石、雷之石、或火之石進化。"
+        elif evo.get('reqLevel') == 50:
+            evo_str = f"達成五十級進化為{evo.get('evolvesToName')}。"
+        elif evo.get('reqLevel') == 100:
+            evo_str = f"達成最終滿級一百級進化為{evo.get('evolvesToName')}。"
         elif evo.get('reqLevel'):
             evo_str = f"達成 {evo.get('reqLevel')} 級進化為{evo.get('evolvesToName')}。"
         else:

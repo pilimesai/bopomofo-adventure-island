@@ -2,6 +2,7 @@
  * 🔴 全國寶可夢圖鑑 第一世代（關都地區 No.001 - No.151）
  * 資料來源：神奇寶貝百科 (52poke.com) 官方全國圖鑑編號列表
  * 包含官方中文名、日文名、英文名、標準教育部注音、屬性、代表招式、進化條件與官方立繪
+ * 進化規則：先滿級最後才能進化，一階滿級為 Lv.50，最終進化的等級為 Lv.100 滿級！
  */
 
 const GEN1_POKEMON_LIST = [
@@ -24,7 +25,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
     "zhuyin": "ㄇㄧㄠˋ ㄨㄚ ㄓㄨㄥˇ ˙ㄗ",
     "evolution": {
-      "reqLevel": 16,
+      "reqLevel": 50,
       "evolvesToId": 2,
       "evolvesToName": "妙蛙草"
     },
@@ -50,7 +51,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
     "zhuyin": "ㄇㄧㄠˋ ㄨㄚ ㄘㄠˇ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 3,
       "evolvesToName": "妙蛙花"
     },
@@ -97,7 +98,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
     "zhuyin": "ㄒㄧㄠˇ ㄏㄨㄛˇ ㄌㄨㄥˊ",
     "evolution": {
-      "reqLevel": 16,
+      "reqLevel": 50,
       "evolvesToId": 5,
       "evolvesToName": "火恐龍"
     },
@@ -122,7 +123,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png",
     "zhuyin": "ㄏㄨㄛˇ ㄎㄨㄥˇ ㄌㄨㄥˊ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 6,
       "evolvesToName": "噴火龍"
     },
@@ -169,7 +170,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
     "zhuyin": "ㄐㄧㄝˊ ㄋㄧˊ ㄍㄨㄟ",
     "evolution": {
-      "reqLevel": 16,
+      "reqLevel": 50,
       "evolvesToId": 8,
       "evolvesToName": "卡咪龜"
     },
@@ -194,7 +195,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png",
     "zhuyin": "ㄎㄚˇ ㄇㄧ ㄍㄨㄟ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 9,
       "evolvesToName": "水箭龜"
     },
@@ -240,7 +241,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10.png",
     "zhuyin": "ㄌㄩˋ ㄇㄠˊ ㄔㄨㄥˊ",
     "evolution": {
-      "reqLevel": 7,
+      "reqLevel": 50,
       "evolvesToId": 11,
       "evolvesToName": "鐵甲蛹"
     },
@@ -265,7 +266,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/11.png",
     "zhuyin": "ㄊㄧㄝˇ ㄐㄧㄚˇ ㄩㄥˇ",
     "evolution": {
-      "reqLevel": 10,
+      "reqLevel": 100,
       "evolvesToId": 12,
       "evolvesToName": "巴大蝶"
     },
@@ -313,7 +314,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/13.png",
     "zhuyin": "ㄉㄨˊ ㄐㄧㄠˇ ㄔㄨㄥˊ",
     "evolution": {
-      "reqLevel": 7,
+      "reqLevel": 50,
       "evolvesToId": 14,
       "evolvesToName": "鐵殼蛹"
     },
@@ -339,7 +340,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/14.png",
     "zhuyin": "ㄊㄧㄝˇ ㄎㄜˊ ㄩㄥˇ",
     "evolution": {
-      "reqLevel": 10,
+      "reqLevel": 100,
       "evolvesToId": 15,
       "evolvesToName": "大針蜂"
     },
@@ -387,7 +388,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png",
     "zhuyin": "ㄅㄛ ㄅㄛ",
     "evolution": {
-      "reqLevel": 18,
+      "reqLevel": 50,
       "evolvesToId": 17,
       "evolvesToName": "比比鳥"
     },
@@ -413,7 +414,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/17.png",
     "zhuyin": "ㄅㄧˇ ㄅㄧˇ ㄋㄧㄠˇ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 18,
       "evolvesToName": "大比鳥"
     },
@@ -460,7 +461,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/19.png",
     "zhuyin": "ㄒㄧㄠˇ ㄌㄚ ㄉㄚˊ",
     "evolution": {
-      "reqLevel": 20,
+      "reqLevel": 100,
       "evolvesToId": 20,
       "evolvesToName": "拉達"
     },
@@ -507,7 +508,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/21.png",
     "zhuyin": "ㄌㄧㄝˋ ㄑㄩㄝˋ",
     "evolution": {
-      "reqLevel": 20,
+      "reqLevel": 100,
       "evolvesToId": 22,
       "evolvesToName": "大嘴雀"
     },
@@ -554,7 +555,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/23.png",
     "zhuyin": "ㄚ ㄅㄛˊ ㄕㄜˊ",
     "evolution": {
-      "reqLevel": 22,
+      "reqLevel": 100,
       "evolvesToId": 24,
       "evolvesToName": "阿柏怪"
     },
@@ -604,7 +605,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "thunder",
       "stoneName": "雷之石",
       "evolvesToId": 26,
-      "evolvesToName": "雷丘"
+      "evolvesToName": "雷丘",
+      "reqLevel": 100
     },
     "move": "十萬伏特",
     "desc": "全國圖鑑 No.025，來自關都地區的經典寶可夢！屬性為【電】。"
@@ -648,7 +650,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/27.png",
     "zhuyin": "ㄔㄨㄢ ㄕㄢ ㄕㄨˇ",
     "evolution": {
-      "reqLevel": 22,
+      "reqLevel": 100,
       "evolvesToId": 28,
       "evolvesToName": "穿山王"
     },
@@ -694,7 +696,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/29.png",
     "zhuyin": "ㄋㄧˊ ㄉㄨㄛ ㄌㄢˊ",
     "evolution": {
-      "reqLevel": 16,
+      "reqLevel": 50,
       "evolvesToId": 30,
       "evolvesToName": "尼多娜"
     },
@@ -723,7 +725,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "moon",
       "stoneName": "月之石",
       "evolvesToId": 31,
-      "evolvesToName": "尼多后"
+      "evolvesToName": "尼多后",
+      "reqLevel": 100
     },
     "move": "溶解液",
     "desc": "全國圖鑑 No.030，來自關都地區的經典寶可夢！屬性為【毒】。"
@@ -768,7 +771,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/32.png",
     "zhuyin": "ㄋㄧˊ ㄉㄨㄛ ㄌㄤˇ",
     "evolution": {
-      "reqLevel": 16,
+      "reqLevel": 50,
       "evolvesToId": 33,
       "evolvesToName": "尼多力諾"
     },
@@ -797,7 +800,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "moon",
       "stoneName": "月之石",
       "evolvesToId": 34,
-      "evolvesToName": "尼多王"
+      "evolvesToName": "尼多王",
+      "reqLevel": 100
     },
     "move": "毒擊",
     "desc": "全國圖鑑 No.033，來自關都地區的經典寶可夢！屬性為【毒】。"
@@ -846,7 +850,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "moon",
       "stoneName": "月之石",
       "evolvesToId": 36,
-      "evolvesToName": "皮可西"
+      "evolvesToName": "皮可西",
+      "reqLevel": 100
     },
     "move": "吸取之吻",
     "desc": "全國圖鑑 No.035，來自關都地區的經典寶可夢！屬性為【妖精】。"
@@ -894,7 +899,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "fire",
       "stoneName": "火之石",
       "evolvesToId": 38,
-      "evolvesToName": "九尾"
+      "evolvesToName": "九尾",
+      "reqLevel": 100
     },
     "move": "大字爆炎",
     "desc": "全國圖鑑 No.037，來自關都地區的經典寶可夢！屬性為【火】。"
@@ -943,7 +949,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "moon",
       "stoneName": "月之石",
       "evolvesToId": 40,
-      "evolvesToName": "胖可丁"
+      "evolvesToName": "胖可丁",
+      "reqLevel": 100
     },
     "move": "泰山壓頂",
     "desc": "全國圖鑑 No.039，來自關都地區的經典寶可夢！屬性為【一般/妖精】。"
@@ -989,7 +996,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/41.png",
     "zhuyin": "ㄔㄠ ㄧㄣ ㄈㄨˊ",
     "evolution": {
-      "reqLevel": 22,
+      "reqLevel": 100,
       "evolvesToId": 42,
       "evolvesToName": "大嘴蝠"
     },
@@ -1037,7 +1044,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/43.png",
     "zhuyin": "ㄗㄡˇ ㄌㄨˋ ㄘㄠˇ",
     "evolution": {
-      "reqLevel": 21,
+      "reqLevel": 50,
       "evolvesToId": 44,
       "evolvesToName": "臭臭花"
     },
@@ -1067,7 +1074,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "leaf",
       "stoneName": "葉之石",
       "evolvesToId": 45,
-      "evolvesToName": "霸王花"
+      "evolvesToName": "霸王花",
+      "reqLevel": 100
     },
     "move": "瘋狂植物",
     "desc": "全國圖鑑 No.044，來自關都地區的經典寶可夢！屬性為【草/毒】。"
@@ -1113,7 +1121,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/46.png",
     "zhuyin": "ㄆㄞˋ ㄌㄚ ㄙ",
     "evolution": {
-      "reqLevel": 24,
+      "reqLevel": 100,
       "evolvesToId": 47,
       "evolvesToName": "派拉斯特"
     },
@@ -1161,7 +1169,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/48.png",
     "zhuyin": "ㄇㄠˊ ㄑㄧㄡˊ",
     "evolution": {
-      "reqLevel": 31,
+      "reqLevel": 100,
       "evolvesToId": 49,
       "evolvesToName": "摩魯蛾"
     },
@@ -1208,7 +1216,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/50.png",
     "zhuyin": "ㄉㄧˋ ㄕㄨˇ",
     "evolution": {
-      "reqLevel": 26,
+      "reqLevel": 100,
       "evolvesToId": 51,
       "evolvesToName": "三地鼠"
     },
@@ -1254,7 +1262,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png",
     "zhuyin": "ㄇㄧㄠ ㄇㄧㄠ",
     "evolution": {
-      "reqLevel": 28,
+      "reqLevel": 100,
       "evolvesToId": 53,
       "evolvesToName": "貓老大"
     },
@@ -1300,7 +1308,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/54.png",
     "zhuyin": "ㄎㄜˇ ㄉㄚˊ ㄧㄚ",
     "evolution": {
-      "reqLevel": 33,
+      "reqLevel": 100,
       "evolvesToId": 55,
       "evolvesToName": "哥達鴨"
     },
@@ -1346,7 +1354,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/56.png",
     "zhuyin": "ㄏㄡˊ ㄍㄨㄞˋ",
     "evolution": {
-      "reqLevel": 28,
+      "reqLevel": 100,
       "evolvesToId": 57,
       "evolvesToName": "火爆猴"
     },
@@ -1396,7 +1404,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "fire",
       "stoneName": "火之石",
       "evolvesToId": 59,
-      "evolvesToName": "風速狗"
+      "evolvesToName": "風速狗",
+      "reqLevel": 100
     },
     "move": "閃焰衝鋒",
     "desc": "全國圖鑑 No.058，來自關都地區的經典寶可夢！屬性為【火】。"
@@ -1440,7 +1449,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/60.png",
     "zhuyin": "ㄨㄣˊ ㄒㄧㄤ ㄎㄜ ㄉㄡˇ",
     "evolution": {
-      "reqLevel": 25,
+      "reqLevel": 50,
       "evolvesToId": 61,
       "evolvesToName": "蚊香君"
     },
@@ -1469,7 +1478,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "water",
       "stoneName": "水之石",
       "evolvesToId": 62,
-      "evolvesToName": "蚊香泳士"
+      "evolvesToName": "蚊香泳士",
+      "reqLevel": 100
     },
     "move": "水之波動",
     "desc": "全國圖鑑 No.061，來自關都地區的經典寶可夢！屬性為【水】。"
@@ -1514,7 +1524,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/63.png",
     "zhuyin": "ㄎㄞˇ ㄒㄧ",
     "evolution": {
-      "reqLevel": 16,
+      "reqLevel": 50,
       "evolvesToId": 64,
       "evolvesToName": "勇基拉"
     },
@@ -1539,7 +1549,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/64.png",
     "zhuyin": "ㄩㄥˇ ㄐㄧ ㄌㄚ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 65,
       "evolvesToName": "胡地"
     },
@@ -1585,7 +1595,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/66.png",
     "zhuyin": "ㄨㄢˋ ㄌㄧˋ",
     "evolution": {
-      "reqLevel": 28,
+      "reqLevel": 50,
       "evolvesToId": 67,
       "evolvesToName": "豪力"
     },
@@ -1610,7 +1620,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/67.png",
     "zhuyin": "ㄏㄠˊ ㄌㄧˋ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 68,
       "evolvesToName": "怪力"
     },
@@ -1657,7 +1667,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/69.png",
     "zhuyin": "ㄌㄚˇ ㄅㄚ ㄧㄚˊ",
     "evolution": {
-      "reqLevel": 21,
+      "reqLevel": 50,
       "evolvesToId": 70,
       "evolvesToName": "口呆花"
     },
@@ -1687,7 +1697,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "leaf",
       "stoneName": "葉之石",
       "evolvesToId": 71,
-      "evolvesToName": "大食花"
+      "evolvesToName": "大食花",
+      "reqLevel": 100
     },
     "move": "飛葉快刀",
     "desc": "全國圖鑑 No.070，來自關都地區的經典寶可夢！屬性為【草/毒】。"
@@ -1733,7 +1744,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/72.png",
     "zhuyin": "ㄇㄚˇ ㄋㄠˇ ㄕㄨㄟˇ ㄇㄨˇ",
     "evolution": {
-      "reqLevel": 30,
+      "reqLevel": 100,
       "evolvesToId": 73,
       "evolvesToName": "毒刺水母"
     },
@@ -1781,7 +1792,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/74.png",
     "zhuyin": "ㄒㄧㄠˇ ㄑㄩㄢˊ ㄕˊ",
     "evolution": {
-      "reqLevel": 25,
+      "reqLevel": 50,
       "evolvesToId": 75,
       "evolvesToName": "隆隆石"
     },
@@ -1807,7 +1818,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/75.png",
     "zhuyin": "ㄌㄨㄥˊ ㄌㄨㄥˊ ㄕˊ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 76,
       "evolvesToName": "隆隆岩"
     },
@@ -1854,7 +1865,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/77.png",
     "zhuyin": "ㄒㄧㄠˇ ㄏㄨㄛˇ ㄇㄚˇ",
     "evolution": {
-      "reqLevel": 40,
+      "reqLevel": 100,
       "evolvesToId": 78,
       "evolvesToName": "烈焰馬"
     },
@@ -1901,7 +1912,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/79.png",
     "zhuyin": "ㄉㄞ ㄉㄞ ㄕㄡˋ",
     "evolution": {
-      "reqLevel": 37,
+      "reqLevel": 100,
       "evolvesToId": 80,
       "evolvesToName": "呆殼獸"
     },
@@ -1949,7 +1960,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/81.png",
     "zhuyin": "ㄒㄧㄠˇ ㄘˊ ㄍㄨㄞˋ",
     "evolution": {
-      "reqLevel": 30,
+      "reqLevel": 100,
       "evolvesToId": 82,
       "evolvesToName": "三合一磁怪"
     },
@@ -2019,7 +2030,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/84.png",
     "zhuyin": "ㄉㄨ ㄉㄨ",
     "evolution": {
-      "reqLevel": 31,
+      "reqLevel": 100,
       "evolvesToId": 85,
       "evolvesToName": "嘟嘟利"
     },
@@ -2066,7 +2077,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/86.png",
     "zhuyin": "ㄒㄧㄠˇ ㄏㄞˇ ㄕ",
     "evolution": {
-      "reqLevel": 34,
+      "reqLevel": 100,
       "evolvesToId": 87,
       "evolvesToName": "白海獅"
     },
@@ -2113,7 +2124,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/88.png",
     "zhuyin": "ㄔㄡˋ ㄋㄧˊ",
     "evolution": {
-      "reqLevel": 38,
+      "reqLevel": 100,
       "evolvesToId": 89,
       "evolvesToName": "臭臭泥"
     },
@@ -2163,7 +2174,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "water",
       "stoneName": "水之石",
       "evolvesToId": 91,
-      "evolvesToName": "刺甲貝"
+      "evolvesToName": "刺甲貝",
+      "reqLevel": 100
     },
     "move": "水槍",
     "desc": "全國圖鑑 No.090，來自關都地區的經典寶可夢！屬性為【水】。"
@@ -2209,7 +2221,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/92.png",
     "zhuyin": "ㄍㄨㄟˇ ㄙ",
     "evolution": {
-      "reqLevel": 25,
+      "reqLevel": 50,
       "evolvesToId": 93,
       "evolvesToName": "鬼斯通"
     },
@@ -2235,7 +2247,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/93.png",
     "zhuyin": "ㄍㄨㄟˇ ㄙ ㄊㄨㄥ",
     "evolution": {
-      "reqLevel": 36,
+      "reqLevel": 100,
       "evolvesToId": 94,
       "evolvesToName": "耿鬼"
     },
@@ -2304,7 +2316,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/96.png",
     "zhuyin": "ㄘㄨㄟ ㄇㄧㄢˊ ㄇㄛˋ",
     "evolution": {
-      "reqLevel": 26,
+      "reqLevel": 100,
       "evolvesToId": 97,
       "evolvesToName": "引夢貘人"
     },
@@ -2350,7 +2362,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/98.png",
     "zhuyin": "ㄉㄚˋ ㄑㄧㄢˊ ㄒㄧㄝˋ",
     "evolution": {
-      "reqLevel": 28,
+      "reqLevel": 100,
       "evolvesToId": 99,
       "evolvesToName": "巨鉗蟹"
     },
@@ -2396,7 +2408,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/100.png",
     "zhuyin": "ㄆㄧ ㄌㄧˋ ㄉㄧㄢˋ ㄑㄧㄡˊ",
     "evolution": {
-      "reqLevel": 30,
+      "reqLevel": 100,
       "evolvesToId": 101,
       "evolvesToName": "頑皮雷彈"
     },
@@ -2447,7 +2459,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "leaf",
       "stoneName": "葉之石",
       "evolvesToId": 103,
-      "evolvesToName": "椰蛋樹"
+      "evolvesToName": "椰蛋樹",
+      "reqLevel": 100
     },
     "move": "種子炸彈",
     "desc": "全國圖鑑 No.102，來自關都地區的經典寶可夢！屬性為【草/超能力】。"
@@ -2492,7 +2505,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/104.png",
     "zhuyin": "ㄎㄚˇ ㄌㄚ ㄎㄚˇ ㄌㄚ",
     "evolution": {
-      "reqLevel": 28,
+      "reqLevel": 100,
       "evolvesToId": 105,
       "evolvesToName": "嘎啦嘎啦"
     },
@@ -2601,7 +2614,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/109.png",
     "zhuyin": "ㄨㄚˇ ㄙ ㄉㄢˋ",
     "evolution": {
-      "reqLevel": 35,
+      "reqLevel": 100,
       "evolvesToId": 110,
       "evolvesToName": "雙彈瓦斯"
     },
@@ -2648,7 +2661,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/111.png",
     "zhuyin": "ㄉㄨˊ ㄐㄧㄠˇ ㄒㄧ ㄋㄧㄡˊ",
     "evolution": {
-      "reqLevel": 42,
+      "reqLevel": 100,
       "evolvesToId": 112,
       "evolvesToName": "鑽角犀獸"
     },
@@ -2758,7 +2771,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/116.png",
     "zhuyin": "ㄇㄛˋ ㄏㄞˇ ㄇㄚˇ",
     "evolution": {
-      "reqLevel": 32,
+      "reqLevel": 100,
       "evolvesToId": 117,
       "evolvesToName": "海刺龍"
     },
@@ -2804,7 +2817,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/118.png",
     "zhuyin": "ㄐㄧㄠˇ ㄐㄧㄣ ㄩˊ",
     "evolution": {
-      "reqLevel": 33,
+      "reqLevel": 100,
       "evolvesToId": 119,
       "evolvesToName": "金魚王"
     },
@@ -2854,7 +2867,8 @@ const GEN1_POKEMON_LIST = [
       "stone": "water",
       "stoneName": "水之石",
       "evolvesToId": 121,
-      "evolvesToName": "寶石海星"
+      "evolvesToName": "寶石海星",
+      "reqLevel": 100
     },
     "move": "水槍",
     "desc": "全國圖鑑 No.120，來自關都地區的經典寶可夢！屬性為【水】。"
@@ -3049,7 +3063,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/129.png",
     "zhuyin": "ㄌㄧˇ ㄩˊ ㄨㄤˊ",
     "evolution": {
-      "reqLevel": 20,
+      "reqLevel": 100,
       "evolvesToId": 130,
       "evolvesToName": "暴鯉龍"
     },
@@ -3162,7 +3176,8 @@ const GEN1_POKEMON_LIST = [
           "evolvesToName": "火伊布",
           "type": "火"
         }
-      ]
+      ],
+      "reqLevel": 100
     },
     "move": "破壞光線",
     "desc": "全國圖鑑 No.133，來自關都地區的經典寶可夢！屬性為【一般】。"
@@ -3270,7 +3285,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/138.png",
     "zhuyin": "ㄐㄩˊ ㄕˊ ㄕㄡˋ",
     "evolution": {
-      "reqLevel": 40,
+      "reqLevel": 100,
       "evolvesToId": 139,
       "evolvesToName": "多刺菊石獸"
     },
@@ -3318,7 +3333,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/140.png",
     "zhuyin": "ㄏㄨㄚˋ ㄕˊ ㄎㄨㄟ",
     "evolution": {
-      "reqLevel": 40,
+      "reqLevel": 100,
       "evolvesToId": 141,
       "evolvesToName": "鐮刀盔"
     },
@@ -3474,7 +3489,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/147.png",
     "zhuyin": "ㄇㄧˊ ㄋㄧˇ ㄌㄨㄥˊ",
     "evolution": {
-      "reqLevel": 30,
+      "reqLevel": 50,
       "evolvesToId": 148,
       "evolvesToName": "哈克龍"
     },
@@ -3499,7 +3514,7 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/148.png",
     "zhuyin": "ㄏㄚ ㄎㄜˋ ㄌㄨㄥˊ",
     "evolution": {
-      "reqLevel": 55,
+      "reqLevel": 100,
       "evolvesToId": 149,
       "evolvesToName": "快龍"
     },
@@ -3572,10 +3587,6 @@ const GEN1_POKEMON_LIST = [
   }
 ];
 
-if (typeof window !== 'undefined') {
-  window.GEN1_POKEMON_LIST = GEN1_POKEMON_LIST;
-}
-
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = GEN1_POKEMON_LIST;
+  module.exports = { GEN1_POKEMON_LIST };
 }
