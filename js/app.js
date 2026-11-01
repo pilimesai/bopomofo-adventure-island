@@ -2289,33 +2289,27 @@ function setupPartnerModal() {
         }
 
         if (tabTarget === 'tab-shop') {
-
           renderNurtureShop();
-
+        }
+        if (tabTarget === 'tab-gallery') {
+          updatePokedexProgressUI();
+          if (state.pokedexMode === 'gen1') {
+            renderGen1Pokedex();
+          } else {
+            renderGallery();
+          }
         }
 
-
-
         // 分頁對應吉祥物貼心提示
-
         const speeches = {
-
           'tab-shop': '🛍️ 歡迎光臨寶可夢培育商店！用道館考核贏得的金幣換購美味甜點與神奇糖果，培育升級你的出戰夥伴吧！',
-
           'tab-adventure': '🗺️ 選擇亮起來的島嶼關卡，答對題目就能發射星光魔法收服守護獸！',
-
-          'tab-gallery': '🐱 點擊任何一張注音卡片，來聽聽生活例詞和口訣！',
-
+          'tab-gallery': '🔴 歡迎來到第一世代 151 寶可夢大圖鑑！每隻寶可夢都能聽真人發音與直式注音，點擊卡片還能派牠出戰喔！',
           'tab-train': '🚂 嗚嗚～小火車要開了！把聲母和韻母拼在一起吧！',
-
           'tab-tones': '🎢 一聲平、二聲揚、三聲拐彎、四聲降！跟著滑梯唸！',
-
           'tab-games': '🎈 準備好挑戰小遊戲了嗎？戳破彩色氣球拿星星！',
-
           'tab-canvas': '✍️ 拿出手指或滑鼠，在標準米字格裡認真描寫吧！',
-
           'tab-achievements': '🏆 看看你蒐集了多少顆星星和亮晶晶的勳章！'
-
         };
 
         if (speeches[tabTarget]) {
