@@ -175,26 +175,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // 徽章成就追蹤
-
+    // 徽章成就追蹤（徹底清理已刪除關卡，聚焦 10 大道館、神話秘境、收服與終極訓練培育）
     achievements: [
-
-      { id: 'first_step', name: '注音探險家', desc: '成功登入ㄅㄆㄇ冒險島', icon: '🏝️', unlocked: true },
-
-      { id: 'stage_1_clear', name: '森林破關勇者', desc: '成功通過冒險島第一關', icon: '🌲', unlocked: false },
-
-      { id: 'stage_5_clear', name: '神殿大冒險家', desc: '成功通過冒險島第五關', icon: '🦢', unlocked: false },
-
-      { id: 'dragon_slayer', name: '黃金注音勇者王', desc: '擊敗第十關黃金注音巨龍！', icon: '👑', unlocked: false },
-
-      { id: 'initial_master', name: '聲母神射手', desc: '在聽音氣球中連對3題', icon: '🎯', unlocked: false },
-
-      { id: 'spelling_ace', name: '拼音小達人', desc: '開動神奇拼音火車完成合音', icon: '🚂', unlocked: false },
-
-      { id: 'tone_roller', name: '聲調特技王', desc: '挑戰四聲溜滑梯全部聲調', icon: '🎢', unlocked: false },
-
-      { id: 'calligraphy_star', name: '筆順小神筆', desc: '在米字格認真描寫注音並蓋章', icon: '✍️', unlocked: false }
-
+      { id: 'first_step', name: '注音探險家', desc: '成功啟航ㄅㄆㄇ寶可夢大冒險', icon: '🏝️', unlocked: true },
+      { id: 'stage_1_clear', name: '常青道館初陣', desc: '成功通過第 1 關常青道館考驗', icon: '🌲', unlocked: false },
+      { id: 'stage_5_clear', name: '金黃道館突破', desc: '成功通過第 5 關金黃道館考驗', icon: '⚡', unlocked: false },
+      { id: 'stage_10_clear', name: '關東道館總冠軍', desc: '擊敗第十關館主阪木，稱霸關東 10 大道館！', icon: '👑', unlocked: false },
+      { id: 'mythical_master', name: '神話秘境征服者', desc: '成功突破期末考高難第十重神話秘境，降伏夢幻！', icon: '🦅', unlocked: false },
+      { id: 'pokemon_catcher', name: '寶可夢收服大師', desc: '在道館闖關中累計收服 10 隻以上野生寶可夢！', icon: '🔴', unlocked: false },
+      { id: 'max_trained_master', name: '終極訓練大師', desc: '成功將夥伴培育至滿級 Lv.100，完成終極訓練！', icon: '⭐', unlocked: false },
+      { id: 'evolution_master', name: '神奇進化大師', desc: '成功讓寶可夢夥伴完成型態進化！', icon: '💎', unlocked: false }
     ]
 
   };
@@ -1001,6 +991,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showEvolutionModal(oldPartner, targetP);
     }
 
+    unlockAchievement('evolution_master');
     updateTrainerHeaderUI();
     renderNurtureShop();
     if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
@@ -1561,6 +1552,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 👑 檢查是否達到滿級 Lv.100 完成終極訓練！
     const reachedMaxLevel = (oldLevel < MAX_PARTNER_LEVEL && state.partnerData.level >= MAX_PARTNER_LEVEL);
     if (reachedMaxLevel) {
+      unlockAchievement('max_trained_master');
       if (newPartner.gen1Id) markPokemonMaxTrained(newPartner.gen1Id);
       markPokemonMaxTrained(state.partner);
 
@@ -1632,6 +1624,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (evolved) {
+      unlockAchievement('evolution_master');
       showEvolutionModal(oldPartner, newPartner);
       if (typeof updatePokedexProgressUI === 'function') updatePokedexProgressUI();
       if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
@@ -3334,13 +3327,8 @@ function openCurrentPartnerDetailModal() {
 
 
 
-    // 檢查歷史通關紀錄以同步成就
-
-    if (state.adventure.stageStars['1'] > 0) state.achievements.find(a => a.id === 'stage_1_clear').unlocked = true;
-
-    if (state.adventure.stageStars['5'] > 0) state.achievements.find(a => a.id === 'stage_5_clear').unlocked = true;
-
-    if (state.adventure.stageStars['10'] > 0) state.achievements.find(a => a.id === 'dragon_slayer').unlocked = true;
+    // 檢查歷史進度與成就即時同步
+    syncAchievementsState();
 
 
 
@@ -5820,7 +5808,16 @@ function openCurrentPartnerDetailModal() {
 
       if (stage.id === 1) unlockAchievement('stage_1_clear');
       if (stage.id === 5) unlockAchievement('stage_5_clear');
-      if (stage.id === 10) unlockAchievement('dragon_slayer');
+      if (stage.id === 10) {
+        if (state.examDifficulty === 'final') {
+          unlockAchievement('mythical_master');
+        } else {
+          unlockAchievement('stage_10_clear');
+        }
+      }
+      if (state.gen1Caught && state.gen1Caught.length >= 10) {
+        unlockAchievement('pokemon_catcher');
+      }
 
       const stages = getCurrentAdventureStages();
       const nextStage = stages.find(s => s.id === stage.id + 1);
@@ -7810,7 +7807,47 @@ function openCurrentPartnerDetailModal() {
 
   // ==========================================
 
+  function syncAchievementsState() {
+    if (!state.achievements) return;
+    const s1 = state.achievements.find(a => a.id === 'stage_1_clear');
+    if (s1 && ((state.adventure.stageStars && state.adventure.stageStars['1'] > 0) || (state.adventure.stageStarsFinal && state.adventure.stageStarsFinal['1'] > 0))) {
+      s1.unlocked = true;
+    }
+    const s5 = state.achievements.find(a => a.id === 'stage_5_clear');
+    if (s5 && ((state.adventure.stageStars && state.adventure.stageStars['5'] > 0) || (state.adventure.stageStarsFinal && state.adventure.stageStarsFinal['5'] > 0))) {
+      s5.unlocked = true;
+    }
+    const s10 = state.achievements.find(a => a.id === 'stage_10_clear');
+    if (s10 && (state.adventure.stageStars && state.adventure.stageStars['10'] > 0)) {
+      s10.unlocked = true;
+    }
+    const myth = state.achievements.find(a => a.id === 'mythical_master');
+    if (myth && state.adventure.stageStarsFinal && state.adventure.stageStarsFinal['10'] > 0) {
+      myth.unlocked = true;
+    }
+    const catcher = state.achievements.find(a => a.id === 'pokemon_catcher');
+    if (catcher && ((state.gen1Caught && state.gen1Caught.length >= 10) || (state.pokedexCaught && state.pokedexCaught.length >= 10))) {
+      catcher.unlocked = true;
+    }
+    const maxTrained = state.achievements.find(a => a.id === 'max_trained_master');
+    if (maxTrained) {
+      const isMax = (state.partnerData && state.partnerData.level >= 100) ||
+                    (typeof isPokemonMaxTrained === 'function' && state.gen1Caught && state.gen1Caught.some(id => isPokemonMaxTrained(id)));
+      if (isMax) maxTrained.unlocked = true;
+    }
+    const evo = state.achievements.find(a => a.id === 'evolution_master');
+    if (evo) {
+      const isEvolved = (state.partner && !['pikachu', 'gen1_25', 'bulbasaur', 'gen1_1', 'charmander', 'gen1_4', 'squirtle', 'gen1_7', 'eevee', 'gen1_133'].includes(state.partner)) ||
+                        (typeof GEN1_POKEMON_LIST !== 'undefined' && state.gen1Caught && state.gen1Caught.some(id => {
+                          const p = GEN1_POKEMON_LIST.find(x => x.id === id);
+                          return p && GEN1_POKEMON_LIST.some(o => o.evolution && (o.evolution.evolvesToId === id || (o.evolution.branches && o.evolution.branches.some(b => b.evolvesToId === id))));
+                        }));
+      if (isEvolved) evo.unlocked = true;
+    }
+  }
+
   function renderAchievements() {
+    syncAchievementsState();
 
     if (!dom.achievementsList) return;
 
