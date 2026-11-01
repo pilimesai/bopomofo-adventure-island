@@ -2302,7 +2302,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/96.png",
     "localImage": "assets/pokemon/gen1/96.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/96.png",
-    "zhuyin": "  ",
+    "zhuyin": "ㄘㄨㄟ ㄇㄧㄢˊ ㄇㄛˋ",
     "evolution": {
       "reqLevel": 26,
       "evolvesToId": 97,
@@ -2327,7 +2327,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/97.png",
     "localImage": "assets/pokemon/gen1/97.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/97.png",
-    "zhuyin": " ㄇㄥˋ  ㄖㄣˊ",
+    "zhuyin": "ㄧㄣˇ ㄇㄥˋ ㄇㄛˋ ㄖㄣˊ",
     "evolution": null,
     "move": "精神強念",
     "desc": "全國圖鑑 No.097，來自關都地區的經典寶可夢！屬性為【超能力】。"
@@ -2515,7 +2515,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/105.png",
     "localImage": "assets/pokemon/gen1/105.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/105.png",
-    "zhuyin": "ㄍㄚ  ㄍㄚ ",
+    "zhuyin": "ㄍㄚ ㄌㄚ ㄍㄚ ㄌㄚ",
     "evolution": null,
     "move": "擲泥",
     "desc": "全國圖鑑 No.105，來自關都地區的經典寶可夢！屬性為【地面】。"
@@ -2536,7 +2536,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/106.png",
     "localImage": "assets/pokemon/gen1/106.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/106.png",
-    "zhuyin": "ㄈㄟ ㄊㄨㄟˇ ",
+    "zhuyin": "ㄈㄟ ㄊㄨㄟˇ ㄌㄤˊ",
     "evolution": null,
     "move": "近身戰",
     "desc": "全國圖鑑 No.106，來自關都地區的經典寶可夢！屬性為【格鬥】。"
@@ -2557,7 +2557,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/107.png",
     "localImage": "assets/pokemon/gen1/107.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/107.png",
-    "zhuyin": "ㄎㄨㄞˋ ㄑㄩㄢˊ ",
+    "zhuyin": "ㄎㄨㄞˋ ㄑㄩㄢˊ ㄌㄤˊ",
     "evolution": null,
     "move": "十字劈",
     "desc": "全國圖鑑 No.107，來自關都地區的經典寶可夢！屬性為【格鬥】。"
@@ -2920,7 +2920,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/123.png",
     "localImage": "assets/pokemon/gen1/123.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png",
-    "zhuyin": "ㄈㄟ  ㄊㄤˊ ㄌㄤˊ",
+    "zhuyin": "ㄈㄟ ㄊㄧㄢ ㄊㄤˊ ㄌㄤˊ",
     "evolution": null,
     "move": "急速折返",
     "desc": "全國圖鑑 No.123，來自關都地區的經典寶可夢！屬性為【蟲/飛行】。"
@@ -3316,7 +3316,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/140.png",
     "localImage": "assets/pokemon/gen1/140.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/140.png",
-    "zhuyin": "ㄏㄨㄚˋ ㄕˊ ",
+    "zhuyin": "ㄏㄨㄚˋ ㄕˊ ㄎㄨㄟ",
     "evolution": {
       "reqLevel": 40,
       "evolvesToId": 141,
@@ -3342,7 +3342,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/141.png",
     "localImage": "assets/pokemon/gen1/141.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/141.png",
-    "zhuyin": "ㄌㄧㄢˊ ㄉㄠ ",
+    "zhuyin": "ㄌㄧㄢˊ ㄉㄠ ㄎㄨㄟ",
     "evolution": null,
     "move": "岩石封鎖",
     "desc": "全國圖鑑 No.141，來自關都地區的經典寶可夢！屬性為【岩石/水】。"
@@ -3472,7 +3472,7 @@ const GEN1_POKEMON_LIST = [
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/147.png",
     "localImage": "assets/pokemon/gen1/147.png",
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/147.png",
-    "zhuyin": "ㄇㄧˊ  ㄌㄨㄥˊ",
+    "zhuyin": "ㄇㄧˊ ㄋㄧˇ ㄌㄨㄥˊ",
     "evolution": {
       "reqLevel": 30,
       "evolvesToId": 148,
