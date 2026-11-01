@@ -522,8 +522,8 @@ document.addEventListener('DOMContentLoaded', () => {
       tagColor: '#3B82F6',
       tagBg: '#EFF6FF',
       price: 50,
-      exp: 100,
-      desc: '寶可夢最愛的神奇星形糖果！餵食夥伴獲得 +100 點經驗值，加速升級培育與達成滿級進化！',
+      exp: 200,
+      desc: '寶可夢最愛的神奇星形糖果！餵食夥伴獲得 +200 點經驗值，加速升級培育與達成滿級進化！',
       actionText: '換購餵食',
       sound: 'playPowerUp'
     },
@@ -912,17 +912,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (heartFloater) {
-        heartFloater.textContent = `⭐ +${item.exp || 100} EXP`;
+        heartFloater.textContent = `⭐ +${item.exp || 200} EXP`;
         heartFloater.classList.remove('heart-float-anim');
         void heartFloater.offsetWidth;
         heartFloater.classList.add('heart-float-anim');
       }
 
       if (window.audioEngine.playPowerUp) window.audioEngine.playPowerUp(); else window.audioEngine.playPop();
-      addPartnerExp(item.exp || 100);
+      addPartnerExp(item.exp || 200);
 
       const updatedPartner = getCurrentPartnerInfo();
-      setMascotSpeech(`😋 好吃好吃！【${updatedPartner.name}】享用了【${item.name}】，獲得了 +${item.exp || 100} 經驗值！（目前等級：Lv.${state.partnerData.level}・${state.partnerData.exp}/${state.partnerData.maxExp} EXP）`);
+      setMascotSpeech(`😋 好吃好吃！【${updatedPartner.name}】享用了【${item.name}】，獲得了 +${item.exp || 200} 經驗值！（目前等級：Lv.${state.partnerData.level}・${state.partnerData.exp}/${state.partnerData.maxExp} EXP）`);
     }
 
     renderNurtureShop();
