@@ -1290,6 +1290,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return {
           id: 'gen1_' + g1Base.id,
+          gen1Id: currentEvo.id,
           char: null,
           isSymbol: false,
           isGen1: true,
@@ -2096,7 +2097,29 @@ function setupPartnerModal() {
 
         window.audioEngine.playPop();
 
-        openPartnerModal();
+        // 🔴 點擊頂部出戰夥伴圓格，直接彈出該主力寵物的大圖與完整檔案（屬性、招式、等級、進化）
+        const partnerInfo = getCurrentPartnerInfo();
+        let g1P = null;
+        if (typeof GEN1_POKEMON_LIST !== 'undefined') {
+          if (partnerInfo && partnerInfo.gen1Id) {
+            g1P = GEN1_POKEMON_LIST.find(p => p.id === partnerInfo.gen1Id);
+          }
+          if (!g1P && partnerInfo && partnerInfo.name) {
+            g1P = GEN1_POKEMON_LIST.find(p => p.name === partnerInfo.name || p.name === partnerInfo.baseName);
+          }
+          if (!g1P) {
+            const pid = (typeof state.partner === 'string' && state.partner.startsWith('gen1_'))
+              ? parseInt(state.partner.replace('gen1_', ''), 10)
+              : 133;
+            g1P = GEN1_POKEMON_LIST.find(p => p.id === pid) || GEN1_POKEMON_LIST[0];
+          }
+        }
+
+        if (g1P && typeof openGen1DetailModal === 'function') {
+          openGen1DetailModal(g1P, true);
+        } else {
+          openPartnerModal();
+        }
 
       });
 
@@ -4030,23 +4053,35 @@ function setupPartnerModal() {
 
             btnListen.innerHTML = '<span>🔊</span> 正在為你朗讀題目...';
 
-            window.audioEngine.speak(q.speakText, {
+            // 🔴 重按朗讀題目防卡死：先乾淨停止前次未完成的語音，延遲 100ms 重新由頭清晰朗讀！
+            window.audioEngine.stopSpeaking();
 
-              onEnd: () => {
+            setTimeout(() => {
+              const currentQ = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
+              if (!currentQ || !currentQ.speakText) {
+                btnListen.classList.remove('reading-now');
+                btnListen.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
+                return;
+              }
 
-                const btn = document.getElementById('btn-poke-listen');
+              window.audioEngine.speak(currentQ.speakText, {
 
-                if (btn) {
+                onEnd: () => {
 
-                  btn.classList.remove('reading-now');
+                  const btn = document.getElementById('btn-poke-listen');
 
-                  btn.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
+                  if (btn) {
+
+                    btn.classList.remove('reading-now');
+
+                    btn.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
+
+                  }
 
                 }
 
-              }
-
-            });
+              });
+            }, 100);
 
           }
 
@@ -4392,6 +4427,7 @@ function setupPartnerModal() {
 
 
     // 每換一題，自動開始念題目！
+    window.audioEngine.stopSpeaking();
 
     const btnListen = document.getElementById('btn-poke-listen');
 
@@ -4427,9 +4463,21 @@ function setupPartnerModal() {
 
         });
 
+      } else {
+
+        const btn = document.getElementById('btn-poke-listen');
+
+        if (btn) {
+
+          btn.classList.remove('reading-now');
+
+          btn.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
+
+        }
+
       }
 
-    }, 120);
+    }, 150);
 
   }
 
@@ -5407,6 +5455,7 @@ function setupPartnerModal() {
         if (btnReplay) {
           btnReplay.addEventListener('click', () => {
             window.audioEngine.playPop();
+            window.audioEngine.stopSpeaking();
             setTimeout(() => {
               window.audioEngine.speak(answerSpeech);
             }, 100);
@@ -7875,6 +7924,54 @@ function setupPartnerModal() {
     }
     if (descEl) descEl.textContent = p.desc;
 
+    // 🔴 渲染主力夥伴培育與等級數值卡片
+    const partnerCard = document.getElementById('gen1-modal-partner-card');
+    const partnerLvlEl = document.getElementById('gen1-modal-partner-level-badge');
+    const partnerExpText = document.getElementById('gen1-modal-partner-exp-text');
+    const partnerExpFill = document.getElementById('gen1-modal-partner-exp-fill');
+    const partnerCrown = document.getElementById('gen1-modal-partner-crown');
+
+    const isCurrent = isCurrentPartnerPokemon(p.id);
+    const allPartners = (typeof getAllPartnersData === 'function') ? getAllPartnersData() : {};
+    let matchedPartnerData = null;
+    if (isCurrent) {
+      matchedPartnerData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
+    } else if (allPartners['gen1_' + p.id]) {
+      matchedPartnerData = allPartners['gen1_' + p.id];
+    } else {
+      const STARTER_ID_MAP = { 1: 'bulbasaur', 2: 'bulbasaur', 3: 'bulbasaur', 4: 'charmander', 5: 'charmander', 6: 'charmander', 7: 'squirtle', 8: 'squirtle', 9: 'squirtle', 25: 'pikachu', 26: 'pikachu', 133: 'eevee' };
+      if (STARTER_ID_MAP[p.id] && allPartners[STARTER_ID_MAP[p.id]]) {
+        matchedPartnerData = allPartners[STARTER_ID_MAP[p.id]];
+      }
+    }
+
+    if (partnerCard) {
+      if (isCurrent || matchedPartnerData) {
+        partnerCard.style.display = 'block';
+        const pLevel = (matchedPartnerData && matchedPartnerData.level) || 1;
+        const pExp = (matchedPartnerData && matchedPartnerData.exp) || 0;
+        const pMaxExp = (matchedPartnerData && matchedPartnerData.maxExp) || (pLevel * 100);
+        const expPct = Math.min(100, Math.round((pExp / Math.max(1, pMaxExp)) * 100));
+
+        if (partnerLvlEl) {
+          partnerLvlEl.innerHTML = isCurrent 
+            ? `⭐ 當前出戰夥伴・等級 Lv.${pLevel}` 
+            : `🎖️ 已培育夥伴檔案・等級 Lv.${pLevel}`;
+        }
+        if (partnerExpText) {
+          partnerExpText.textContent = `EXP ${pExp} / ${pMaxExp} (${expPct}%)`;
+        }
+        if (partnerExpFill) {
+          partnerExpFill.style.width = `${expPct}%`;
+        }
+        if (partnerCrown) {
+          partnerCrown.style.display = (matchedPartnerData && matchedPartnerData.crown) ? 'inline' : 'none';
+        }
+      } else {
+        partnerCard.style.display = 'none';
+      }
+    }
+
     // 朗讀按鈕
     if (btnSpeak) {
       btnSpeak.onclick = () => {
@@ -7886,6 +7983,18 @@ function setupPartnerModal() {
           const speech = '編號' + p.id + '，' + p.name + '，' + p.types.join('與') + '屬性。';
           window.audioEngine.speak(speech);
         });
+      };
+    }
+
+    // 前往 151 大圖鑑快捷按鈕
+    const btnSwitchPokedex = document.getElementById('gen1-btn-switch-pokedex');
+    if (btnSwitchPokedex) {
+      btnSwitchPokedex.onclick = () => {
+        window.audioEngine.playPop();
+        modal.style.display = 'none';
+        if (typeof switchTab === 'function') {
+          switchTab('tab-gallery');
+        }
       };
     }
 

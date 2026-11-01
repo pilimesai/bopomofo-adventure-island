@@ -236,40 +236,54 @@ class ZhuyinAudioEngine {
     }
 
     if (audioUrl) {
-      try {
-        const audio = new Audio(audioUrl);
-        this.currentAudio = audio;
-        const currentRate = options.rate || this.speechRate || (isCute ? 0.92 : 0.86);
-        const baseRate = isCute ? 0.92 : 0.86;
-        audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / baseRate));
+      // 延遲 50ms 避開快速連點時 audio 資源銷毀衝突
+      this._speakTimeout = setTimeout(() => {
+        try {
+          const audio = new Audio(audioUrl);
+          this.currentAudio = audio;
+          const currentRate = options.rate || this.speechRate || (isCute ? 0.92 : 0.86);
+          const baseRate = isCute ? 0.92 : 0.86;
+          audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / baseRate));
 
-        if (options.onEnd) {
-          audio.onended = options.onEnd;
-        }
-        audio.play().catch((err) => {
-          if (err && (err.name === 'AbortError' || err.code === 20)) {
-            return;
-          }
-          if (err && err.name === 'NotAllowedError') {
-            const btn = document.getElementById('btn-poke-listen');
-            if (btn) {
-              btn.classList.remove('reading-now');
-              btn.innerHTML = '<span>🔊</span> 點擊聽老師清晰朗讀題目';
-            }
+          audio.onended = () => {
+            this.currentAudio = null;
             if (options.onEnd) options.onEnd();
-            return;
-          }
-          console.warn('音檔播放受阻，啟動台灣女聲合成備援：', err);
+          };
+          audio.onerror = (err) => {
+            console.warn('音檔載入失敗，降級為語音合成：', err);
+            this.currentAudio = null;
+            this.speakWithBrowserTTS(cleanKey, options);
+          };
+
+          audio.play().catch((err) => {
+            if (err && (err.name === 'AbortError' || err.code === 20)) {
+              return;
+            }
+            if (err && err.name === 'NotAllowedError') {
+              const btn = document.getElementById('btn-poke-listen');
+              if (btn) {
+                btn.classList.remove('reading-now');
+                btn.innerHTML = '<span>🔊</span> 點擊聽老師清晰朗讀題目';
+              }
+              if (options.onEnd) options.onEnd();
+              return;
+            }
+            console.warn('音檔播放受阻，啟動台灣女聲合成備援：', err);
+            this.currentAudio = null;
+            this.speakWithBrowserTTS(cleanKey, options);
+          });
+        } catch (e) {
+          console.warn('Audio error:', e);
           this.speakWithBrowserTTS(cleanKey, options);
-        });
-        return;
-      } catch (e) {
-        console.warn('Audio error:', e);
-      }
+        }
+      }, 50);
+      return;
     }
 
-    // 🔴 找不到預錄音檔時（如動態生成考題、答錯覆盤說明等），自動啟動台灣女聲朗讀，確保永遠不失聲！
-    this.speakWithBrowserTTS(cleanKey, options);
+    // 🔴 找不到預錄音檔時，延遲 80ms 避開 Chromium cancel() 異步刷新衝突，啟動高品質 TTS！
+    this._speakTimeout = setTimeout(() => {
+      this.speakWithBrowserTTS(cleanKey, options);
+    }, 80);
   }
 
   speakWithBrowserTTS(text, options = {}) {
@@ -278,12 +292,8 @@ class ZhuyinAudioEngine {
       return;
     }
 
-    // 喚醒語音合成引擎，徹底修復 Chromium 暫停與佇列卡死 Bug
+    // 徹底喚醒並解除 Chromium 暫停與卡死狀態
     try {
-      if (this.synth.paused) {
-        this.synth.resume();
-      }
-      this.synth.cancel();
       if (this.synth.paused) {
         this.synth.resume();
       }
@@ -292,7 +302,7 @@ class ZhuyinAudioEngine {
     const clearText = this.normalizeZhuyinForSpeech(text);
     const utterance = new SpeechSynthesisUtterance(clearText);
 
-    // 避免垃圾回收 GC 提前銷毀正在發音的 utterance 導致語音突然消失
+    // 避免垃圾回收 GC 提前銷毀正在發音的 utterance 導致語音突然中斷
     this._activeUtterance = utterance;
 
     // 嚴格確保使用已保存的台灣女聲選項
@@ -317,7 +327,9 @@ class ZhuyinAudioEngine {
       if (finished) return;
       finished = true;
       if (rInterval) clearInterval(rInterval);
-      this._activeUtterance = null;
+      if (this._activeUtterance === utterance) {
+        this._activeUtterance = null;
+      }
       if (options.onEnd) {
         try { options.onEnd(); } catch (err) {}
       }
@@ -325,6 +337,14 @@ class ZhuyinAudioEngine {
 
     utterance.onend = finishHandler;
     utterance.onerror = (e) => {
+      // 若是被新的發音主動 cancel() 中斷，不觸發報錯回呼
+      if (e && e.error === 'canceled') {
+        if (rInterval) clearInterval(rInterval);
+        if (this._activeUtterance === utterance) {
+          this._activeUtterance = null;
+        }
+        return;
+      }
       console.warn('TTS on error:', e);
       finishHandler();
     };
@@ -339,10 +359,13 @@ class ZhuyinAudioEngine {
           this.synth.resume();
         } catch (e) {}
       }
-    }, 7000);
+    }, 6000);
 
     try {
       this.synth.speak(utterance);
+      if (this.synth.paused) {
+        this.synth.resume();
+      }
     } catch (err) {
       console.warn('Synth speak error:', err);
       finishHandler();
@@ -350,13 +373,19 @@ class ZhuyinAudioEngine {
   }
 
   /**
-   * 停止所有語音（包含高清 MP3 與瀏覽器 TTS）
+   * 停止所有語音（包含高清 MP3 與瀏覽器 TTS），徹底切斷前次事件回呼
    */
   stopSpeaking() {
+    if (this._speakTimeout) {
+      clearTimeout(this._speakTimeout);
+      this._speakTimeout = null;
+    }
     if (this.currentAudio) {
       try {
         this.currentAudio.pause();
         this.currentAudio.currentTime = 0;
+        this.currentAudio.onended = null;
+        this.currentAudio.onerror = null;
       } catch (e) {}
       this.currentAudio = null;
     }
@@ -368,7 +397,11 @@ class ZhuyinAudioEngine {
         }
       } catch (e) {}
     }
-    this._activeUtterance = null;
+    if (this._activeUtterance) {
+      this._activeUtterance.onend = null;
+      this._activeUtterance.onerror = null;
+      this._activeUtterance = null;
+    }
   }
 
   /**
