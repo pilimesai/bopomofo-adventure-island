@@ -525,80 +525,15 @@ document.addEventListener('DOMContentLoaded', () => {
       sound: 'playBadgeGet'
     },
     {
-      id: 'master_candy',
-      name: '終極滿級金色糖果',
-      icon: '🌟',
-      tag: '👑 滿級突破',
-      tagColor: '#B45309',
-      tagBg: '#FEF3C7',
-      price: 100,
-      exp: 999999,
-      desc: '傳說中散發七彩金光的極致糖果！餵食夥伴瞬間直升滿級 Lv.100，完成終極訓練並在圖鑑銘刻金色皇冠標誌！',
-      actionText: '直達滿級',
-      sound: 'playBadgeGet'
-    },
-    {
       id: 'rare_candy',
       name: '神奇經驗糖果',
       icon: '🍬',
-      tag: '⭐ 快速升級',
+      tag: '⭐ 經驗升級',
       tagColor: '#3B82F6',
       tagBg: '#EFF6FF',
       price: 50,
-      exp: 60,
-      desc: '寶可夢最愛的星形糖果，餵食夥伴一口氣獲得 +60 點經驗值，加速升級與突破！',
-      actionText: '換購餵食',
-      sound: 'playPowerUp'
-    },
-    {
-      id: 'hearty_cake',
-      name: '元氣愛心蛋糕',
-      icon: '🍰',
-      tag: '💖 滿腹大補',
-      tagColor: '#EC4899',
-      tagBg: '#FDF2F8',
-      price: 100,
-      exp: 150,
-      desc: '甜點名師烘焙的元氣愛心蛋糕，餵食夥伴直接吸收 +150 點超量經驗，等級大幅飛升！',
-      actionText: '換購餵食',
-      sound: 'playPowerUp'
-    },
-    {
-      id: 'evolution_stone',
-      name: '屬性神奇進化石',
-      icon: '⚡',
-      tag: '💥 突破進化',
-      tagColor: '#D97706',
-      tagBg: '#FFFBEB',
-      price: 180,
-      exp: 300,
-      desc: '凝聚自然元素神力的石頭！餵食注入 +300 點巨量經驗，達到門檻將引發震撼大進化！',
-      actionText: '激發進化',
-      sound: 'playBadgeGet'
-    },
-    {
-      id: 'berry_box',
-      name: '甜甜蜜莓果盒',
-      icon: '🍓',
-      tag: '🌱 平價美味',
-      tagColor: '#059669',
-      tagBg: '#ECFDF5',
-      price: 30,
-      exp: 35,
-      desc: '樹果森林摘採的甜美莓果拼盤，一口氣獲得 +35 經驗值並大幅提升夥伴親密度！',
-      actionText: '換購餵食',
-      sound: 'playPop'
-    },
-    {
-      id: 'rainbow_jelly',
-      name: '彩虹能量果凍',
-      icon: '🌈',
-      tag: '✨ 元氣滿分',
-      tagColor: '#7C3AED',
-      tagBg: '#F5F3FF',
-      price: 130,
-      exp: 200,
-      desc: '閃耀七彩光芒的晶瑩果凍，瞬間充填充沛體力，餵食夥伴獲得 +200 點高額經驗！',
+      exp: 100,
+      desc: '寶可夢最愛的神奇星形糖果！餵食夥伴獲得 +100 點經驗值，加速升級培育與達成滿級進化！',
       actionText: '換購餵食',
       sound: 'playPowerUp'
     },
@@ -975,17 +910,29 @@ document.addEventListener('DOMContentLoaded', () => {
         heartFloater.classList.add('heart-float-anim');
       }
 
+      if (item.stoneType) {
+        state.stones[item.stoneType] = (state.stones[item.stoneType] || 0) + 1;
+        localStorage.setItem('zhuyin_evolution_stones', JSON.stringify(state.stones));
+        if (window.audioEngine.playBadgeGet) window.audioEngine.playBadgeGet(); else window.audioEngine.playPop();
+        if (window.confetti) window.confetti.trigger(70);
+        setMascotSpeech(`✨ 換購成功！獲得了 1 顆【${item.name}】！目前擁有 ${state.stones[item.stoneType]} 顆！滿級 Lv.100 時可用於最終進化！`);
+        renderNurtureShop();
+        updateTrainerHeaderUI();
+        return;
+      }
+
+      if (heartFloater) {
+        heartFloater.textContent = `⭐ +${item.exp || 100} EXP`;
+        heartFloater.classList.remove('heart-float-anim');
+        void heartFloater.offsetWidth;
+        heartFloater.classList.add('heart-float-anim');
+      }
+
       if (window.audioEngine.playPowerUp) window.audioEngine.playPowerUp(); else window.audioEngine.playPop();
-      addPartnerExp(item.exp);
-    if (item.stoneType) {
-      state.stones[item.stoneType] = (state.stones[item.stoneType] || 0) + 1;
-      localStorage.setItem('zhuyin_evolution_stones', JSON.stringify(state.stones));
-      setMascotSpeech(`✨ 獲得了【${item.name}】！目前擁有 ${state.stones[item.stoneType]} 顆！快給夥伴進化吧！`);
-      renderNurtureShop();
-    }
+      addPartnerExp(item.exp || 100);
 
       const updatedPartner = getCurrentPartnerInfo();
-      setMascotSpeech(`😋 好吃好吃！【${updatedPartner.name}】享用了【${item.name}】，親密度大幅上升，獲得了 +${item.exp} 經驗值！`);
+      setMascotSpeech(`😋 好吃好吃！【${updatedPartner.name}】享用了【${item.name}】，獲得了 +${item.exp || 100} 經驗值！（目前等級：Lv.${state.partnerData.level}・${state.partnerData.exp}/${state.partnerData.maxExp} EXP）`);
     }
 
     renderNurtureShop();
@@ -1546,10 +1493,13 @@ document.addEventListener('DOMContentLoaded', () => {
   window.markPokemonMaxTrained = markPokemonMaxTrained;
 
   function addPartnerExp(amount) {
+    if (!state.partnerData) {
+      state.partnerData = getPartnerData(state.partner);
+    }
     const oldLevel = state.partnerData.level || 1;
     if (oldLevel >= MAX_PARTNER_LEVEL) {
       state.partnerData.level = MAX_PARTNER_LEVEL;
-      state.partnerData.exp = state.partnerData.maxExp;
+      state.partnerData.exp = state.partnerData.maxExp || 100;
       localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
       const allData = getAllPartnersData();
       allData[state.partner] = { ...state.partnerData };
@@ -1557,7 +1507,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    state.partnerData.exp += amount;
+    if (!state.partnerData.maxExp) {
+      state.partnerData.maxExp = 60 + (state.partnerData.level || 1) * 25;
+    }
+
+    state.partnerData.exp = (state.partnerData.exp || 0) + amount;
     let leveledUp = false;
     let evolved = false;
     const oldPartner = getCurrentPartnerInfo();
@@ -1574,9 +1528,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // 🔴 關鍵持久化：同步寫入所有夥伴儲存池 (All Partners Data)，確保所有查詢與介面徹底一致！
+    localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
+    const allData = getAllPartnersData();
+    allData[state.partner] = { ...state.partnerData };
+    saveAllPartnersData(allData);
 
-
-        const newPartner = getCurrentPartnerInfo();
+    const newPartner = getCurrentPartnerInfo();
 
     // 👑 檢查是否達到滿級 Lv.100 完成終極訓練！
     const reachedMaxLevel = (oldLevel < MAX_PARTNER_LEVEL && state.partnerData.level >= MAX_PARTNER_LEVEL);
@@ -1600,7 +1558,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 🔴 檢查是否達成進化（Gen1 寶可夢比對 gen1Id，注音符號比對 stageIdx）
-    // 嚴格規定：凡是需要「屬性寶石」進化的寶可夢（如皮卡丘、伊布、六尾等），絕對不隨升級自動進化！
     const g1BasePokemon = (typeof GEN1_POKEMON_LIST !== 'undefined' && oldPartner.gen1Id)
       ? GEN1_POKEMON_LIST.find(p => p.id === oldPartner.gen1Id)
       : null;
@@ -1608,87 +1565,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!isStoneEvoPartner && newPartner.gen1Id && oldPartner.gen1Id && newPartner.gen1Id !== oldPartner.gen1Id) {
       evolved = true;
-      // 自動解鎖並將進化後的寶可夢登錄進 151 大圖鑑
       if (!state.gen1Caught.includes(newPartner.gen1Id)) {
         state.gen1Caught.push(newPartner.gen1Id);
         state.gen1Caught.sort((a, b) => a - b);
         localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
       }
-      // 同步夥伴設定為已進化的形態
       if (typeof state.partner === 'string' && state.partner.startsWith('gen1_')) {
         state.partner = 'gen1_' + newPartner.gen1Id;
         localStorage.setItem('zhuyin_partner', state.partner);
         localStorage.setItem('zhuyin_main_partner', state.partner);
       }
+      allData[state.partner] = { ...state.partnerData };
+      saveAllPartnersData(allData);
     } else if (newPartner.isSymbol && newPartner.stageIdx > (state.partnerData.stage || 0)) {
       state.partnerData.stage = newPartner.stageIdx;
+      allData[state.partner] = { ...state.partnerData };
+      saveAllPartnersData(allData);
       evolved = true;
     }
 
-
-
     localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
 
-
-
     // 更新對戰界面夥伴血條/經驗值
-
     const expFill = document.getElementById('poke-player-exp-fill');
-
     const expText = document.getElementById('poke-player-exp-text');
-
     const lvEl = document.getElementById('poke-player-level');
-
     const nameEl = document.getElementById('poke-player-name');
-
     const spriteEl = document.getElementById('poke-player-sprite');
-
     const moveEl = document.getElementById('poke-player-move');
 
-
-
     if (expFill) {
-
       const pct = Math.min(100, Math.round((state.partnerData.exp / state.partnerData.maxExp) * 100));
-
       expFill.style.width = `${pct}%`;
-
     }
-
     if (expText) expText.textContent = `${state.partnerData.exp} / ${state.partnerData.maxExp}`;
-
     if (lvEl) lvEl.textContent = `Lv.${state.partnerData.level}`;
-
     if (nameEl) nameEl.textContent = newPartner.name;
-
     if (spriteEl) spriteEl.innerHTML = getPokemonAvatarHtml(newPartner);
-
     if (moveEl) moveEl.textContent = `絕招：${newPartner.move}`;
-
-
 
     updateTrainerHeaderUI();
     if (typeof ensureStartersInGen1Caught === 'function') {
       ensureStartersInGen1Caught();
     }
 
-
-
-        if (evolved) {
-
+    if (evolved) {
       showEvolutionModal(oldPartner, newPartner);
       if (typeof updatePokedexProgressUI === 'function') updatePokedexProgressUI();
       if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
       if (typeof renderNurtureShop === 'function') renderNurtureShop();
-
     } else if (leveledUp) {
-
       window.audioEngine.playLevelUp();
-
       setMascotSpeech(`🎉 太棒了！【${newPartner.name}】等級提升到 Lv.${state.partnerData.level} 了！`);
-
     }
-
   }
 
 
