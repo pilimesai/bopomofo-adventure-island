@@ -6875,3 +6875,142 @@ html, body {
   line-height: 1.45;
   font-weight: 600;
 }
+
+
+/* ========================================================
+   👑 寶可夢滿級終極訓練完成圖鑑標誌 (Max Level & Final Training Badges)
+   ======================================================== */
+.gen1-card.max-trained-card {
+  border: 3px solid #F59E0B !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35), 0 5px 0 #D97706 !important;
+  background: linear-gradient(180deg, #FFFDF5 0%, #FFFFFF 35%) !important;
+  position: relative;
+}
+
+.gen1-card.max-trained-card:hover {
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.6), 0 8px 0 #D97706 !important;
+}
+
+.gen1-max-trained-badge {
+  position: absolute;
+  top: -11px;
+  left: 8px;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 60%, #B45309 100%);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 2.5px 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.5);
+  z-index: 6;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  border: 1.5px solid #FEF3C7;
+  animation: pulseGold 2.2s infinite ease-in-out;
+}
+
+@keyframes pulseGold {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.5);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow: 0 2px 14px rgba(245, 158, 11, 0.85);
+    filter: brightness(1.1);
+  }
+}
+
+.gen1-max-lvl-pill {
+  font-size: 10px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #F59E0B, #EA580C);
+  color: #FFFFFF;
+  padding: 1px 6px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  margin-right: 2px;
+  border: 1px solid #FEF08A;
+}
+
+.max-trained-img-wrap {
+  position: relative;
+}
+
+.max-trained-corner-crown {
+  position: absolute;
+  top: 0px;
+  right: 6px;
+  font-size: 18px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  animation: bounceMini 2.5s infinite ease-in-out;
+}
+
+.modal-max-trained-pill {
+  font-size: 13px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #FFFFFF;
+  padding: 3px 10px;
+  border-radius: 10px;
+  vertical-align: middle;
+  font-weight: 900;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+  border: 1.5px solid #FEF3C7;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.gen1-max-trained-cert-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  border: 2px solid #F59E0B;
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-top: 14px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+}
+
+.cert-crown-icon {
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);
+  flex-shrink: 0;
+  border: 2px solid #FCD34D;
+}
+
+.cert-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cert-title {
+  font-size: 15px;
+  font-weight: 900;
+  color: #92400E;
+}
+
+.cert-desc {
+  font-size: 13px;
+  color: #B45309;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.status-chip.status-chip-gold.active {
+  background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+  color: #FFFFFF !important;
+  border-color: #B45309 !important;
+  box-shadow: 0 3px 8px rgba(217, 119, 6, 0.4) !important;
+}
