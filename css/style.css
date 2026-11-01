@@ -1469,6 +1469,20 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.player-level-badge:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 0 #5F3DC4;
+}
+
+.player-level-badge:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #5F3DC4;
 }
 
 .adventure-hero-banner {
@@ -2015,8 +2029,13 @@ body {
   .logo-text h1 {
     font-size: 19px;
   }
-  .mascot-bubble, .player-level-badge {
+  .mascot-bubble {
     display: none;
+  }
+  .player-level-badge {
+    display: flex;
+    padding: 6px 12px;
+    font-size: 13px;
   }
   .tab-btn {
     min-width: 84px !important;

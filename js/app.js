@@ -997,7 +997,40 @@ document.addEventListener('DOMContentLoaded', () => {
     initCharacterModule();
 
     updateStarDisplay();
-    updateCoinsDisplay();
+        updateCoinsDisplay();
+
+    // 🔴 嚴格資料庫清理：野生對戰僅能收服 79 隻未進化初階寶可夢，其餘 72 隻進化型態必須由玩家親自升級或使用寶石進化！
+    const BASE_POKEMON_SET = new Set(BASE_POKEMON_IDS);
+    if (!state.unlockAllPokemon && Array.isArray(state.gen1Caught)) {
+      const legitEvolvedIds = new Set();
+      const currentPartnerInfo = (typeof getCurrentPartnerInfo === 'function') ? getCurrentPartnerInfo() : null;
+      if (currentPartnerInfo && currentPartnerInfo.gen1Id && !BASE_POKEMON_SET.has(currentPartnerInfo.gen1Id)) {
+        legitEvolvedIds.add(currentPartnerInfo.gen1Id);
+      }
+      const allPartners = (typeof getAllPartnersData === 'function') ? getAllPartnersData() : {};
+      Object.keys(allPartners).forEach(key => {
+        if (key.startsWith('gen1_')) {
+          const pid = parseInt(key.replace('gen1_', ''), 10);
+          if (!isNaN(pid)) legitEvolvedIds.add(pid);
+        }
+      });
+      // 檢查御三家升級
+      const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
+      const pLevel = pData.level || 1;
+      if (state.partner === 'charmander') {
+        if (pLevel >= 16) legitEvolvedIds.add(5);
+        if (pLevel >= 36) legitEvolvedIds.add(6);
+      } else if (state.partner === 'squirtle') {
+        if (pLevel >= 16) legitEvolvedIds.add(8);
+        if (pLevel >= 36) legitEvolvedIds.add(9);
+      } else if (state.partner === 'bulbasaur') {
+        if (pLevel >= 16) legitEvolvedIds.add(2);
+        if (pLevel >= 36) legitEvolvedIds.add(3);
+      }
+
+      state.gen1Caught = state.gen1Caught.filter(id => BASE_POKEMON_SET.has(id) || legitEvolvedIds.has(id));
+      localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
+    }
 
     updateTrainerHeaderUI();
     if (typeof ensureStartersInGen1Caught === 'function') {
@@ -1376,14 +1409,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    const newPartner = getCurrentPartnerInfo();
+        const newPartner = getCurrentPartnerInfo();
 
-    if (newPartner.stageIdx > (state.partnerData.stage || 0)) {
-
-      state.partnerData.stage = newPartner.stageIdx;
-
+    // 🔴 檢查是否達成進化（Gen1 寶可夢比對 gen1Id，注音符號比對 stageIdx）
+    if (newPartner.gen1Id && oldPartner.gen1Id && newPartner.gen1Id !== oldPartner.gen1Id) {
       evolved = true;
-
+      // 自動解鎖並將進化後的寶可夢登錄進 151 大圖鑑
+      if (!state.gen1Caught.includes(newPartner.gen1Id)) {
+        state.gen1Caught.push(newPartner.gen1Id);
+        state.gen1Caught.sort((a, b) => a - b);
+        localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
+      }
+      // 同步夥伴設定為已進化的形態
+      if (typeof state.partner === 'string' && state.partner.startsWith('gen1_')) {
+        state.partner = 'gen1_' + newPartner.gen1Id;
+        localStorage.setItem('zhuyin_partner', state.partner);
+        localStorage.setItem('zhuyin_main_partner', state.partner);
+      }
+    } else if (newPartner.stageIdx > (state.partnerData.stage || 0)) {
+      state.partnerData.stage = newPartner.stageIdx;
+      evolved = true;
     }
 
 
@@ -1435,9 +1480,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    if (evolved) {
+        if (evolved) {
 
       showEvolutionModal(oldPartner, newPartner);
+      if (typeof updatePokedexProgressUI === 'function') updatePokedexProgressUI();
+      if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
+      if (typeof renderNurtureShop === 'function') renderNurtureShop();
 
     } else if (leveledUp) {
 
@@ -3627,17 +3675,26 @@ function setupPartnerModal() {
   // 🔴 寶可夢稀有度梯隊與對戰對手分配系統 (Pokemon Opponents & Difficulty System)
   // 依題目與道館難度對應不同稀有度的初代 151 隻寶可夢，越困難題目對應越稀有寶可夢！
   // =========================================================================
+  // 🔴 關東地區 79 隻最初階基礎寶可夢（所有 72 隻進化型態皆需靠自身培育升級或屬性石進化解鎖）
+  const BASE_POKEMON_IDS = [
+    1, 4, 7, 10, 13, 16, 19, 21, 23, 25, 27, 29, 32, 35, 37, 39, 41, 43, 46, 48,
+    50, 52, 54, 56, 58, 60, 63, 66, 69, 72, 74, 77, 79, 81, 83, 84, 86, 88, 90,
+    92, 95, 96, 98, 100, 102, 104, 106, 107, 108, 109, 111, 113, 114, 115, 116,
+    118, 120, 122, 123, 124, 125, 126, 127, 128, 129, 131, 132, 133, 137, 138,
+    140, 142, 143, 144, 145, 146, 147, 150, 151
+  ];
+
   const POKEMON_RARITY_TIERS = {
-    // ⭐️ Tier 1: 常見初階野生 (37隻，對應基礎題目)
-    1: [10, 11, 13, 14, 16, 19, 21, 23, 27, 29, 32, 41, 43, 46, 48, 50, 52, 54, 56, 60, 69, 72, 74, 81, 84, 86, 88, 90, 92, 96, 98, 100, 102, 109, 118, 120, 129],
-    // ⭐️⭐️ Tier 2: 御三家/初階人氣/一階進化 (49隻，對應中階題目)
-    2: [1, 4, 7, 17, 20, 22, 24, 25, 28, 30, 33, 35, 37, 39, 42, 44, 47, 49, 51, 53, 55, 57, 58, 61, 63, 66, 70, 73, 75, 77, 79, 85, 87, 89, 93, 97, 99, 101, 104, 108, 110, 111, 114, 116, 119, 122, 128, 132, 133],
-    // ⭐️⭐️⭐️ Tier 3: 稀有二階/特殊強力怪 (33隻，對應進階三拼/聲調題目)
-    3: [2, 5, 8, 12, 15, 26, 36, 38, 40, 45, 64, 67, 71, 78, 80, 82, 83, 91, 103, 105, 106, 107, 112, 117, 121, 123, 124, 125, 126, 127, 138, 140],
-    // ⭐️⭐️⭐️⭐️ Tier 4: 終極進化/準神/化石/史詩形態 (26隻，對應期末考高難度道館)
-    4: [3, 6, 9, 18, 31, 34, 62, 65, 68, 76, 94, 95, 113, 115, 130, 131, 134, 135, 136, 137, 139, 141, 142, 143, 147, 148],
-    // ⭐️⭐️⭐️⭐️⭐️ Tier 5: 傳說神獸與幻之寶可夢 (6隻，對應石英高原與終極考核)
-    5: [144, 145, 146, 149, 150, 151]
+    // ⭐️ Tier 1: 常見初階野生 (22隻，對應基礎題目：早期森林、草叢與街道常見初階)
+    1: [10, 13, 16, 19, 21, 23, 27, 29, 32, 41, 43, 46, 48, 50, 52, 54, 56, 60, 69, 72, 74, 98],
+    // ⭐️⭐️ Tier 2: 御三家/初階人氣/城鎮與特殊屬性幼年期 (24隻，對應中階題目)
+    2: [1, 4, 7, 25, 35, 37, 39, 58, 63, 66, 77, 79, 81, 84, 86, 88, 90, 92, 96, 100, 102, 104, 109, 116],
+    // ⭐️⭐️⭐️ Tier 3: 稀有原種/洞穴與深海初階/強力格鬥原形 (18隻，對應進階三拼/聲調題目)
+    3: [83, 95, 106, 107, 108, 111, 114, 115, 118, 120, 122, 123, 124, 125, 126, 127, 128, 129],
+    // ⭐️⭐️⭐️⭐️ Tier 4: 化石初階/百變怪/伊布/吉利蛋/迷你龍史詩幼年 (10隻，對應道館高難度題目)
+    4: [113, 131, 132, 133, 137, 138, 140, 142, 143, 147],
+    // ⭐️⭐️⭐️⭐️⭐️ Tier 5: 關都傳說神獸與幻之寶可夢 (5隻，對應石英高原與終極考核：急凍鳥、閃電鳥、火焰鳥、超夢、夢幻)
+    5: [144, 145, 146, 150, 151]
   };
 
   function assignOpponentPokemonToQuestions(stage, questions, isFinal) {
@@ -3675,7 +3732,7 @@ function setupPartnerModal() {
       let chosenId = null;
 
       // 1. 若為關卡最後一題（Boss題）且道館館主尚未被使用過，優先考慮
-      if (isBossQ && stage.bossId && !usedIds.has(stage.bossId)) {
+      if (isBossQ && stage.bossId && !usedIds.has(stage.bossId) && BASE_POKEMON_IDS.includes(stage.bossId)) {
         if (!caughtList.includes(stage.bossId)) {
           chosenId = stage.bossId;
         }
@@ -7620,8 +7677,7 @@ function setupPartnerModal() {
     if (state.partner === 'gen1_' + pId) return true;
     const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
     const pLevel = pData.level || 1;
-    if (state.partner === 'pikachu') {
-      if (pLevel >= 16) return pId === 26;
+        if (state.partner === 'pikachu') {
       return pId === 25;
     }
     if (state.partner === 'charmander') {
@@ -7639,9 +7695,11 @@ function setupPartnerModal() {
       if (pLevel >= 16) return pId === 2;
       return pId === 1;
     }
-    if (state.partner === 'eevee') {
+        if (state.partner === 'eevee') {
       return pId === 133;
     }
+    const partnerInfo = (typeof getCurrentPartnerInfo === 'function') ? getCurrentPartnerInfo() : null;
+    if (partnerInfo && partnerInfo.gen1Id === pId) return true;
     return false;
   }
 
@@ -7683,9 +7741,7 @@ function setupPartnerModal() {
     }
     const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
     const pLevel = pData.level || 1;
-    if (state.partner === 'pikachu' && pLevel >= 16 && !state.gen1Caught.includes(26)) {
-      state.gen1Caught.push(26);
-    } else if (state.partner === 'charmander') {
+    if (state.partner === 'charmander') {
       if (pLevel >= 16 && !state.gen1Caught.includes(5)) state.gen1Caught.push(5);
       if (pLevel >= 36 && !state.gen1Caught.includes(6)) state.gen1Caught.push(6);
     } else if (state.partner === 'squirtle') {
