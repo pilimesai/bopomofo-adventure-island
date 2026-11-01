@@ -137,7 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pokedexCaught: JSON.parse(localStorage.getItem('zhuyin_caught_symbols') || '["ㄅ","ㄆ","ㄇ"]'),
     gen1Caught: JSON.parse(localStorage.getItem('zhuyin_caught_gen1') || '[1, 4, 7, 25, 133]'),
 
-    examDifficulty: localStorage.getItem('zhuyin_exam_difficulty') || 'midterm', // 'midterm' (期中考) 或 'final' (期末考)
+    examDifficulty: localStorage.getItem('zhuyin_exam_difficulty') || 'midterm',
+    pokedexMode: 'gen1', // 'midterm' (期中考) 或 'final' (期末考)
 
 
 
@@ -189,6 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
 
   };
+
+  window.state = state;
 
 
 
@@ -807,19 +810,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initGen1Pokedex();
     renderGen1Pokedex();
-    renderGallery();
+    // renderGallery(); (removed)
 
-    renderCombinedFinals();
+    // renderCombinedFinals(); (removed)
 
     setupModalEvents();
 
-    initBlendingTrain();
+    // initBlendingTrain(); (removed)
 
-    initTonesSlider();
+    // initTonesSlider(); (removed)
 
-    initCanvasModule();
+    // initCanvasModule(); (removed)
 
-    initGameHub();
+    // initGameHub(); (removed)
 
     renderAchievements();
 
@@ -2123,24 +2126,18 @@ function setupPartnerModal() {
 
 
     function updatePokedexProgressUI() {
-    let total = ZHUYIN_DATA.symbols.length;
-    let caught = state.pokedexCaught.length;
-
-    if (state.pokedexMode === 'gen1' && typeof GEN1_POKEMON_LIST !== 'undefined') {
-      total = 151;
-      caught = state.unlockAllPokemon ? 151 : (state.gen1Caught ? state.gen1Caught.length : 5);
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
     }
+    const count = state.unlockAllPokemon ? 151 : (state.gen1Caught ? state.gen1Caught.length : 5);
+    const total = 151;
+    const pct = Math.min(100, Math.round((count / total) * 100));
 
-    const pct = Math.min(100, Math.round((caught / total) * 100));
-
-    const progressEl = document.getElementById('pokedex-progress-text') || dom.pokedexProgressText;
-    const barEl = document.getElementById('pokedex-bar-fill') || dom.pokedexBarFill;
-
-    if (progressEl) {
-      progressEl.textContent = `${caught} / ${total} 隻 (${pct}%)`;
+    if (dom.pokedexProgressText) {
+      dom.pokedexProgressText.textContent = `${count} / ${total} 隻`;
     }
-    if (barEl) {
-      barEl.style.width = `${pct}%`;
+    if (dom.pokedexBarFill) {
+      dom.pokedexBarFill.style.width = `${pct}%`;
     }
   }
 
@@ -2312,11 +2309,7 @@ function setupPartnerModal() {
     }
     if (tabTarget === 'tab-gallery') {
       updatePokedexProgressUI();
-      if (state.pokedexMode === 'gen1') {
-        renderGen1Pokedex();
-      } else {
-        renderGallery();
-      }
+      renderGen1Pokedex();
     }
 
     // 吉祥物鼓勵語音或提示
@@ -6042,6 +6035,7 @@ function setupPartnerModal() {
   // ==========================================
 
   function initGameHub() {
+    if (!dom.gameArena) return;
 
     dom.gameModeBtns.forEach(btn => {
 
@@ -6070,6 +6064,7 @@ function setupPartnerModal() {
 
 
   function startNewGame() {
+    if (!dom.gameArena) return;
 
     state.game.score = 0;
 
@@ -6998,10 +6993,11 @@ function setupPartnerModal() {
   window.handleStageVictory = handleStageVictory;
   window.renderNurtureShop = renderNurtureShop;
   window.addCoins = addCoins;
+  window.initGen1Pokedex = initGen1Pokedex;
+  window.renderGen1Pokedex = renderGen1Pokedex;
+  window.openGen1DetailModal = openGen1DetailModal;
 
-  init();
 
-});
 
 
 
@@ -7388,3 +7384,7 @@ function setupPartnerModal() {
 
     modal.style.display = 'flex';
   }
+
+  init();
+
+});
