@@ -4053,35 +4053,23 @@ function setupPartnerModal() {
 
             btnListen.innerHTML = '<span>🔊</span> 正在為你朗讀題目...';
 
-            // 🔴 重按朗讀題目防卡死：先乾淨停止前次未完成的語音，延遲 100ms 重新由頭清晰朗讀！
-            window.audioEngine.stopSpeaking();
+            window.audioEngine.speak(q.speakText, {
 
-            setTimeout(() => {
-              const currentQ = (state.adventure.activeQuestions || stage.questions)[state.adventure.qIndex];
-              if (!currentQ || !currentQ.speakText) {
-                btnListen.classList.remove('reading-now');
-                btnListen.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
-                return;
-              }
+              onEnd: () => {
 
-              window.audioEngine.speak(currentQ.speakText, {
+                const btn = document.getElementById('btn-poke-listen');
 
-                onEnd: () => {
+                if (btn) {
 
-                  const btn = document.getElementById('btn-poke-listen');
+                  btn.classList.remove('reading-now');
 
-                  if (btn) {
-
-                    btn.classList.remove('reading-now');
-
-                    btn.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
-
-                  }
+                  btn.innerHTML = '<span>🔊</span> 聽老師清晰朗讀題目';
 
                 }
 
-              });
-            }, 100);
+              }
+
+            });
 
           }
 
@@ -4426,9 +4414,7 @@ function setupPartnerModal() {
 
 
 
-    // 每換一題，自動開始念題目！
-    window.audioEngine.stopSpeaking();
-
+    // 🔴 每換一題，自動開始念題目！
     const btnListen = document.getElementById('btn-poke-listen');
 
     if (btnListen) {
@@ -4439,10 +4425,14 @@ function setupPartnerModal() {
 
     }
 
+    if (window._stageQSpeechTimeout) {
+      clearTimeout(window._stageQSpeechTimeout);
+      window._stageQSpeechTimeout = null;
+    }
 
-
-    setTimeout(() => {
-
+    // 延遲 220ms 等候切題動畫與新題 DOM 渲染平穩就緒後，100% 由頭清晰自動朗讀考題！
+    window._stageQSpeechTimeout = setTimeout(() => {
+      window._stageQSpeechTimeout = null;
       if (q && q.speakText) {
 
         window.audioEngine.speak(q.speakText, {
@@ -4477,7 +4467,7 @@ function setupPartnerModal() {
 
       }
 
-    }, 150);
+    }, 220);
 
   }
 

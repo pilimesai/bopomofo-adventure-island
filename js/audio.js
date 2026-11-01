@@ -200,7 +200,10 @@ class ZhuyinAudioEngine {
    * 3. PERSONA::TEACHER -> 🌸 YMCA 正音班溫柔單人女老師 (AUDIO_MANIFEST)
    */
   speak(text, options = {}) {
-    if (this.isMuted || !text) return;
+    if (this.isMuted || !text) {
+      if (options.onEnd) options.onEnd();
+      return;
+    }
     this.stopSpeaking();
 
     const cleanKey = text.trim();
@@ -236,54 +239,48 @@ class ZhuyinAudioEngine {
     }
 
     if (audioUrl) {
-      // 延遲 50ms 避開快速連點時 audio 資源銷毀衝突
-      this._speakTimeout = setTimeout(() => {
-        try {
-          const audio = new Audio(audioUrl);
-          this.currentAudio = audio;
-          const currentRate = options.rate || this.speechRate || (isCute ? 0.92 : 0.86);
-          const baseRate = isCute ? 0.92 : 0.86;
-          audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / baseRate));
+      // 立即啟動音檔播放，絕不人為延遲，確保換題與重按朗讀 100% 流暢出聲
+      try {
+        const audio = new Audio(audioUrl);
+        this.currentAudio = audio;
+        const currentRate = options.rate || this.speechRate || (isCute ? 0.92 : 0.86);
+        const baseRate = isCute ? 0.92 : 0.86;
+        audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / baseRate));
 
-          audio.onended = () => {
-            this.currentAudio = null;
-            if (options.onEnd) options.onEnd();
-          };
-          audio.onerror = (err) => {
-            console.warn('音檔載入失敗，降級為語音合成：', err);
-            this.currentAudio = null;
-            this.speakWithBrowserTTS(cleanKey, options);
-          };
+        audio.onended = () => {
+          this.currentAudio = null;
+          if (options.onEnd) options.onEnd();
+        };
+        audio.onerror = (err) => {
+          console.warn('音檔載入受阻，自動啟動台灣女聲合成備援：', err);
+          this.currentAudio = null;
+          this.speakWithBrowserTTS(cleanKey, options);
+        };
 
-          audio.play().catch((err) => {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            // 被新的語音操作主動中斷（切題或手動重按）時忽略，避免報錯
             if (err && (err.name === 'AbortError' || err.code === 20)) {
               return;
             }
-            if (err && err.name === 'NotAllowedError') {
-              const btn = document.getElementById('btn-poke-listen');
-              if (btn) {
-                btn.classList.remove('reading-now');
-                btn.innerHTML = '<span>🔊</span> 點擊聽老師清晰朗讀題目';
-              }
-              if (options.onEnd) options.onEnd();
-              return;
-            }
-            console.warn('音檔播放受阻，啟動台灣女聲合成備援：', err);
+            // 無論是被自動播放安全機制攔截或任何錯誤，100% 自動無縫降級為台灣女聲朗讀備援！
+            console.warn('音檔播放未成功，啟動台灣女聲朗讀備援：', err);
             this.currentAudio = null;
             this.speakWithBrowserTTS(cleanKey, options);
           });
-        } catch (e) {
-          console.warn('Audio error:', e);
-          this.speakWithBrowserTTS(cleanKey, options);
         }
-      }, 50);
-      return;
+        return;
+      } catch (e) {
+        console.warn('Audio 實例創建異常，啟動 TTS：', e);
+        this.currentAudio = null;
+        this.speakWithBrowserTTS(cleanKey, options);
+        return;
+      }
     }
 
-    // 🔴 找不到預錄音檔時，延遲 80ms 避開 Chromium cancel() 異步刷新衝突，啟動高品質 TTS！
-    this._speakTimeout = setTimeout(() => {
-      this.speakWithBrowserTTS(cleanKey, options);
-    }, 80);
+    // 找不到音檔時，立即由高品質台灣女聲合成發音
+    this.speakWithBrowserTTS(cleanKey, options);
   }
 
   speakWithBrowserTTS(text, options = {}) {
@@ -292,7 +289,6 @@ class ZhuyinAudioEngine {
       return;
     }
 
-    // 徹底喚醒並解除 Chromium 暫停與卡死狀態
     try {
       if (this.synth.paused) {
         this.synth.resume();
@@ -302,7 +298,7 @@ class ZhuyinAudioEngine {
     const clearText = this.normalizeZhuyinForSpeech(text);
     const utterance = new SpeechSynthesisUtterance(clearText);
 
-    // 避免垃圾回收 GC 提前銷毀正在發音的 utterance 導致語音突然中斷
+    // 避免垃圾回收 GC 提前銷毀正在發音的 utterance 導致語音突然消失
     this._activeUtterance = utterance;
 
     // 嚴格確保使用已保存的台灣女聲選項
@@ -337,12 +333,9 @@ class ZhuyinAudioEngine {
 
     utterance.onend = finishHandler;
     utterance.onerror = (e) => {
-      // 若是被新的發音主動 cancel() 中斷，不觸發報錯回呼
-      if (e && e.error === 'canceled') {
+      // 只有在當前活躍 utterance 已經被替換時，才代表是故意取消
+      if (e && e.error === 'canceled' && this._activeUtterance !== utterance) {
         if (rInterval) clearInterval(rInterval);
-        if (this._activeUtterance === utterance) {
-          this._activeUtterance = null;
-        }
         return;
       }
       console.warn('TTS on error:', e);
@@ -359,7 +352,7 @@ class ZhuyinAudioEngine {
           this.synth.resume();
         } catch (e) {}
       }
-    }, 6000);
+    }, 5000);
 
     try {
       this.synth.speak(utterance);
@@ -389,18 +382,19 @@ class ZhuyinAudioEngine {
       } catch (e) {}
       this.currentAudio = null;
     }
-    if (this.synth) {
+    if (this._activeUtterance) {
+      this._activeUtterance.onend = null;
+      this._activeUtterance.onerror = null;
+      this._activeUtterance = null;
+    }
+    // 🔴 關鍵修復：只有在瀏覽器語音確實在播放或佇列排隊時才呼叫 cancel()，避免對閒置狀態發送 cancel() 造成下次 speak() 被系統判定取消
+    if (this.synth && (this.synth.speaking || this.synth.pending)) {
       try {
         this.synth.cancel();
         if (this.synth.paused) {
           this.synth.resume();
         }
       } catch (e) {}
-    }
-    if (this._activeUtterance) {
-      this._activeUtterance.onend = null;
-      this._activeUtterance.onerror = null;
-      this._activeUtterance = null;
     }
   }
 
