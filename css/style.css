@@ -7119,3 +7119,30 @@ html, body {
   box-shadow: 0 3px 10px rgba(192, 38, 211, 0.35);
 }
 
+
+/* ========================================================
+   標籤與彈窗寶可夢名稱直式注音排版強化
+   ======================================================== */
+.partner-card .p-name .zy-hanzi-pair,
+.partner-select-card .p-name .zy-hanzi-pair,
+.gen1-modal-title .zy-hanzi-pair,
+#poke-opp-name .zy-hanzi-pair,
+#poke-player-name .zy-hanzi-pair {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 2px !important;
+}
+
+.gen1-modal-title .zy-hanzi-pair .zy-hanzi {
+  font-size: 24px !important;
+}
+
+.partner-card .p-name .zy-hanzi-pair .zy-hanzi,
+.partner-select-card .p-name .zy-hanzi-pair .zy-hanzi {
+  font-size: 15px !important;
+}
+
+#poke-opp-name .zy-hanzi-pair .zy-hanzi,
+#poke-player-name .zy-hanzi-pair .zy-hanzi {
+  font-size: 16px !important;
+}

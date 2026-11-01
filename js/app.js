@@ -2139,7 +2139,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = `starter-select-card ${isSelected ? 'selected' : ''}`;
       card.innerHTML = `
         <div class="starter-card-icon">${starter.icon}</div>
-        <div class="starter-card-name">${starter.name}</div>
+        <div class="starter-card-name">${formatZhuyinDisplay(starter.name)}</div>
         <div class="starter-card-tag">Lv.1 初階</div>
       `;
 
@@ -2465,7 +2465,7 @@ function openCurrentPartnerDetailModal() {
           <div class="p-sprite-wrap">
             <img src="assets/pokemon/gen1/${p.id}.png" alt="${p.name}" class="pokemon-avatar-img" onerror="this.onerror=null;this.src='${p.image}';" />
           </div>
-          <div class="p-name">${p.name}</div>
+          <div class="p-name">${formatZhuyinDisplay(p.name, p.zhuyin)}</div>
           <div class="p-level">${(pData.level || 1) >= 100 ? '<span style="color:#D97706;font-weight:900;">👑 Lv.100 滿級 (終極訓練完成)</span>' : 'Lv.' + (pData.level || 1)} · 招式：${p.move}</div>
         `;
 
@@ -2507,7 +2507,7 @@ function openCurrentPartnerDetailModal() {
           ${isCurrent ? '<span class="p-active-badge">出戰中</span>' : ''}
           ${pData.crown ? '<span class="p-crown-mark">👑</span>' : ''}
           <div class="p-icon">${getPokemonAvatarHtml(evo)}</div>
-          <div class="p-name">${evo.name}</div>
+          <div class="p-name">${formatZhuyinDisplay(evo.name)}</div>
           <div class="p-type">${p.type}</div>
           <span class="p-level-tag" style="${(pData.level || 1) >= 100 ? 'background:linear-gradient(135deg,#F59E0B,#EA580C);color:#FFF;font-weight:900;' : ''}">${(pData.level || 1) >= 100 ? '👑 Lv.100 滿級' : 'Lv.' + (pData.level || 1)}</span>
           <div style="font-size:11px;color:#D97706;font-weight:800;margin-top:4px;">絕招：${evo.move}</div>
@@ -2555,7 +2555,7 @@ function openCurrentPartnerDetailModal() {
               <span class="sym-p-char" style="color:${sym.color};border-color:${sym.color};">${sym.char}</span>
             </div>
           </div>
-          <div class="p-name">${stageNames[stageIdx]}</div>
+          <div class="p-name">${formatZhuyinDisplay(stageNames[stageIdx])}</div>
           <div class="p-type">${sym.pokeTypeIcon || '⚡'} ${sym.pokeType || '一般系'}</div>
           <span class="p-level-tag" style="${(pData.level || 1) >= 100 ? 'background:linear-gradient(135deg,#F59E0B,#EA580C);color:#FFF;font-weight:900;' : ''}">${(pData.level || 1) >= 100 ? '👑 Lv.100 滿級' : 'Lv.' + (pData.level || 1)}</span>
           <div style="font-size:11px;color:#D97706;font-weight:800;margin-top:4px;">絕招：${sym.word || sym.char}突擊</div>
@@ -4077,7 +4077,7 @@ function openCurrentPartnerDetailModal() {
             <div class="poke-opponent-zone" id="poke-opp-zone">
               <div class="poke-opponent-plate">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <strong style="font-size:16px;color:#1F2937;" id="poke-opp-name">野生的【${firstOpp ? firstOpp.name : '寶可夢'}】 <span class="opp-dex-badge">${firstOpp ? firstOpp.dexNo : ''}</span></strong>
+                  <strong style="font-size:16px;color:#1F2937;" id="poke-opp-name">野生的【${firstOpp ? formatZhuyinDisplay(firstOpp.name, firstOpp.zhuyin) : '寶可夢'}】 <span class="opp-dex-badge">${firstOpp ? firstOpp.dexNo : ''}</span></strong>
                   <span style="font-size:12px;background:#E0E7FF;color:#4338CA;padding:2px 8px;border-radius:10px;font-weight:900;" id="poke-opp-level">Lv.${stage.id * 4 + (isFinal ? 8 : 0)}</span>
                 </div>
                 <div style="font-size:12px;font-weight:800;margin-top:2px;" id="poke-opp-type">${firstOpp ? firstOpp.types.map(t => `<span class="battle-type-pill" style="background:${firstOpp.color || '#3B82F6'};">${firstOpp.icon || '⚡'} ${t}系</span>`).join(' ') : '⚡ 電氣系'}</div>
@@ -4112,7 +4112,7 @@ function openCurrentPartnerDetailModal() {
 
                 <div style="display:flex;justify-content:space-between;align-items:center;">
 
-                  <strong style="font-size:16px;color:#1F2937;" id="poke-player-name">${partnerObj.name}</strong>
+                  <strong style="font-size:16px;color:#1F2937;" id="poke-player-name">${formatZhuyinDisplay(partnerObj.name)}</strong>
 
                   <span style="font-size:12px;background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:10px;font-weight:900;" id="poke-player-level">Lv.${partnerObj.level}</span>
 
@@ -4558,7 +4558,7 @@ function openCurrentPartnerDetailModal() {
     if (opp && oppName) {
       const isBossQ = (state.adventure.qIndex === questions.length - 1);
       const prefix = q.isShiny ? '✨ 稀有閃光' : (isBossQ ? '👑 道館守護' : '野生的');
-      oppName.innerHTML = `${prefix}【${opp.name}】 <span class="opp-dex-badge">${opp.dexNo}</span>`;
+      oppName.innerHTML = `${prefix}【${formatZhuyinDisplay(opp.name, opp.zhuyin)}】 <span class="opp-dex-badge">${opp.dexNo}</span>`;
     }
 
     if (opp && oppType) {
@@ -5832,7 +5832,7 @@ function openCurrentPartnerDetailModal() {
                 ${(state.adventure.caughtInCurrentBattle && state.adventure.caughtInCurrentBattle.length > 0 ? state.adventure.caughtInCurrentBattle : (opp ? [opp] : [])).map(p => `
                   <div style="background:#FFFFFF;border:2px solid ${p.color || '#CBD5E1'};border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;align-items:center;min-width:70px;box-shadow:0 2px 5px rgba(0,0,0,0.06);">
                     <img src="assets/pokemon/gen1/${p.id}.png" alt="${p.name}" style="width:46px;height:46px;object-fit:contain;" onerror="this.onerror=null;this.src='${p.image}';" />
-                    <span style="font-size:12px;font-weight:900;color:#1E293B;margin-top:2px;">${p.name}</span>
+                    <span style="font-size:12px;font-weight:900;color:#1E293B;margin-top:2px;">${formatZhuyinDisplay(p.name, p.zhuyin)}</span>
                     <span style="font-size:10px;color:#64748B;">${p.dexNo}</span>
                   </div>
                 `).join('')}
@@ -8256,7 +8256,7 @@ function openCurrentPartnerDetailModal() {
     const btnSetPartner = document.getElementById('gen1-btn-set-partner');
 
     if (dexEl) dexEl.textContent = p.dexNo;
-    if (titleEl) titleEl.textContent = p.name;
+    if (titleEl) titleEl.innerHTML = formatZhuyinDisplay(p.name, p.zhuyin);
     if (subnamesEl) subnamesEl.textContent = p.enName + ' (' + p.jpName + ')';
     if (imgEl) {
       imgEl.src = 'assets/pokemon/gen1/' + p.id + '.png';
@@ -8271,15 +8271,15 @@ function openCurrentPartnerDetailModal() {
       if (p.evolution) {
         if (p.evolution.method === 'stone') {
           const sCount = (state.stones && state.stones[p.evolution.stone]) || 0;
-          evoEl.innerHTML = `💎 需要【${p.evolution.stoneName}】進化為：【${p.evolution.evolvesToName}】<span style="margin-left:8px;font-size:13px;color:#D97706;font-weight:900;">(目前擁有: ${sCount}顆)</span>`;
+          evoEl.innerHTML = `💎 需要【${formatZhuyinDisplay(p.evolution.stoneName)}】進化為：【${formatZhuyinDisplay(p.evolution.evolvesToName)}】<span style="margin-left:8px;font-size:13px;color:#D97706;font-weight:900;">(目前擁有: ${sCount}顆)</span>`;
         } else if (p.evolution.method === 'branch_stone' && p.evolution.branches) {
           evoEl.innerHTML = `💎 屬性寶石多元分支進化：<div style="margin-top:4px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px;">` +
             p.evolution.branches.map(b => {
               const bCount = (state.stones && state.stones[b.stone]) || 0;
-              return `<span style="background:#F1F5F9;padding:2px 8px;border-radius:10px;border:1px solid #CBD5E1;">${b.stoneName} (${bCount}顆) ➔ 【${b.evolvesToName}】</span>`;
+              return `<span style="background:#F1F5F9;padding:2px 8px;border-radius:10px;border:1px solid #CBD5E1;">${formatZhuyinDisplay(b.stoneName)} (${bCount}顆) ➔ 【${formatZhuyinDisplay(b.evolvesToName)}】</span>`;
             }).join('') + `</div>`;
         } else {
-          evoEl.textContent = '達成 Lv.' + p.evolution.reqLevel + ' 進化為：【' + p.evolution.evolvesToName + '】';
+          evoEl.innerHTML = '達成 Lv.' + p.evolution.reqLevel + ' 進化為：【' + formatZhuyinDisplay(p.evolution.evolvesToName) + '】';
         }
       } else {
         evoEl.textContent = '✨ 已為該形態最終階段（或無進化）';
@@ -8315,7 +8315,7 @@ function openCurrentPartnerDetailModal() {
       if (isMaxTrained) {
         statusPills += ' <span class="modal-max-trained-pill">👑 終極訓練完成 (滿級)</span>';
       }
-      titleEl.innerHTML = p.name + statusPills;
+      titleEl.innerHTML = formatZhuyinDisplay(p.name, p.zhuyin) + statusPills;
     }
 
     // 🔴 渲染主力夥伴培育與等級數值卡片（僅限已收服時顯示）
