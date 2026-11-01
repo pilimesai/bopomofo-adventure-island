@@ -612,8 +612,9 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (state.partner === 'eevee') g1P = GEN1_POKEMON_LIST.find(p => p.id === 133);
 
       if (g1P && g1P.evolution) {
-        const isPartnerMaxLvl = (partner.level || 1) >= 100;
-        const diffPartnerLvl = Math.max(1, 100 - (partner.level || 1));
+        const evoReqLevel = g1P.evolution.reqLevel || 50;
+        const isPartnerMaxLvl = (partner.level || 1) >= evoReqLevel;
+        const diffPartnerLvl = Math.max(1, evoReqLevel - (partner.level || 1));
         if (g1P.evolution.method === 'stone') {
           const sType = g1P.evolution.stone;
           const sCount = (state.stones && state.stones[sType]) || 0;
@@ -624,11 +625,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span style="font-size:26px;">⚡</span>
                 <div>
                   <div style="font-weight:900;color:#92400E;font-size:15px;">💎 屬性寶石進化：需要【${g1P.evolution.stoneName}】</div>
-                  <div style="font-size:13px;color:#B45309;margin-top:2px;">擁有數量：<strong style="color:#DC2626;font-size:15px;">${sCount}</strong> 顆・進化門檻：<strong style="color:${isPartnerMaxLvl ? '#059669' : '#DC2626'};font-weight:900;">${isPartnerMaxLvl ? '👑 滿級 Lv.100 已達成' : `🔒 需先達滿級 Lv.100 (還差 ${diffPartnerLvl} 級)`}</strong></div>
+                  <div style="font-size:13px;color:#B45309;margin-top:2px;">擁有數量：<strong style="color:#DC2626;font-size:15px;">${sCount}</strong> 顆・進化門檻：<strong style="color:${isPartnerMaxLvl ? '#059669' : '#DC2626'};font-weight:900;">${isPartnerMaxLvl ? `👑 滿級 Lv.${evoReqLevel} 已達成（進化後上限擴展至 Lv.100）` : `🔒 需先達滿級 Lv.${evoReqLevel} (還差 ${diffPartnerLvl} 級)`}</strong></div>
                 </div>
               </div>
               <button class="btn-use-stone" style="background:${isPartnerMaxLvl ? '#F59E0B' : '#94A3B8'};color:#FFF;border:none;padding:8px 18px;border-radius:20px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 ${isPartnerMaxLvl ? '#D97706' : '#64748B'};transition:transform 0.15s;" onclick="window.useEvolutionStoneOnPartner('${sType}', ${g1P.evolution.evolvesToId})">
-                ${isPartnerMaxLvl ? `✨ 滿級達成！使用【${g1P.evolution.stoneName}】最終進化為【${targetEvo ? targetEvo.name : g1P.evolution.evolvesToName}】！` : `🔒 滿級 Lv.100 解鎖進化 (還差 ${diffPartnerLvl} 級)`}
+                ${isPartnerMaxLvl ? `✨ 滿級達成！使用【${g1P.evolution.stoneName}】進化為【${targetEvo ? targetEvo.name : g1P.evolution.evolvesToName}】！` : `🔒 滿級 Lv.${evoReqLevel} 解鎖進化 (還差 ${diffPartnerLvl} 級)`}
               </button>
             </div>
           `;
@@ -640,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <span>🦊</span> <strong>伊布多元屬性寶石分支進化</strong>（三大形態自由選擇）：
                 </div>
                 <div style="font-size:13px;font-weight:900;color:${isPartnerMaxLvl ? '#059669' : '#DC2626'};background:${isPartnerMaxLvl ? '#ECFDF5' : '#FEF2F2'};padding:2px 10px;border-radius:12px;border:1px solid ${isPartnerMaxLvl ? '#A7F3D0' : '#FECACA'};">
-                  ${isPartnerMaxLvl ? '👑 滿級 Lv.100 已達成・可自由進化' : `🔒 需先達滿級 Lv.100（目前 Lv.${partner.level || 1}，還差 ${diffPartnerLvl} 級）`}
+                  ${isPartnerMaxLvl ? `👑 滿級 Lv.${evoReqLevel} 已達成・可自由進化（進化後上限擴展至 Lv.100）` : `🔒 需先達滿級 Lv.${evoReqLevel}（目前 Lv.${partner.level || 1}，還差 ${diffPartnerLvl} 級）`}
                 </div>
               </div>
               <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;">
@@ -651,7 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   return `
                     <button class="btn-use-stone" style="background:${isPartnerMaxLvl ? (bColors[b.stone] || '#3B82F6') : '#94A3B8'};color:#FFF;border:none;padding:10px;border-radius:14px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,0.2);display:flex;flex-direction:column;align-items:center;gap:4px;" onclick="window.useEvolutionStoneOnPartner('${b.stone}', ${b.evolvesToId})">
                       <span>${bIcons[b.stone]} ${b.stoneName} (${bCount}顆)</span>
-                      <span style="font-size:12px;opacity:0.95;">${isPartnerMaxLvl ? `進化為【${b.evolvesToName}】` : '🔒 需滿級 Lv.100'}</span>
+                      <span style="font-size:12px;opacity:0.95;">${isPartnerMaxLvl ? `進化為【${b.evolvesToName}】` : `🔒 需滿級 Lv.${evoReqLevel}`}</span>
                     </button>
                   `;
                 }).join('')}
@@ -665,21 +666,32 @@ document.addEventListener('DOMContentLoaded', () => {
         stoneBannerWrap.innerHTML = '';
       }
     }
+    const currentMaxLvl = getMaxLevelForPokemon(partner.gen1Id || partner.id);
+    const isStageMax = partner.level >= currentMaxLvl;
+
     if (levelEl) {
-      if (partner.level >= MAX_PARTNER_LEVEL) {
+      if (partner.level >= 100) {
         levelEl.innerHTML = `<span style="color:#F59E0B;font-weight:900;">👑 滿級 Lv.100</span> <span style="font-size:12px;background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:10px;font-weight:900;border:1px solid #FCD34D;">終極訓練完成</span>`;
+      } else if (isStageMax) {
+        levelEl.innerHTML = `<span style="color:#D97706;font-weight:900;">⭐ 滿級 Lv.${currentMaxLvl}</span> <span style="font-size:12px;background:#FEF3C7;color:#B45309;padding:2px 8px;border-radius:10px;font-weight:900;border:1px solid #FCD34D;">可進化型態</span>`;
       } else {
-        levelEl.textContent = `Lv.${partner.level}`;
+        levelEl.textContent = `Lv.${partner.level} / Lv.${currentMaxLvl}滿級`;
       }
     }
     if (crownBadge) crownBadge.style.display = (state.partnerData && state.partnerData.crown) ? 'inline-flex' : 'none';
 
-    if (partner.level >= MAX_PARTNER_LEVEL) {
+    if (partner.level >= 100) {
       if (expFill) {
         expFill.style.width = '100%';
         expFill.style.background = 'linear-gradient(90deg, #F59E0B, #FBBF24)';
       }
       if (expText) expText.textContent = `EXP MAX / 100% (滿級終極訓練完成)`;
+    } else if (isStageMax) {
+      if (expFill) {
+        expFill.style.width = '100%';
+        expFill.style.background = 'linear-gradient(90deg, #10B981, #34D399)';
+      }
+      if (expText) expText.textContent = `EXP MAX / Lv.${currentMaxLvl} 滿級 (請使用道具或升級進化！)`;
     } else {
       const pct = Math.min(100, Math.round((partner.exp / (partner.maxExp || 100)) * 100));
       if (expFill) {
@@ -702,19 +714,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const isMaxLvl = (partner.level || 1) >= 100;
       const diffLvl = Math.max(1, 100 - (partner.level || 1));
 
+      const reqLvl = (g1Partner && g1Partner.evolution) ? (g1Partner.evolution.reqLevel || 50) : 50;
+      const isStoneReqMet = (partner.level || 1) >= reqLvl;
+      const diffReqLvl = Math.max(1, reqLvl - (partner.level || 1));
+
       if (isStoneEvo) {
         if (g1Partner.evolution.method === 'stone') {
           const sCount = (state.stones && state.stones[g1Partner.evolution.stone]) || 0;
-          if (isMaxLvl) {
-            evoTargetEl.innerHTML = `👑 <strong>滿級 Lv.100 達成！</strong> 點擊上方按鈕使用【${g1Partner.evolution.stoneName}】完成最終進化為：【${g1Partner.evolution.evolvesToName}】！（目前擁有 ${sCount} 顆）`;
+          if (isStoneReqMet) {
+            evoTargetEl.innerHTML = `👑 <strong>滿級 Lv.${reqLvl} 達成！</strong> 點擊上方按鈕使用【${g1Partner.evolution.stoneName}】進化為：【${g1Partner.evolution.evolvesToName}】！（目前擁有 ${sCount} 顆，進化後上限升至 Lv.100）`;
           } else {
-            evoTargetEl.innerHTML = `💎 達成 <strong>滿級 Lv.100</strong>（還差 ${diffLvl} 級）＋ 使用【${g1Partner.evolution.stoneName}】即可完成最終進化為：【${g1Partner.evolution.evolvesToName}】！（目前擁有 ${sCount} 顆）`;
+            evoTargetEl.innerHTML = `💎 達成 <strong>滿級 Lv.${reqLvl}</strong>（還差 ${diffReqLvl} 級）＋ 使用【${g1Partner.evolution.stoneName}】即可進化為：【${g1Partner.evolution.evolvesToName}】！（進化後上限升至 Lv.100）`;
           }
         } else if (g1Partner.evolution.method === 'branch_stone') {
-          if (isMaxLvl) {
-            evoTargetEl.innerHTML = `👑 <strong>滿級 Lv.100 達成！</strong> 點擊上方按鈕使用屬性寶石完成多元分支最終進化！`;
+          if (isStoneReqMet) {
+            evoTargetEl.innerHTML = `👑 <strong>滿級 Lv.${reqLvl} 達成！</strong> 點擊上方按鈕使用屬性寶石完成多元分支進化！（進化後上限升至 Lv.100）`;
           } else {
-            evoTargetEl.innerHTML = `💎 達成 <strong>滿級 Lv.100</strong>（還差 ${diffLvl} 級）＋ 使用屬性寶石即可完成多元分支最終進化！`;
+            evoTargetEl.innerHTML = `💎 達成 <strong>滿級 Lv.${reqLvl}</strong>（還差 ${diffReqLvl} 級）＋ 使用屬性寶石即可完成多元分支進化！（進化後上限升至 Lv.100）`;
           }
         }
       } else {
@@ -957,12 +973,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const oldPartner = getCurrentPartnerInfo();
     const stoneNames = { thunder: '雷之石', water: '水之石', fire: '火之石', leaf: '葉之石', moon: '月之石' };
 
-    // 🔴 嚴格進化規則：先滿級最後才能進化，最終進化的等級是 100 級！
-    if ((oldPartner.level || 1) < 100) {
+    // 🔴 嚴格進化規則：只有一次進化的初階（如皮卡丘）滿級為 Lv.50，達成後即可使用寶石進化為雷丘，進化後上限升為 100 級！
+    const reqLevel = (oldPartner.gen1Id && typeof GEN1_POKEMON_LIST !== 'undefined')
+      ? (GEN1_POKEMON_LIST.find(p => p.id === oldPartner.gen1Id)?.evolution?.reqLevel || 50)
+      : (getMaxLevelForPokemon(oldPartner.id) || 50);
+
+    if ((oldPartner.level || 1) < reqLevel) {
       if (window.audioEngine && window.audioEngine.playWrong) window.audioEngine.playWrong();
-      const neededLvl = 100 - (oldPartner.level || 1);
-      setMascotSpeech('⚡【' + oldPartner.name + '】目前等級為 Lv.' + (oldPartner.level || 1) + '，尚未達成滿級 Lv.100！先升到滿級最後才能進化為【' + targetP.name + '】喔！');
-      alert('【' + oldPartner.name + '】尚未達到滿級 Lv.100（目前 Lv.' + (oldPartner.level || 1) + '，還差 ' + neededLvl + ' 級）！\n\n📌 進化規則：必須先達到滿級 Lv.100，最後才能使用【' + (stoneNames[stoneType] || '屬性寶石') + '】完成最終進化！快去道館闖關或餵食糖果升級吧！');
+      const neededLvl = reqLevel - (oldPartner.level || 1);
+      setMascotSpeech('⚡【' + oldPartner.name + '】目前等級為 Lv.' + (oldPartner.level || 1) + '，尚未達成滿級 Lv.' + reqLevel + '！先升到滿級才能進化為【' + targetP.name + '】喔！');
+      alert('【' + oldPartner.name + '】尚未達到滿級 Lv.' + reqLevel + '（目前 Lv.' + (oldPartner.level || 1) + '，還差 ' + neededLvl + ' 級）！\n\n📌 進化規則：必須先達到前階滿級 Lv.' + reqLevel + '，才能使用【' + (stoneNames[stoneType] || '屬性寶石') + '】進化為【' + targetP.name + '】！進化後等級上限將擴展至滿級 Lv.100！');
       return;
     }
 
@@ -1449,6 +1469,33 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // 👑 寶可夢滿級 (Lv.100) 與終極訓練認證模組 (Max Level & Final Training System)
   // ==========================================
+    // 👑 計算各寶可夢當前階段的滿級上限（只有一次進化的初階如皮卡丘滿級為 50，進化為雷丘後才是 100 滿級；無進化或最終階滿級為 100）
+  function getMaxLevelForPokemon(pokemonId) {
+    if (!pokemonId) return 100;
+    let pid = parseInt(pokemonId, 10);
+    if (isNaN(pid)) {
+      if (typeof pokemonId === 'string' && pokemonId.startsWith('gen1_')) {
+        pid = parseInt(pokemonId.replace('gen1_', ''), 10);
+      } else if (pokemonId === 'pikachu') pid = 25;
+      else if (pokemonId === 'eevee') pid = 133;
+      else if (pokemonId === 'bulbasaur') pid = 1;
+      else if (pokemonId === 'charmander') pid = 4;
+      else if (pokemonId === 'squirtle') pid = 7;
+    }
+    if (isNaN(pid) || typeof GEN1_POKEMON_LIST === 'undefined') {
+      return 100;
+    }
+    const p = GEN1_POKEMON_LIST.find(item => item.id === pid);
+    if (!p) return 100;
+    // 若該寶可夢還能進化，其當前形態滿級上限即為進化所需等級 reqLevel (初階滿級為 Lv.50)
+    if (p.evolution) {
+      return p.evolution.reqLevel || 50;
+    }
+    // 已是最終形態或無進化型態，最終滿級為 Lv.100
+    return 100;
+  }
+  window.getMaxLevelForPokemon = getMaxLevelForPokemon;
+
   const MAX_PARTNER_LEVEL = 100;
 
   function isPokemonMaxTrained(pokemonId) {
@@ -1524,10 +1571,11 @@ document.addEventListener('DOMContentLoaded', () => {
       ? isCurrentPartnerPokemon(pid)
       : false;
 
+    const maxLvl = getMaxLevelForPokemon(pid);
     if (isCurrent && state.partnerData) {
       const curLevel = state.partnerData.level || 1;
-      if (curLevel >= MAX_PARTNER_LEVEL) {
-        return { leveledUp: false, reason: 'max_level', level: curLevel, name: pokeName, isCurrent: true };
+      if (curLevel >= maxLvl) {
+        return { leveledUp: false, reason: 'max_level', level: curLevel, maxLevel: maxLvl, name: pokeName, isCurrent: true };
       }
       const newLevel = curLevel + 1;
       state.partnerData.level = newLevel;
@@ -1539,7 +1587,7 @@ document.addEventListener('DOMContentLoaded', () => {
       all['gen1_' + pid] = { ...state.partnerData };
       saveAllPartnersData(all);
 
-      if (newLevel >= MAX_PARTNER_LEVEL) {
+      if (newLevel >= 100) {
         markPokemonMaxTrained(pid);
         markPokemonMaxTrained(state.partner);
         unlockAchievement('max_trained_master');
@@ -1549,7 +1597,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
       if (typeof renderNurtureShop === 'function') renderNurtureShop();
 
-      return { leveledUp: true, oldLevel: curLevel, newLevel, name: pokeName, isCurrent: true };
+      return { leveledUp: true, oldLevel: curLevel, newLevel, maxLevel: maxLvl, name: pokeName, isCurrent: true };
     }
 
     // 2. 非當前出戰夥伴：更新 allPartnersData 中該隻寶可夢的等級
@@ -1570,8 +1618,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pData = all[partnerKey] || { level: 1, exp: 0, maxExp: 85, stage: 0, crown: false };
     const curLevel = pData.level || 1;
 
-    if (curLevel >= MAX_PARTNER_LEVEL) {
-      return { leveledUp: false, reason: 'max_level', level: curLevel, name: pokeName, isCurrent: false };
+    if (curLevel >= maxLvl) {
+      return { leveledUp: false, reason: 'max_level', level: curLevel, maxLevel: maxLvl, name: pokeName, isCurrent: false };
     }
 
     const newLevel = curLevel + 1;
@@ -1585,7 +1633,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     saveAllPartnersData(all);
 
-    if (newLevel >= MAX_PARTNER_LEVEL) {
+    if (newLevel >= 100) {
       markPokemonMaxTrained(pid);
       unlockAchievement('max_trained_master');
     }
@@ -1601,9 +1649,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!state.partnerData) {
       state.partnerData = getPartnerData(state.partner);
     }
+    const oldPartner = getCurrentPartnerInfo();
+    const currentMaxLevel = getMaxLevelForPokemon(oldPartner ? (oldPartner.gen1Id || oldPartner.id) : state.partner);
     const oldLevel = state.partnerData.level || 1;
-    if (oldLevel >= MAX_PARTNER_LEVEL) {
-      state.partnerData.level = MAX_PARTNER_LEVEL;
+
+    if (oldLevel >= currentMaxLevel) {
+      state.partnerData.level = currentMaxLevel;
       state.partnerData.exp = state.partnerData.maxExp || 100;
       localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
       const allData = getAllPartnersData();
@@ -1619,15 +1670,14 @@ document.addEventListener('DOMContentLoaded', () => {
     state.partnerData.exp = (state.partnerData.exp || 0) + amount;
     let leveledUp = false;
     let evolved = false;
-    const oldPartner = getCurrentPartnerInfo();
 
-    while (state.partnerData.exp >= state.partnerData.maxExp && state.partnerData.level < MAX_PARTNER_LEVEL) {
+    while (state.partnerData.exp >= state.partnerData.maxExp && state.partnerData.level < currentMaxLevel) {
       state.partnerData.exp -= state.partnerData.maxExp;
       state.partnerData.level++;
       state.partnerData.maxExp = 60 + state.partnerData.level * 25;
       leveledUp = true;
-      if (state.partnerData.level >= MAX_PARTNER_LEVEL) {
-        state.partnerData.level = MAX_PARTNER_LEVEL;
+      if (state.partnerData.level >= currentMaxLevel) {
+        state.partnerData.level = currentMaxLevel;
         state.partnerData.exp = state.partnerData.maxExp;
         break;
       }
@@ -8435,12 +8485,14 @@ function openCurrentPartnerDetailModal() {
     let evoStr = '';
 
     if (targetP.evolution) {
+      const evoReq = targetP.evolution.reqLevel || 50;
+      const lvlStr = (evoReq === 50) ? '滿級五十級' : ('滿級' + evoReq + '級');
       if (targetP.evolution.method === 'stone') {
-        evoStr = '達成滿級一百級並使用' + targetP.evolution.stoneName + '進化為【' + targetP.evolution.evolvesToName + '】。';
+        evoStr = '達成' + lvlStr + '並使用' + targetP.evolution.stoneName + '進化為【' + targetP.evolution.evolvesToName + '】。進化後可培育至滿級一百級。';
       } else if (targetP.evolution.method === 'branch_stone') {
-        evoStr = '達成滿級一百級，可以使用水之石、雷之石、或火之石進化。';
+        evoStr = '達成' + lvlStr + '，可以使用水之石、雷之石、或火之石進化為多種形態，進化後可培育至滿級一百級。';
       } else if (targetP.evolution.reqLevel === 50) {
-        evoStr = '達成五十級進化為【' + targetP.evolution.evolvesToName + '】。';
+        evoStr = '達成滿級五十級進化為【' + targetP.evolution.evolvesToName + '】。進化後可培育至滿級一百級。';
       } else if (targetP.evolution.reqLevel === 100) {
         evoStr = '達成最終滿級一百級進化為【' + targetP.evolution.evolvesToName + '】。';
       } else if (targetP.evolution.reqLevel) {
@@ -8496,17 +8548,18 @@ function openCurrentPartnerDetailModal() {
     if (moveEl) moveEl.textContent = p.move || '十萬伏特';
     if (evoEl) {
       if (p.evolution) {
+        const evoReq = p.evolution.reqLevel || 50;
         if (p.evolution.method === 'stone') {
           const sCount = (state.stones && state.stones[p.evolution.stone]) || 0;
-          evoEl.innerHTML = `💎 <strong style="color:#D97706;">滿級 Lv.100</strong> ＋ 使用【${formatZhuyinDisplay(p.evolution.stoneName)}】進化為：【${formatZhuyinDisplay(p.evolution.evolvesToName)}】<span style="margin-left:8px;font-size:13px;color:#D97706;font-weight:900;">(擁有: ${sCount}顆)</span>`;
+          evoEl.innerHTML = `💎 <strong style="color:#D97706;">前階滿級 Lv.${evoReq}</strong> ＋ 使用【${formatZhuyinDisplay(p.evolution.stoneName)}】進化為：【${formatZhuyinDisplay(p.evolution.evolvesToName)}】<span style="margin-left:8px;font-size:13px;color:#D97706;font-weight:900;">(擁有: ${sCount}顆，進化後上限升至 Lv.100)</span>`;
         } else if (p.evolution.method === 'branch_stone' && p.evolution.branches) {
-          evoEl.innerHTML = `💎 <strong style="color:#D97706;">滿級 Lv.100</strong> ＋ 屬性寶石多元分支進化：<div style="margin-top:4px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px;">` +
+          evoEl.innerHTML = `💎 <strong style="color:#D97706;">前階滿級 Lv.${evoReq}</strong> ＋ 屬性寶石多元分支進化（進化後上限升至 Lv.100）：<div style="margin-top:4px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px;">` +
             p.evolution.branches.map(b => {
               const bCount = (state.stones && state.stones[b.stone]) || 0;
               return `<span style="background:#F1F5F9;padding:2px 8px;border-radius:10px;border:1px solid #CBD5E1;">${formatZhuyinDisplay(b.stoneName)} (${bCount}顆) ➔ 【${formatZhuyinDisplay(b.evolvesToName)}】</span>`;
             }).join('') + `</div>`;
         } else if (p.evolution.reqLevel === 50) {
-          evoEl.innerHTML = '達成 <strong>Lv.50 前階滿級</strong> 進化為：【' + formatZhuyinDisplay(p.evolution.evolvesToName) + '】';
+          evoEl.innerHTML = '達成 <strong>Lv.50 前階滿級</strong> 進化為：【' + formatZhuyinDisplay(p.evolution.evolvesToName) + '】（進化後上限升至 Lv.100）';
         } else if (p.evolution.reqLevel === 100) {
           evoEl.innerHTML = '達成 <strong>最終滿級 Lv.100</strong> 進化為：【' + formatZhuyinDisplay(p.evolution.evolvesToName) + '】';
         } else {
