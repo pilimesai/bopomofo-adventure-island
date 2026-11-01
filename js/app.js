@@ -1650,81 +1650,99 @@ document.addEventListener('DOMContentLoaded', () => {
 
    */
 
+  let activeEvolutionAudio = null;
+
+  function stopEvolutionAudio() {
+    if (activeEvolutionAudio) {
+      try {
+        activeEvolutionAudio.pause();
+        activeEvolutionAudio.currentTime = 0;
+        activeEvolutionAudio.onended = null;
+        activeEvolutionAudio.onerror = null;
+        activeEvolutionAudio.src = '';
+      } catch (e) {}
+      activeEvolutionAudio = null;
+    }
+  }
+
   function showEvolutionModal(oldPartner, newPartner) {
+    stopEvolutionAudio();
 
-    window.audioEngine.playFanfare();
+    // 🎵 檢查是否為胖丁終極進化（胖丁使用月之石在滿級 Lv.100 進化為胖可丁）
+    const isJigglypuffEvo = (oldPartner && (oldPartner.gen1Id === 39 || oldPartner.name === '胖丁')) ||
+                            (newPartner && (newPartner.id === 40 || newPartner.gen1Id === 40 || newPartner.name === '胖可丁'));
 
-    if (window.confetti) window.confetti.trigger(120);
+    if (isJigglypuffEvo) {
+      // 🎶 胖丁專屬終極進化原聲歌聲（YouTube 經典動畫胖丁唱歌原聲）
+      const songAudio = new Audio('assets/audio/jigglypuff_song.m4a');
+      activeEvolutionAudio = songAudio;
+      songAudio.play().catch(err => {
+        const fallback = new Audio('assets/audio/jigglypuff_song.webm');
+        activeEvolutionAudio = fallback;
+        fallback.play().catch(e => console.warn('Jigglypuff song play failed:', e));
+      });
+    } else {
+      window.audioEngine.playFanfare();
+    }
 
-
+    if (window.confetti) window.confetti.trigger(isJigglypuffEvo ? 180 : 120);
 
     const modal = document.createElement('div');
-
-    modal.className = 'evolution-modal-overlay';
+    modal.className = 'evolution-modal-overlay' + (isJigglypuffEvo ? ' jigglypuff-special-evolution' : '');
 
     modal.innerHTML = `
+      <div class="evolution-card ${isJigglypuffEvo ? 'jigglypuff-evolution-card' : ''}">
+        ${isJigglypuffEvo ? `
+          <div class="jiggly-music-notes">
+            <span class="j-note n1">🎵</span>
+            <span class="j-note n2">🎶</span>
+            <span class="j-note n3">🎤</span>
+            <span class="j-note n4">💤</span>
+            <span class="j-note n5">✨</span>
+            <span class="j-note n6">💖</span>
+          </div>
+          <h3 style="font-size:22px;color:#FB7185;margin:0 0 6px 0;font-weight:900;text-shadow:0 0 12px rgba(251,113,133,0.5);">
+            🎤 胖丁之歌響起～！美妙歌聲在全場迴盪！
+          </h3>
+        ` : `
+          <h3 style="font-size:22px;color:#FDE047;margin:0 0 8px 0;font-weight:900;">
+            🌟 什麼！？夥伴的樣子...！？
+          </h3>
+        `}
 
-      <div class="evolution-card">
-
-        <h3 style="font-size:22px;color:#FDE047;margin:0 0 8px 0;font-weight:900;">
-
-          🌟 什麼！？夥伴的樣子...！？
-
-        </h3>
-
-        <div class="evolution-sprite-stage" id="evolution-sprite">
-
+        <div class="evolution-sprite-stage ${isJigglypuffEvo ? 'jiggly-sprite-stage' : ''}" id="evolution-sprite">
           ${getPokemonAvatarHtml(newPartner)}
-
         </div>
 
         <h2 style="font-size:28px;color:#FFFFFF;margin:8px 0 12px 0;font-weight:900;">
-
           恭喜！你的夥伴成功進化成【${newPartner.name}】了！
-
         </h2>
 
         <p style="font-size:16px;color:#FDE047;font-weight:800;margin-bottom:16px;">
-
-          🔥 新絕招解鎖：【${newPartner.move}】！戰鬥威力大幅提升！
-
+          ${isJigglypuffEvo ? '💖 胖可丁吸收了月之石與美妙歌聲能量！防禦與體力達到極致境界！' : `🔥 新絕招解鎖：【${newPartner.move}】！戰鬥威力大幅提升！`}
         </p>
 
-        <button class="big-action-btn" id="btn-close-evolution" style="margin:0 auto;">
-
+        <button class="big-action-btn ${isJigglypuffEvo ? 'jiggly-action-btn' : ''}" id="btn-close-evolution" style="margin:0 auto;">
           <span>💖</span>
-
           <span>太棒了！一起繼續探險！</span>
-
         </button>
-
       </div>
-
     `;
 
     document.body.appendChild(modal);
 
-
-
     const btnClose = modal.querySelector('#btn-close-evolution');
-
     if (btnClose) {
-
       btnClose.addEventListener('click', () => {
-
         window.audioEngine.playPop();
-
+        stopEvolutionAudio();
         modal.remove();
-
         updateTrainerHeaderUI();
-    if (typeof ensureStartersInGen1Caught === 'function') {
-      ensureStartersInGen1Caught();
-    }
-
+        if (typeof ensureStartersInGen1Caught === 'function') {
+          ensureStartersInGen1Caught();
+        }
       });
-
     }
-
   }
 
 

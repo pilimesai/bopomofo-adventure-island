@@ -7242,3 +7242,65 @@ html, body {
   transform: scale(0.82);
   transform-origin: center center;
 }
+
+
+/* 🎵 胖丁專屬終極進化歌聲與舞台特效 (Jigglypuff Ultimate Evolution Special Effects) */
+.evolution-card.jigglypuff-evolution-card {
+  background: linear-gradient(135deg, #1E1B4B 0%, #831843 45%, #BE185D 100%) !important;
+  border: 4px solid #FB7185 !important;
+  box-shadow: 0 0 50px rgba(244, 63, 94, 0.65), 0 0 100px rgba(251, 113, 133, 0.4) !important;
+  position: relative;
+  overflow: visible;
+}
+
+.jiggly-sprite-stage {
+  background: radial-gradient(circle, #FFF1F2 0%, #FECDD3 40%, #FB7185 85%, #E11D48 100%) !important;
+  box-shadow: 0 0 30px rgba(244, 63, 94, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.8) !important;
+  border: 3px solid #FDA4AF !important;
+  animation: jigglyStagePulse 2s ease-in-out infinite alternate !important;
+}
+
+@keyframes jigglyStagePulse {
+  0% { transform: scale(1); box-shadow: 0 0 25px rgba(244, 63, 94, 0.6); }
+  100% { transform: scale(1.06); box-shadow: 0 0 45px rgba(244, 63, 94, 0.95); }
+}
+
+.jiggly-music-notes {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.j-note {
+  position: absolute;
+  font-size: 26px;
+  animation: floatNote 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+.j-note.n1 { top: -10px; left: 15%; animation-delay: 0s; }
+.j-note.n2 { top: 20px; right: 12%; animation-delay: 0.4s; }
+.j-note.n3 { top: -25px; right: 28%; animation-delay: 0.8s; }
+.j-note.n4 { bottom: 60px; left: 8%; animation-delay: 1.2s; }
+.j-note.n5 { bottom: 80px; right: 8%; animation-delay: 1.6s; }
+.j-note.n6 { top: 40px; left: 6%; animation-delay: 2s; }
+
+@keyframes floatNote {
+  0% { transform: translateY(0) scale(0.9) rotate(0deg); opacity: 0; }
+  25% { opacity: 1; transform: translateY(-12px) scale(1.1) rotate(10deg); }
+  75% { opacity: 1; transform: translateY(-24px) scale(1.2) rotate(-10deg); }
+  100% { transform: translateY(-38px) scale(0.8) rotate(15deg); opacity: 0; }
+}
+
+.big-action-btn.jiggly-action-btn {
+  background: linear-gradient(135deg, #EC4899 0%, #F43F5E 100%) !important;
+  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.5) !important;
+  border: 2px solid #FDA4AF !important;
+}
+.big-action-btn.jiggly-action-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 22px rgba(244, 63, 94, 0.7) !important;
+}
