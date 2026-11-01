@@ -3586,6 +3586,104 @@ function setupPartnerModal() {
     }
   }
 
+
+  // =========================================================================
+  // 🔴 寶可夢稀有度梯隊與對戰對手分配系統 (Pokemon Opponents & Difficulty System)
+  // 依題目與道館難度對應不同稀有度的初代 151 隻寶可夢，越困難題目對應越稀有寶可夢！
+  // =========================================================================
+  const POKEMON_RARITY_TIERS = {
+    // ⭐️ Tier 1: 常見初階野生 (37隻，對應基礎題目)
+    1: [10, 11, 13, 14, 16, 19, 21, 23, 27, 29, 32, 41, 43, 46, 48, 50, 52, 54, 56, 60, 69, 72, 74, 81, 84, 86, 88, 90, 92, 96, 98, 100, 102, 109, 118, 120, 129],
+    // ⭐️⭐️ Tier 2: 御三家/初階人氣/一階進化 (49隻，對應中階題目)
+    2: [1, 4, 7, 17, 20, 22, 24, 25, 28, 30, 33, 35, 37, 39, 42, 44, 47, 49, 51, 53, 55, 57, 58, 61, 63, 66, 70, 73, 75, 77, 79, 85, 87, 89, 93, 97, 99, 101, 104, 108, 110, 111, 114, 116, 119, 122, 128, 132, 133],
+    // ⭐️⭐️⭐️ Tier 3: 稀有二階/特殊強力怪 (33隻，對應進階三拼/聲調題目)
+    3: [2, 5, 8, 12, 15, 26, 36, 38, 40, 45, 64, 67, 71, 78, 80, 82, 83, 91, 103, 105, 106, 107, 112, 117, 121, 123, 124, 125, 126, 127, 138, 140],
+    // ⭐️⭐️⭐️⭐️ Tier 4: 終極進化/準神/化石/史詩形態 (26隻，對應期末考高難度道館)
+    4: [3, 6, 9, 18, 31, 34, 62, 65, 68, 76, 94, 95, 113, 115, 130, 131, 134, 135, 136, 137, 139, 141, 142, 143, 147, 148],
+    // ⭐️⭐️⭐️⭐️⭐️ Tier 5: 傳說神獸與幻之寶可夢 (6隻，對應石英高原與終極考核)
+    5: [144, 145, 146, 149, 150, 151]
+  };
+
+  function assignOpponentPokemonToQuestions(stage, questions, isFinal) {
+    if (typeof GEN1_POKEMON_LIST === 'undefined' || !questions || questions.length === 0) return;
+
+    const usedIds = new Set();
+    const stageId = stage.id || 1;
+    const caughtList = state.gen1Caught || [];
+
+    questions.forEach((q, i) => {
+      const isBossQ = (i === questions.length - 1);
+      let targetTier = 1;
+
+      // 依道館關卡由易至難遞增稀有度梯隊
+      if (stageId <= 2) {
+        targetTier = isBossQ ? 3 : (i >= 3 ? 2 : 1);
+      } else if (stageId <= 4) {
+        targetTier = isBossQ ? 3 : (i >= 2 ? 3 : 2);
+      } else if (stageId <= 6) {
+        targetTier = isBossQ ? 4 : (i >= 2 ? 3 : 2);
+      } else if (stageId <= 8) {
+        targetTier = isBossQ ? 4 : (i >= 2 ? 4 : 3);
+      } else if (stageId === 9) {
+        targetTier = isBossQ ? 5 : (i >= 2 ? 4 : 4);
+      } else {
+        // 第10關：石英高原（傳說神獸大集合）
+        targetTier = isBossQ ? 5 : (i >= 2 ? 5 : 4);
+      }
+
+      // 期末考難度提升一個稀有度檔次！
+      if (isFinal) {
+        targetTier = Math.min(5, targetTier + 1);
+      }
+
+      let chosenId = null;
+
+      // 1. 若為關卡最後一題（Boss題）且道館館主尚未被使用過，優先考慮
+      if (isBossQ && stage.bossId && !usedIds.has(stage.bossId)) {
+        if (!caughtList.includes(stage.bossId)) {
+          chosenId = stage.bossId;
+        }
+      }
+
+      if (!chosenId) {
+        // 2. 優先在目標稀有度梯隊中挑選「尚未收服」的寶可夢，協助玩家集滿 151 圖鑑！
+        const tierPool = POKEMON_RARITY_TIERS[targetTier] || POKEMON_RARITY_TIERS[1];
+        const uncaughtInTier = tierPool.filter(id => !caughtList.includes(id) && !usedIds.has(id));
+
+        if (uncaughtInTier.length > 0) {
+          chosenId = uncaughtInTier[Math.floor(Math.random() * uncaughtInTier.length)];
+        } else {
+          // 3. 若目標梯隊已全部收服，跨梯隊尋找未收服寶可夢
+          let anyUncaught = [];
+          for (let t = targetTier; t >= 1; t--) {
+            const pList = POKEMON_RARITY_TIERS[t].filter(id => !caughtList.includes(id) && !usedIds.has(id));
+            if (pList.length > 0) { anyUncaught = pList; break; }
+          }
+          if (anyUncaught.length === 0) {
+            for (let t = targetTier + 1; t <= 5; t++) {
+              const pList = POKEMON_RARITY_TIERS[t].filter(id => !caughtList.includes(id) && !usedIds.has(id));
+              if (pList.length > 0) { anyUncaught = pList; break; }
+            }
+          }
+
+          if (anyUncaught.length > 0) {
+            chosenId = anyUncaught[Math.floor(Math.random() * anyUncaught.length)];
+          } else {
+            // 4. 若全部或相鄰梯隊都已收服，隨機抽樣避免本局重複
+            const unusedInTier = tierPool.filter(id => !usedIds.has(id));
+            const finalCandidates = unusedInTier.length > 0 ? unusedInTier : tierPool;
+            chosenId = finalCandidates[Math.floor(Math.random() * finalCandidates.length)];
+          }
+        }
+      }
+
+      usedIds.add(chosenId);
+      const pObj = GEN1_POKEMON_LIST.find(p => p.id === chosenId) || GEN1_POKEMON_LIST[0];
+      q.oppPokemon = pObj;
+      q.isShiny = (Math.random() < 0.12);
+    });
+  }
+
   function startStageBattle(stage) {
 
     state.adventure.activeStage = stage;
@@ -3627,33 +3725,11 @@ function setupPartnerModal() {
 
 
 
-        // 🔴 依關卡稀有度挑選對手寶可夢（優先遭遇尚未收服的寶可夢，協助玩家集滿 151 圖鑑！）
-    let oppPokemon = null;
-    const pool = stage.wildPool || [stage.bossId || 25];
-    const uncaughtInPool = pool.filter(id => !state.gen1Caught.includes(id));
-    let chosenId = stage.bossId || 25;
-    if (uncaughtInPool.length > 0) {
-      // 優先遭遇未收服野生寶可夢
-      chosenId = uncaughtInPool[Math.floor(Math.random() * uncaughtInPool.length)];
-    } else {
-      // 若本關已全部收服，隨機抽樣或派出道館館主
-      chosenId = (Math.random() < 0.4 && stage.bossId) ? stage.bossId : pool[Math.floor(Math.random() * pool.length)];
-    }
-
-    if (typeof GEN1_POKEMON_LIST !== 'undefined') {
-      oppPokemon = GEN1_POKEMON_LIST.find(p => p.id === chosenId) || GEN1_POKEMON_LIST[0];
-    } else {
-      oppPokemon = {
-        id: chosenId,
-        name: stage.bossName || '寶可夢',
-        zhuyin: '',
-        color: stage.color || '#EF4444',
-        image: '',
-        sprite: '',
-        types: [stage.bossType || '一般']
-      };
-    }
-    state.adventure.currentOpponentPokemon = oppPokemon;
+    // 🔴 依照各題目難度挑選對戰對手寶可夢（題目/關卡越困難，遭遇的寶可夢越稀有！）
+    assignOpponentPokemonToQuestions(stage, selectedQuestions, isFinal);
+    const firstOpp = selectedQuestions[0] ? selectedQuestions[0].oppPokemon : null;
+    state.adventure.currentOpponentPokemon = firstOpp;
+    state.adventure.caughtInCurrentBattle = [];
 
     const partnerObj = getCurrentPartnerInfo();
 
@@ -3731,48 +3807,27 @@ function setupPartnerModal() {
 
           <div class="pokemon-stadium-platforms">
 
-            <!-- 右上方：對手/野生注音寶可夢 -->
-
+            <!-- 右上方：對手/野生寶可夢真實立繪 -->
             <div class="poke-opponent-zone" id="poke-opp-zone">
-
               <div class="poke-opponent-plate">
-
                 <div style="display:flex;justify-content:space-between;align-items:center;">
-
-                  <strong style="font-size:16px;color:#1F2937;" id="poke-opp-name">野生的【神秘注音精靈】</strong>
-
-                  <span style="font-size:12px;background:#E0E7FF;color:#4338CA;padding:2px 8px;border-radius:10px;font-weight:900;" id="poke-opp-level">Lv.3</span>
-
+                  <strong style="font-size:16px;color:#1F2937;" id="poke-opp-name">野生的【${firstOpp ? firstOpp.name : '寶可夢'}】 <span class="opp-dex-badge">${firstOpp ? firstOpp.dexNo : ''}</span></strong>
+                  <span style="font-size:12px;background:#E0E7FF;color:#4338CA;padding:2px 8px;border-radius:10px;font-weight:900;" id="poke-opp-level">Lv.${stage.id * 4 + (isFinal ? 8 : 0)}</span>
                 </div>
-
-                <div style="font-size:12px;color:#059669;font-weight:800;margin-top:2px;" id="poke-opp-type">⚡ 電氣系</div>
-
+                <div style="font-size:12px;font-weight:800;margin-top:2px;" id="poke-opp-type">${firstOpp ? firstOpp.types.map(t => `<span class="battle-type-pill" style="background:${firstOpp.color || '#3B82F6'};">${firstOpp.icon || '⚡'} ${t}系</span>`).join(' ') : '⚡ 電氣系'}</div>
                 <div class="poke-hp-wrapper">
-
                   <div class="poke-hp-label">
-
                     <span>HP</span>
-
                     <span id="poke-opp-hp-text">100%</span>
-
                   </div>
-
                   <div class="poke-hp-track">
-
                     <div class="poke-hp-bar" id="poke-opp-hp-fill" style="width:100%;"></div>
-
                   </div>
-
                 </div>
-
               </div>
-
-              <div class="poke-opponent-sprite" id="poke-opp-sprite">
-
-                ${stage.questions[0].icon || stage.icon}
-
+              <div class="poke-opponent-sprite" id="poke-opp-sprite" style="border-color:${firstOpp ? (firstOpp.color || '#4CAF50') : '#4CAF50'};">
+                ${firstOpp ? `<img src="assets/pokemon/gen1/${firstOpp.id}.png" alt="${firstOpp.name}" class="pokemon-opponent-img" onerror="this.onerror=null;this.src='${firstOpp.image}';" />` : '🐾'}
               </div>
-
             </div>
 
 
@@ -4141,6 +4196,7 @@ function setupPartnerModal() {
     if (wrongFb) wrongFb.style.display = 'none';
 
     const q = questions[state.adventure.qIndex];
+    const isFinal = (state.examDifficulty === 'final');
 
 
 
@@ -4214,29 +4270,38 @@ function setupPartnerModal() {
 
 
 
-    // 查詢目標注音的寶可夢資訊
-
-    const sym = ZHUYIN_DATA.symbols.find(s => s.char === q.answer);
+    // 🔴 載入本題專屬對手寶可夢立繪、屬性與名稱（題目越難，對應寶可夢越稀有！）
+    const opp = q.oppPokemon || state.adventure.currentOpponentPokemon || (typeof GEN1_POKEMON_LIST !== 'undefined' ? GEN1_POKEMON_LIST[0] : null);
+    state.adventure.currentOpponentPokemon = opp;
 
     const oppName = document.getElementById('poke-opp-name');
-
     const oppType = document.getElementById('poke-opp-type');
-
     const oppLevel = document.getElementById('poke-opp-level');
-
     const promptText = document.getElementById('battle-q-prompt');
 
+    if (opp && oppSprite) {
+      oppSprite.innerHTML = `
+        <img src="assets/pokemon/gen1/${opp.id}.png" alt="${opp.name}" class="pokemon-opponent-img ${q.isShiny ? 'shiny-glow' : ''}" onerror="this.onerror=null;this.src='${opp.image}';" />
+        ${q.isShiny ? '<span class="shiny-star-badge" style="position:absolute;top:-4px;right:-4px;background:#F59E0B;color:#FFF;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:900;box-shadow:0 2px 4px rgba(0,0,0,0.2);">✨ 閃光</span>' : ''}
+      `;
+      oppSprite.style.borderColor = opp.color || '#3B82F6';
+      oppSprite.style.background = `radial-gradient(circle, #FFFFFF 35%, ${(opp.color || '#3B82F6')}25 100%)`;
+    }
 
+    if (opp && oppName) {
+      const isBossQ = (state.adventure.qIndex === questions.length - 1);
+      const prefix = q.isShiny ? '✨ 稀有閃光' : (isBossQ ? '👑 道館守護' : '野生的');
+      oppName.innerHTML = `${prefix}【${opp.name}】 <span class="opp-dex-badge">${opp.dexNo}</span>`;
+    }
 
-    if (oppSprite) oppSprite.textContent = q.icon || (sym ? sym.icon : stage.icon);
+    if (opp && oppType) {
+      oppType.innerHTML = opp.types.map(t => `<span class="battle-type-pill" style="background:${opp.color || '#3B82F6'};">${opp.icon || '⚡'} ${t}系</span>`).join(' ');
+    }
 
-    // 嚴格防止洩漏答案：答題前對手名稱絕不顯示注音符號！
-
-    if (oppName) oppName.textContent = isShiny ? '✨ 稀有閃光【神秘注音精靈】 ✨' : '野生的【神秘注音精靈】';
-
-    if (oppType) oppType.textContent = sym ? `${sym.pokeTypeIcon} ${sym.pokeType}` : `🌟 屬性：綜合考核`;
-
-    if (oppLevel) oppLevel.textContent = `Lv.${stage.id * 3 + state.adventure.qIndex + 1}`;
+    if (oppLevel) {
+      const baseLvl = stage.id * 4 + state.adventure.qIndex * 2 + (isFinal ? 8 : 0);
+      oppLevel.textContent = `Lv.${Math.min(99, baseLvl)}`;
+    }
 
 
 
@@ -5182,25 +5247,20 @@ function setupPartnerModal() {
             window.audioEngine.playPokeCaught();
             if (window.confetti) window.confetti.trigger(isShiny ? 90 : 50);
 
-            // 收服至注音圖鑑
-            if (!state.pokedexCaught.includes(q.answer) && ZHUYIN_DATA.symbols.some(s => s.char === q.answer)) {
-              state.pokedexCaught.push(q.answer);
-              localStorage.setItem('zhuyin_caught_symbols', JSON.stringify(state.pokedexCaught));
-              updatePokedexProgressUI();
-              renderGallery();
-            }
-            // 同步收服一隻第一世代 151 寶可夢！
-            if (typeof GEN1_POKEMON_LIST !== 'undefined' && state.gen1Caught && state.gen1Caught.length < 151) {
-              const uncaught = GEN1_POKEMON_LIST.filter(p => !state.gen1Caught.includes(p.id));
-              if (uncaught.length > 0) {
-                const newCaught = uncaught[Math.floor(Math.random() * uncaught.length)];
-                state.gen1Caught.push(newCaught.id);
+            // 🔴 成功收服對戰寶可夢！登錄至 151 寶可夢大圖鑑！
+            const opp = q.oppPokemon || state.adventure.currentOpponentPokemon;
+            let isNewlyCaught = false;
+            if (opp && typeof GEN1_POKEMON_LIST !== 'undefined') {
+              if (!state.gen1Caught.includes(opp.id)) {
+                state.gen1Caught.push(opp.id);
                 localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
+                isNewlyCaught = true;
                 updatePokedexProgressUI();
                 renderGen1Pokedex();
               }
+              if (!state.adventure.caughtInCurrentBattle) state.adventure.caughtInCurrentBattle = [];
+              state.adventure.caughtInCurrentBattle.push(opp);
             }
-
 
             const starBonus = isShiny ? 2 : 1;
             addStars(starBonus, false);
@@ -5209,18 +5269,20 @@ function setupPartnerModal() {
             localStorage.setItem('zhuyin_balls', state.balls.toString());
 
             updateTrainerHeaderUI();
-    if (typeof ensureStartersInGen1Caught === 'function') {
-      ensureStartersInGen1Caught();
-    }
+            if (typeof ensureStartersInGen1Caught === 'function') {
+              ensureStartersInGen1Caught();
+            }
 
             const oppNameEl = document.getElementById('poke-opp-name');
-            const sym = ZHUYIN_DATA.symbols.find(s => s.char === q.answer);
-            if (oppNameEl) {
-              oppNameEl.textContent = sym ? `收服成功：【${sym.char}】${sym.pokeName}` : `收服成功！`;
+            if (oppNameEl && opp) {
+              oppNameEl.innerHTML = `<span style="color:#10B981;font-weight:900;">🎉 成功收服：【${opp.name}】(${opp.dexNo})！</span>`;
             }
-            setMascotSpeech(isShiny
-              ? `✨ 太神了！收服了【稀有閃光精靈】！獲得雙倍星星與精靈球！`
-              : `✨ 叮！答對獲得 20 分！成功收服【${q.answer}】！`
+            setMascotSpeech(isNewlyCaught
+              ? `🎉 太強了！答對並成功收服了【${opp ? opp.name : '寶可夢'}】！已登錄 151 寶可夢大圖鑑！（${state.gen1Caught.length}/151 隻）`
+              : (isShiny
+                ? `✨ 太神了！收服了稀有閃光【${opp ? opp.name : '寶可夢'}】！獲得雙倍星星與精靈球！`
+                : `⚡ 答對了！成功收服【${opp ? opp.name : '寶可夢'}】！獲得戰鬥經驗與精靈球！`
+              )
             );
 
             state.adventure.qIndex++;
@@ -5416,27 +5478,23 @@ function setupPartnerModal() {
               擊敗道館館主【${stage.bossIcon} ${stage.bossName}】，獲得 <strong>+6 顆金星星</strong>、<strong>+9 顆寶貝球</strong> 與 <strong style="color:#D97706;">+150 💰 冒險金幣</strong>！
             </p>
             <!-- 🔴 成功收服寶可夢成果展示卡 -->
-            ${opp ? `
-              <div class="caught-banner-card" style="margin:14px auto;max-width:440px;background:linear-gradient(135deg, #FEF2F2, #FFFBEB);border:3px solid #EF4444;border-radius:18px;padding:14px 18px;box-shadow:0 6px 0 #DC2626;animation:fadeIn 0.5s ease;">
-                <div style="font-size:15px;color:#DC2626;font-weight:900;margin-bottom:6px;">
-                  ${isNewlyCaught ? '🔴 丟出精靈球！成功收服新寶可夢！' : '⚡ 擊敗道館強敵！寶可夢圖鑑確認！'}
-                </div>
-                <div style="display:flex;align-items:center;justify-content:center;gap:16px;">
-                  <img src="${opp.image || opp.sprite}" alt="${opp.name}" style="width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.25));" onerror="this.outerHTML='<div style=\'font-size:42px;\'>${stage.bossIcon || '🐾'}</div>'" />
-                  <div style="text-align:left;">
-                    <div style="font-size:20px;font-weight:900;color:#1F2937;">
-                      ${opp.name} <span style="font-size:13px;color:#64748B;">#${String(opp.id).padStart(3, '0')}</span>
-                    </div>
-                    <div style="font-size:13px;color:#D97706;font-weight:800;margin-top:2px;">
-                      ${isNewlyCaught ? '✨ 已新登錄至「寶可夢大圖鑑」！' : '🎖️ 戰鬥磨練完成！'}
-                    </div>
-                    <div style="font-size:12px;color:#4B5563;margin-top:3px;">
-                      目前 151 圖鑑收集：<strong style="color:#DC2626;font-size:14px;">${state.gen1Caught.length} / 151 隻</strong>
-                    </div>
-                  </div>
-                </div>
+            <div class="caught-banner-card" style="margin:14px auto;max-width:480px;background:linear-gradient(135deg, #FEF2F2, #FFFBEB);border:3px solid #EF4444;border-radius:18px;padding:16px 20px;box-shadow:0 6px 0 #DC2626;animation:fadeIn 0.5s ease;">
+              <div style="font-size:16px;color:#DC2626;font-weight:900;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px;">
+                <span>🔴</span> <strong>本場道館挑戰收服的寶可夢：</strong>
               </div>
-            ` : ''}
+              <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+                ${(state.adventure.caughtInCurrentBattle && state.adventure.caughtInCurrentBattle.length > 0 ? state.adventure.caughtInCurrentBattle : (opp ? [opp] : [])).map(p => `
+                  <div style="background:#FFFFFF;border:2px solid ${p.color || '#CBD5E1'};border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;align-items:center;min-width:70px;box-shadow:0 2px 5px rgba(0,0,0,0.06);">
+                    <img src="assets/pokemon/gen1/${p.id}.png" alt="${p.name}" style="width:46px;height:46px;object-fit:contain;" onerror="this.onerror=null;this.src='${p.image}';" />
+                    <span style="font-size:12px;font-weight:900;color:#1E293B;margin-top:2px;">${p.name}</span>
+                    <span style="font-size:10px;color:#64748B;">${p.dexNo}</span>
+                  </div>
+                `).join('')}
+              </div>
+              <div style="font-size:13px;color:#4B5563;font-weight:800;border-top:1px dashed #FCA5A5;padding-top:8px;">
+                目前 151 寶可夢大圖鑑收集：<strong style="color:#DC2626;font-size:15px;">${state.gen1Caught.length} / 151 隻</strong>
+              </div>
+            </div>
 
             <!-- 🎁 道館神秘大寶箱 -->
             <div class="mystery-chest-box" id="mystery-chest-box">
