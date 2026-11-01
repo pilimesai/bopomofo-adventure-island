@@ -600,7 +600,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
     "zhuyin": "ㄆㄧˊ ㄎㄚˇ ㄑㄧㄡ",
     "evolution": {
-      "reqLevel": 16,
+      "method": "stone",
+      "stone": "thunder",
+      "stoneName": "雷之石",
       "evolvesToId": 26,
       "evolvesToName": "雷丘"
     },
@@ -717,7 +719,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/30.png",
     "zhuyin": "ㄋㄧˊ ㄉㄨㄛ ㄋㄚˋ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "moon",
+      "stoneName": "月之石",
       "evolvesToId": 31,
       "evolvesToName": "尼多后"
     },
@@ -789,7 +793,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/33.png",
     "zhuyin": "ㄋㄧˊ ㄉㄨㄛ ㄌㄧˋ ㄋㄨㄛˋ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "moon",
+      "stoneName": "月之石",
       "evolvesToId": 34,
       "evolvesToName": "尼多王"
     },
@@ -836,7 +842,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/35.png",
     "zhuyin": "ㄆㄧˊ ㄆㄧˊ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "moon",
+      "stoneName": "月之石",
       "evolvesToId": 36,
       "evolvesToName": "皮可西"
     },
@@ -882,7 +890,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/37.png",
     "zhuyin": "ㄌㄧㄡˋ ㄨㄟˇ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "fire",
+      "stoneName": "火之石",
       "evolvesToId": 38,
       "evolvesToName": "九尾"
     },
@@ -929,7 +939,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png",
     "zhuyin": "ㄆㄤˋ ㄉㄧㄥ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "moon",
+      "stoneName": "月之石",
       "evolvesToId": 40,
       "evolvesToName": "胖可丁"
     },
@@ -1051,7 +1063,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/44.png",
     "zhuyin": "ㄔㄡˋ ㄔㄡˋ ㄏㄨㄚ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "leaf",
+      "stoneName": "葉之石",
       "evolvesToId": 45,
       "evolvesToName": "霸王花"
     },
@@ -1378,7 +1392,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/58.png",
     "zhuyin": "ㄎㄚˇ ㄉㄧˋ ㄍㄡˇ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "fire",
+      "stoneName": "火之石",
       "evolvesToId": 59,
       "evolvesToName": "風速狗"
     },
@@ -1449,7 +1465,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/61.png",
     "zhuyin": "ㄨㄣˊ ㄒㄧㄤ ㄐㄩㄣ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "water",
+      "stoneName": "水之石",
       "evolvesToId": 62,
       "evolvesToName": "蚊香泳士"
     },
@@ -1665,7 +1683,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/70.png",
     "zhuyin": "ㄎㄡˇ ㄉㄞ ㄏㄨㄚ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "leaf",
+      "stoneName": "葉之石",
       "evolvesToId": 71,
       "evolvesToName": "大食花"
     },
@@ -2139,7 +2159,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/90.png",
     "zhuyin": "ㄉㄚˋ ㄕㄜˊ ㄅㄟˋ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "water",
+      "stoneName": "水之石",
       "evolvesToId": 91,
       "evolvesToName": "刺甲貝"
     },
@@ -2421,7 +2443,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/102.png",
     "zhuyin": "ㄉㄢˋ ㄉㄢˋ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "leaf",
+      "stoneName": "葉之石",
       "evolvesToId": 103,
       "evolvesToName": "椰蛋樹"
     },
@@ -2826,7 +2850,9 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/120.png",
     "zhuyin": "ㄏㄞˇ ㄒㄧㄥ ㄒㄧㄥ",
     "evolution": {
-      "reqLevel": 36,
+      "method": "stone",
+      "stone": "water",
+      "stoneName": "水之石",
       "evolvesToId": 121,
       "evolvesToName": "寶石海星"
     },
@@ -3113,9 +3139,30 @@ const GEN1_POKEMON_LIST = [
     "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png",
     "zhuyin": "ㄧ ㄅㄨˋ",
     "evolution": {
-      "reqLevel": 16,
-      "evolvesToId": 134,
-      "evolvesToName": "水伊布"
+      "method": "branch_stone",
+      "branches": [
+        {
+          "stone": "water",
+          "stoneName": "水之石",
+          "evolvesToId": 134,
+          "evolvesToName": "水伊布",
+          "type": "水"
+        },
+        {
+          "stone": "thunder",
+          "stoneName": "雷之石",
+          "evolvesToId": 135,
+          "evolvesToName": "雷伊布",
+          "type": "電"
+        },
+        {
+          "stone": "fire",
+          "stoneName": "火之石",
+          "evolvesToId": 136,
+          "evolvesToName": "火伊布",
+          "type": "火"
+        }
+      ]
     },
     "move": "破壞光線",
     "desc": "全國圖鑑 No.133，來自關都地區的經典寶可夢！屬性為【一般】。"

@@ -138,7 +138,14 @@ document.addEventListener('DOMContentLoaded', () => {
     gen1Caught: JSON.parse(localStorage.getItem('zhuyin_caught_gen1') || '[1, 4, 7, 25, 133]'),
 
     examDifficulty: localStorage.getItem('zhuyin_exam_difficulty') || 'midterm',
-    pokedexMode: 'gen1', // 'midterm' (期中考) 或 'final' (期末考)
+    pokedexMode: 'gen1',
+    stones: JSON.parse(localStorage.getItem('zhuyin_evolution_stones') || 'null') || {
+      thunder: 1, // ⚡ 雷之石 (預載 1 顆供玩家立即體驗皮卡丘/伊布進化)
+      water: 1,   // 💧 水之石
+      fire: 1,    // 🔥 火之石
+      leaf: 1,    // 🌿 葉之石
+      moon: 1     // 🌙 月之石
+    }, // 'midterm' (期中考) 或 'final' (期末考)
 
 
 
@@ -451,6 +458,71 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   const POKEMON_NURTURE_ITEMS = [
     {
+      id: 'stone_thunder',
+      stoneType: 'thunder',
+      name: '⚡ 雷之石',
+      icon: '⚡',
+      tag: '屬性寶石',
+      tagColor: '#D97706',
+      tagBg: '#FEF3C7',
+      price: 150,
+      desc: '蘊含雷電神力的進化石！能讓【皮卡丘】進化為【雷丘】、讓【伊布】進化為【雷伊布】！',
+      actionText: '換購寶石',
+      sound: 'playBadgeGet'
+    },
+    {
+      id: 'stone_water',
+      stoneType: 'water',
+      name: '💧 水之石',
+      icon: '💧',
+      tag: '屬性寶石',
+      tagColor: '#2563EB',
+      tagBg: '#EFF6FF',
+      price: 150,
+      desc: '散發水藍光澤的進化石！能讓【伊布】進化為【水伊布】、【蚊香君】進化為【蚊香泳士】、【大舌貝】進化為【刺甲貝】、【海星星】進化為【寶石海星】！',
+      actionText: '換購寶石',
+      sound: 'playBadgeGet'
+    },
+    {
+      id: 'stone_fire',
+      stoneType: 'fire',
+      name: '🔥 火之石',
+      icon: '🔥',
+      tag: '屬性寶石',
+      tagColor: '#DC2626',
+      tagBg: '#FEF2F2',
+      price: 150,
+      desc: '如火焰般燃燒的進化石！能讓【伊布】進化為【火伊布】、【六尾】進化為【九尾】、【卡蒂狗】進化為【風速狗】！',
+      actionText: '換購寶石',
+      sound: 'playBadgeGet'
+    },
+    {
+      id: 'stone_leaf',
+      stoneType: 'leaf',
+      name: '🌿 葉之石',
+      icon: '🌿',
+      tag: '屬性寶石',
+      tagColor: '#059669',
+      tagBg: '#ECFDF5',
+      price: 150,
+      desc: '描繪著植物葉片的進化石！能讓【臭臭花】進化為【霸王花】、【口呆花】進化為【大食花】、【蛋蛋】進化為【椰蛋樹】！',
+      actionText: '換購寶石',
+      sound: 'playBadgeGet'
+    },
+    {
+      id: 'stone_moon',
+      stoneType: 'moon',
+      name: '🌙 月之石',
+      icon: '🌙',
+      tag: '屬性寶石',
+      tagColor: '#7C3AED',
+      tagBg: '#F5F3FF',
+      price: 150,
+      desc: '泛著夜空月影光芒的寶石！能讓【皮皮】進化為【皮可西】、【胖丁】進化為【胖可丁】、【尼多娜】進化為【尼多后】、【尼多力諾】進化為【尼多王】！',
+      actionText: '換購寶石',
+      sound: 'playBadgeGet'
+    },
+    {
       id: 'rare_candy',
       name: '神奇經驗糖果',
       icon: '🍬',
@@ -582,6 +654,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (avatarEl) avatarEl.innerHTML = getPokemonAvatarHtml(partner);
     if (nameEl) nameEl.textContent = partner.name;
+
+    // 🔴 檢查當前夥伴是否擁有「屬性寶石」進化需求（如皮卡丘雷之石、伊布分支進化等）
+    const stoneBannerWrap = document.getElementById('shop-partner-stone-evo-wrap') || (() => {
+      const wrap = document.createElement('div');
+      wrap.id = 'shop-partner-stone-evo-wrap';
+      const metaBox = document.querySelector('.nurture-partner-meta');
+      if (metaBox) metaBox.appendChild(wrap);
+      return wrap;
+    })();
+
+    if (stoneBannerWrap && typeof GEN1_POKEMON_LIST !== 'undefined') {
+      let g1P = null;
+      if (state.partner.startsWith('gen1_')) {
+        g1P = GEN1_POKEMON_LIST.find(p => p.id === parseInt(state.partner.replace('gen1_', '')));
+      } else if (state.partner === 'pikachu') g1P = GEN1_POKEMON_LIST.find(p => p.id === 25);
+      else if (state.partner === 'eevee') g1P = GEN1_POKEMON_LIST.find(p => p.id === 133);
+
+      if (g1P && g1P.evolution) {
+        if (g1P.evolution.method === 'stone') {
+          const sType = g1P.evolution.stone;
+          const sCount = (state.stones && state.stones[sType]) || 0;
+          const targetEvo = GEN1_POKEMON_LIST.find(p => p.id === g1P.evolution.evolvesToId);
+          stoneBannerWrap.innerHTML = `
+            <div style="margin-top:14px;background:#FFFBEB;border:2px solid #F59E0B;border-radius:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:26px;">⚡</span>
+                <div>
+                  <div style="font-weight:900;color:#92400E;font-size:15px;">💎 屬性寶石進化：需要【${g1P.evolution.stoneName}】</div>
+                  <div style="font-size:13px;color:#B45309;margin-top:2px;">擁有數量：<strong style="color:#DC2626;font-size:15px;">${sCount}</strong> 顆</div>
+                </div>
+              </div>
+              <button class="btn-use-stone" style="background:#F59E0B;color:#FFF;border:none;padding:8px 18px;border-radius:20px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 #D97706;transition:transform 0.15s;" onclick="window.useEvolutionStoneOnPartner('${sType}', ${g1P.evolution.evolvesToId})">
+                ⚡ 使用【${g1P.evolution.stoneName}】進化為【${targetEvo ? targetEvo.name : g1P.evolution.evolvesToName}】！
+              </button>
+            </div>
+          `;
+        } else if (g1P.evolution.method === 'branch_stone' && g1P.evolution.branches) {
+          stoneBannerWrap.innerHTML = `
+            <div style="margin-top:14px;background:#F8FAFC;border:2px solid #CBD5E1;border-radius:16px;padding:14px 18px;">
+              <div style="font-weight:900;color:#1E293B;font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+                <span>🦊</span> <strong>伊布多元屬性寶石分支進化</strong>（三大形態自由選擇）：
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;">
+                ${g1P.evolution.branches.map(b => {
+                  const bCount = (state.stones && state.stones[b.stone]) || 0;
+                  const bColors = { water: '#3B82F6', thunder: '#F59E0B', fire: '#EF4444' };
+                  const bIcons = { water: '💧', thunder: '⚡', fire: '🔥' };
+                  return `
+                    <button class="btn-use-stone" style="background:${bColors[b.stone] || '#3B82F6'};color:#FFF;border:none;padding:10px;border-radius:14px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,0.2);display:flex;flex-direction:column;align-items:center;gap:4px;" onclick="window.useEvolutionStoneOnPartner('${b.stone}', ${b.evolvesToId})">
+                      <span>${bIcons[b.stone]} ${b.stoneName} (${bCount}顆)</span>
+                      <span style="font-size:12px;opacity:0.95;">進化為【${b.evolvesToName}】</span>
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        } else {
+          stoneBannerWrap.innerHTML = '';
+        }
+      } else {
+        stoneBannerWrap.innerHTML = '';
+      }
+    }
     if (levelEl) levelEl.textContent = `Lv.${partner.level}`;
     if (crownBadge) crownBadge.style.display = (state.partnerData && state.partnerData.crown) ? 'inline-flex' : 'none';
 
@@ -757,6 +893,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (window.audioEngine.playPowerUp) window.audioEngine.playPowerUp(); else window.audioEngine.playPop();
       addPartnerExp(item.exp);
+    if (item.stoneType) {
+      state.stones[item.stoneType] = (state.stones[item.stoneType] || 0) + 1;
+      localStorage.setItem('zhuyin_evolution_stones', JSON.stringify(state.stones));
+      setMascotSpeech(`✨ 獲得了【${item.name}】！目前擁有 ${state.stones[item.stoneType]} 顆！快給夥伴進化吧！`);
+      renderNurtureShop();
+    }
 
       const updatedPartner = getCurrentPartnerInfo();
       setMascotSpeech(`😋 好吃好吃！【${updatedPartner.name}】享用了【${item.name}】，親密度大幅上升，獲得了 +${item.exp} 經驗值！`);
@@ -769,6 +911,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
+
+  /**
+   * 🔴 屬性寶石進化系統（皮卡丘雷之石進化、伊布多屬性分支進化等）
+   */
+  function useEvolutionStoneOnPartner(stoneType, targetPokemonId) {
+    if (!state.stones || !state.stones[stoneType] || state.stones[stoneType] <= 0) {
+      if (window.audioEngine && window.audioEngine.playWrong) window.audioEngine.playWrong();
+      const stoneNames = { thunder: '雷之石', water: '水之石', fire: '火之石', leaf: '葉之石', moon: '月之石' };
+      alert('你目前沒有【' + (stoneNames[stoneType] || '屬性寶石') + '】！可以從下方培育商店用金幣換購喔！');
+      const shopItem = document.getElementById('shop-item-stone_' + stoneType);
+      if (shopItem) shopItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const targetP = typeof GEN1_POKEMON_LIST !== 'undefined' ? GEN1_POKEMON_LIST.find(p => p.id === targetPokemonId) : null;
+    if (!targetP) return;
+
+    // 扣除 1 顆寶石
+    state.stones[stoneType]--;
+    localStorage.setItem('zhuyin_evolution_stones', JSON.stringify(state.stones));
+
+    const oldPartner = getCurrentPartnerInfo();
+
+    // 登錄至 151 寶可夢大圖鑑
+    if (!state.gen1Caught.includes(targetP.id)) {
+      state.gen1Caught.push(targetP.id);
+      localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
+    }
+
+    // 更改主要夥伴
+    state.partner = 'gen1_' + targetP.id;
+    localStorage.setItem('zhuyin_main_partner', state.partner);
+    localStorage.setItem('zhuyin_partner', state.partner);
+
+    // 播放音效與慶祝
+    if (window.audioEngine) {
+      if (window.audioEngine.playBadgeGet) window.audioEngine.playBadgeGet();
+      setTimeout(() => { if (window.audioEngine.playPokeCaught) window.audioEngine.playPokeCaught(); }, 500);
+    }
+    if (window.confetti && window.confetti.trigger) window.confetti.trigger(160);
+
+    const stoneNames = { thunder: '雷之石', water: '水之石', fire: '火之石', leaf: '葉之石', moon: '月之石' };
+    setMascotSpeech('✨ 哇！夥伴吸收了【' + stoneNames[stoneType] + '】的強大力量，成功進化為【' + targetP.name + '】！能力大幅提升！');
+
+    // 彈出華麗進化祝賀彈窗
+    if (typeof showEvolutionModal === 'function') {
+      showEvolutionModal(oldPartner, targetP);
+    }
+
+    updateTrainerHeaderUI();
+    renderNurtureShop();
+    if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
+    if (typeof updatePokedexProgressUI === 'function') updatePokedexProgressUI();
+  }
 
   function init() {
     // 確保未創角或無紀錄時，出戰夥伴徹底回歸最初階形態（皮卡丘 Lv.1，絕非進化的雷丘）
@@ -1062,13 +1259,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (g1Base && !sym) {
         // 依據等級計算進化
-        let currentEvo = g1Base;
-        if (g1Base.evolution && level >= g1Base.evolution.reqLevel) {
+                let currentEvo = g1Base;
+        // 🔴 只有一般自然升級的寶可夢（如御三家）才隨等級自動進化；
+        // 需「屬性寶石」進化的寶可夢（如皮卡丘、伊布等）必須使用對應寶石進化！
+        const isStoneEvo = g1Base.evolution && (g1Base.evolution.method === 'stone' || g1Base.evolution.method === 'branch_stone');
+        if (g1Base.evolution && !isStoneEvo && level >= (g1Base.evolution.reqLevel || 999)) {
           const nextP = GEN1_POKEMON_LIST.find(p => p.id === g1Base.evolution.evolvesToId);
           if (nextP) {
             currentEvo = nextP;
-            // 檢查二階進化 (如妙蛙花、噴火龍、水箭龜等)
-            if (nextP.evolution && level >= nextP.evolution.reqLevel) {
+            // 三階進化（例如妙蛙草 -> 妙蛙花）
+            const nextIsStone = nextP.evolution && (nextP.evolution.method === 'stone' || nextP.evolution.method === 'branch_stone');
+            if (nextP.evolution && !nextIsStone && level >= (nextP.evolution.reqLevel || 999)) {
               const finalP = GEN1_POKEMON_LIST.find(p => p.id === nextP.evolution.evolvesToId);
               if (finalP) currentEvo = finalP;
             }
@@ -7059,6 +7260,8 @@ function setupPartnerModal() {
   window.initGen1Pokedex = initGen1Pokedex;
   window.renderGen1Pokedex = renderGen1Pokedex;
   window.openGen1DetailModal = openGen1DetailModal;
+  window.getCurrentPartnerInfo = getCurrentPartnerInfo;
+  window.useEvolutionStoneOnPartner = useEvolutionStoneOnPartner;
 
 
 
@@ -7386,7 +7589,18 @@ function setupPartnerModal() {
     if (moveEl) moveEl.textContent = p.move || '十萬伏特';
     if (evoEl) {
       if (p.evolution) {
-        evoEl.textContent = '達成 Lv.' + p.evolution.reqLevel + ' 進化為：【' + p.evolution.evolvesToName + '】';
+        if (p.evolution.method === 'stone') {
+          const sCount = (state.stones && state.stones[p.evolution.stone]) || 0;
+          evoEl.innerHTML = `💎 需要【${p.evolution.stoneName}】進化為：【${p.evolution.evolvesToName}】<span style="margin-left:8px;font-size:13px;color:#D97706;font-weight:900;">(目前擁有: ${sCount}顆)</span>`;
+        } else if (p.evolution.method === 'branch_stone' && p.evolution.branches) {
+          evoEl.innerHTML = `💎 屬性寶石多元分支進化：<div style="margin-top:4px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px;">` +
+            p.evolution.branches.map(b => {
+              const bCount = (state.stones && state.stones[b.stone]) || 0;
+              return `<span style="background:#F1F5F9;padding:2px 8px;border-radius:10px;border:1px solid #CBD5E1;">${b.stoneName} (${bCount}顆) ➔ 【${b.evolvesToName}】</span>`;
+            }).join('') + `</div>`;
+        } else {
+          evoEl.textContent = '達成 Lv.' + p.evolution.reqLevel + ' 進化為：【' + p.evolution.evolvesToName + '】';
+        }
       } else {
         evoEl.textContent = '✨ 已為該形態最終階段（或無進化）';
       }
