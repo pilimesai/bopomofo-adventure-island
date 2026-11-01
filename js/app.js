@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     allPartnersData: JSON.parse(localStorage.getItem('zhuyin_all_partners_data') || '{}'),
 
     pokedexCaught: JSON.parse(localStorage.getItem('zhuyin_caught_symbols') || '["ㄅ","ㄆ","ㄇ"]'),
+    gen1Caught: JSON.parse(localStorage.getItem('zhuyin_caught_gen1') || '[1, 4, 7, 25, 133]'),
 
     examDifficulty: localStorage.getItem('zhuyin_exam_difficulty') || 'midterm', // 'midterm' (期中考) 或 'final' (期末考)
 
@@ -729,6 +730,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       renderNurtureShop();
       updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
       return;
     } else {
       // 餵食經驗道具
@@ -757,6 +761,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderNurtureShop();
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
   }
 
 
@@ -780,6 +787,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCoinsDisplay();
 
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
 
     updatePokedexProgressUI();
 
@@ -913,6 +923,9 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
 
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
     renderNurtureShop();
     return getCurrentPartnerInfo();
   }
@@ -1198,6 +1211,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
 
 
 
@@ -1290,6 +1306,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.remove();
 
         updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
 
       });
 
@@ -1728,6 +1747,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateCharacterHeaderUI();
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
     closeCharacterCreationModal();
 
     window.audioEngine.playFanfare();
@@ -1837,6 +1859,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGallery();
     renderGymBadges();
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
     updatePokedexProgressUI();
     updateStarDisplay();
 
@@ -1991,6 +2016,9 @@ function setupPartnerModal() {
           state.partner = partnerId;
           localStorage.setItem('zhuyin_main_partner', state.partner);
           updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
           renderNurtureShop();
           renderPartnerSelectorList();
           if (window.confetti) window.confetti.trigger(70);
@@ -2203,10 +2231,16 @@ function setupPartnerModal() {
       dom.starCount.textContent = state.stars;
     }
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
   }
 
   function updatePlayerRankDisplay() {
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
   }
 
 
@@ -2923,6 +2957,9 @@ function setupPartnerModal() {
     if (dom.advStageStars) dom.advStageStars.textContent = `${totalStageStars} / ${stages.length * 3}`;
 
     updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
 
     renderGymBadges();
 
@@ -4669,6 +4706,9 @@ function setupPartnerModal() {
             localStorage.setItem('zhuyin_balls', state.balls.toString());
 
             updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
 
             const oppNameEl = document.getElementById('poke-opp-name');
             const sym = ZHUYIN_DATA.symbols.find(s => s.char === q.answer);
@@ -4829,6 +4869,9 @@ function setupPartnerModal() {
       localStorage.setItem('zhuyin_balls', state.balls.toString());
       addCoins(150, false); // 💯 滿分通關金幣大獎勵！
       updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
 
       window.audioEngine.playBadgeGet();
       if (window.confetti) window.confetti.trigger(120);
@@ -4913,6 +4956,9 @@ function setupPartnerModal() {
             addCoins(100, true); // 🎁 神秘大寶箱金幣獎勵！
             addPartnerExp(100);
             updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
 
             const chestIcon = document.getElementById('chest-icon');
             const chestTitle = document.getElementById('chest-title');
@@ -6878,7 +6924,93 @@ function setupPartnerModal() {
   // 🔴 52poke 初代 151 寶可夢大圖鑑系統 (Kanto Gen 1 Pokédex Module)
   // =========================================================================
 
+  function getPartnerGen1Id(partnerId) {
+    if (!partnerId) return 25;
+    if (typeof partnerId === 'string' && partnerId.startsWith('gen1_')) {
+      const n = parseInt(partnerId.replace('gen1_', ''), 10);
+      return isNaN(n) ? null : n;
+    }
+    const STARTER_MAP = {
+      'bulbasaur': 1,
+      'charmander': 4,
+      'squirtle': 7,
+      'pikachu': 25,
+      'eevee': 133
+    };
+    return STARTER_MAP[partnerId] || null;
+  }
+
+  function isCurrentPartnerPokemon(pId) {
+    if (state.partner === 'gen1_' + pId) return true;
+    const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
+    const pLevel = pData.level || 1;
+    if (state.partner === 'pikachu') {
+      if (pLevel >= 16) return pId === 26;
+      return pId === 25;
+    }
+    if (state.partner === 'charmander') {
+      if (pLevel >= 36) return pId === 6;
+      if (pLevel >= 16) return pId === 5;
+      return pId === 4;
+    }
+    if (state.partner === 'squirtle') {
+      if (pLevel >= 36) return pId === 9;
+      if (pLevel >= 16) return pId === 8;
+      return pId === 7;
+    }
+    if (state.partner === 'bulbasaur') {
+      if (pLevel >= 36) return pId === 3;
+      if (pLevel >= 16) return pId === 2;
+      return pId === 1;
+    }
+    if (state.partner === 'eevee') {
+      return pId === 133;
+    }
+    return false;
+  }
+
+  function ensureStartersInGen1Caught() {
+    if (!Array.isArray(state.gen1Caught)) {
+      try {
+        state.gen1Caught = JSON.parse(localStorage.getItem('zhuyin_caught_gen1') || '[]');
+      } catch (e) {
+        state.gen1Caught = [];
+      }
+    }
+    // 5 大初始配備寶可夢必入圖鑑 (妙蛙種子#1, 小火龍#4, 傑尼龜#7, 皮卡丘#25, 伊布#133)
+    const starters = [1, 4, 7, 25, 133];
+    starters.forEach(id => {
+      if (!state.gen1Caught.includes(id)) {
+        state.gen1Caught.push(id);
+      }
+    });
+
+    // 當前出戰夥伴及其進化形態必入圖鑑
+    const currentId = getPartnerGen1Id(state.partner);
+    if (currentId && !state.gen1Caught.includes(currentId)) {
+      state.gen1Caught.push(currentId);
+    }
+    const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
+    const pLevel = pData.level || 1;
+    if (state.partner === 'pikachu' && pLevel >= 16 && !state.gen1Caught.includes(26)) {
+      state.gen1Caught.push(26);
+    } else if (state.partner === 'charmander') {
+      if (pLevel >= 16 && !state.gen1Caught.includes(5)) state.gen1Caught.push(5);
+      if (pLevel >= 36 && !state.gen1Caught.includes(6)) state.gen1Caught.push(6);
+    } else if (state.partner === 'squirtle') {
+      if (pLevel >= 16 && !state.gen1Caught.includes(8)) state.gen1Caught.push(8);
+      if (pLevel >= 36 && !state.gen1Caught.includes(9)) state.gen1Caught.push(9);
+    } else if (state.partner === 'bulbasaur') {
+      if (pLevel >= 16 && !state.gen1Caught.includes(2)) state.gen1Caught.push(2);
+      if (pLevel >= 36 && !state.gen1Caught.includes(3)) state.gen1Caught.push(3);
+    }
+
+    state.gen1Caught.sort((a, b) => a - b);
+    localStorage.setItem('zhuyin_caught_gen1', JSON.stringify(state.gen1Caught));
+  }
+
   function initGen1Pokedex() {
+    ensureStartersInGen1Caught();
     // 綁定圖鑑模式切換按鈕 (151 寶可夢 vs 37 注音符號)
     const btnModeGen1 = document.getElementById('btn-mode-gen1');
     const btnModeSymbols = document.getElementById('btn-mode-symbols');
@@ -7003,12 +7135,14 @@ function setupPartnerModal() {
     if (!grid || typeof GEN1_POKEMON_LIST === 'undefined') return;
     grid.innerHTML = '';
 
+    ensureStartersInGen1Caught();
+
     const query = state.gen1SearchQuery || '';
     const statusFilter = state.gen1StatusFilter || 'all';
     const typeFilter = state.gen1TypeFilter || 'all';
 
     const filtered = GEN1_POKEMON_LIST.filter(p => {
-      const isCaught = state.unlockAllPokemon || state.gen1Caught.includes(p.id);
+      const isCaught = state.unlockAllPokemon || (state.gen1Caught && state.gen1Caught.includes(p.id));
 
       // 狀態篩選
       if (statusFilter === 'caught' && !isCaught) return false;
@@ -7038,9 +7172,11 @@ function setupPartnerModal() {
     }
 
     filtered.forEach(p => {
-      const isCaught = state.unlockAllPokemon || state.gen1Caught.includes(p.id);
+      const isCaught = state.unlockAllPokemon || (state.gen1Caught && state.gen1Caught.includes(p.id));
+      const isCurrent = isCurrentPartnerPokemon(p.id);
+      const isStarter = [1, 4, 7, 25, 133].includes(p.id);
       const card = document.createElement('div');
-      card.className = 'gen1-card ' + (isCaught ? 'caught' : 'uncaught');
+      card.className = 'gen1-card ' + (isCaught ? 'caught' : 'uncaught') + (isCurrent ? ' current-partner-card' : '');
       card.style.setProperty('--card-theme-color', p.color || '#3B82F6');
 
       const typesHtml = p.types.map(t => {
@@ -7048,9 +7184,13 @@ function setupPartnerModal() {
       }).join('');
 
       card.innerHTML = `
+        ${isCurrent ? '<div class="gen1-active-partner-badge">⚡ 出戰中</div>' : ''}
         <div class="gen1-card-top">
           <span class="gen1-card-dex">${p.dexNo}</span>
-          <span class="gen1-card-ball">${isCaught ? '🔴' : '⚪'}</span>
+          <div style="display:flex;align-items:center;gap:4px;">
+            ${isStarter ? '<span class="gen1-starter-badge">🌱 初始夥伴</span>' : ''}
+            <span class="gen1-card-ball">${isCaught ? '🔴' : '⚪'}</span>
+          </div>
         </div>
         <div class="gen1-card-img-wrap">
           <img src="assets/pokemon/gen1/${p.id}.png" alt="${p.name}" class="gen1-card-img" loading="lazy" onerror="this.onerror=null;this.src='${p.image}';" />
@@ -7125,6 +7265,17 @@ function setupPartnerModal() {
 
     // 設為主力夥伴按鈕
     if (btnSetPartner) {
+      const isCurrent = isCurrentPartnerPokemon(p.id);
+      if (isCurrent) {
+        const pData = (state.partner && typeof getPartnerData === 'function') ? getPartnerData(state.partner) : (state.partnerData || {});
+        btnSetPartner.innerHTML = `<span>⚡</span> 目前出戰主力夥伴（Lv.${pData.level || 1}）`;
+        btnSetPartner.classList.add('active');
+        btnSetPartner.style.background = '#10B981';
+      } else {
+        btnSetPartner.innerHTML = `<span>⚡</span> 派牠出戰！設為主力與培育夥伴`;
+        btnSetPartner.classList.remove('active');
+        btnSetPartner.style.background = '';
+      }
       btnSetPartner.onclick = () => {
         window.audioEngine.playPokeCaught();
         state.partner = 'gen1_' + p.id;
@@ -7137,7 +7288,12 @@ function setupPartnerModal() {
         }
 
         updateTrainerHeaderUI();
+    if (typeof ensureStartersInGen1Caught === 'function') {
+      ensureStartersInGen1Caught();
+    }
         renderNurtureShop();
+        renderGen1Pokedex();
+        updatePokedexProgressUI();
         modal.style.display = 'none';
 
         if (window.confetti) window.confetti.trigger(100);
