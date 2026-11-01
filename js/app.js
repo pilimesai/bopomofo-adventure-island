@@ -3007,7 +3007,7 @@ function setupPartnerModal() {
 
             </div>
 
-            <h3 class="question-prompt-text" id="battle-q-prompt" style="font-size:20px;margin:0;"></h3>
+            <h3 class="question-prompt-text" id="battle-q-prompt" style="font-size:24px;line-height:1.6;margin:0;"></h3>
 
           </div>
 

@@ -4142,7 +4142,7 @@ html, body {
   position: relative !important;
   vertical-align: middle !important;
   line-height: 1 !important;
-  padding-right: 0.38em !important; /* 為右側二、三、四聲聲調預留空間 */
+  padding-right: 0.42em !important; /* 為右側二、三、四聲聲調預留空間 */
   user-select: none !important;
 }
 .zy-vertical-syllable.no-tone,
@@ -4167,9 +4167,9 @@ html, body {
   text-align: center !important;
 }
 
-/* 輕聲 (˙ 位於首個符號正上方居中) */
+/* 輕聲 (˙ 位於首個符號正上方居中) - 大字清晰化 */
 .zy-tone-light {
-  font-size: 0.95em !important;
+  font-size: 1.1em !important;
   line-height: 0.6 !important;
   margin-bottom: 2px !important;
   color: #DC2626 !important;
@@ -4178,12 +4178,12 @@ html, body {
   text-align: center !important;
 }
 
-/* 側邊聲調 (ˊ ˇ ˋ 位於最後一個韻母的右上角/右側) */
+/* 側邊聲調 (ˊ ˇ ˋ 位於最後一個韻母的右上角/右側) - 大字清晰化 */
 .zy-tone-side {
   position: absolute !important;
-  right: 0 !important;
+  right: -0.05em !important;
   bottom: 0.1em !important;
-  font-size: 0.78em !important;
+  font-size: 0.88em !important;
   line-height: 1 !important;
   color: #DC2626 !important;
   font-weight: 900 !important;
@@ -4195,31 +4195,32 @@ html, body {
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 12px !important;
+  gap: 16px !important;
   vertical-align: middle !important;
 }
 
-/* 3. 國字配直式注音右旁注 (小一課本標準直式注音) */
+/* 3. 國字配直式注音右旁注 (小一課本標準直式注音 - 放大注音字形便於低年級閱讀) */
 .zy-hanzi-pair {
   display: inline-flex !important;
   flex-direction: row !important;
   align-items: center !important;
   vertical-align: middle !important;
-  margin: 0 3px !important;
+  margin: 0 4px !important;
   line-height: 1.2 !important;
 }
 
 .zy-hanzi {
-  font-size: 1.35em !important;
+  font-size: 1.45em !important;
   font-weight: 900 !important;
   line-height: 1 !important;
   color: #1E293B !important;
   font-family: "DFKai-SB", "BiauKai", "PingFang TC", "Microsoft JhengHei", sans-serif !important;
-  margin-right: 2px !important;
+  margin-right: 3px !important;
 }
 
+/* 題目與短文中的注音放大到 0.72em，清晰好讀 */
 .zy-hanzi-pair .zy-vertical-syllable {
-  font-size: 0.52em !important;
+  font-size: 0.72em !important;
 }
 
 .zy-hanzi-pair .zy-chars-col {
@@ -4228,95 +4229,131 @@ html, body {
 
 .zy-punct {
   display: inline-block !important;
-  font-size: 1.25em !important;
+  font-size: 1.35em !important;
   font-weight: 900 !important;
   vertical-align: middle !important;
-  margin: 0 4px !important;
+  margin: 0 6px !important;
   color: #334155 !important;
   line-height: 1 !important;
 }
 
 .zy-hanzi-lone {
-  font-size: 1.25em !important;
+  font-size: 1.35em !important;
   font-weight: 900 !important;
   vertical-align: middle !important;
-  margin: 0 2px !important;
+  margin: 0 3px !important;
   line-height: 1 !important;
 }
 
-/* 兒歌短文閱讀測驗排版優化 */
+/* 兒歌短文閱讀測驗排版優化：大字體大行距 */
 .reading-passage-text {
-  font-size: 22px !important;
-  line-height: 2.7 !important;
+  font-size: 26px !important;
+  line-height: 3.0 !important;
   text-align: left !important;
-  padding: 6px 12px !important;
+  padding: 8px 16px !important;
   word-break: break-word !important;
 }
 
-/* 兒歌閱讀測驗選項排版 */
+/* 兒歌閱讀測驗選項排版與大字體 */
 .reading-options-row {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
-  gap: 14px !important;
+  gap: 16px !important;
   width: 100% !important;
 }
 @media (max-width: 640px) {
   .reading-options-row {
     grid-template-columns: 1fr !important;
-    gap: 10px !important;
+    gap: 12px !important;
   }
 }
 
-/* 題型卡片高度與間距適應直式注音 */
+/* 題目引導文字大字體 */
+.question-prompt-text {
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: 1.6 !important;
+}
+
+/* 題型卡片高度與注音字體全面放大 (小孩好閱讀) */
 .exam-check-card {
-  min-height: 84px !important;
+  min-height: 96px !important;
+  padding: 12px 20px !important;
 }
 .check-opt-zhuyin {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  font-size: 38px !important;
 }
+.check-box-bracket {
+  font-size: 28px !important;
+}
+.check-mark-sym {
+  font-size: 30px !important;
+}
+
 .exam-circle-card {
-  min-height: 84px !important;
+  min-height: 96px !important;
+  font-size: 36px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  padding: 14px 18px !important;
 }
 .circle-card-text {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  font-size: 36px !important;
 }
+
 .battle-opt-btn {
-  min-height: 72px !important;
+  min-height: 80px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  font-size: 28px !important;
+  padding: 14px 20px !important;
 }
+.battle-opt-btn .zy-hanzi-pair .zy-vertical-syllable {
+  font-size: 0.72em !important;
+}
+
 .fill-box {
-  min-width: 68px !important;
-  min-height: 68px !important;
+  min-width: 78px !important;
+  min-height: 78px !important;
+  font-size: 34px !important;
   height: auto !important;
 }
 .fill-candidate-tile {
-  min-height: 68px !important;
+  min-height: 78px !important;
+  font-size: 36px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  padding: 12px 24px !important;
 }
+
 .formula-block {
-  min-width: 58px !important;
-  min-height: 64px !important;
+  min-width: 68px !important;
+  min-height: 72px !important;
+  font-size: 34px !important;
   height: auto !important;
 }
 .combine-opt-btn {
-  min-height: 68px !important;
+  min-height: 76px !important;
+  font-size: 36px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  padding: 12px 24px !important;
 }
+
 .connect-peg {
-  min-height: 68px !important;
+  min-height: 76px !important;
+  font-size: 32px !important;
+  padding: 14px 24px !important;
 }
 
 /* ========================================================
