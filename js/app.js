@@ -968,6 +968,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function init() {
+    // 🔊 全局使用者手勢音訊解鎖器（解決 iOS/Android/Chrome 瀏覽器語音暫停與自動播放限制）
+    const unlockAudioEngine = () => {
+      if (window.audioEngine) {
+        window.audioEngine.ensureAudioContext();
+        if (window.speechSynthesis && window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
+      }
+    };
+    document.addEventListener('touchstart', unlockAudioEngine, { passive: true });
+    document.addEventListener('click', unlockAudioEngine, { passive: true });
+
     // 確保未創角或無紀錄時，出戰夥伴徹底回歸最初階形態（皮卡丘 Lv.1，絕非進化的雷丘）
     if (!localStorage.getItem('zhuyin_profile')) {
       state.partner = 'pikachu';
@@ -5350,10 +5362,10 @@ function setupPartnerModal() {
 
       setMascotSpeech(`「哎呀選錯了！本題 0 分。正確答案是【${q.answer}】${targetWord ? `(${targetWord})` : ''}，聽聽正確發音，準備好請點選下方『前往下一題』！」`);
 
-      // 稍微延遲 0.28 秒，清晰朗讀真人正確答案發音
+      // 延遲 0.35 秒等答錯提示音完整結束，清晰朗讀真人正確答案發音
       setTimeout(() => {
         window.audioEngine.speak(answerSpeech);
-      }, 280);
+      }, 350);
 
       // 畫面停住：建立「學習覆盤與前往下一題」控制面板
       let feedbackEl = document.getElementById('battle-wrong-feedback');
@@ -5395,7 +5407,9 @@ function setupPartnerModal() {
         if (btnReplay) {
           btnReplay.addEventListener('click', () => {
             window.audioEngine.playPop();
-            window.audioEngine.speak(answerSpeech);
+            setTimeout(() => {
+              window.audioEngine.speak(answerSpeech);
+            }, 100);
           });
         }
 
@@ -5403,6 +5417,7 @@ function setupPartnerModal() {
         if (btnNext) {
           btnNext.addEventListener('click', () => {
             window.audioEngine.playPop();
+            window.audioEngine.stopSpeaking(); // 確保停止上一題殘留語音
             feedbackEl.style.display = 'none';
             state.adventure.qIndex++;
             updateBattleHeaderUI();

@@ -247,43 +247,58 @@ class ZhuyinAudioEngine {
           audio.onended = options.onEnd;
         }
         audio.play().catch((err) => {
-          // 若是被 pause() 或換題切換中斷 (AbortError)，絕不觸發機器人語音！
           if (err && (err.name === 'AbortError' || err.code === 20)) {
             return;
           }
-          // 若為瀏覽器尚未取得使用者點擊互動限制 (NotAllowedError)，維持按鈕提示手動點擊，絕不發出刺耳機器聲
           if (err && err.name === 'NotAllowedError') {
             const btn = document.getElementById('btn-poke-listen');
             if (btn) {
               btn.classList.remove('reading-now');
               btn.innerHTML = '<span>🔊</span> 點擊聽老師清晰朗讀題目';
             }
+            if (options.onEnd) options.onEnd();
             return;
           }
-          console.warn('音檔播放受阻，等待使用者點擊：', err);
+          console.warn('音檔播放受阻，啟動台灣女聲合成備援：', err);
+          this.speakWithBrowserTTS(cleanKey, options);
         });
-        // 音檔存在時 100% 播放真人音檔，絕不降級成機械合成語音
         return;
       } catch (e) {
         console.warn('Audio error:', e);
       }
     }
 
-    // 嚴格防止任何題目、闖關對話或段考內容降級成機器人語音
-    // 只有在明確允許（例如設定頁面的瀏覽器 TTS 測試按鈕）才使用瀏覽器合成，絕不讓遊戲過程中意外出現機器人聲音！
-    if (options.allowTTS) {
-      this.speakWithBrowserTTS(cleanKey, options);
-    } else {
-      console.warn(`[AudioEngine] 找不到音檔，為維護純真人語音品質，已略過機器人合成語音：${cleanKey}`);
-    }
+    // 🔴 找不到預錄音檔時（如動態生成考題、答錯覆盤說明等），自動啟動台灣女聲朗讀，確保永遠不失聲！
+    this.speakWithBrowserTTS(cleanKey, options);
   }
 
   speakWithBrowserTTS(text, options = {}) {
-    if (!this.synth) return;
+    if (!this.synth) {
+      if (options.onEnd) options.onEnd();
+      return;
+    }
+
+    // 喚醒語音合成引擎，徹底修復 Chromium 暫停與佇列卡死 Bug
+    try {
+      if (this.synth.paused) {
+        this.synth.resume();
+      }
+      this.synth.cancel();
+      if (this.synth.paused) {
+        this.synth.resume();
+      }
+    } catch (e) {}
+
     const clearText = this.normalizeZhuyinForSpeech(text);
     const utterance = new SpeechSynthesisUtterance(clearText);
 
-    // 嚴格確保使用已保存的台灣女聲選項（絕不允許生硬機器聲或非保存語音）
+    // 避免垃圾回收 GC 提前銷毀正在發音的 utterance 導致語音突然消失
+    this._activeUtterance = utterance;
+
+    // 嚴格確保使用已保存的台灣女聲選項
+    if (!this.taiwanVoice) {
+      this.loadVoices();
+    }
     if (this.taiwanVoice) {
       utterance.voice = this.taiwanVoice;
       utterance.lang = this.taiwanVoice.lang;
@@ -293,14 +308,45 @@ class ZhuyinAudioEngine {
 
     const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
     const isCute = (voiceRole === 'PERSONA::CUTE_GIRL' || (this.speechPitch && this.speechPitch >= 1.35));
-    // 連動使用者自訂的語速與音調設定
     utterance.rate = options.rate || this.speechRate || (isCute ? 0.95 : 0.88);
     utterance.pitch = options.pitch || this.speechPitch || (isCute ? 1.45 : 1.15);
 
-    if (options.onEnd) {
-      utterance.onend = options.onEnd;
+    let finished = false;
+    let rInterval = null;
+    const finishHandler = () => {
+      if (finished) return;
+      finished = true;
+      if (rInterval) clearInterval(rInterval);
+      this._activeUtterance = null;
+      if (options.onEnd) {
+        try { options.onEnd(); } catch (err) {}
+      }
+    };
+
+    utterance.onend = finishHandler;
+    utterance.onerror = (e) => {
+      console.warn('TTS on error:', e);
+      finishHandler();
+    };
+
+    // 針對長時間發音或部分瀏覽器長文本卡住的 keep-alive 防卡機制
+    rInterval = setInterval(() => {
+      if (!this.synth || !this.synth.speaking) {
+        clearInterval(rInterval);
+      } else {
+        try {
+          this.synth.pause();
+          this.synth.resume();
+        } catch (e) {}
+      }
+    }, 7000);
+
+    try {
+      this.synth.speak(utterance);
+    } catch (err) {
+      console.warn('Synth speak error:', err);
+      finishHandler();
     }
-    this.synth.speak(utterance);
   }
 
   /**
@@ -315,8 +361,14 @@ class ZhuyinAudioEngine {
       this.currentAudio = null;
     }
     if (this.synth) {
-      this.synth.cancel();
+      try {
+        this.synth.cancel();
+        if (this.synth.paused) {
+          this.synth.resume();
+        }
+      } catch (e) {}
     }
+    this._activeUtterance = null;
   }
 
   /**
