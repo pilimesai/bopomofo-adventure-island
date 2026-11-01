@@ -7876,10 +7876,12 @@ function setupPartnerModal() {
     if (modalCloseBtn && modalOverlay) {
       modalCloseBtn.addEventListener('click', () => {
         window.audioEngine.playPop();
+        stopPokemonIntroAudio();
         modalOverlay.style.display = 'none';
       });
       modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) {
+          stopPokemonIntroAudio();
           modalOverlay.style.display = 'none';
         }
       });
@@ -7966,6 +7968,55 @@ function setupPartnerModal() {
 
       grid.appendChild(card);
     });
+  }
+
+  let activeGen1PokemonAudio = null;
+
+  function stopPokemonIntroAudio() {
+    if (activeGen1PokemonAudio) {
+      try {
+        activeGen1PokemonAudio.pause();
+        activeGen1PokemonAudio.currentTime = 0;
+      } catch (e) {}
+      activeGen1PokemonAudio = null;
+    }
+    if (window.audioEngine) {
+      window.audioEngine.stopSpeaking();
+    }
+  }
+
+  function getPokemonSpeechText(targetP) {
+    if (!targetP) return '';
+    const name = targetP.name;
+    const typesStr = (targetP.types || []).map(t => t + '屬性').join('與');
+    let evoStr = '';
+
+    if (targetP.evolution) {
+      if (targetP.evolution.method === 'stone') {
+        evoStr = '需要使用' + targetP.evolution.stoneName + '進化為【' + targetP.evolution.evolvesToName + '】。';
+      } else if (targetP.evolution.method === 'branch_stone') {
+        evoStr = '可以使用水之石、雷之石、或火之石進化為水精靈、雷精靈、或火精靈。';
+      } else if (targetP.evolution.reqLevel) {
+        evoStr = '達成 ' + targetP.evolution.reqLevel + ' 級進化為【' + targetP.evolution.evolvesToName + '】。';
+      } else {
+        evoStr = '可進化為【' + targetP.evolution.evolvesToName + '】。';
+      }
+    } else {
+      const isEvolved = typeof GEN1_POKEMON_LIST !== 'undefined' && GEN1_POKEMON_LIST.some(other => {
+        if (other.evolution) {
+          if (other.evolution.evolvesToId === targetP.id) return true;
+          if (other.evolution.branches && other.evolution.branches.some(b => b.evolvesToId === targetP.id)) return true;
+        }
+        return false;
+      });
+      if (isEvolved) {
+        evoStr = '已為該形態最終階段。';
+      } else {
+        evoStr = '無進化型態。';
+      }
+    }
+
+    return name + '，' + typesStr + '。' + evoStr;
   }
 
   function openGen1DetailModal(p, isCaught) {
@@ -8089,16 +8140,25 @@ function setupPartnerModal() {
       }
     }
 
+        // 🔴 點圖鑑念出名字、屬性、進化條件
+    const playPokemonIntro = () => {
+      stopPokemonIntroAudio();
+      const speech = getPokemonSpeechText(p);
+      const audioSrc = 'assets/audio/pokemon/poke_' + p.id + '.mp3';
+      const a = new Audio(audioSrc);
+      activeGen1PokemonAudio = a;
+      a.play().catch(() => {
+        if (window.audioEngine) {
+          window.audioEngine.speak(speech);
+        }
+      });
+    };
+
     // 朗讀按鈕
     if (btnSpeak) {
       btnSpeak.onclick = () => {
         window.audioEngine.playPop();
-        const audioSrc = 'assets/audio/pokemon/poke_' + p.id + '.mp3';
-        const a = new Audio(audioSrc);
-        a.play().catch(() => {
-          const speech = '編號' + p.id + '，' + p.name + '，' + p.types.join('與') + '屬性。';
-          window.audioEngine.speak(speech);
-        });
+        playPokemonIntro();
       };
     }
 
@@ -8107,6 +8167,7 @@ function setupPartnerModal() {
     if (btnSwitchPokedex) {
       btnSwitchPokedex.onclick = () => {
         window.audioEngine.playPop();
+        stopPokemonIntroAudio();
         modal.style.display = 'none';
         if (typeof switchTab === 'function') {
           switchTab('tab-gallery');
@@ -8162,6 +8223,9 @@ function setupPartnerModal() {
     }
 
     modal.style.display = 'flex';
+
+    // 🔴 點開圖鑑時自動念出名字、屬性、進化條件！
+    playPokemonIntro();
   }
 
   init();
