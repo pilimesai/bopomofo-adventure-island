@@ -5112,10 +5112,43 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.04);
 }
 .shop-item-info h4 {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 900;
   color: #1E293B;
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  line-height: 1.4;
+}
+
+.shop-item-info h4 .zy-hanzi-pair {
+  margin: 0 2px !important;
+}
+
+.shop-item-info h4 .zy-hanzi {
+  font-size: 1.15em !important;
+}
+
+.shop-item-info h4 .zy-vertical-syllable {
+  font-size: 0.65em !important;
+}
+
+#shop-partner-name .zy-hanzi-pair {
+  margin: 0 3px !important;
+}
+
+#shop-partner-name .zy-hanzi {
+  font-size: 1.25em !important;
+}
+
+#shop-catalog-title .zy-hanzi-pair {
+  margin: 0 2px !important;
+}
+
+#shop-catalog-title .zy-hanzi {
+  font-size: 1.15em !important;
 }
 .shop-item-info p {
   font-size: 12px;
