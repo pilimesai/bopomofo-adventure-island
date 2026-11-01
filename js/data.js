@@ -4460,7 +4460,7 @@ const ZHUYIN_DATA = {
           "icon": "🏄",
           "move": "終極伏特狂雷",
           "moveFx": "electric",
-          "image": "assets/pokemon/raichu.svg"
+          "image": "assets/pokemon/alolan_raichu.svg"
         }
       ],
       "image": "assets/pokemon/pikachu.svg"
@@ -4488,7 +4488,7 @@ const ZHUYIN_DATA = {
           "icon": "🦖",
           "move": "大字爆炎",
           "moveFx": "fire",
-          "image": "assets/pokemon/charmander.svg"
+          "image": "assets/pokemon/charmeleon.svg"
         },
         {
           "stage": 3,
@@ -4496,7 +4496,7 @@ const ZHUYIN_DATA = {
           "icon": "🐲",
           "move": "閃焰衝鋒",
           "moveFx": "fire",
-          "image": "assets/pokemon/charmander.svg"
+          "image": "assets/pokemon/charizard.svg"
         }
       ],
       "image": "assets/pokemon/charmander.svg"
@@ -4524,7 +4524,7 @@ const ZHUYIN_DATA = {
           "icon": "🐢",
           "move": "水流尾",
           "moveFx": "water",
-          "image": "assets/pokemon/squirtle.svg"
+          "image": "assets/pokemon/wartortle.svg"
         },
         {
           "stage": 3,
@@ -4532,7 +4532,7 @@ const ZHUYIN_DATA = {
           "icon": "🐢",
           "move": "加農水炮",
           "moveFx": "water",
-          "image": "assets/pokemon/squirtle.svg"
+          "image": "assets/pokemon/blastoise.svg"
         }
       ],
       "image": "assets/pokemon/squirtle.svg"
@@ -4560,7 +4560,7 @@ const ZHUYIN_DATA = {
           "icon": "🌿",
           "move": "瘋狂植物",
           "moveFx": "grass",
-          "image": "assets/pokemon/bulbasaur.svg"
+          "image": "assets/pokemon/ivysaur.svg"
         },
         {
           "stage": 3,
@@ -4568,7 +4568,7 @@ const ZHUYIN_DATA = {
           "icon": "🌺",
           "move": "日光束",
           "moveFx": "grass",
-          "image": "assets/pokemon/bulbasaur.svg"
+          "image": "assets/pokemon/venusaur.svg"
         }
       ],
       "image": "assets/pokemon/bulbasaur.svg"
@@ -4596,7 +4596,7 @@ const ZHUYIN_DATA = {
           "icon": "🦄",
           "move": "月亮之力",
           "moveFx": "star",
-          "image": "assets/pokemon/eevee.svg"
+          "image": "assets/pokemon/sylveon.svg"
         },
         {
           "stage": 3,
@@ -4604,7 +4604,7 @@ const ZHUYIN_DATA = {
           "icon": "☀️",
           "move": "精神強念",
           "moveFx": "star",
-          "image": "assets/pokemon/eevee.svg"
+          "image": "assets/pokemon/espeon.svg"
         }
       ],
       "image": "assets/pokemon/eevee.svg"

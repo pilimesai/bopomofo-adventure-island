@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="alolaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="surfTail" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="50%" stop-color="#FACC15" />
+      <stop offset="100%" stop-color="#EAB308" />
+    </linearGradient>
+  </defs>
+
+  <!-- 衝浪閃電巨尾板 (Surfboard Tail on Bottom) -->
+  <path d="M 20 170 C 15 155 45 150 90 152 C 140 154 185 160 188 175 C 190 190 135 188 85 184 C 40 180 25 182 20 170 Z" fill="url(#surfTail)" stroke="#CA8A04" stroke-width="3.5" />
+  <path d="M 60 162 Q 100 166 150 168" fill="none" stroke="#FEF08A" stroke-width="3" stroke-linecap="round" />
+
+  <!-- 連接細尾巴 -->
+  <path d="M 95 140 Q 60 150 50 162" fill="none" stroke="#78350F" stroke-width="4.5" stroke-linecap="round" />
+
+  <!-- 圓潤身軀與雪白肚肚 -->
+  <ellipse cx="100" cy="120" rx="40" ry="34" fill="url(#alolaGrad)" stroke="#1E293B" stroke-width="2.5" />
+  <ellipse cx="100" cy="124" rx="24" ry="22" fill="#FEF9C3" stroke="#FDE047" stroke-width="1.5" />
+
+  <!-- 小腳踏在衝浪尾巴上 -->
+  <ellipse cx="78" cy="148" rx="11" ry="7" fill="#FEF9C3" stroke="#1E293B" stroke-width="2" />
+  <ellipse cx="122" cy="148" rx="11" ry="7" fill="#FEF9C3" stroke="#1E293B" stroke-width="2" />
+
+  <!-- 阿羅拉招牌圓弧大耳 (Rounded Swirl Ears) -->
+  <ellipse cx="58" cy="52" rx="18" ry="24" transform="rotate(-25 58 52)" fill="url(#alolaGrad)" stroke="#1E293B" stroke-width="2.5" />
+  <ellipse cx="58" cy="52" rx="10" ry="14" transform="rotate(-25 58 52)" fill="#FEF08A" />
+  <ellipse cx="142" cy="52" rx="18" ry="24" transform="rotate(25 142 52)" fill="url(#alolaGrad)" stroke="#1E293B" stroke-width="2.5" />
+  <ellipse cx="142" cy="52" rx="10" ry="14" transform="rotate(25 142 52)" fill="#FEF08A" />
+
+  <!-- 圓滾滾頭部 -->
+  <ellipse cx="100" cy="80" rx="44" ry="38" fill="url(#alolaGrad)" stroke="#1E293B" stroke-width="2.5" />
+
+  <!-- 碧藍清澈大萌眼 (Crystal Blue Eyes) -->
+  <ellipse cx="78" cy="76" rx="9" ry="13" fill="#0284C7" stroke="#1E293B" stroke-width="2" />
+  <circle cx="76" cy="72" r="4" fill="#FFFFFF" />
+  <circle cx="80" cy="82" r="2" fill="#BAE6FD" />
+  <ellipse cx="122" cy="76" rx="9" ry="13" fill="#0284C7" stroke="#1E293B" stroke-width="2" />
+  <circle cx="120" cy="72" r="4" fill="#FFFFFF" />
+  <circle cx="124" cy="82" r="2" fill="#BAE6FD" />
+
+  <!-- 燦爛黃色電氣臉頰電囊 -->
+  <circle cx="62" cy="88" r="9" fill="#FACC15" stroke="#EAB308" stroke-width="1.5" />
+  <circle cx="138" cy="88" r="9" fill="#FACC15" stroke="#EAB308" stroke-width="1.5" />
+
+  <!-- 微笑小嘴 -->
+  <circle cx="100" cy="84" r="1.5" fill="#78350F" />
+  <path d="M 92 92 Q 100 99 108 92" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- 可愛小手手 -->
+  <ellipse cx="78" cy="112" rx="8" ry="6" fill="#FEF9C3" stroke="#1E293B" stroke-width="2" />
+  <ellipse cx="122" cy="112" rx="8" ry="6" fill="#FEF9C3" stroke="#1E293B" stroke-width="2" />
+</svg>

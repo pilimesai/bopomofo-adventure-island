@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="espGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E9D5FF" />
+      <stop offset="100%" stop-color="#C084FC" />
+    </linearGradient>
+  </defs>
+
+  <!-- 背後優雅分岔細尾 (Split Fork Tail) -->
+  <path d="M 65 140 Q 30 135 25 105 C 22 85 10 75 8 60" fill="none" stroke="#C084FC" stroke-width="6" stroke-linecap="round" />
+  <path d="M 25 105 C 26 85 38 75 42 60" fill="none" stroke="#C084FC" stroke-width="6" stroke-linecap="round" />
+
+  <!-- 兩隻尖尖大耳與黑色耳廓 -->
+  <polygon points="52,70 45,25 76,55" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2.5" />
+  <polygon points="52,65 48,35 68,55" fill="#581C87" />
+  <polygon points="148,70 155,25 124,55" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2.5" />
+  <polygon points="148,65 152,35 132,55" fill="#581C87" />
+
+  <!-- 兩側臉頰招牌長毛叢 (Cheek Tuft Whisker Furs) -->
+  <polygon points="55,90 35,95 52,105" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2" />
+  <polygon points="145,90 165,95 148,105" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2" />
+
+  <!-- 修長身軀與纖細四肢 -->
+  <ellipse cx="100" cy="142" rx="36" ry="32" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2.5" />
+  <ellipse cx="78" cy="174" rx="8" ry="7" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2" />
+  <ellipse cx="122" cy="174" rx="8" ry="7" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2" />
+
+  <!-- 貓系神秘頭部 -->
+  <ellipse cx="100" cy="85" rx="42" ry="36" fill="url(#espGrad)" stroke="#1E293B" stroke-width="2.5" />
+
+  <!-- 額頭正中央閃耀的紅寶石 (Forehead Psychic Ruby Gem) -->
+  <circle cx="100" cy="70" r="7" fill="#EF4444" stroke="#991B1B" stroke-width="2" />
+  <circle cx="98" cy="68" r="2.5" fill="#FFF" />
+
+  <!-- 紫羅蘭神秘大貓眼 (Deep Violet Feline Eyes) -->
+  <ellipse cx="78" cy="84" rx="8" ry="12" fill="#7E22CE" stroke="#1E293B" stroke-width="2" />
+  <circle cx="76" cy="80" r="3.5" fill="#FFFFFF" />
+  <ellipse cx="122" cy="84" rx="8" ry="12" fill="#7E22CE" stroke="#1E293B" stroke-width="2" />
+  <circle cx="120" cy="80" r="3.5" fill="#FFFFFF" />
+
+  <!-- 櫻桃小口 -->
+  <polygon points="98,92 102,92 100,95" fill="#7E22CE" />
+  <path d="M 94 98 Q 100 102 106 98" fill="none" stroke="#1E293B" stroke-width="2" stroke-linecap="round" />
+</svg>

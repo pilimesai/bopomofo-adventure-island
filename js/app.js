@@ -593,20 +593,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const nextEvo2 = (partner.stageNames && partner.stageNames[2]) ? partner.stageNames[2] : ((baseStarter.evolutions && baseStarter.evolutions[2]) ? baseStarter.evolutions[2].name : '最終究極形態');
 
       if (partner.stageIdx === 0) {
-        const neededLv = Math.max(1, 3 - partner.level);
-        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.3</strong> 即將進化為：【${nextEvo1}】！（還差 ${neededLv} 級）`;
+        const neededLv = Math.max(1, 16 - partner.level);
+        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.16</strong> 即將進化為：【${nextEvo1}】！（還差 ${neededLv} 級）`;
       } else if (partner.stageIdx === 1) {
-        const neededLv = Math.max(1, 7 - partner.level);
-        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.7</strong> 即將究極進化為：【${nextEvo2}】！（還差 ${neededLv} 級）`;
+        const neededLv = Math.max(1, 36 - partner.level);
+        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.36</strong> 即將究極進化為：【${nextEvo2}】！（還差 ${neededLv} 級）`;
       } else {
         evoTargetEl.innerHTML = `👑 恭喜！【${partner.name}】已達到全島最強的究極最終形態！`;
       }
     }
 
     if (statusDescEl) {
-      if (partner.level >= 7) {
+      if (partner.level >= 36) {
         statusDescEl.textContent = `⚡ 戰力巔峰！神獸級的氣勢，隨時可以在道館中施展最強奧義【${partner.move}】！`;
-      } else if (partner.level >= 3) {
+      } else if (partner.level >= 16) {
         statusDescEl.textContent = `🔥 實力強勁！正朝著最終究極進化全速前進，多吃經驗糖果即可突破！`;
       } else {
         statusDescEl.textContent = `🌱 活潑健康！準備好接受美味甜點與神奇糖果的培育了嗎？`;
@@ -920,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const partnerData = getPartnerData(partnerId);
     const level = partnerData.level || 1;
-    const stageIdx = level >= 7 ? 2 : level >= 3 ? 1 : 0;
+    const stageIdx = level >= 36 ? 2 : level >= 16 ? 1 : 0;
 
     if (sym) {
       const stageNames = [
@@ -1016,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       state.partnerData.level++;
 
-      state.partnerData.maxExp = Math.round(state.partnerData.maxExp * 1.25);
+      state.partnerData.maxExp = 60 + state.partnerData.level * 25;
 
       leveledUp = true;
 
@@ -1842,7 +1842,7 @@ function setupPartnerModal() {
     if (partnerModalCurrentTab === 'starters') {
       ZHUYIN_DATA.starterPokemon.forEach(p => {
         const pData = getPartnerData(p.id);
-        const stageIdx = pData.level >= 7 ? 2 : pData.level >= 3 ? 1 : 0;
+        const stageIdx = pData.level >= 36 ? 2 : pData.level >= 16 ? 1 : 0;
         const evo = (p.evolutions && p.evolutions[stageIdx]) ? p.evolutions[stageIdx] : p;
         const isCurrent = (state.partner === p.id);
 
@@ -1885,7 +1885,7 @@ function setupPartnerModal() {
 
         const partnerId = `sym_${sym.char}`;
         const pData = getPartnerData(partnerId);
-        const stageIdx = pData.level >= 7 ? 2 : pData.level >= 3 ? 1 : 0;
+        const stageIdx = pData.level >= 36 ? 2 : pData.level >= 16 ? 1 : 0;
         const stageNames = [sym.pokeName, `超能・${sym.pokeName}`, `究極神獸・${sym.pokeName}`];
         const isCurrent = (state.partner === partnerId || state.partner === sym.char);
 
@@ -2116,7 +2116,7 @@ function setupPartnerModal() {
 
         btn.classList.add('active');
         try {
-          btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+          btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         } catch (e) {}
 
         const targetPane = document.getElementById(tabTarget);
@@ -4501,6 +4501,7 @@ function setupPartnerModal() {
 
             const starBonus = isShiny ? 2 : 1;
             addStars(starBonus, false);
+            addPartnerExp(30);
             state.balls = Math.min(99, state.balls + (isShiny ? 3 : 1));
             localStorage.setItem('zhuyin_balls', state.balls.toString());
 

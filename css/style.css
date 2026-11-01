@@ -196,8 +196,8 @@ body {
 /* 主分頁切換選單 (Top Tabs) */
 .tab-navigation {
   max-width: 1240px;
-  margin: 14px auto 10px auto;
-  padding: 4px 16px;
+  margin: 12px auto 10px auto;
+  padding: 4px 14px 6px 14px;
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -205,6 +205,13 @@ body {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: rgba(203, 213, 225, 0.6) transparent;
+  scroll-padding-right: 24px;
+}
+.tab-navigation::after {
+  content: '';
+  display: block;
+  flex: 0 0 24px;
+  height: 1px;
 }
 .tab-navigation::-webkit-scrollbar {
   height: 4px;
@@ -2019,9 +2026,10 @@ body {
     display: none;
   }
   .tab-btn {
-    min-width: 120px;
-    font-size: 14px;
-    padding: 10px 12px;
+    min-width: 84px !important;
+    font-size: 13px !important;
+    padding: 8px 8px !important;
+    gap: 4px !important;
   }
   .symbol-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -2475,12 +2483,34 @@ body {
   50% { transform: translateY(-6px) scale(1.03); }
 }
 
-/* 經典對戰指令列 (Pokémon Command Menu) */
+/* 經典對戰指令列 (Pokémon Command Menu) - 防切割破版彈性排版 */
 .poke-battle-actions {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 16px;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+  width: 100% !important;
+}
+.poke-cmd-btn.listen-btn {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+.poke-cmd-btn.run-btn {
+  flex: 0 0 auto !important;
+  min-width: auto !important;
+  white-space: nowrap !important;
+  padding: 10px 14px !important;
+}
+@media (max-width: 600px) {
+  .poke-battle-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .poke-cmd-btn.listen-btn,
+  .poke-cmd-btn.run-btn {
+    width: 100% !important;
+  }
 }
 
 .poke-cmd-btn {
@@ -2751,9 +2781,7 @@ body {
   .gym-badge-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .poke-battle-actions {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  /* poke-battle-actions responsive handled above */
 }
 
 
@@ -3543,10 +3571,7 @@ html, body {
   }
 
   /* 4 個指令按鈕改為 2x2 網格，避免橫向排擠破版 */
-  .poke-battle-actions {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-  }
+  /* poke-battle-actions responsive handled above */
 
   .poke-cmd-btn {
     padding: 10px 12px;

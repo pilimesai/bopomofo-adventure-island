@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="venuGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2DD4BF" />
+      <stop offset="100%" stop-color="#0F766E" />
+    </linearGradient>
+    <radialGradient id="flowerGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FEE2E2" />
+      <stop offset="35%" stop-color="#F43F5E" />
+      <stop offset="100%" stop-color="#BE123C" />
+    </radialGradient>
+  </defs>
+
+  <!-- 茂密熱帶棕櫚大葉片 -->
+  <path d="M 100 70 Q 20 40 10 75 Q 50 68 100 72 Z" fill="#16A34A" stroke="#1E293B" stroke-width="2" />
+  <path d="M 100 70 Q 180 40 190 75 Q 150 68 100 72 Z" fill="#16A34A" stroke="#1E293B" stroke-width="2" />
+  <path d="M 100 70 Q 30 15 65 10 Q 75 45 100 65 Z" fill="#22C55E" stroke="#1E293B" stroke-width="2" />
+  <path d="M 100 70 Q 170 15 135 10 Q 125 45 100 65 Z" fill="#22C55E" stroke="#1E293B" stroke-width="2" />
+
+  <!-- 盛開的巨大粉紅熱帶花朵 (Massive Blooming Tropical Flower) -->
+  <ellipse cx="65" cy="45" rx="20" ry="14" fill="url(#flowerGrad)" stroke="#1E293B" stroke-width="2" />
+  <ellipse cx="135" cy="45" rx="20" ry="14" fill="url(#flowerGrad)" stroke="#1E293B" stroke-width="2" />
+  <ellipse cx="100" cy="32" rx="24" ry="16" fill="url(#flowerGrad)" stroke="#1E293B" stroke-width="2" />
+  <ellipse cx="100" cy="55" rx="28" ry="18" fill="url(#flowerGrad)" stroke="#1E293B" stroke-width="2.5" />
+  <!-- 花瓣白斑點 -->
+  <circle cx="65" cy="45" r="3.5" fill="#FFF" />
+  <circle cx="135" cy="45" r="3.5" fill="#FFF" />
+  <circle cx="92" cy="32" r="3.5" fill="#FFF" />
+  <circle cx="108" cy="32" r="3.5" fill="#FFF" />
+  <circle cx="100" cy="55" r="5" fill="#FEF08A" stroke="#EAB308" stroke-width="1.5" />
+
+  <!-- 巨厚身軀與疙瘩斑塊 -->
+  <ellipse cx="100" cy="146" rx="56" ry="42" fill="url(#venuGrad)" stroke="#1E293B" stroke-width="3.5" />
+  <circle cx="70" cy="138" r="5" fill="#115E59" />
+  <circle cx="130" cy="138" r="5" fill="#115E59" />
+  <circle cx="100" cy="160" r="4" fill="#115E59" />
+
+  <!-- 粗重雙腳 -->
+  <ellipse cx="62" cy="182" rx="18" ry="10" fill="url(#venuGrad)" stroke="#1E293B" stroke-width="3" />
+  <ellipse cx="138" cy="182" rx="18" ry="10" fill="url(#venuGrad)" stroke="#1E293B" stroke-width="3" />
+
+  <!-- 寬厚頭部與紅眼 -->
+  <ellipse cx="100" cy="106" rx="48" ry="35" fill="url(#venuGrad)" stroke="#1E293B" stroke-width="3" />
+  <ellipse cx="76" cy="100" rx="9" ry="11" fill="#DC2626" stroke="#1E293B" stroke-width="2" />
+  <circle cx="74" cy="96" r="3" fill="#FFF" />
+  <ellipse cx="124" cy="100" rx="9" ry="11" fill="#DC2626" stroke="#1E293B" stroke-width="2" />
+  <circle cx="122" cy="96" r="3" fill="#FFF" />
+
+  <!-- 大嘴與粗獷獠牙 -->
+  <path d="M 78 118 Q 100 130 122 118" fill="none" stroke="#1E293B" stroke-width="3.5" stroke-linecap="round" />
+  <polygon points="84,118 87,110 90,118" fill="#FFF" stroke="#1E293B" stroke-width="1" />
+  <polygon points="110,118 113,110 116,118" fill="#FFF" stroke="#1E293B" stroke-width="1" />
+</svg>
