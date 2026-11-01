@@ -1546,6 +1546,22 @@ body {
   white-space: nowrap !important;
 }
 
+.partner-header-label ruby {
+  ruby-position: over;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 11px;
+  line-height: 1.1;
+}
+
+.partner-header-label rt {
+  font-size: 8px;
+  font-family: var(--font-zhuyin, 'BpmfGenSenRounded', sans-serif);
+  color: #DDD6FE;
+  line-height: 1;
+}
+
 .partner-header-lvl {
   font-size: 11px;
   font-weight: 900;
