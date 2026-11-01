@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=57">
+  <link rel="stylesheet" href="css/style.css?v=58">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -727,14 +727,43 @@
     </div>
   </div>
 
+<!-- ========================================================
+       👨‍👩‍👧 家長防護解鎖算術驗證彈窗 (Parental Math Gate Modal)
+       ======================================================== -->
+  <div class="modal-backdrop" id="parent-math-gate-modal" style="display:none;" aria-hidden="true">
+    <div class="modal-card parent-gate-card">
+      <button class="modal-close-btn" id="btn-parent-gate-close" aria-label="關閉驗證">✕</button>
+      <div class="parent-gate-header">
+        <div class="parent-gate-icon-badge">👨‍👩‍👧</div>
+        <h2 class="parent-gate-title">家長防護解鎖驗證</h2>
+        <p class="parent-gate-subtitle">為了避免小朋友自行跳關，請家長回答下方的算術題以解鎖自由選關：</p>
+      </div>
+      <div class="parent-gate-body">
+        <div class="parent-gate-question-box">
+          <span class="gate-q-label">請計算正確答案：</span>
+          <div class="gate-equation" id="parent-gate-equation">37 + 48 = ？</div>
+        </div>
+        <div class="parent-gate-input-wrap">
+          <input type="number" id="parent-gate-input" class="parent-gate-input" placeholder="輸入答案" inputmode="numeric" autocomplete="off" />
+          <button class="btn-refresh-math" id="btn-parent-gate-refresh" type="button" title="更換一題算術題">🔄 換一題</button>
+        </div>
+        <div class="parent-gate-error" id="parent-gate-error" style="display:none;"></div>
+        <div class="parent-gate-actions">
+          <button class="parent-gate-cancel-btn" id="btn-parent-gate-cancel" type="button">取消返回</button>
+          <button class="parent-gate-confirm-btn" id="btn-parent-gate-confirm" type="button">🔓 確認解鎖</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=57"></script>
-  <script src="js/gen1_pokemon.js?v=57"></script>
-  <script src="js/question_generator.js?v=57"></script>
-  <script src="js/audio_manifest.js?v=57"></script>
-  <script src="js/audio.js?v=57"></script>
-  <script src="js/confetti.js?v=57"></script>
-  <script src="js/app.js?v=57"></script>
+  <script src="js/data.js?v=58"></script>
+  <script src="js/gen1_pokemon.js?v=58"></script>
+  <script src="js/question_generator.js?v=58"></script>
+  <script src="js/audio_manifest.js?v=58"></script>
+  <script src="js/audio.js?v=58"></script>
+  <script src="js/confetti.js?v=58"></script>
+  <script src="js/app.js?v=58"></script>
 
   <!-- ========================================================
        🔴 151 寶可夢詳細檔案彈窗 (Gen 1 Pokemon Detail Modal)

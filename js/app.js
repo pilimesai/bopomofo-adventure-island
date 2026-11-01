@@ -2873,6 +2873,207 @@ function setupPartnerModal() {
 
   // ==========================================
 
+
+  // =========================================================================
+  // 👨‍👩‍👧 家長防護解鎖算術驗證系統 (Parental Math Gate System)
+  // =========================================================================
+  let currentParentGateAns = null;
+  let onParentGateSuccessCallback = null;
+
+  function generateParentGateMathQuestion() {
+    const types = ['mul', 'add', 'sub'];
+    const chosenType = types[Math.floor(Math.random() * types.length)];
+    let a, b, op, ans;
+
+    if (chosenType === 'mul') {
+      // 九九乘法（小一尚未學乘法，大人可直接心算）
+      a = Math.floor(Math.random() * 4) + 6; // 6, 7, 8, 9
+      b = Math.floor(Math.random() * 6) + 4; // 4, 5, 6, 7, 8, 9
+      op = '×';
+      ans = a * b;
+    } else if (chosenType === 'add') {
+      // 二位數進位加法（小一尚未學進位加法）
+      a = Math.floor(Math.random() * 42) + 27; // 27..68
+      b = Math.floor(Math.random() * 32) + 18; // 18..49
+      // 確保個位數相加 >= 10 產生進位
+      if ((a % 10) + (b % 10) < 10) {
+        a = Math.floor(a / 10) * 10 + (Math.floor(Math.random() * 4) + 6);
+        b = Math.floor(b / 10) * 10 + (Math.floor(Math.random() * 4) + 6);
+      }
+      op = '+';
+      ans = a + b;
+    } else {
+      // 二位數退位減法（小一尚未學借位減法）
+      const aTens = Math.floor(Math.random() * 5) + 5; // 5..9
+      const aUnits = Math.floor(Math.random() * 5); // 0..4
+      const bTens = Math.floor(Math.random() * 3) + 1; // 1..3
+      const bUnits = Math.floor(Math.random() * 4) + 6; // 6..9
+      a = aTens * 10 + aUnits;
+      b = bTens * 10 + bUnits;
+      op = '-';
+      ans = a - b;
+    }
+
+    return { a, b, op, ans, text: `${a} ${op} ${b} = ？` };
+  }
+
+  function showParentMathGateModal(onSuccess) {
+    const modal = document.getElementById('parent-math-gate-modal');
+    if (!modal) {
+      if (onSuccess) onSuccess();
+      return;
+    }
+
+    onParentGateSuccessCallback = onSuccess;
+    const qObj = generateParentGateMathQuestion();
+    currentParentGateAns = qObj.ans;
+
+    const eqEl = document.getElementById('parent-gate-equation');
+    const inputEl = document.getElementById('parent-gate-input');
+    const errorEl = document.getElementById('parent-gate-error');
+
+    if (eqEl) eqEl.textContent = qObj.text;
+    if (inputEl) {
+      inputEl.value = '';
+    }
+    if (errorEl) {
+      errorEl.style.display = 'none';
+      errorEl.textContent = '';
+    }
+
+    modal.style.display = 'flex';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+
+    setTimeout(() => {
+      if (inputEl) inputEl.focus();
+    }, 120);
+  }
+
+  function verifyParentGateAnswer() {
+    const inputEl = document.getElementById('parent-gate-input');
+    const errorEl = document.getElementById('parent-gate-error');
+    const modal = document.getElementById('parent-math-gate-modal');
+    const cardEl = modal ? modal.querySelector('.modal-card') : null;
+
+    if (!inputEl) return;
+    const rawVal = inputEl.value.trim();
+    if (!rawVal) {
+      if (window.audioEngine && window.audioEngine.playWrong) window.audioEngine.playWrong();
+      if (errorEl) {
+        errorEl.textContent = '⚠️ 請先輸入計算後的數字答案喔！';
+        errorEl.style.display = 'block';
+      }
+      inputEl.focus();
+      return;
+    }
+
+    const val = parseInt(rawVal, 10);
+    if (val === currentParentGateAns) {
+      // 驗證成功！
+      if (window.audioEngine && window.audioEngine.playBadgeGet) {
+        window.audioEngine.playBadgeGet();
+      } else if (window.audioEngine && window.audioEngine.playPop) {
+        window.audioEngine.playPop();
+      }
+      const cb = onParentGateSuccessCallback;
+      closeParentMathGateModal();
+      if (typeof cb === 'function') {
+        cb();
+      }
+    } else {
+      // 答案錯誤：晃動卡片、更換新題目防止亂猜
+      if (window.audioEngine && window.audioEngine.playWrong) window.audioEngine.playWrong();
+      if (cardEl) {
+        cardEl.classList.remove('shake-anim');
+        void cardEl.offsetWidth;
+        cardEl.classList.add('shake-anim');
+      }
+
+      const newQ = generateParentGateMathQuestion();
+      currentParentGateAns = newQ.ans;
+      const eqEl = document.getElementById('parent-gate-equation');
+      if (eqEl) eqEl.textContent = newQ.text;
+
+      if (errorEl) {
+        errorEl.textContent = '❌ 答案不正確！為防亂猜已更換新算術題，請重新計算。';
+        errorEl.style.display = 'block';
+      }
+      inputEl.value = '';
+      inputEl.focus();
+    }
+  }
+
+  function closeParentMathGateModal() {
+    const modal = document.getElementById('parent-math-gate-modal');
+    if (!modal) return;
+    modal.style.display = 'none';
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    onParentGateSuccessCallback = null;
+  }
+
+  function initParentGateEvents() {
+    const btnConfirm = document.getElementById('btn-parent-gate-confirm');
+    const btnCancel = document.getElementById('btn-parent-gate-cancel');
+    const btnRefresh = document.getElementById('btn-parent-gate-refresh');
+    const btnClose = document.getElementById('btn-parent-gate-close');
+    const inputEl = document.getElementById('parent-gate-input');
+    const modal = document.getElementById('parent-math-gate-modal');
+
+    if (btnConfirm && !btnConfirm.dataset.bound) {
+      btnConfirm.dataset.bound = 'true';
+      btnConfirm.addEventListener('click', verifyParentGateAnswer);
+    }
+    if (btnCancel && !btnCancel.dataset.bound) {
+      btnCancel.dataset.bound = 'true';
+      btnCancel.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        closeParentMathGateModal();
+      });
+    }
+    if (btnClose && !btnClose.dataset.bound) {
+      btnClose.dataset.bound = 'true';
+      btnClose.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        closeParentMathGateModal();
+      });
+    }
+    if (btnRefresh && !btnRefresh.dataset.bound) {
+      btnRefresh.dataset.bound = 'true';
+      btnRefresh.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        const newQ = generateParentGateMathQuestion();
+        currentParentGateAns = newQ.ans;
+        const eqEl = document.getElementById('parent-gate-equation');
+        if (eqEl) eqEl.textContent = newQ.text;
+        const errorEl = document.getElementById('parent-gate-error');
+        if (errorEl) errorEl.style.display = 'none';
+        if (inputEl) {
+          inputEl.value = '';
+          inputEl.focus();
+        }
+      });
+    }
+    if (inputEl && !inputEl.dataset.bound) {
+      inputEl.dataset.bound = 'true';
+      inputEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          verifyParentGateAnswer();
+        }
+      });
+    }
+    if (modal && !modal.dataset.bound) {
+      modal.dataset.bound = 'true';
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeParentMathGateModal();
+        }
+      });
+    }
+  }
+
   function initAdventureModule() {
 
     if (!dom.advStagesGrid) return;
@@ -2967,38 +3168,31 @@ function setupPartnerModal() {
 
 
 
-    // 自由選關切換（方便老師/家長直接跳關教學）
+    // 自由選關切換（家長防護算術題驗證，避免小孩自行跳關）
+    initParentGateEvents();
 
     if (dom.btnToggleUnlockAll) {
-
       dom.btnToggleUnlockAll.addEventListener('click', () => {
-
         window.audioEngine.playPop();
 
-        state.adventure.unlockAll = !state.adventure.unlockAll;
-
-        if (state.adventure.unlockAll) {
-
-          dom.btnToggleUnlockAll.textContent = '🔓 自由選關模式：開啟中';
-
-          dom.btnToggleUnlockAll.classList.add('unlocked-mode');
-
-          setMascotSpeech('✨ 已開啟自由選關模式！全部 10 個關卡都可以直接點選挑戰囉！');
-
+        // 若目前尚未開啟自由選關，要開啟時需先由家長算術題解鎖
+        if (!state.adventure.unlockAll) {
+          showParentMathGateModal(() => {
+            state.adventure.unlockAll = true;
+            dom.btnToggleUnlockAll.textContent = '🔓 自由選關模式：開啟中';
+            dom.btnToggleUnlockAll.classList.add('unlocked-mode');
+            setMascotSpeech('✨ 家長驗證成功！已開啟自由選關模式！全部 10 個關卡都可以直接挑戰囉！');
+            renderAdventureMap();
+          });
         } else {
-
+          // 若目前已開啟，點擊直接關閉並鎖回循序闖關
+          state.adventure.unlockAll = false;
           dom.btnToggleUnlockAll.textContent = '🔓 自由選關模式：關閉';
-
           dom.btnToggleUnlockAll.classList.remove('unlocked-mode');
-
           setMascotSpeech('🗺️ 恢復循序漸進闖關模式！一關一關挑戰更有成就感！');
-
+          renderAdventureMap();
         }
-
-        renderAdventureMap();
-
       });
-
     }
 
 
@@ -7260,6 +7454,7 @@ function setupPartnerModal() {
   window.initGen1Pokedex = initGen1Pokedex;
   window.renderGen1Pokedex = renderGen1Pokedex;
   window.openGen1DetailModal = openGen1DetailModal;
+  window.showParentMathGateModal = showParentMathGateModal;
   window.getCurrentPartnerInfo = getCurrentPartnerInfo;
   window.useEvolutionStoneOnPartner = useEvolutionStoneOnPartner;
 
