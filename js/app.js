@@ -761,17 +761,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 進化目標提示
     if (evoTargetEl) {
-      const nextEvo1 = (partner.stageNames && partner.stageNames[1]) ? partner.stageNames[1] : ((baseStarter.evolutions && baseStarter.evolutions[1]) ? baseStarter.evolutions[1].name : '下一階形態');
-      const nextEvo2 = (partner.stageNames && partner.stageNames[2]) ? partner.stageNames[2] : ((baseStarter.evolutions && baseStarter.evolutions[2]) ? baseStarter.evolutions[2].name : '最終究極形態');
+      // 🔴 檢查是否為需屬性寶石進化的寶可夢（如皮卡丘、伊布、六尾、卡蒂狗等）
+      const g1Partner = (typeof GEN1_POKEMON_LIST !== 'undefined' && partner.gen1Id)
+        ? GEN1_POKEMON_LIST.find(p => p.id === partner.gen1Id)
+        : null;
+      const isStoneEvo = g1Partner && g1Partner.evolution && (g1Partner.evolution.method === 'stone' || g1Partner.evolution.method === 'branch_stone');
 
-      if (partner.stageIdx === 0) {
-        const neededLv = Math.max(1, 16 - partner.level);
-        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.16</strong> 即將進化為：【${nextEvo1}】！（還差 ${neededLv} 級）`;
-      } else if (partner.stageIdx === 1) {
-        const neededLv = Math.max(1, 36 - partner.level);
-        evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.36</strong> 即將究極進化為：【${nextEvo2}】！（還差 ${neededLv} 級）`;
+      if (isStoneEvo) {
+        if (g1Partner.evolution.method === 'stone') {
+          const sCount = (state.stones && state.stones[g1Partner.evolution.stone]) || 0;
+          evoTargetEl.innerHTML = `💎 需要使用【${g1Partner.evolution.stoneName}】才能進化為【${g1Partner.evolution.evolvesToName}】！（目前擁有 ${sCount} 顆，可至下方換購）`;
+        } else if (g1Partner.evolution.method === 'branch_stone') {
+          evoTargetEl.innerHTML = `💎 擁有三種屬性寶石分支進化形態（水之石/雷之石/火之石，可至下方換購）！`;
+        }
       } else {
-        evoTargetEl.innerHTML = `👑 恭喜！【${partner.name}】已達到全島最強的究極最終形態！`;
+        const nextEvo1 = (partner.stageNames && partner.stageNames[1]) ? partner.stageNames[1] : ((baseStarter.evolutions && baseStarter.evolutions[1]) ? baseStarter.evolutions[1].name : '下一階形態');
+        const nextEvo2 = (partner.stageNames && partner.stageNames[2]) ? partner.stageNames[2] : ((baseStarter.evolutions && baseStarter.evolutions[2]) ? baseStarter.evolutions[2].name : '最終究極形態');
+
+        if (partner.stageIdx === 0 && nextEvo1 !== partner.name) {
+          const neededLv = Math.max(1, 16 - partner.level);
+          evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.16</strong> 即將進化為：【${nextEvo1}】！（還差 ${neededLv} 級）`;
+        } else if (partner.stageIdx === 1 && nextEvo2 !== partner.name) {
+          const neededLv = Math.max(1, 36 - partner.level);
+          evoTargetEl.innerHTML = `🌟 達成 <strong>Lv.36</strong> 即將究極進化為：【${nextEvo2}】！（還差 ${neededLv} 級）`;
+        } else {
+          evoTargetEl.innerHTML = `👑 恭喜！【${partner.name}】已達到目前可培育的最高型態！`;
+        }
       }
     }
 
@@ -1011,6 +1026,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function init() {
+    // 🔴 自動校正：皮卡丘需要雷之石才能進化為雷丘，若未用雷之石誤變雷丘，立即修復回皮卡丘
+    if (state.partner === 'gen1_26' || state.partner === 'raichu') {
+      state.partner = 'pikachu';
+      localStorage.setItem('zhuyin_partner', 'pikachu');
+      localStorage.setItem('zhuyin_main_partner', 'pikachu');
+    }
+
     // 🔊 全局使用者手勢音訊解鎖器（解決 iOS/Android/Chrome 瀏覽器語音暫停與自動播放限制）
     const unlockAudioEngine = () => {
       if (window.audioEngine) {
@@ -1373,7 +1395,7 @@ document.addEventListener('DOMContentLoaded', () => {
           dexNo: currentEvo.dexNo,
           baseName: g1Base.name,
           name: currentEvo.name,
-          stageNames: [g1Base.name, (g1Base.evolution ? g1Base.evolution.evolvesToName : g1Base.name)],
+          stageNames: isStoneEvo ? [g1Base.name, g1Base.name, g1Base.name] : [g1Base.name, (g1Base.evolution ? g1Base.evolution.evolvesToName : g1Base.name)],
           icon: currentEvo.icon || '⚡',
           image: 'assets/pokemon/gen1/' + currentEvo.id + '.png',
           move: currentEvo.move,
@@ -1543,7 +1565,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 🔴 檢查是否達成進化（Gen1 寶可夢比對 gen1Id，注音符號比對 stageIdx）
-    if (newPartner.gen1Id && oldPartner.gen1Id && newPartner.gen1Id !== oldPartner.gen1Id) {
+    // 嚴格規定：凡是需要「屬性寶石」進化的寶可夢（如皮卡丘、伊布、六尾等），絕對不隨升級自動進化！
+    const g1BasePokemon = (typeof GEN1_POKEMON_LIST !== 'undefined' && oldPartner.gen1Id)
+      ? GEN1_POKEMON_LIST.find(p => p.id === oldPartner.gen1Id)
+      : null;
+    const isStoneEvoPartner = g1BasePokemon && g1BasePokemon.evolution && (g1BasePokemon.evolution.method === 'stone' || g1BasePokemon.evolution.method === 'branch_stone');
+
+    if (!isStoneEvoPartner && newPartner.gen1Id && oldPartner.gen1Id && newPartner.gen1Id !== oldPartner.gen1Id) {
       evolved = true;
       // 自動解鎖並將進化後的寶可夢登錄進 151 大圖鑑
       if (!state.gen1Caught.includes(newPartner.gen1Id)) {
@@ -1557,7 +1585,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('zhuyin_partner', state.partner);
         localStorage.setItem('zhuyin_main_partner', state.partner);
       }
-    } else if (newPartner.stageIdx > (state.partnerData.stage || 0)) {
+    } else if (newPartner.isSymbol && newPartner.stageIdx > (state.partnerData.stage || 0)) {
       state.partnerData.stage = newPartner.stageIdx;
       evolved = true;
     }
@@ -2467,7 +2495,9 @@ function openCurrentPartnerDetailModal() {
     if (partnerModalCurrentTab === 'starters') {
       ZHUYIN_DATA.starterPokemon.forEach(p => {
         const pData = getPartnerData(p.id);
-        const stageIdx = pData.level >= 36 ? 2 : pData.level >= 16 ? 1 : 0;
+        // 皮卡丘與伊布需屬性寶石才能進化，御三家（小火龍、傑尼龜、妙蛙種子）才隨等級自然進化
+        const isStoneStarter = (p.id === 'pikachu' || p.id === 'eevee');
+        const stageIdx = isStoneStarter ? 0 : (pData.level >= 36 ? 2 : pData.level >= 16 ? 1 : 0);
         const evo = { ...((p.evolutions && p.evolutions[stageIdx]) ? p.evolutions[stageIdx] : p), crown: Boolean(pData.crown) };
         const isCurrent = (state.partner === p.id);
 

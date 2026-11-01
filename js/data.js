@@ -4644,19 +4644,19 @@ const ZHUYIN_DATA = {
         },
         {
           "stage": 2,
-          "name": "雷丘",
+          "name": "皮卡丘",
           "icon": "⚡",
-          "move": "雷電拳",
+          "move": "十萬伏特",
           "moveFx": "electric",
-          "image": "assets/pokemon/raichu.svg"
+          "image": "assets/pokemon/pikachu.svg"
         },
         {
           "stage": 3,
-          "name": "阿羅拉雷丘",
-          "icon": "🏄",
-          "move": "終極伏特狂雷",
+          "name": "皮卡丘",
+          "icon": "⚡",
+          "move": "十萬伏特",
           "moveFx": "electric",
-          "image": "assets/pokemon/alolan_raichu.svg"
+          "image": "assets/pokemon/pikachu.svg"
         }
       ],
       "image": "assets/pokemon/pikachu.svg"
@@ -4788,19 +4788,19 @@ const ZHUYIN_DATA = {
         },
         {
           "stage": 2,
-          "name": "仙子伊布",
-          "icon": "🦄",
-          "move": "月亮之力",
+          "name": "伊布",
+          "icon": "🌸",
+          "move": "高速星星",
           "moveFx": "star",
-          "image": "assets/pokemon/sylveon.svg"
+          "image": "assets/pokemon/eevee.svg"
         },
         {
           "stage": 3,
-          "name": "太陽伊布",
-          "icon": "☀️",
-          "move": "精神強念",
+          "name": "伊布",
+          "icon": "🌸",
+          "move": "高速星星",
           "moveFx": "star",
-          "image": "assets/pokemon/espeon.svg"
+          "image": "assets/pokemon/eevee.svg"
         }
       ],
       "image": "assets/pokemon/eevee.svg"
