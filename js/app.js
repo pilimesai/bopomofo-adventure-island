@@ -641,8 +641,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (isCrown && hasCrown) {
         btnClass += ' owned-crown';
-        btnText = '✨ 已配戴王者之冠';
-        btnDisabled = true;
+        btnText = '👑 已戴上王冠（點我取下）';
+        btnDisabled = false;
+      } else if (isCrown && !hasCrown && (state.partnerData && state.partnerData.ownedCrown)) {
+        btnClass += ' can-buy';
+        btnText = '👑 點我重新戴上王冠';
+        btnDisabled = false;
       } else if (!canAfford) {
         btnClass += ' cant-buy';
         btnText = `💰 金幣不足 (${item.price}幣)`;
@@ -695,17 +699,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const partner = getCurrentPartnerInfo();
 
     if (item.type === 'crown') {
-      state.partnerData.crown = true;
+      const alreadyOwned = Boolean(state.partnerData.ownedCrown || state.partnerData.crown);
+      state.partnerData.ownedCrown = true;
+
+      // 如果已經擁有，點擊為「取下／戴上」自由切換
+      if (alreadyOwned) {
+        state.partnerData.crown = !state.partnerData.crown;
+        // 退回金幣（因為只是切換佩戴，不重複扣幣）
+        state.coins += item.price;
+        localStorage.setItem('zhuyin_coins', state.coins.toString());
+        updateCoinsDisplay();
+      } else {
+        state.partnerData.crown = true;
+      }
+
       localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
-    const allData = getAllPartnersData();
-    allData[state.partner] = { ...state.partnerData };
-    saveAllPartnersData(allData);
+      const allData = getAllPartnersData();
+      allData[state.partner] = { ...state.partnerData };
+      saveAllPartnersData(allData);
 
-      window.audioEngine.playBadgeGet();
-      if (window.confetti) window.confetti.trigger(100);
-
-      setMascotSpeech(`👑 哇！【${partner.name}】配戴了【王者冠軍王冠】！頭頂閃耀黃金光芒，每次答對題目金幣獎勵翻倍！`);
-      window.audioEngine.speak(`太帥氣了！${partner.name}戴上了王者冠軍王冠，答題獲得金幣翻倍！`);
+      if (state.partnerData.crown) {
+        window.audioEngine.playBadgeGet();
+        if (window.confetti) window.confetti.trigger(100);
+        setMascotSpeech(`👑 哇！【${partner.name}】戴上了金光閃閃的【王者冠軍王冠】！頭頂閃耀金冠與星光，答題金幣翻倍！`);
+        window.audioEngine.speak(`太帥氣了！${partner.name}戴上了王者冠軍之冠！`);
+      } else {
+        window.audioEngine.playPop();
+        setMascotSpeech(`👑 已將【${partner.name}】的冠軍王冠收回！隨時可在商店點擊重新戴上。`);
+      }
+      renderNurtureShop();
+      updateTrainerHeaderUI();
+      return;
     } else {
       // 餵食經驗道具
       const avatarEl = document.getElementById('shop-partner-avatar');
@@ -902,14 +926,55 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getPokemonAvatarHtml(partner, sizeClass = '') {
+    if (!partner) return '';
+    const hasCrown = Boolean(partner.crown);
+
+    let innerContent = '';
     if (partner.image) {
-      return `<img src="${partner.image}" alt="${partner.name}" class="pokemon-avatar-img ${sizeClass}" />`;
+      innerContent = `<img src="${partner.image}" alt="${partner.name || '寶可夢'}" class="pokemon-avatar-img ${hasCrown ? 'crowned-pokemon-img' : ''} ${sizeClass}" />`;
+    } else {
+      const bg = partner.color || '#3B82F6';
+      innerContent = `<div class="symbol-pokemon-avatar ${sizeClass}" style="border-color:${bg};background:radial-gradient(circle, ${bg}28 0%, ${bg}08 70%);">
+        <span class="sym-p-icon">${partner.icon || '⚡'}</span>
+        ${partner.char ? `<span class="sym-p-char" style="color:${bg};border-color:${bg};">${partner.char}</span>` : ''}
+      </div>`;
     }
-    const bg = partner.color || '#3B82F6';
-    return `<div class="symbol-pokemon-avatar ${sizeClass}" style="border-color:${bg};background:radial-gradient(circle, ${bg}28 0%, ${bg}08 70%);">
-      <span class="sym-p-icon">${partner.icon || '⚡'}</span>
-      ${partner.char ? `<span class="sym-p-char" style="color:${bg};border-color:${bg};">${partner.char}</span>` : ''}
-    </div>`;
+
+    if (!hasCrown) {
+      return innerContent;
+    }
+
+    // 👑 戴上王者冠軍金冠 (Champion Crown) 的造型特效！
+    return `
+      <div class="crowned-avatar-container ${sizeClass}">
+        <div class="champion-crown-graphic" title="👑 戴上王者冠軍王冠">
+          <svg viewBox="0 0 100 70" class="svg-champion-crown">
+            <defs>
+              <linearGradient id="crownGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFF9C4"/>
+                <stop offset="30%" stop-color="#FFD700"/>
+                <stop offset="70%" stop-color="#F59E0B"/>
+                <stop offset="100%" stop-color="#B45309"/>
+              </linearGradient>
+            </defs>
+            <path d="M 8 58 L 92 58 L 86 24 L 68 38 L 50 12 L 32 38 L 14 24 Z" fill="url(#crownGoldGrad)" stroke="#B45309" stroke-width="2.5" stroke-linejoin="round"/>
+            <rect x="10" y="54" width="80" height="10" rx="3" fill="#D97706" stroke="#78350F" stroke-width="1.5"/>
+            <circle cx="24" cy="59" r="3" fill="#EF4444"/>
+            <circle cx="37" cy="59" r="2.5" fill="#3B82F6"/>
+            <circle cx="50" cy="59" r="3.5" fill="#10B981"/>
+            <circle cx="63" cy="59" r="2.5" fill="#3B82F6"/>
+            <circle cx="76" cy="59" r="3" fill="#EF4444"/>
+            <circle cx="14" cy="22" r="3.5" fill="#EF4444" stroke="#B45309" stroke-width="1"/>
+            <circle cx="50" cy="10" r="5" fill="#FDE047" stroke="#B45309" stroke-width="1.5"/>
+            <circle cx="86" cy="22" r="3.5" fill="#EF4444" stroke="#B45309" stroke-width="1"/>
+          </svg>
+        </div>
+        <span class="crown-sparkle sp-1">✨</span>
+        <span class="crown-sparkle sp-2">🌟</span>
+        <div class="crowned-halo-aura"></div>
+        ${innerContent}
+      </div>
+    `;
   }
 
   function getCurrentPartnerInfo() {
@@ -1941,7 +2006,7 @@ function setupPartnerModal() {
       ZHUYIN_DATA.starterPokemon.forEach(p => {
         const pData = getPartnerData(p.id);
         const stageIdx = pData.level >= 36 ? 2 : pData.level >= 16 ? 1 : 0;
-        const evo = (p.evolutions && p.evolutions[stageIdx]) ? p.evolutions[stageIdx] : p;
+        const evo = { ...((p.evolutions && p.evolutions[stageIdx]) ? p.evolutions[stageIdx] : p), crown: Boolean(pData.crown) };
         const isCurrent = (state.partner === p.id);
 
         const card = document.createElement('div');

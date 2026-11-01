@@ -2190,7 +2190,7 @@ body {
   animation: pokeBounce 1.8s infinite ease-in-out;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
+  overflow: visible !important;
 }
 
 .poke-player-sprite img.pokemon-avatar-img {
@@ -4826,6 +4826,8 @@ html, body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  overflow: visible !important;
 }
 .nurture-partner-avatar {
   font-size: 60px;
@@ -5837,4 +5839,104 @@ html, body {
 .gen1-set-partner-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 0 #991B1B;
+}
+
+
+/* ==========================================================================
+   👑 戴上王者冠軍王冠 (Champion Crown Graphic & Sparkles)
+   ========================================================================== */
+.crowned-avatar-container {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+
+/* 皇冠圖標浮動定位在頭頂 */
+.champion-crown-graphic {
+  position: absolute !important;
+  top: -16px !important;
+  left: 50% !important;
+  transform: translateX(-50%) rotate(-4deg) !important;
+  width: 46px !important;
+  height: 32px !important;
+  z-index: 12 !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35)) !important;
+  animation: crownFloat 2s ease-in-out infinite alternate !important;
+}
+
+.svg-champion-crown {
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+/* 在培育商店大頭貼中的大皇冠 */
+.nurture-partner-avatar .champion-crown-graphic,
+.poke-player-sprite .champion-crown-graphic {
+  top: -22px !important;
+  width: 56px !important;
+  height: 40px !important;
+}
+
+/* 在夥伴切換清單中的小皇冠 */
+.partner-select-card .champion-crown-graphic {
+  top: -12px !important;
+  width: 32px !important;
+  height: 22px !important;
+}
+
+/* 皇冠閃耀金星 */
+.crown-sparkle {
+  position: absolute !important;
+  pointer-events: none !important;
+  z-index: 13 !important;
+  user-select: none !important;
+  filter: drop-shadow(0 0 4px #F59E0B) !important;
+}
+.crown-sparkle.sp-1 {
+  top: -12px !important;
+  right: -4px !important;
+  font-size: 16px !important;
+  animation: sparkleAnim 1.6s ease-in-out infinite alternate !important;
+}
+.crown-sparkle.sp-2 {
+  top: 4px !important;
+  left: -8px !important;
+  font-size: 14px !important;
+  animation: sparkleAnim 1.9s 0.6s ease-in-out infinite alternate !important;
+}
+
+/* 冠軍金色光環光芒 */
+.crowned-halo-aura {
+  position: absolute !important;
+  inset: -6px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.42) 0%, rgba(245, 158, 11, 0) 70%) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+  animation: haloPulse 2.4s ease-in-out infinite !important;
+}
+
+.crowned-pokemon-img {
+  filter: drop-shadow(0 6px 14px rgba(245, 158, 11, 0.55)) drop-shadow(0 2px 4px rgba(0,0,0,0.2)) !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+@keyframes crownFloat {
+  0% { transform: translateX(-50%) rotate(-4deg) translateY(0); }
+  100% { transform: translateX(-50%) rotate(2deg) translateY(-4px); }
+}
+
+@keyframes sparkleAnim {
+  0% { transform: scale(0.7) rotate(0deg); opacity: 0.5; }
+  100% { transform: scale(1.25) rotate(25deg); opacity: 1; }
+}
+
+@keyframes haloPulse {
+  0%, 100% { transform: scale(0.96); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
 }
