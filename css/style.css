@@ -5283,3 +5283,122 @@ html, body {
   background: #10B981 !important;
   box-shadow: 0 3px 0 #059669 !important;
 }
+
+
+/* ==========================================================================
+   答錯暫停覆盤與手動下一題 (Wrong Answer Review & Manual Next Question)
+   ========================================================================== */
+.wrong-answer-review-card {
+  margin-top: 18px;
+  background: #FFF5F5;
+  border: 3px solid #EF4444;
+  border-radius: 18px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.15);
+  animation: wrongCardSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@keyframes wrongCardSlideIn {
+  0% { opacity: 0; transform: translateY(12px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.wrong-review-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.wrong-cross-icon {
+  font-size: 32px;
+  background: #FEE2E2;
+  border: 2px solid #FCA5A5;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.correct-highlight-val {
+  color: #059669;
+  background: #D1FAE5;
+  padding: 2px 10px;
+  border-radius: 10px;
+  border: 2px solid #34D399;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.wrong-review-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.review-replay-audio-btn {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 2.5px solid #93C5FD;
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 0 #BFDBFE;
+  transition: all 0.15s ease;
+}
+.review-replay-audio-btn:hover {
+  background: #DBEAFE;
+  transform: translateY(-2px);
+}
+
+.review-next-q-btn {
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 11px 26px;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 5px 0 #047857;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: pulseNextBtn 1.8s infinite ease-in-out;
+}
+.review-next-q-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 7px 0 #047857;
+}
+
+@keyframes pulseNextBtn {
+  0%, 100% { box-shadow: 0 5px 0 #047857, 0 0 0 rgba(16, 185, 129, 0); }
+  50% { box-shadow: 0 5px 0 #047857, 0 0 16px rgba(16, 185, 129, 0.55); }
+}
+
+/* 高亮正確選項 (Correct Choice Highlight in Grid) */
+.correct-choice-highlight {
+  border-color: #10B981 !important;
+  background: #ECFDF5 !important;
+  box-shadow: 0 0 0 3px #34D399, 0 6px 16px rgba(16, 185, 129, 0.25) !important;
+  position: relative !important;
+  transform: scale(1.02) !important;
+  animation: correctGlow 1.5s infinite alternate ease-in-out !important;
+}
+
+@keyframes correctGlow {
+  0% { box-shadow: 0 0 0 3px #34D399, 0 4px 10px rgba(16, 185, 129, 0.2); }
+  100% { box-shadow: 0 0 0 4px #10B981, 0 8px 20px rgba(16, 185, 129, 0.45); }
+}

@@ -3448,6 +3448,8 @@ function setupPartnerModal() {
     state.adventure.isAnswering = false;
     const prevGrid = document.getElementById('battle-options-grid');
     if (prevGrid) prevGrid.classList.remove('options-locked');
+    const wrongFb = document.getElementById('battle-wrong-feedback');
+    if (wrongFb) wrongFb.style.display = 'none';
 
     const q = questions[state.adventure.qIndex];
 
@@ -4535,7 +4537,7 @@ function setupPartnerModal() {
       });
 
     } else {
-      // 答錯！錯了不能重選，就自動換下一題！
+      // 答錯！錯了不能重選，畫面先停住，高亮顯示正確答案並朗讀發音，點擊下一題才繼續！
       state.adventure.combo = 0;
       state.adventure.mistakes++;
       if (state.adventure.hearts > 1) {
@@ -4545,28 +4547,101 @@ function setupPartnerModal() {
 
       if (btn) btn.classList.add('wrong-choice');
 
-      // 自動高亮正確答案給小朋友學習正解
+      // 自動高亮正確答案選項給小朋友學習正解
       if (optionsGrid) {
         const allCandidates = optionsGrid.querySelectorAll('button, .exam-check-card, .exam-circle-card, .fill-candidate-tile, .combine-opt-btn, .tone-stamp-btn, .connect-peg');
         allCandidates.forEach(el => {
           const txt = (el.dataset.ansText || el.textContent || '').trim();
           if (txt === q.answer || txt.startsWith(q.answer) || txt.includes(q.answer)) {
             el.classList.add('reveal-correct');
+            el.classList.add('correct-choice-highlight');
           }
         });
       }
 
       window.audioEngine.playWrong();
-      setMascotSpeech(`「哎呀選錯了！本題 0 分。正確答案是【${q.answer}】，下一題要加油喔！」`);
 
-      // 自動切換下一題（約1.3秒，讓小朋友清楚看見正解後無縫切換並自動朗讀下一題）
+      function extractTarget(qObj) {
+        if (qObj.word) {
+          const clean = qObj.word.replace(/[^\u4e00-\u9fa5]/g, '').trim();
+          if (clean) return clean;
+        }
+        const match = (qObj.prompt || '').match(/「([^」]+)」/);
+        if (match) {
+          const clean = match[1].replace(/[^\u4e00-\u9fa5]/g, '').trim();
+          if (clean) return clean;
+        }
+        return '';
+      }
+
+      const targetWord = extractTarget(q);
+      const answerSpeech = targetWord
+        ? `正確答案是：${targetWord}，${q.answer}。`
+        : `正確答案是：${q.answer}。`;
+
+      setMascotSpeech(`「哎呀選錯了！本題 0 分。正確答案是【${q.answer}】${targetWord ? `(${targetWord})` : ''}，聽聽正確發音，準備好請點選下方『前往下一題』！」`);
+
+      // 稍微延遲 0.28 秒，清晰朗讀真人正確答案發音
       setTimeout(() => {
-        state.adventure.qIndex++;
-        updateBattleHeaderUI();
-        const grid = document.getElementById('battle-options-grid');
-        if (grid) grid.classList.remove('options-locked');
-        renderCurrentStageQuestion();
-      }, 1300);
+        window.audioEngine.speak(answerSpeech);
+      }, 280);
+
+      // 畫面停住：建立「學習覆盤與前往下一題」控制面板
+      let feedbackEl = document.getElementById('battle-wrong-feedback');
+      if (!feedbackEl && optionsGrid) {
+        feedbackEl = document.createElement('div');
+        feedbackEl.id = 'battle-wrong-feedback';
+        optionsGrid.parentNode.appendChild(feedbackEl);
+      }
+
+      const isLastQ = (state.adventure.qIndex >= questions.length - 1);
+      const nextBtnText = isLastQ ? '點我查看本關考核成績' : '點我前往下一題';
+      const nextBtnIcon = isLastQ ? '🏆' : '➡️';
+
+      if (feedbackEl) {
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerHTML = `
+          <div class="wrong-answer-review-card">
+            <div class="wrong-review-header">
+              <span class="wrong-cross-icon">❌</span>
+              <div class="wrong-review-text">
+                <strong style="font-size:17px;color:#DC2626;">這題答錯囉！不要灰心！</strong>
+                <div style="font-size:16px;color:#1E293B;font-weight:900;margin-top:4px;">
+                  正確答案是：<span class="correct-highlight-val">【${q.answer}】${targetWord ? `(${targetWord})` : ''}</span>
+                </div>
+              </div>
+            </div>
+            <div class="wrong-review-actions">
+              <button class="review-replay-audio-btn" id="btn-replay-correct-audio" type="button">
+                <span>🔊</span> 再聽一次正確答案
+              </button>
+              <button class="review-next-q-btn" id="btn-next-question-manual" type="button">
+                <span>👉</span> ${nextBtnText} <span>${nextBtnIcon}</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        const btnReplay = document.getElementById('btn-replay-correct-audio');
+        if (btnReplay) {
+          btnReplay.addEventListener('click', () => {
+            window.audioEngine.playPop();
+            window.audioEngine.speak(answerSpeech);
+          });
+        }
+
+        const btnNext = document.getElementById('btn-next-question-manual');
+        if (btnNext) {
+          btnNext.addEventListener('click', () => {
+            window.audioEngine.playPop();
+            feedbackEl.style.display = 'none';
+            state.adventure.qIndex++;
+            updateBattleHeaderUI();
+            if (optionsGrid) optionsGrid.classList.remove('options-locked');
+            renderCurrentStageQuestion();
+          });
+        }
+      }
     }
   }
 
