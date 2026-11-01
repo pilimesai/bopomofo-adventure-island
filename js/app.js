@@ -153,7 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     adventure: {
 
-      stageStars: JSON.parse(localStorage.getItem('zhuyin_stage_progress') || '{}'),
+      stageStars: JSON.parse(localStorage.getItem('zhuyin_stage_progress_midterm') || localStorage.getItem('zhuyin_stage_progress') || '{}'),
+      stageStarsFinal: JSON.parse(localStorage.getItem('zhuyin_stage_progress_final') || '{}'),
 
       unlockAll: false,
 
@@ -2574,85 +2575,75 @@ function openCurrentPartnerDetailModal() {
 
 
   function renderGymBadges() {
-
     if (!dom.gymBadgeGrid) return;
 
-    dom.gymBadgeGrid.innerHTML = '';
+    const activeCabinet = state.badgeCabinetView || (state.examDifficulty === 'final' ? 'final' : 'midterm');
+    const isFinalCabinet = (activeCabinet === 'final');
 
+    const btnMidterm = document.getElementById('btn-cabinet-midterm');
+    const btnFinal = document.getElementById('btn-cabinet-final');
+    const titleEl = document.getElementById('badge-case-title');
+    const countEl = document.getElementById('badge-count-text');
 
+    if (btnMidterm && btnFinal) {
+      btnMidterm.classList.toggle('active', !isFinalCabinet);
+      btnFinal.classList.toggle('active', isFinalCabinet);
 
-    let obtainedCount = 0;
-
-    ZHUYIN_DATA.gymBadges.forEach(badge => {
-
-      const isCleared = (state.adventure.stageStars[String(badge.stageId)] || 0) > 0;
-
-      if (isCleared) obtainedCount++;
-
-
-
-      const slot = document.createElement('div');
-
-      slot.className = `gym-badge-slot ${isCleared ? 'obtained' : ''}`;
-
-      slot.title = `${badge.name} (${badge.gym}・館主：${badge.boss})`;
-
-      slot.innerHTML = `
-
-        <div class="badge-img">${badge.icon}</div>
-
-        <div class="badge-text">${badge.name}</div>
-
-        <div style="font-size:11px;color:${isCleared ? '#F59E0B' : '#94A3B8'};font-weight:800;margin-top:2px;">
-
-          ${isCleared ? '✨ 已獲得' : '🔒 未挑戰'}
-
-        </div>
-
-      `;
-
-
-
-      slot.addEventListener('click', () => {
-
-        if (isCleared) {
-
-          window.audioEngine.playPokeSuperEffective();
-
-          setMascotSpeech(`🏅 這是你通過第${badge.stageId}道館獲得的【${badge.name}】！太帥了！`);
-
-          window.audioEngine.speak(`恭喜你！這是通過第${badge.stageId}道館獲得的${badge.name}！`);
-
-        } else {
-
-          window.audioEngine.playWrong();
-
-          setMascotSpeech(`🔒 前往道館闖關地圖，挑戰第${badge.stageId}道館【${badge.gym}】就能獲得這個徽章！`);
-
-          window.audioEngine.speak(`挑戰第${badge.stageId}道館就能獲得這個徽章！加油！`);
-
-        }
-
-      });
-
-
-
-      dom.gymBadgeGrid.appendChild(slot);
-
-    });
-
-
-
-    if (dom.badgeCountText) {
-
-      dom.badgeCountText.textContent = `已獲得：${obtainedCount} / 10 枚`;
-
+      btnMidterm.onclick = () => {
+        window.audioEngine.playPop();
+        state.badgeCabinetView = 'midterm';
+        renderGymBadges();
+      };
+      btnFinal.onclick = () => {
+        window.audioEngine.playPop();
+        state.badgeCabinetView = 'final';
+        renderGymBadges();
+      };
     }
 
+    if (titleEl) {
+      titleEl.innerHTML = isFinalCabinet 
+        ? '🦅 訓練家至尊神話秘境徽章展示盒 (Mythical Badges)'
+        : '🏛️ 訓練家關東經典道館徽章展示盒 (Gym Badges)';
+    }
+
+    const badges = isFinalCabinet ? (ZHUYIN_DATA.finalBadges || []) : (ZHUYIN_DATA.gymBadges || []);
+    const starsObj = isFinalCabinet ? (state.adventure.stageStarsFinal || {}) : (state.adventure.stageStars || {});
+
+    dom.gymBadgeGrid.innerHTML = '';
+    let obtainedCount = 0;
+
+    badges.forEach(badge => {
+      const isCleared = (starsObj[String(badge.stageId)] || 0) > 0;
+      if (isCleared) obtainedCount++;
+
+      const slot = document.createElement('div');
+      slot.className = `gym-badge-slot ${isCleared ? 'obtained' : ''}`;
+      slot.title = `${badge.name} (${badge.gym}・${isFinalCabinet ? '尊者' : '館主'}：${badge.boss})`;
+      slot.innerHTML = `
+        <div class="badge-img">${badge.icon}</div>
+        <div class="badge-text">${badge.name}</div>
+        <div style="font-size:11px;color:${isCleared ? '#F59E0B' : '#94A3B8'};font-weight:800;margin-top:2px;">
+          ${isCleared ? '✨ 已獲得' : '🔒 未挑戰'}
+        </div>
+      `;
+
+      slot.addEventListener('click', () => {
+        if (isCleared) {
+          window.audioEngine.playPokeSuperEffective();
+          setMascotSpeech(`🏅 這是你通過第${badge.stageId}關獲得的【${badge.name}】！太帥了！`);
+          window.audioEngine.speak(`恭喜你！這是通過第${badge.stageId}關獲得的${badge.name}！`);
+        } else {
+          window.audioEngine.playWrong();
+          setMascotSpeech(`🔒 前往闖關地圖，挑戰第${badge.stageId}關【${badge.gym}】就能獲得這個徽章！`);
+        }
+      });
+
+      dom.gymBadgeGrid.appendChild(slot);
+    });
+
+    if (countEl) countEl.textContent = `已獲得：${obtainedCount} / ${badges.length} 枚`;
   }
-
-
-
   function updateStarDisplay() {
     if (dom.starCount) {
       dom.starCount.textContent = state.stars;
@@ -3348,21 +3339,15 @@ function openCurrentPartnerDetailModal() {
     if (dom.btnDiffMidterm) {
 
       dom.btnDiffMidterm.addEventListener('click', () => {
-
         window.audioEngine.playPop();
-
         state.examDifficulty = 'midterm';
-
+        state.badgeCabinetView = 'midterm';
         localStorage.setItem('zhuyin_exam_difficulty', 'midterm');
-
         updateDiffButtons();
-
-        setMascotSpeech('🏛️ 已切換至【小一期中段考真題】！100% 原卷完整收錄！');
-
-        window.audioEngine.speak('已切換為小一段考真題！');
-
+        setMascotSpeech('🏛️ 已切換至【小一段考真題 1:1 原卷】！經典 10 大關東道館！');
+        window.audioEngine.speak('已切換為小一段考真題關東道館！');
         renderAdventureMap();
-
+        renderGymBadges();
       });
 
     }
@@ -3372,21 +3357,15 @@ function openCurrentPartnerDetailModal() {
     if (dom.btnDiffFinal) {
 
       dom.btnDiffFinal.addEventListener('click', () => {
-
         window.audioEngine.playPop();
-
         state.examDifficulty = 'final';
-
+        state.badgeCabinetView = 'final';
         localStorage.setItem('zhuyin_exam_difficulty', 'final');
-
         updateDiffButtons();
-
-        setMascotSpeech('🦅 已切換至【期末考難度】！考查二拼三拼結合韻與完整生活語詞拼讀段考題！');
-
-        window.audioEngine.speak('已切換為期末考難度！');
-
+        setMascotSpeech('🦅 已切換至【期末考高難・神話秘境十重天】！傳奇神獸出沒，專屬十神徽章！');
+        window.audioEngine.speak('已切換為期末考高難神話秘境！');
         renderAdventureMap();
-
+        renderGymBadges();
       });
 
     }
@@ -3488,16 +3467,32 @@ function openCurrentPartnerDetailModal() {
 
 
 
+  function getCurrentAdventureStages() {
+    return state.examDifficulty === 'final' ? (ZHUYIN_DATA.finalStages || ZHUYIN_DATA.adventureStages) : ZHUYIN_DATA.adventureStages;
+  }
+
+  function getCurrentGymBadges() {
+    return state.examDifficulty === 'final' ? (ZHUYIN_DATA.finalBadges || ZHUYIN_DATA.gymBadges) : ZHUYIN_DATA.gymBadges;
+  }
+
+  function getCurrentStageStars() {
+    return state.examDifficulty === 'final' ? (state.adventure.stageStarsFinal || {}) : (state.adventure.stageStars || {});
+  }
+
+  function saveCurrentStageStars() {
+    if (state.examDifficulty === 'final') {
+      localStorage.setItem('zhuyin_stage_progress_final', JSON.stringify(state.adventure.stageStarsFinal || {}));
+    } else {
+      localStorage.setItem('zhuyin_stage_progress', JSON.stringify(state.adventure.stageStars || {}));
+      localStorage.setItem('zhuyin_stage_progress_midterm', JSON.stringify(state.adventure.stageStars || {}));
+    }
+  }
+
   function isStageUnlocked(stageId) {
-
     if (state.adventure.unlockAll) return true;
-
     if (stageId === 1) return true;
-
-    // 前一關有拿到至少 1 顆星即可解鎖下一關
-
-    return (state.adventure.stageStars[String(stageId - 1)] || 0) > 0;
-
+    const starsObj = getCurrentStageStars();
+    return (starsObj[String(stageId - 1)] || 0) > 0;
   }
 
 
@@ -3617,13 +3612,41 @@ function openCurrentPartnerDetailModal() {
   }
 
   function renderAdventureMap() {
-    const stages = ZHUYIN_DATA.adventureStages || [];
+    const isFinal = (state.examDifficulty === 'final');
+    const stages = getCurrentAdventureStages();
+    const starsObj = getCurrentStageStars();
+    const badges = getCurrentGymBadges();
+
+    // 🌌 切換神話秘境星空模式視覺主題
+    const mapContainer = document.getElementById('adventure-map-view');
+    if (mapContainer) {
+      if (isFinal) {
+        mapContainer.classList.add('final-map-mode');
+      } else {
+        mapContainer.classList.remove('final-map-mode');
+      }
+    }
+
+    // 🎯 動態更新頂部橫幅文案與徽章說明
+    const heroTitle = document.querySelector('.adventure-hero-banner .hero-left h2');
+    const heroDesc = document.querySelector('.adventure-hero-banner .hero-left p');
+    if (heroTitle) {
+      heroTitle.innerHTML = isFinal 
+        ? '🦅 期末考高難・神話秘境十重天 <span style="font-size:14px;background:#7E22CE;color:#FFF;padding:2px 8px;border-radius:10px;font-weight:900;margin-left:6px;">傳奇神獸出沒</span>'
+        : '🗺️ ㄅㄆㄇ 寶可夢道館巡迴大挑戰 <span style="font-size:14px;background:#059669;color:#FFF;padding:2px 8px;border-radius:10px;font-weight:900;margin-left:6px;">1:1 段考真題</span>';
+    }
+    if (heroDesc) {
+      heroDesc.textContent = isFinal
+        ? '深入十重神話秘境！降伏急凍鳥、閃電鳥、火焰鳥與究極超夢，收集 10 大至尊神話徽章與稀有神獸！'
+        : '挑戰 10 大屬性道館館主，收集 10 枚道館徽章，用寶貝球收服 37 隻野生注音寶可夢！';
+    }
+
     let clearedCount = 0;
     let totalStageStars = 0;
     let latestTargetId = 1;
 
     stages.forEach(s => {
-      const earned = state.adventure.stageStars[String(s.id)] || 0;
+      const earned = starsObj[String(s.id)] || 0;
       if (earned > 0) {
         clearedCount++;
         totalStageStars += earned;
@@ -3640,7 +3663,7 @@ function openCurrentPartnerDetailModal() {
     }
     renderGymBadges();
 
-    // 1. 渲染大地圖道路的高亮金色已通關路段
+    // 1. 渲染大地圖道路的高亮金色/紫色已通關路段
     const activeRoadSvg = document.getElementById('svg-road-active');
     if (activeRoadSvg) {
       let activePathD = '';
@@ -3654,7 +3677,7 @@ function openCurrentPartnerDetailModal() {
     updateMapTrainerVisuals();
     const trainerMarker = document.getElementById('map-trainer-marker');
     if (trainerMarker && !isTrainerMoving) {
-      const savedStageId = parseInt(localStorage.getItem('zhuyin_trainer_stage') || String(latestTargetId), 10);
+      const savedStageId = parseInt(localStorage.getItem(isFinal ? 'zhuyin_trainer_stage_final' : 'zhuyin_trainer_stage') || String(latestTargetId), 10);
       const initialStageId = Math.min(Math.max(1, savedStageId), stages.length);
       const initialCoords = STAGE_MAP_COORDS[initialStageId] || STAGE_MAP_COORDS[1];
       trainerMarker.style.left = initialCoords.left;
@@ -3662,27 +3685,27 @@ function openCurrentPartnerDetailModal() {
       state.adventure.trainerStageId = initialStageId;
     }
 
-    // 3. 渲染大地圖 10 個道館節點地標
+    // 3. 渲染大地圖 10 個道館/秘境節點地標
     const landmarksLayer = document.getElementById('map-landmarks-layer');
     if (landmarksLayer) {
       landmarksLayer.innerHTML = '';
       stages.forEach(stage => {
         const coords = STAGE_MAP_COORDS[stage.id] || { left: '50%', top: '50%' };
         const unlocked = isStageUnlocked(stage.id);
-        const earnedStars = state.adventure.stageStars[String(stage.id)] || 0;
+        const earnedStars = starsObj[String(stage.id)] || 0;
         const isCurrentTarget = unlocked && earnedStars === 0 && stage.id === latestTargetId;
-        const badge = (ZHUYIN_DATA.gymBadges || []).find(b => b.stageId === stage.id);
+        const badge = badges.find(b => b.stageId === stage.id);
         const starStr = [1, 2, 3].map(n => (n <= earnedStars ? '⭐' : '☆')).join('');
 
         const node = document.createElement('div');
         node.className = `map-landmark-node ${unlocked ? 'unlocked' : 'locked'} ${earnedStars > 0 ? 'cleared' : ''} ${isCurrentTarget ? 'current-target' : ''}`;
         node.style.left = coords.left;
         node.style.top = coords.top;
-        node.title = `${stage.name}（館主：${stage.bossName}）`;
+        node.title = `${stage.name}（${isFinal ? '秘境尊者' : '館主'}：${stage.bossName}）`;
 
         node.innerHTML = `
           <div class="landmark-badge-top" style="background:${unlocked ? stage.color : '#94A3B8'};">
-            道館 ${stage.id}
+            ${isFinal ? '秘境' : '道館'} ${stage.id}
           </div>
           <div class="landmark-icon-bubble" style="background:${unlocked ? stage.bgGradient : '#E2E8F0'}; border-color:${unlocked ? stage.color : '#CBD5E1'};">
             <span class="landmark-emoji">${unlocked ? stage.icon : '🔒'}</span>
@@ -3708,11 +3731,11 @@ function openCurrentPartnerDetailModal() {
             window.audioEngine.playWrong();
             const bubble = document.getElementById('trainer-bubble-cloud');
             if (bubble) {
-              bubble.textContent = '要先通過前面的道館喔！';
+              bubble.textContent = isFinal ? '要先通過前面的秘境喔！' : '要先通過前面的道館喔！';
               bubble.classList.add('visible');
               setTimeout(() => bubble.classList.remove('visible'), 1600);
             }
-            window.audioEngine.speak('要先通過前面的道館，才能挑戰這一座道館！也可以開啟自由選關！');
+            window.audioEngine.speak(isFinal ? '要先通過前面的秘境，才能挑戰這一座神話秘境！也可以開啟自由選關！' : '要先通過前面的道館，才能挑戰這一座道館！也可以開啟自由選關！');
             return;
           }
 
@@ -3730,9 +3753,9 @@ function openCurrentPartnerDetailModal() {
       dom.advStagesGrid.innerHTML = '';
       stages.forEach(stage => {
         const unlocked = isStageUnlocked(stage.id);
-        const earnedStars = state.adventure.stageStars[String(stage.id)] || 0;
+        const earnedStars = starsObj[String(stage.id)] || 0;
         const isCurrentTarget = unlocked && earnedStars === 0 && stage.id === latestTargetId;
-        const badge = (ZHUYIN_DATA.gymBadges || []).find(b => b.stageId === stage.id);
+        const badge = badges.find(b => b.stageId === stage.id);
         const starStr = [1, 2, 3].map(n => (n <= earnedStars ? '⭐' : '☆')).join('');
 
         const card = document.createElement('div');
@@ -3742,39 +3765,42 @@ function openCurrentPartnerDetailModal() {
         }
 
         card.innerHTML = `
-          <div>
+          <div class="stage-node-header" style="background:${unlocked ? stage.bgGradient : '#F1F5F9'};">
             <div class="stage-top-row">
               <div style="display:flex;align-items:center;gap:6px;">
                 <span class="stage-num-badge" style="background:${unlocked ? stage.color : '#ADB5BD'};">
-                  道館 ${stage.id}
+                  ${isFinal ? '秘境' : '道館'} ${stage.id}
                 </span>
-                <span class="battle-diff-badge ${state.examDifficulty === 'final' ? 'final' : 'midterm'}" style="font-size:11px;padding:2px 8px;">
-                  ${state.examDifficulty === 'final' ? '🦅 期末段考題' : '🏛️ 小一段考 1:1 原卷'}
+                <span class="battle-diff-badge ${isFinal ? 'final' : 'midterm'}" style="font-size:11px;padding:2px 8px;">
+                  ${isFinal ? '🦅 期末高難神話' : '🏛️ 小一段考 1:1 原卷'}
                 </span>
               </div>
               <span class="stage-stars-row" style="color:${earnedStars > 0 ? '#FCC419' : '#CED4DA'};">
                 ${starStr}
               </span>
             </div>
-            <div class="stage-main-hero">
-              <div class="stage-icon-circle" style="background:${unlocked ? stage.bgGradient : '#E9ECEF'};">
-                ${unlocked ? stage.icon : '🔒'}
-              </div>
-              <div class="stage-title-info">
-                <h3>${badge ? badge.gym : stage.name}</h3>
-                <div class="stage-sub">${stage.subtitle}</div>
+            <div class="stage-boss-preview">
+              <span class="boss-emoji">${unlocked ? stage.icon : '🔒'}</span>
+              <div class="stage-boss-info">
+                <h3>${stage.name}</h3>
+                <p>${stage.subtitle}</p>
               </div>
             </div>
-            <div class="stage-desc-text">${stage.desc}</div>
           </div>
-          <div class="stage-footer-row">
-            <div class="stage-boss-tag">
-              <span>${stage.bossIcon}</span>
-              <span>館主：${stage.bossName}</span>
-              ${badge ? `<span style="margin-left:6px;font-size:12px;color:${earnedStars > 0 ? '#F59E0B' : '#94A3B8'};font-weight:900;">[${badge.name}]</span>` : ''}
+          <div class="stage-node-body">
+            <div class="stage-boss-row">
+              <span style="font-size:12px;color:#868E96;font-weight:700;">${isFinal ? '秘境尊者：' : '駐守館主：'}</span>
+              <strong style="color:${stage.color};font-size:13px;">${stage.bossName}</strong>
+              <span style="font-size:11px;background:#F1F3F5;color:#495057;padding:1px 6px;border-radius:4px;font-weight:700;">
+                ${stage.bossType}
+              </span>
             </div>
-            <button class="stage-play-btn">
-              ${!unlocked ? '🔒 未解鎖' : earnedStars > 0 ? '🔄 再次挑戰' : '🔴 進入道館挑戰'}
+            <div class="stage-badge-preview">
+              <span>🏅 徽章：</span>
+              <strong>${badge ? badge.name : '榮譽徽章'}</strong>
+            </div>
+            <button class="stage-enter-btn" ${unlocked ? '' : 'disabled'} style="background:${unlocked ? stage.color : '#CED4DA'};">
+              ${unlocked ? (earnedStars > 0 ? '🔄 再次挑戰' : '⚔️ 前往挑戰') : '🔒 尚未解鎖'}
             </button>
           </div>
         `;
@@ -3782,7 +3808,7 @@ function openCurrentPartnerDetailModal() {
         card.addEventListener('click', () => {
           if (!unlocked) {
             window.audioEngine.playWrong();
-            window.audioEngine.speak('要先通過前面的道館，才能挑戰這一座道館！也可以開啟自由選關！');
+            window.audioEngine.speak(isFinal ? '要先通過前面的秘境，才能挑戰這一座神話秘境！也可以開啟自由選關！' : '要先通過前面的道館，才能挑戰這一座道館！也可以開啟自由選關！');
             return;
           }
           window.audioEngine.playPop();
@@ -3792,56 +3818,7 @@ function openCurrentPartnerDetailModal() {
         dom.advStagesGrid.appendChild(card);
       });
     }
-
-    // 5. 綁定切換按鈕事件
-    const btnWorldMap = document.getElementById('btn-mode-world-map');
-    const btnStageCards = document.getElementById('btn-mode-stage-cards');
-    const worldMapWrap = document.getElementById('pokemon-world-map-wrap');
-    if (btnWorldMap && btnStageCards && worldMapWrap && !btnWorldMap.dataset.bound) {
-      btnWorldMap.dataset.bound = 'true';
-      btnWorldMap.addEventListener('click', () => {
-        btnWorldMap.classList.add('active');
-        btnStageCards.classList.remove('active');
-        worldMapWrap.style.display = 'block';
-        if (dom.advStagesGrid) dom.advStagesGrid.style.display = 'none';
-      });
-
-      btnStageCards.addEventListener('click', () => {
-        btnStageCards.classList.add('active');
-        btnWorldMap.classList.remove('active');
-        worldMapWrap.style.display = 'none';
-        if (dom.advStagesGrid) dom.advStagesGrid.style.display = 'grid';
-      });
-    }
   }
-
-
-  // =========================================================================
-  // 🔴 寶可夢稀有度梯隊與對戰對手分配系統 (Pokemon Opponents & Difficulty System)
-  // 依題目與道館難度對應不同稀有度的初代 151 隻寶可夢，越困難題目對應越稀有寶可夢！
-  // =========================================================================
-  // 🔴 關東地區 79 隻最初階基礎寶可夢（所有 72 隻進化型態皆需靠自身培育升級或屬性石進化解鎖）
-  const BASE_POKEMON_IDS = [
-    1, 4, 7, 10, 13, 16, 19, 21, 23, 25, 27, 29, 32, 35, 37, 39, 41, 43, 46, 48,
-    50, 52, 54, 56, 58, 60, 63, 66, 69, 72, 74, 77, 79, 81, 83, 84, 86, 88, 90,
-    92, 95, 96, 98, 100, 102, 104, 106, 107, 108, 109, 111, 113, 114, 115, 116,
-    118, 120, 122, 123, 124, 125, 126, 127, 128, 129, 131, 132, 133, 137, 138,
-    140, 142, 143, 144, 145, 146, 147, 150, 151
-  ];
-
-  const POKEMON_RARITY_TIERS = {
-    // ⭐️ Tier 1: 常見初階野生 (22隻，對應基礎題目：早期森林、草叢與街道常見初階)
-    1: [10, 13, 16, 19, 21, 23, 27, 29, 32, 41, 43, 46, 48, 50, 52, 54, 56, 60, 69, 72, 74, 98],
-    // ⭐️⭐️ Tier 2: 御三家/初階人氣/城鎮與特殊屬性幼年期 (24隻，對應中階題目)
-    2: [1, 4, 7, 25, 35, 37, 39, 58, 63, 66, 77, 79, 81, 84, 86, 88, 90, 92, 96, 100, 102, 104, 109, 116],
-    // ⭐️⭐️⭐️ Tier 3: 稀有原種/洞穴與深海初階/強力格鬥原形 (18隻，對應進階三拼/聲調題目)
-    3: [83, 95, 106, 107, 108, 111, 114, 115, 118, 120, 122, 123, 124, 125, 126, 127, 128, 129],
-    // ⭐️⭐️⭐️⭐️ Tier 4: 化石初階/百變怪/伊布/吉利蛋/迷你龍史詩幼年 (10隻，對應道館高難度題目)
-    4: [113, 131, 132, 133, 137, 138, 140, 142, 143, 147],
-    // ⭐️⭐️⭐️⭐️⭐️ Tier 5: 關都傳說神獸與幻之寶可夢 (5隻，對應石英高原與終極考核：急凍鳥、閃電鳥、火焰鳥、超夢、夢幻)
-    5: [144, 145, 146, 150, 151]
-  };
-
   function assignOpponentPokemonToQuestions(stage, questions, isFinal) {
     if (typeof GEN1_POKEMON_LIST === 'undefined' || !questions || questions.length === 0) return;
 
@@ -3849,68 +3826,90 @@ function openCurrentPartnerDetailModal() {
     const stageId = stage.id || 1;
     const caughtList = state.gen1Caught || [];
 
+    // 🦅 期末考高難秘境專屬：極罕見、傳說神獸與史詩幼年寶可夢池 (全部嚴格保證最初階形態)
+    const FINAL_STAGE_EXCLUSIVE_POOL = {
+      1: [131, 143, 113, 123, 127, 128, 115, 133, 137, 138],
+      2: [143, 131, 113, 123, 127, 128, 115, 133, 137, 140],
+      3: [147, 131, 143, 142, 138, 140, 125, 126, 122, 129],
+      4: [142, 138, 140, 147, 131, 143, 125, 126, 122, 137],
+      5: [132, 147, 142, 131, 143, 113, 125, 126, 127, 128],
+      6: [126, 125, 147, 142, 131, 143, 132, 138, 140, 113],
+      7: [144, 145, 146, 147, 142, 143, 131, 132, 125, 126],
+      8: [145, 144, 146, 147, 142, 143, 131, 132, 125, 126],
+      9: [146, 144, 145, 150, 151, 147, 142, 143, 131, 132],
+      10: [150, 151, 144, 145, 146, 147, 142, 143, 131, 132]
+    };
+
     questions.forEach((q, i) => {
       const isBossQ = (i === questions.length - 1);
-      let targetTier = 1;
-
-      // 依道館關卡由易至難遞增稀有度梯隊
-      if (stageId <= 2) {
-        targetTier = isBossQ ? 3 : (i >= 3 ? 2 : 1);
-      } else if (stageId <= 4) {
-        targetTier = isBossQ ? 3 : (i >= 2 ? 3 : 2);
-      } else if (stageId <= 6) {
-        targetTier = isBossQ ? 4 : (i >= 2 ? 3 : 2);
-      } else if (stageId <= 8) {
-        targetTier = isBossQ ? 4 : (i >= 2 ? 4 : 3);
-      } else if (stageId === 9) {
-        targetTier = isBossQ ? 5 : (i >= 2 ? 4 : 4);
-      } else {
-        // 第10關：石英高原（傳說神獸大集合）
-        targetTier = isBossQ ? 5 : (i >= 2 ? 5 : 4);
-      }
-
-      // 期末考難度提升一個稀有度檔次！
-      if (isFinal) {
-        targetTier = Math.min(5, targetTier + 1);
-      }
-
       let chosenId = null;
 
-      // 1. 若為關卡最後一題（Boss題）且道館館主尚未被使用過，優先考慮
-      if (isBossQ && stage.bossId && !usedIds.has(stage.bossId) && BASE_POKEMON_IDS.includes(stage.bossId)) {
-        if (!caughtList.includes(stage.bossId)) {
+      if (isFinal) {
+        // 期末考高難：Boss題必定出戰對應關卡之神話Boss
+        if (isBossQ && stage.bossId && BASE_POKEMON_IDS.includes(stage.bossId)) {
           chosenId = stage.bossId;
+        } else if (isBossQ && stage.id === 3) {
+          chosenId = 147; // 逆鱗神龍：史詩迷你龍！
         }
-      }
 
-      if (!chosenId) {
-        // 2. 優先在目標稀有度梯隊中挑選「尚未收服」的寶可夢，協助玩家集滿 151 圖鑑！
-        const tierPool = POKEMON_RARITY_TIERS[targetTier] || POKEMON_RARITY_TIERS[1];
-        const uncaughtInTier = tierPool.filter(id => !caughtList.includes(id) && !usedIds.has(id));
-
-        if (uncaughtInTier.length > 0) {
-          chosenId = uncaughtInTier[Math.floor(Math.random() * uncaughtInTier.length)];
-        } else {
-          // 3. 若目標梯隊已全部收服，跨梯隊尋找未收服寶可夢
-          let anyUncaught = [];
-          for (let t = targetTier; t >= 1; t--) {
-            const pList = POKEMON_RARITY_TIERS[t].filter(id => !caughtList.includes(id) && !usedIds.has(id));
-            if (pList.length > 0) { anyUncaught = pList; break; }
+        if (!chosenId) {
+          const pool = (FINAL_STAGE_EXCLUSIVE_POOL[stageId] || FINAL_STAGE_EXCLUSIVE_POOL[1]).filter(id => BASE_POKEMON_IDS.includes(id));
+          const uncaught = pool.filter(id => !caughtList.includes(id) && !usedIds.has(id));
+          if (uncaught.length > 0) {
+            chosenId = uncaught[Math.floor(Math.random() * uncaught.length)];
+          } else {
+            const unused = pool.filter(id => !usedIds.has(id));
+            chosenId = (unused.length > 0 ? unused : pool)[Math.floor(Math.random() * (unused.length > 0 ? unused.length : pool.length))];
           }
-          if (anyUncaught.length === 0) {
-            for (let t = targetTier + 1; t <= 5; t++) {
+        }
+      } else {
+        // 段考真題模式：經典關東梯隊分佈
+        let targetTier = 1;
+        if (stageId <= 2) {
+          targetTier = isBossQ ? 3 : (i >= 3 ? 2 : 1);
+        } else if (stageId <= 4) {
+          targetTier = isBossQ ? 3 : (i >= 2 ? 3 : 2);
+        } else if (stageId <= 6) {
+          targetTier = isBossQ ? 4 : (i >= 2 ? 3 : 2);
+        } else if (stageId <= 8) {
+          targetTier = isBossQ ? 4 : (i >= 2 ? 4 : 3);
+        } else if (stageId === 9) {
+          targetTier = isBossQ ? 5 : (i >= 2 ? 4 : 4);
+        } else {
+          targetTier = isBossQ ? 5 : (i >= 2 ? 5 : 4);
+        }
+
+        if (isBossQ && stage.bossId && !usedIds.has(stage.bossId) && BASE_POKEMON_IDS.includes(stage.bossId)) {
+          if (!caughtList.includes(stage.bossId)) {
+            chosenId = stage.bossId;
+          }
+        }
+
+        if (!chosenId) {
+          const tierPool = POKEMON_RARITY_TIERS[targetTier] || POKEMON_RARITY_TIERS[1];
+          const uncaughtInTier = tierPool.filter(id => !caughtList.includes(id) && !usedIds.has(id));
+
+          if (uncaughtInTier.length > 0) {
+            chosenId = uncaughtInTier[Math.floor(Math.random() * uncaughtInTier.length)];
+          } else {
+            let anyUncaught = [];
+            for (let t = targetTier; t >= 1; t--) {
               const pList = POKEMON_RARITY_TIERS[t].filter(id => !caughtList.includes(id) && !usedIds.has(id));
               if (pList.length > 0) { anyUncaught = pList; break; }
             }
-          }
-
-          if (anyUncaught.length > 0) {
-            chosenId = anyUncaught[Math.floor(Math.random() * anyUncaught.length)];
-          } else {
-            // 4. 若全部或相鄰梯隊都已收服，隨機抽樣避免本局重複
-            const unusedInTier = tierPool.filter(id => !usedIds.has(id));
-            const finalCandidates = unusedInTier.length > 0 ? unusedInTier : tierPool;
-            chosenId = finalCandidates[Math.floor(Math.random() * finalCandidates.length)];
+            if (anyUncaught.length === 0) {
+              for (let t = targetTier + 1; t <= 5; t++) {
+                const pList = POKEMON_RARITY_TIERS[t].filter(id => !caughtList.includes(id) && !usedIds.has(id));
+                if (pList.length > 0) { anyUncaught = pList; break; }
+              }
+            }
+            if (anyUncaught.length > 0) {
+              chosenId = anyUncaught[Math.floor(Math.random() * anyUncaught.length)];
+            } else {
+              const unusedInTier = tierPool.filter(id => !usedIds.has(id));
+              const finalCandidates = unusedInTier.length > 0 ? unusedInTier : tierPool;
+              chosenId = finalCandidates[Math.floor(Math.random() * finalCandidates.length)];
+            }
           }
         }
       }
@@ -3921,7 +3920,6 @@ function openCurrentPartnerDetailModal() {
       q.isShiny = (Math.random() < 0.12);
     });
   }
-
   function startStageBattle(stage) {
 
     state.adventure.activeStage = stage;
@@ -5731,14 +5729,20 @@ function openCurrentPartnerDetailModal() {
 
     // 100分才算過關！
     const isPass = (state.adventure.score === 100);
-    const badge = (ZHUYIN_DATA.gymBadges || []).find(b => b.stageId === stage.id);
+    const badges = getCurrentGymBadges();
+    const badge = badges.find(b => b.stageId === stage.id);
     const qCard = document.getElementById('battle-question-card');
 
     if (isPass) {
       // 滿分 100 分通關！
       const earnedStars = 3;
-      state.adventure.stageStars[String(stage.id)] = 3;
-      localStorage.setItem('zhuyin_stage_progress', JSON.stringify(state.adventure.stageStars));
+      const isFinal = (state.examDifficulty === 'final');
+      if (isFinal) {
+        state.adventure.stageStarsFinal[String(stage.id)] = 3;
+      } else {
+        state.adventure.stageStars[String(stage.id)] = 3;
+      }
+      saveCurrentStageStars();
 
       addStars(6, true);
       state.balls = Math.min(99, state.balls + 9);
@@ -5768,7 +5772,8 @@ function openCurrentPartnerDetailModal() {
       if (stage.id === 5) unlockAchievement('stage_5_clear');
       if (stage.id === 10) unlockAchievement('dragon_slayer');
 
-      const nextStage = ZHUYIN_DATA.adventureStages.find(s => s.id === stage.id + 1);
+      const stages = getCurrentAdventureStages();
+      const nextStage = stages.find(s => s.id === stage.id + 1);
 
       window.audioEngine.speak(`太棒了！恭喜你擊敗${stage.bossName}，獲得${badge ? badge.name : '榮譽徽章'}！`);
 

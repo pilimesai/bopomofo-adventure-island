@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=72">
+  <link rel="stylesheet" href="css/style.css?v=73">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -351,8 +351,16 @@
       <!-- 🏅 10 大道館徽章盒 (Gym Badge Case) -->
       <div class="gym-badge-case">
         <div class="gym-badge-title">
-          <span>🏅 訓練家道館徽章展示盒 (Gym Badges)</span>
+          <span id="badge-case-title">🏅 訓練家道館徽章展示盒 (Gym Badges)</span>
           <span style="font-size:15px;color:#FCD34D;" id="badge-count-text">已獲得：0 / 10 枚</span>
+        </div>
+        <div class="gym-badge-cabinet-tabs">
+          <button class="cabinet-tab-btn active" id="btn-cabinet-midterm" type="button">
+            🏛️ 關東經典 10 大道館徽章
+          </button>
+          <button class="cabinet-tab-btn cabinet-tab-final" id="btn-cabinet-final" type="button">
+            🦅 神話極限 10 大秘境徽章
+          </button>
         </div>
         <div class="gym-badge-grid" id="gym-badge-grid">
           <!-- 由 JS 動態渲染 10 個徽章槽位 -->
@@ -838,13 +846,13 @@
 
 
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=72"></script>
-  <script src="js/gen1_pokemon.js?v=72"></script>
-  <script src="js/question_generator.js?v=72"></script>
-  <script src="js/audio_manifest.js?v=72"></script>
-  <script src="js/audio.js?v=72"></script>
-  <script src="js/confetti.js?v=72"></script>
-  <script src="js/app.js?v=72"></script>
+  <script src="js/data.js?v=73"></script>
+  <script src="js/gen1_pokemon.js?v=73"></script>
+  <script src="js/question_generator.js?v=73"></script>
+  <script src="js/audio_manifest.js?v=73"></script>
+  <script src="js/audio.js?v=73"></script>
+  <script src="js/confetti.js?v=73"></script>
+  <script src="js/app.js?v=73"></script>
 
 </body>
 </html>
