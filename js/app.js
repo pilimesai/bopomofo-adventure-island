@@ -1505,6 +1505,95 @@ document.addEventListener('DOMContentLoaded', () => {
   window.isPokemonMaxTrained = isPokemonMaxTrained;
   window.markPokemonMaxTrained = markPokemonMaxTrained;
 
+  /**
+   * 🔴 若抓到已有的寵物，就直接幫已有的寵物升一級，若已滿級則無效果
+   */
+  function levelUpExistingPokemon(pokemonId) {
+    if (!pokemonId) return { leveledUp: false, reason: 'invalid_id' };
+    const pid = parseInt(pokemonId, 10);
+    const pokemonObj = (typeof GEN1_POKEMON_LIST !== 'undefined')
+      ? GEN1_POKEMON_LIST.find(p => p.id === pid)
+      : null;
+    const pokeName = pokemonObj ? pokemonObj.name : ('No.' + pid);
+
+    // 1. 檢查是否為當前出戰夥伴
+    const isCurrent = (typeof isCurrentPartnerPokemon === 'function')
+      ? isCurrentPartnerPokemon(pid)
+      : false;
+
+    if (isCurrent && state.partnerData) {
+      const curLevel = state.partnerData.level || 1;
+      if (curLevel >= MAX_PARTNER_LEVEL) {
+        return { leveledUp: false, reason: 'max_level', level: curLevel, name: pokeName, isCurrent: true };
+      }
+      const newLevel = curLevel + 1;
+      state.partnerData.level = newLevel;
+      state.partnerData.maxExp = 60 + newLevel * 25;
+      localStorage.setItem('zhuyin_partner_data', JSON.stringify(state.partnerData));
+
+      const all = getAllPartnersData();
+      all[state.partner] = { ...state.partnerData };
+      all['gen1_' + pid] = { ...state.partnerData };
+      saveAllPartnersData(all);
+
+      if (newLevel >= MAX_PARTNER_LEVEL) {
+        markPokemonMaxTrained(pid);
+        markPokemonMaxTrained(state.partner);
+        unlockAchievement('max_trained_master');
+      }
+
+      updateTrainerHeaderUI();
+      if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
+      if (typeof renderNurtureShop === 'function') renderNurtureShop();
+
+      return { leveledUp: true, oldLevel: curLevel, newLevel, name: pokeName, isCurrent: true };
+    }
+
+    // 2. 非當前出戰夥伴：更新 allPartnersData 中該隻寶可夢的等級
+    const all = getAllPartnersData();
+    const STARTER_ID_MAP = {
+      1: 'bulbasaur', 2: 'bulbasaur', 3: 'bulbasaur',
+      4: 'charmander', 5: 'charmander', 6: 'charmander',
+      7: 'squirtle', 8: 'squirtle', 9: 'squirtle',
+      25: 'pikachu', 26: 'pikachu',
+      133: 'eevee', 134: 'eevee', 135: 'eevee', 136: 'eevee'
+    };
+
+    let partnerKey = 'gen1_' + pid;
+    if (!all[partnerKey] && STARTER_ID_MAP[pid] && all[STARTER_ID_MAP[pid]]) {
+      partnerKey = STARTER_ID_MAP[pid];
+    }
+
+    const pData = all[partnerKey] || { level: 1, exp: 0, maxExp: 85, stage: 0, crown: false };
+    const curLevel = pData.level || 1;
+
+    if (curLevel >= MAX_PARTNER_LEVEL) {
+      return { leveledUp: false, reason: 'max_level', level: curLevel, name: pokeName, isCurrent: false };
+    }
+
+    const newLevel = curLevel + 1;
+    pData.level = newLevel;
+    pData.maxExp = 60 + newLevel * 25;
+
+    all[partnerKey] = pData;
+    all['gen1_' + pid] = pData;
+    if (STARTER_ID_MAP[pid]) {
+      all[STARTER_ID_MAP[pid]] = pData;
+    }
+    saveAllPartnersData(all);
+
+    if (newLevel >= MAX_PARTNER_LEVEL) {
+      markPokemonMaxTrained(pid);
+      unlockAchievement('max_trained_master');
+    }
+
+    if (typeof renderGen1Pokedex === 'function') renderGen1Pokedex();
+    if (typeof renderNurtureShop === 'function') renderNurtureShop();
+
+    return { leveledUp: true, oldLevel: curLevel, newLevel, name: pokeName, isCurrent: false };
+  }
+  window.levelUpExistingPokemon = levelUpExistingPokemon;
+
   function addPartnerExp(amount) {
     if (!state.partnerData) {
       state.partnerData = getPartnerData(state.partner);
@@ -5558,9 +5647,10 @@ function openCurrentPartnerDetailModal() {
             window.audioEngine.playPokeCaught();
             if (window.confetti) window.confetti.trigger(isShiny ? 90 : 50);
 
-            // 🔴 成功收服對戰寶可夢！登錄至 151 寶可夢大圖鑑！
+            // 🔴 成功收服對戰寶可夢！登錄至 151 寶可夢大圖鑑；若已擁有則直接升一級！
             const opp = q.oppPokemon || state.adventure.currentOpponentPokemon;
             let isNewlyCaught = false;
+            let levelUpResult = null;
             if (opp && typeof GEN1_POKEMON_LIST !== 'undefined') {
               if (!state.gen1Caught.includes(opp.id)) {
                 state.gen1Caught.push(opp.id);
@@ -5568,6 +5658,9 @@ function openCurrentPartnerDetailModal() {
                 isNewlyCaught = true;
                 updatePokedexProgressUI();
                 renderGen1Pokedex();
+              } else {
+                // 🔴 若抓到已有的寵物，就直接幫已有的寵物升一級，若已滿級則無效果
+                levelUpResult = levelUpExistingPokemon(opp.id);
               }
               if (!state.adventure.caughtInCurrentBattle) state.adventure.caughtInCurrentBattle = [];
               state.adventure.caughtInCurrentBattle.push(opp);
@@ -5586,15 +5679,32 @@ function openCurrentPartnerDetailModal() {
 
             const oppNameEl = document.getElementById('poke-opp-name');
             if (oppNameEl && opp) {
-              oppNameEl.innerHTML = `<span style="color:#10B981;font-weight:900;">🎉 成功收服：【${opp.name}】(${opp.dexNo})！</span>`;
+              if (isNewlyCaught) {
+                oppNameEl.innerHTML = `<span style="color:#10B981;font-weight:900;">🎉 成功收服新寶可夢：【${opp.name}】(${opp.dexNo})！</span>`;
+              } else if (levelUpResult && levelUpResult.leveledUp) {
+                oppNameEl.innerHTML = `<span style="color:#F59E0B;font-weight:900;">⭐ 再次捕獲【${opp.name}】！等級直接升為 Lv.${levelUpResult.newLevel}！</span>`;
+              } else if (levelUpResult && levelUpResult.reason === 'max_level') {
+                oppNameEl.innerHTML = `<span style="color:#6366F1;font-weight:900;">👑 再次捕獲【${opp.name}】！已達成滿級 Lv.100！</span>`;
+              } else {
+                oppNameEl.innerHTML = `<span style="color:#10B981;font-weight:900;">🎉 成功收服：【${opp.name}】(${opp.dexNo})！</span>`;
+              }
             }
-            setMascotSpeech(isNewlyCaught
-              ? `🎉 太強了！答對並成功收服了【${opp ? opp.name : '寶可夢'}】！已登錄 151 寶可夢大圖鑑！（${state.gen1Caught.length}/151 隻）`
-              : (isShiny
+
+            if (isNewlyCaught) {
+              setMascotSpeech(`🎉 太強了！答對並成功收服了【${opp ? opp.name : '寶可夢'}】！已登錄 151 寶可夢大圖鑑！（${state.gen1Caught.length}/151 隻）`);
+            } else if (levelUpResult && levelUpResult.leveledUp) {
+              if (window.audioEngine && window.audioEngine.playLevelUp) {
+                window.audioEngine.playLevelUp();
+              }
+              setMascotSpeech(`🎉 抓到已擁有的【${opp.name}】！直接幫牠升一級，等級提升到 Lv.${levelUpResult.newLevel}！`);
+            } else if (levelUpResult && levelUpResult.reason === 'max_level') {
+              setMascotSpeech(`⭐ 再次抓到【${opp.name}】！因為已經達到滿級 Lv.100，處於最強極限狀態囉！`);
+            } else {
+              setMascotSpeech(isShiny
                 ? `✨ 太神了！收服了稀有閃光【${opp ? opp.name : '寶可夢'}】！獲得雙倍星星與精靈球！`
                 : `⚡ 答對了！成功收服【${opp ? opp.name : '寶可夢'}】！獲得戰鬥經驗與精靈球！`
-              )
-            );
+              );
+            }
 
             state.adventure.qIndex++;
             updateBattleHeaderUI();
