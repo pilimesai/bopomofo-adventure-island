@@ -1028,12 +1028,12 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('zhuyin_main_partner', 'pikachu');
     }
 
-    // 🔊 全局使用者手勢音訊解鎖器（解決 iOS/Android/Chrome 瀏覽器語音暫停與自動播放限制）
+    // 🔊 全局使用者手勢音訊解鎖器（啟用 Web Audio 與 HTML5 Audio，嚴格禁絕機械合成聲）
     const unlockAudioEngine = () => {
       if (window.audioEngine) {
         window.audioEngine.ensureAudioContext();
-        if (window.speechSynthesis && window.speechSynthesis.paused) {
-          window.speechSynthesis.resume();
+        if (window.speechSynthesis) {
+          try { window.speechSynthesis.cancel(); } catch (e) {}
         }
       }
     };

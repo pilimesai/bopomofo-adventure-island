@@ -254,115 +254,68 @@ class ZhuyinAudioEngine {
           if (options.onEnd) options.onEnd();
         };
         audio.onerror = (err) => {
-          console.warn('音檔載入受阻，自動啟動台灣女聲合成備援：', err);
+          console.warn("音檔載入受阻：", err);
           this.currentAudio = null;
-          this.speakWithBrowserTTS(cleanKey, options);
+          if (options.onEnd) {
+            setTimeout(() => {
+              try { options.onEnd(); } catch (e) {}
+            }, 50);
+          }
         };
 
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.catch((err) => {
             // 被新的語音操作主動中斷（切題或手動重按）時忽略，避免報錯
-            if (err && (err.name === 'AbortError' || err.code === 20)) {
+            if (err && (err.name === "AbortError" || err.code === 20)) {
               return;
             }
-            // 無論是被自動播放安全機制攔截或任何錯誤，100% 自動無縫降級為台灣女聲朗讀備援！
-            console.warn('音檔播放未成功，啟動台灣女聲朗讀備援：', err);
+            console.warn("音檔播放未成功：", err);
             this.currentAudio = null;
-            this.speakWithBrowserTTS(cleanKey, options);
+            if (options.onEnd) {
+              setTimeout(() => {
+                try { options.onEnd(); } catch (e) {}
+              }, 50);
+            }
           });
         }
         return;
       } catch (e) {
-        console.warn('Audio 實例創建異常，啟動 TTS：', e);
+        console.warn("Audio 實例創建異常：", e);
         this.currentAudio = null;
-        this.speakWithBrowserTTS(cleanKey, options);
+        if (options.onEnd) {
+          setTimeout(() => {
+            try { options.onEnd(); } catch (e) {}
+          }, 50);
+        }
         return;
       }
     }
 
-    // 找不到音檔時，立即由高品質台灣女聲合成發音
-    this.speakWithBrowserTTS(cleanKey, options);
+    // 🔴 找不到音檔時，為確保絕不出現機器聲，堅決不使用瀏覽器機器合成音！
+    console.warn("[音訊引擎] 找不到音檔，完全停用機器聲備援：", cleanKey);
+    if (options.onEnd) {
+      setTimeout(() => {
+        try { options.onEnd(); } catch (e) {}
+      }, 50);
+    }
   }
 
+  /**
+   * 🔴 機器合成語音（TTS）徹底永久停用！
+   * 絕不允許任何系統原生機械聲介入發音，保障 100% 真人錄音級語音體驗
+   */
   speakWithBrowserTTS(text, options = {}) {
-    if (!this.synth) {
-      if (options.onEnd) options.onEnd();
-      return;
+    console.warn("[音訊引擎] 機器聲已完全永久停用，絕不發出機械聲音：", text);
+    if (this.synth) {
+      try {
+        this.synth.cancel();
+      } catch (e) {}
     }
-
-    try {
-      if (this.synth.paused) {
-        this.synth.resume();
-      }
-    } catch (e) {}
-
-    const clearText = this.normalizeZhuyinForSpeech(text);
-    const utterance = new SpeechSynthesisUtterance(clearText);
-
-    // 避免垃圾回收 GC 提前銷毀正在發音的 utterance 導致語音突然消失
-    this._activeUtterance = utterance;
-
-    // 嚴格確保使用已保存的台灣女聲選項
-    if (!this.taiwanVoice) {
-      this.loadVoices();
-    }
-    if (this.taiwanVoice) {
-      utterance.voice = this.taiwanVoice;
-      utterance.lang = this.taiwanVoice.lang;
-    } else {
-      utterance.lang = 'zh-TW';
-    }
-
-    const voiceRole = options.voiceName || this.selectedVoiceName || 'PERSONA::TEACHER';
-    utterance.rate = options.rate || 0.92;
-    utterance.pitch = (options.pitch !== undefined) ? options.pitch : 1.0; // 嚴格 1.0 真人自然發聲音調
-
-    let finished = false;
-    let rInterval = null;
-    const finishHandler = () => {
-      if (finished) return;
-      finished = true;
-      if (rInterval) clearInterval(rInterval);
-      if (this._activeUtterance === utterance) {
-        this._activeUtterance = null;
-      }
-      if (options.onEnd) {
-        try { options.onEnd(); } catch (err) {}
-      }
-    };
-
-    utterance.onend = finishHandler;
-    utterance.onerror = (e) => {
-      // 只有在當前活躍 utterance 已經被替換時，才代表是故意取消
-      if (e && e.error === 'canceled' && this._activeUtterance !== utterance) {
-        if (rInterval) clearInterval(rInterval);
-        return;
-      }
-      console.warn('TTS on error:', e);
-      finishHandler();
-    };
-
-    // 針對長時間發音或部分瀏覽器長文本卡住的 keep-alive 防卡機制
-    rInterval = setInterval(() => {
-      if (!this.synth || !this.synth.speaking) {
-        clearInterval(rInterval);
-      } else {
-        try {
-          this.synth.pause();
-          this.synth.resume();
-        } catch (e) {}
-      }
-    }, 5000);
-
-    try {
-      this.synth.speak(utterance);
-      if (this.synth.paused) {
-        this.synth.resume();
-      }
-    } catch (err) {
-      console.warn('Synth speak error:', err);
-      finishHandler();
+    if (options.onEnd) {
+      setTimeout(() => {
+        try { options.onEnd(); } catch (e) {}
+      }, 50);
     }
   }
 

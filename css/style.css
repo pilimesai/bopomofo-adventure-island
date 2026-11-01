@@ -5884,7 +5884,7 @@ html, body {
 }
 
 .gen1-card-name-ruby {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 900;
   color: #1E293B;
   text-align: center;
@@ -5898,64 +5898,90 @@ html, body {
   align-items: center !important;
   justify-content: center !important;
   flex-wrap: nowrap !important;
+  overflow: hidden !important;
+  padding: 0 2px !important;
 }
 
 /* 寶可夢卡片專屬直式注音排版：精確微調字距與音標，100% 容納於卡片內絕不超出邊框 */
 .gen1-card-name-ruby .zy-hanzi-pair {
   display: inline-flex !important;
   align-items: center !important;
-  margin: 0 1px !important;
+  margin: 0 0.5px !important;
   flex-shrink: 0 !important;
 }
 
 .gen1-card-name-ruby .zy-hanzi {
-  font-size: 14px !important;
-  margin-right: 1.5px !important;
+  font-size: 13px !important;
+  margin-right: 1px !important;
   line-height: 1 !important;
 }
 
 .gen1-card-name-ruby .zy-vertical-syllable {
-  font-size: 8.5px !important;
+  font-size: 8px !important;
   line-height: 1 !important;
 }
 
 .gen1-card-name-ruby .zy-vertical-syllable .zy-char {
-  font-size: 8px !important;
-  line-height: 8px !important;
+  font-size: 7.5px !important;
+  line-height: 7.5px !important;
 }
 
 .gen1-card-name-ruby .zy-tone-side {
-  font-size: 8px !important;
-  right: -6px !important;
+  font-size: 7.5px !important;
+  right: -5px !important;
 }
 
 .gen1-card-name-ruby .zy-tone-light {
-  font-size: 8px !important;
-  top: -5px !important;
+  font-size: 7.5px !important;
+  top: -4px !important;
 }
 
-/* 4 字寶可夢名稱縮放（例如：妙蛙種子、尼多力諾、蚊香蝌蚪等） */
+/* 4 字寶可夢名稱縮放（例如：妙蛙種子、尼多力諾、蚊香蝌蚪等）- 徹底縮小字體與間距，保證100%在卡片框內 */
+.gen1-card-name-ruby.len-4 {
+  transform: scale(0.85) !important;
+  transform-origin: center center !important;
+}
 .gen1-card-name-ruby.len-4 .zy-hanzi-pair {
-  margin: 0 0.5px !important;
+  margin: 0 !important;
 }
 .gen1-card-name-ruby.len-4 .zy-hanzi {
-  font-size: 12.5px !important;
-  margin-right: 1px !important;
-}
-.gen1-card-name-ruby.len-4 .zy-vertical-syllable {
-  font-size: 8px !important;
-}
-
-/* 5 字寶可夢名稱縮放（例如：三合一磁怪、多刺菊石獸） */
-.gen1-card-name-ruby.len-5 .zy-hanzi-pair {
-  margin: 0 0.5px !important;
-}
-.gen1-card-name-ruby.len-5 .zy-hanzi {
   font-size: 11px !important;
   margin-right: 0.5px !important;
 }
-.gen1-card-name-ruby.len-5 .zy-vertical-syllable {
+.gen1-card-name-ruby.len-4 .zy-vertical-syllable {
   font-size: 7px !important;
+}
+.gen1-card-name-ruby.len-4 .zy-vertical-syllable .zy-char {
+  font-size: 6.5px !important;
+  line-height: 6.5px !important;
+}
+.gen1-card-name-ruby.len-4 .zy-tone-side {
+  font-size: 6.5px !important;
+  right: -4.5px !important;
+}
+
+/* 5 字寶可夢名稱縮放（例如：三合一磁怪、多刺菊石獸） */
+.gen1-card-name-ruby.len-5 {
+  transform: scale(0.72) !important;
+  transform-origin: center center !important;
+}
+.gen1-card-name-ruby.len-5 .zy-hanzi-pair {
+  margin: 0 !important;
+}
+.gen1-card-name-ruby.len-5 .zy-hanzi {
+  font-size: 9.5px !important;
+  margin-right: 0.5px !important;
+}
+.gen1-card-name-ruby.len-5 .zy-vertical-syllable {
+  font-size: 6px !important;
+}
+.gen1-card-name-ruby.len-5 .zy-vertical-syllable .zy-char {
+  font-size: 5.5px !important;
+  line-height: 5.5px !important;
+}
+.gen1-card-name-ruby.len-5 .zy-tone-side {
+  font-size: 5.5px !important;
+  right: -4px !important;
 }
 
 .gen1-card-types {
@@ -7234,14 +7260,7 @@ html, body {
   font-size: 16px !important;
 }
 
-.gen1-card-name-ruby.len-4 {
-  transform: scale(0.92);
-  transform-origin: center center;
-}
-.gen1-card-name-ruby.len-5 {
-  transform: scale(0.82);
-  transform-origin: center center;
-}
+/* gen1-card-name-ruby scalings consolidated above */
 
 
 /* 🎵 胖丁專屬終極進化歌聲與舞台特效 (Jigglypuff Ultimate Evolution Special Effects) */
