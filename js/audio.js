@@ -218,16 +218,20 @@ class ZhuyinAudioEngine {
 
     // 若符號或標點有微小差異，嘗試標點正規化比對以確保 100% 播放真人高畫質音檔
     if (!audioUrl) {
-      const simplifiedKey = cleanKey.replace(/[，。！？、～~\s]/g, '');
+      const simplifiedKey = cleanKey.replace(/[，。！？、～~\s「」『』【】（）()]/g, '');
       for (const [k, url] of Object.entries(targetManifest)) {
-        if (k.replace(/[，。！？、～~\s]/g, '') === simplifiedKey) {
+        if (k.replace(/[，。！？、～~\s「」『』【】（）()]/g, '') === simplifiedKey) {
           audioUrl = url;
           break;
         }
       }
-      // 僅在目標庫完全找不到時才作為後備
-      if (!audioUrl && fallbackManifest[cleanKey]) {
-        audioUrl = fallbackManifest[cleanKey];
+      if (!audioUrl) {
+        for (const [k, url] of Object.entries(fallbackManifest)) {
+          if (k.replace(/[，。！？、～~\s「」『』【】（）()]/g, '') === simplifiedKey) {
+            audioUrl = url;
+            break;
+          }
+        }
       }
     }
 
@@ -235,7 +239,6 @@ class ZhuyinAudioEngine {
       try {
         const audio = new Audio(audioUrl);
         this.currentAudio = audio;
-        // 連動語速調整滑桿 (Speech Rate)
         const currentRate = options.rate || this.speechRate || (isCute ? 0.92 : 0.86);
         const baseRate = isCute ? 0.92 : 0.86;
         audio.playbackRate = Math.max(0.65, Math.min(1.5, currentRate / baseRate));
@@ -243,16 +246,36 @@ class ZhuyinAudioEngine {
         if (options.onEnd) {
           audio.onended = options.onEnd;
         }
-        audio.play().catch(() => {
-          this.speakWithBrowserTTS(cleanKey, options);
+        audio.play().catch((err) => {
+          // 若是被 pause() 或換題切換中斷 (AbortError)，絕不觸發機器人語音！
+          if (err && (err.name === 'AbortError' || err.code === 20)) {
+            return;
+          }
+          // 若為瀏覽器尚未取得使用者點擊互動限制 (NotAllowedError)，維持按鈕提示手動點擊，絕不發出刺耳機器聲
+          if (err && err.name === 'NotAllowedError') {
+            const btn = document.getElementById('btn-poke-listen');
+            if (btn) {
+              btn.classList.remove('reading-now');
+              btn.innerHTML = '<span>🔊</span> 點擊聽老師清晰朗讀題目';
+            }
+            return;
+          }
+          console.warn('音檔播放受阻，等待使用者點擊：', err);
         });
+        // 音檔存在時 100% 播放真人音檔，絕不降級成機械合成語音
         return;
       } catch (e) {
-        // fallback to browser TTS with preserved voice
+        console.warn('Audio error:', e);
       }
     }
 
-    this.speakWithBrowserTTS(cleanKey, options);
+    // 嚴格防止任何題目、闖關對話或段考內容降級成機器人語音
+    // 只有在明確允許（例如設定頁面的瀏覽器 TTS 測試按鈕）才使用瀏覽器合成，絕不讓遊戲過程中意外出現機器人聲音！
+    if (options.allowTTS) {
+      this.speakWithBrowserTTS(cleanKey, options);
+    } else {
+      console.warn(`[AudioEngine] 找不到音檔，為維護純真人語音品質，已略過機器人合成語音：${cleanKey}`);
+    }
   }
 
   speakWithBrowserTTS(text, options = {}) {

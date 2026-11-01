@@ -4385,7 +4385,6 @@ function setupPartnerModal() {
 
       window.audioEngine.playWrong();
       setMascotSpeech(`「哎呀選錯了！本題 0 分。正確答案是【${q.answer}】，下一題要加油喔！」`);
-      window.audioEngine.speak('答錯囉，正確答案是 ' + q.answer);
 
       // 自動切換下一題（約1.3秒，讓小朋友清楚看見正解後無縫切換並自動朗讀下一題）
       setTimeout(() => {
@@ -4430,7 +4429,7 @@ function setupPartnerModal() {
 
       const nextStage = ZHUYIN_DATA.adventureStages.find(s => s.id === stage.id + 1);
 
-      window.audioEngine.speak(`太棒了！恭喜你獲得一百分滿分過關，擊敗${stage.bossName}，榮獲${badge ? badge.name : '榮譽徽章'}！`);
+      window.audioEngine.speak(`太棒了！恭喜你擊敗${stage.bossName}，獲得${badge ? badge.name : '榮譽徽章'}！`);
 
       if (qCard) {
         qCard.innerHTML = `
@@ -4568,7 +4567,7 @@ function setupPartnerModal() {
     } else {
       // 未達 100 分，闖關失敗！
       window.audioEngine.playWrong();
-      window.audioEngine.speak(`本次得分${state.adventure.score}分。必須獲得一百分滿分才能過關解鎖下一關喔！再挑戰一次吧！`);
+      window.audioEngine.speak('這題不對，別灰心，看老師提示再試一次！');
 
       if (qCard) {
         qCard.innerHTML = `
