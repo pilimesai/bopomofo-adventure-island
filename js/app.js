@@ -2291,115 +2291,84 @@ function setupPartnerModal() {
 
   // ==========================================
 
-  function setupTabNavigation() {
-
-    dom.tabBtns.forEach(btn => {
-
-      btn.addEventListener('click', () => {
-
-        window.audioEngine.playPop();
-
-        const tabTarget = btn.dataset.tab;
-
-
-
-        dom.tabBtns.forEach(b => b.classList.remove('active'));
-
-        dom.tabPanes.forEach(p => p.classList.remove('active'));
-
-
-
-        btn.classList.add('active');
+  function switchTab(tabTarget) {
+    dom.tabBtns.forEach(b => {
+      if (b.dataset.tab === tabTarget) {
+        b.classList.add('active');
         try {
-          btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          b.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         } catch (e) {}
-
-        const targetPane = document.getElementById(tabTarget);
-
-        if (targetPane) {
-
-          targetPane.classList.add('active');
-
-        }
-
-        if (tabTarget === 'tab-shop') {
-          renderNurtureShop();
-        }
-        if (tabTarget === 'tab-gallery') {
-          updatePokedexProgressUI();
-          if (state.pokedexMode === 'gen1') {
-            renderGen1Pokedex();
-          } else {
-            renderGallery();
-          }
-        }
-
-        // 分頁對應吉祥物貼心提示
-        const speeches = {
-          'tab-adventure': '🗺️ 選擇亮起來的島嶼關卡，答對題目就能發射星光魔法收服守護獸！',
-          'tab-gallery': '🔴 歡迎來到第一世代 151 寶可夢大圖鑑！每隻寶可夢都能聽真人發音與直式注音，點擊卡片還能派牠出戰喔！',
-          'tab-achievements': '🏆 看看你蒐集了多少顆星星和亮晶晶的勳章！',
-          'tab-shop': '🛍️ 歡迎光臨寶可夢培育商店！用道館考核贏得的金幣換購美味甜點與神奇糖果，培育升級你的出戰夥伴吧！'
-        };
-
-        if (speeches[tabTarget]) {
-
-          setMascotSpeech(speeches[tabTarget]);
-
-        }
-
-      });
-
+      } else {
+        b.classList.remove('active');
+      }
     });
 
+    dom.tabPanes.forEach(p => {
+      p.classList.toggle('active', p.id === tabTarget);
+    });
 
-
-    // 點擊 Logo 回到第一頁
-
-    const btnHome = document.getElementById('btn-home-logo');
-
-    if (btnHome) {
-
-      btnHome.addEventListener('click', () => {
-
-        dom.tabBtns[0].click();
-
-        showAdventureMap();
-
-      });
-
+    if (tabTarget === 'tab-shop') {
+      renderNurtureShop();
+    }
+    if (tabTarget === 'tab-gallery') {
+      updatePokedexProgressUI();
+      if (state.pokedexMode === 'gen1') {
+        renderGen1Pokedex();
+      } else {
+        renderGallery();
+      }
     }
 
-    // 點擊頂部金幣錢包按鈕前往培育商店
+    // 吉祥物鼓勵語音或提示
+    const speeches = {
+      'tab-adventure': '🗺️ 準備好前往道館闖關了嗎？點擊任何道館即可出發！',
+      'tab-gallery': '🔴 歡迎來到 151 隻初代寶可夢注音圖鑑！每過一關都能解鎖收服！',
+      'tab-achievements': '🏆 查看你辛苦獲得的道館榮譽徽章吧！',
+      'tab-shop': '🛍️ 歡迎來到培育商店！用闖關獲得的金幣餵食夥伴、換購皇冠吧！'
+    };
+
+    if (speeches[tabTarget]) {
+      setMascotSpeech(speeches[tabTarget]);
+    }
+  }
+  window.switchToTab = switchTab;
+
+  function setupTabNavigation() {
+    dom.tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.audioEngine.playPop();
+        switchTab(btn.dataset.tab);
+      });
+    });
+
+    // 點擊 Logo 回到首頁
+    const btnHome = document.getElementById('btn-home-logo');
+    if (btnHome) {
+      btnHome.addEventListener('click', () => {
+        switchTab('tab-adventure');
+        showAdventureMap();
+      });
+    }
+
+    // 冒險金幣培育商店快捷按鈕（直接前往培育商店）
     const btnCoin = document.getElementById('header-coin-btn');
     if (btnCoin) {
       btnCoin.addEventListener('click', () => {
         window.audioEngine.playPop();
-        const shopTab = Array.from(dom.tabBtns).find(b => b.dataset.tab === 'tab-shop');
-        if (shopTab) {
-          shopTab.click();
-        }
+        switchTab('tab-shop');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
 
-
-
-    // 點擊星星進入星光榜
-
+    // 榮譽星光榜快捷按鈕（直接查看道館徽章盒）
     const btnStar = document.getElementById('header-star-btn');
-
     if (btnStar) {
-
       btnStar.addEventListener('click', () => {
-
-        const achTab = Array.from(dom.tabBtns).find(b => b.dataset.tab === 'tab-achievements');
-
-        if (achTab) achTab.click();
-
+        window.audioEngine.playPop();
+        switchTab('tab-achievements');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-
     }
-
   }
 
 
@@ -3247,28 +3216,18 @@ function setupPartnerModal() {
 
 
 
-    // 依據選擇的段考難度與考古題大題庫池進行「動態隨機抽題」
-
+    // 依據選擇的段考難度與題目生成器進行「題目無限隨機變化，但關卡難度嚴格固定」
     const isFinal = state.examDifficulty === 'final';
-
-    const rawPool = (isFinal && stage.finalQuestions && stage.finalQuestions.length > 0)
-
-      ? stage.finalQuestions
-
-      : (stage.questions || []);
-
-
-
-    // 隨機洗牌演算法（Fisher-Yates Shuffle），每次進入道館隨機抽取 5~6 題
-
-    const shuffledPool = [...rawPool].sort(() => Math.random() - 0.5);
-
-    // 每關抽取 5 題考核（每題20分，滿分100分）
-    const targetCount = 5;
-
-    const selectedQuestions = shuffledPool.slice(0, targetCount);
-
-
+    let selectedQuestions = [];
+    if (typeof generateStageQuestions === 'function') {
+      selectedQuestions = generateStageQuestions(stage, 5, isFinal);
+    } else {
+      const rawPool = (isFinal && stage.finalQuestions && stage.finalQuestions.length > 0)
+        ? stage.finalQuestions
+        : (stage.questions || []);
+      const shuffledPool = [...rawPool].sort(() => Math.random() - 0.5);
+      selectedQuestions = shuffledPool.slice(0, 5);
+    }
 
     state.adventure.activeQuestions = selectedQuestions;
 

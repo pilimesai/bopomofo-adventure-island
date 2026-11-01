@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>🔴 ㄅㄆㄇ 寶可夢大冒險 | 台灣小一注音道館挑戰系統</title>
   <meta name="description" content="專為台灣小一新生打造的生動注音教學互動平台！包含37個注音符號圖鑑、四聲溜滑梯、神奇拼音小火車、聽音戳氣球遊戲與筆順小畫家。">
-  <link rel="stylesheet" href="css/style.css?v=52">
+  <link rel="stylesheet" href="css/style.css?v=54">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
 </head>
 <body>
@@ -78,16 +78,8 @@
       <span>道館闖關</span>
     </button>
     <button class="tab-btn" data-tab="tab-gallery">
-      <span class="tab-icon">🔴</span>
-      <span>151隻寶可夢</span>
-    </button>
-    <button class="tab-btn" data-tab="tab-achievements">
-      <span class="tab-icon">🏆</span>
-      <span>道館徽章</span>
-    </button>
-    <button class="tab-btn" data-tab="tab-shop" id="nav-tab-shop">
-      <span class="tab-icon">🛍️</span>
-      <span>培育商店</span>
+      <span class="pokeball-icon-btn" style="width:22px;height:22px;display:inline-block;vertical-align:middle;margin-right:4px;border-width:2px;"></span>
+      <span>注音圖鑑</span>
     </button>
   </nav>
 
@@ -370,6 +362,11 @@
          PAGE 6: 榮譽星光榜
          ======================================================== -->
     <section class="tab-pane" id="tab-achievements">
+      <div style="margin-bottom:14px;">
+        <button class="btn btn-secondary back-to-adventure-achieve" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:24px;font-weight:900;cursor:pointer;background:#FFF;border:2px solid #CBD5E1;box-shadow:0 3px 0 #CBD5E1;" onclick="window.switchToTab('tab-adventure')">
+          <span>🗺️ 返回道館闖關</span>
+        </button>
+      </div>
       <!-- 🏅 10 大道館徽章盒 (Gym Badge Case) -->
       <div class="gym-badge-case">
         <div class="gym-badge-title">
@@ -393,6 +390,11 @@
          PAGE 7: 🛍️ 寶可夢培育商店與禮物換購 (Pokemon Nurture Shop)
          ======================================================== -->
     <section class="tab-pane" id="tab-shop">
+      <div style="margin-bottom:14px;">
+        <button class="btn btn-secondary back-to-adventure-shop" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:24px;font-weight:900;cursor:pointer;background:#FFF;border:2px solid #CBD5E1;box-shadow:0 3px 0 #CBD5E1;" onclick="window.switchToTab('tab-adventure')">
+          <span>🗺️ 返回道館闖關</span>
+        </button>
+      </div>
       <div class="shop-container">
         <!-- 頂部：寶可夢夥伴親密培育工作台 -->
         <div class="nurture-workbench-card">
@@ -752,12 +754,13 @@
   </div>
 
   <!-- 引入資料庫與邏輯腳本 -->
-  <script src="js/data.js?v=52"></script>
-  <script src="js/gen1_pokemon.js?v=52"></script>
-  <script src="js/audio_manifest.js?v=52"></script>
-  <script src="js/audio.js?v=52"></script>
-  <script src="js/confetti.js?v=52"></script>
-  <script src="js/app.js?v=52"></script>
+  <script src="js/data.js?v=54"></script>
+  <script src="js/gen1_pokemon.js?v=54"></script>
+  <script src="js/question_generator.js?v=54"></script>
+  <script src="js/audio_manifest.js?v=54"></script>
+  <script src="js/audio.js?v=54"></script>
+  <script src="js/confetti.js?v=54"></script>
+  <script src="js/app.js?v=54"></script>
 
   <!-- ========================================================
        🔴 151 寶可夢詳細檔案彈窗 (Gen 1 Pokemon Detail Modal)
