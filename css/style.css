@@ -3681,12 +3681,18 @@ html, body {
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
 }
 .check-box-bracket {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
   font-size: 24px;
   font-family: monospace;
   font-weight: 900;
   color: #475569;
 }
 .check-mark-sym {
+  text-align: center !important;
   display: inline-block;
   min-width: 24px;
   color: #EF4444;
@@ -4124,88 +4130,127 @@ html, body {
 }
 
 /* ==========================================================================
-   國小一年級標準國語注音 Ruby 標註樣式 (Taiwan Grade 1 Zhuyin Ruby Styling)
+   國小一年級教育部官方標準「直式注音」排版 (Taiwan MOE Vertical Zhuyin Typography)
    ========================================================================== */
-ruby.zhuyin-ruby {
+
+/* 1. 單個直式注音音節 (聲母在上、介音在中、韻母在下，聲調在右或上方) */
+.zy-vertical-syllable {
   display: inline-flex !important;
-  flex-direction: column-reverse !important;
+  flex-direction: column !important;
   align-items: center !important;
-  vertical-align: -0.15em !important;
+  justify-content: center !important;
+  position: relative !important;
+  vertical-align: middle !important;
   line-height: 1 !important;
-  margin: 0 2px !important;
-  cursor: inherit !important;
-}
-ruby.zhuyin-ruby rt {
-  display: block !important;
-  font-size: 0.52em !important;
-  font-weight: 900 !important;
-  color: #DC2626 !important;
-  line-height: 1.15 !important;
-  text-align: center !important;
-  letter-spacing: 0 !important;
+  padding-right: 0.38em !important; /* 為右側二、三、四聲聲調預留空間 */
   user-select: none !important;
+}
+.zy-vertical-syllable.no-tone,
+.zy-vertical-syllable.has-tone-light {
+  padding-right: 0 !important; /* 輕聲或一聲不需要右側空間 */
+}
+
+.zy-chars-col {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 0.95 !important;
   font-family: "BpmfGenSenRounded", "BpmfIansui", "DFKai-SB", "BiauKai", "PingFang TC", "Microsoft JhengHei", sans-serif !important;
-}
-ruby.zhuyin-ruby span.rb {
   font-weight: 900 !important;
-  color: inherit !important;
-  line-height: 1.1 !important;
 }
 
-/* 兒歌短文卡片排版注音大字化 */
-.poetry-body ruby.zhuyin-ruby,
-.reading-passage-text ruby.zhuyin-ruby {
-  margin: 2px 3px !important;
-  vertical-align: bottom !important;
-}
-.poetry-body ruby.zhuyin-ruby rt,
-.reading-passage-text ruby.zhuyin-ruby rt {
-  font-size: 0.56em !important;
-  font-weight: 900 !important;
-  color: #B45309 !important;
-  line-height: 1.15 !important;
-}
-.reading-passage-text {
-  line-height: 2.3 !important;
+.zy-char {
+  display: block !important;
+  font-size: 1em !important;
+  line-height: 1 !important;
+  text-align: center !important;
 }
 
-/* 題目提示文字注音樣式 */
-.question-prompt-text {
-  line-height: 2.1 !important;
-}
-.question-prompt-text ruby.zhuyin-ruby {
-  margin: 1px 2px !important;
-  vertical-align: bottom !important;
-}
-.question-prompt-text ruby.zhuyin-ruby rt {
-  font-size: 0.52em !important;
-  font-weight: 900 !important;
+/* 輕聲 (˙ 位於首個符號正上方居中) */
+.zy-tone-light {
+  font-size: 0.95em !important;
+  line-height: 0.6 !important;
+  margin-bottom: 2px !important;
   color: #DC2626 !important;
+  font-weight: 900 !important;
+  display: block !important;
+  text-align: center !important;
 }
 
-/* 各題型圖片標籤與填空格注音 */
-.exam-check-pic-label ruby.zhuyin-ruby,
-.fill-box ruby.zhuyin-ruby {
-  margin: 0 2px !important;
+/* 側邊聲調 (ˊ ˇ ˋ 位於最後一個韻母的右上角/右側) */
+.zy-tone-side {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0.1em !important;
+  font-size: 0.78em !important;
+  line-height: 1 !important;
+  color: #DC2626 !important;
+  font-weight: 900 !important;
+}
+
+/* 2. 多音節語詞 (如 ㄐㄧ ㄉㄢˋ，音節直式且左右間距舒適) */
+.zy-word-vertical {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
   vertical-align: middle !important;
 }
-.exam-check-pic-label ruby.zhuyin-ruby rt,
-.fill-box ruby.zhuyin-ruby rt {
-  font-size: 0.52em !important;
-  color: #B91C1C !important;
+
+/* 3. 國字配直式注音右旁注 (小一課本標準直式注音) */
+.zy-hanzi-pair {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  vertical-align: middle !important;
+  margin: 0 3px !important;
+  line-height: 1.2 !important;
 }
 
-/* 選項按鈕注音大字化 */
-.battle-opt-btn ruby.zhuyin-ruby,
-.reading-opt-btn ruby.zhuyin-ruby,
-.connect-peg ruby.zhuyin-ruby {
-  margin: 0 3px !important;
+.zy-hanzi {
+  font-size: 1.35em !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  color: #1E293B !important;
+  font-family: "DFKai-SB", "BiauKai", "PingFang TC", "Microsoft JhengHei", sans-serif !important;
+  margin-right: 2px !important;
 }
-.battle-opt-btn ruby.zhuyin-ruby rt,
-.reading-opt-btn ruby.zhuyin-ruby rt,
-.connect-peg ruby.zhuyin-ruby rt {
+
+.zy-hanzi-pair .zy-vertical-syllable {
   font-size: 0.52em !important;
-  color: #B91C1C !important;
+}
+
+.zy-hanzi-pair .zy-chars-col {
+  color: #DC2626 !important; /* 課本與考卷標註標準紅字注音 */
+}
+
+.zy-punct {
+  display: inline-block !important;
+  font-size: 1.25em !important;
+  font-weight: 900 !important;
+  vertical-align: middle !important;
+  margin: 0 4px !important;
+  color: #334155 !important;
+  line-height: 1 !important;
+}
+
+.zy-hanzi-lone {
+  font-size: 1.25em !important;
+  font-weight: 900 !important;
+  vertical-align: middle !important;
+  margin: 0 2px !important;
+  line-height: 1 !important;
+}
+
+/* 兒歌短文閱讀測驗排版優化 */
+.reading-passage-text {
+  font-size: 22px !important;
+  line-height: 2.7 !important;
+  text-align: left !important;
+  padding: 6px 12px !important;
+  word-break: break-word !important;
 }
 
 /* 兒歌閱讀測驗選項排版 */
@@ -4222,29 +4267,57 @@ ruby.zhuyin-ruby span.rb {
   }
 }
 
-/* 確保標點符號與注音文字水平垂直居中對齊，防止文字高低跳動錯位 */
-.reading-passage-text,
-.question-prompt-text,
-.battle-stage-title,
-.exam-reading-container {
-  display: block !important;
-  line-height: 2.4 !important;
-  word-break: break-word !important;
+/* 題型卡片高度與間距適應直式注音 */
+.exam-check-card {
+  min-height: 84px !important;
 }
-
-.reading-passage-text ruby.zhuyin-ruby,
-.question-prompt-text ruby.zhuyin-ruby {
+.check-opt-zhuyin {
   display: inline-flex !important;
-  flex-direction: column-reverse !important;
   align-items: center !important;
-  vertical-align: -0.18em !important;
-  margin: 0 2px !important;
+  justify-content: center !important;
 }
-
-.reading-passage-badge ruby.zhuyin-ruby {
-  vertical-align: -0.1em !important;
+.exam-circle-card {
+  min-height: 84px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
-
+.circle-card-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.battle-opt-btn {
+  min-height: 72px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.fill-box {
+  min-width: 68px !important;
+  min-height: 68px !important;
+  height: auto !important;
+}
+.fill-candidate-tile {
+  min-height: 68px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.formula-block {
+  min-width: 58px !important;
+  min-height: 64px !important;
+  height: auto !important;
+}
+.combine-opt-btn {
+  min-height: 68px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.connect-peg {
+  min-height: 68px !important;
+}
 
 /* ========================================================
    4選項與答錯鎖定、正解高亮及得分計分板樣式
