@@ -8172,8 +8172,19 @@ function openCurrentPartnerDetailModal() {
   }
 
   let activeGen1PokemonAudio = null;
+  let activeGen1PokemonCry = null;
 
   function stopPokemonIntroAudio() {
+    if (activeGen1PokemonCry) {
+      try {
+        activeGen1PokemonCry.pause();
+        activeGen1PokemonCry.currentTime = 0;
+        activeGen1PokemonCry.onended = null;
+        activeGen1PokemonCry.onerror = null;
+        activeGen1PokemonCry.src = '';
+      } catch (e) {}
+      activeGen1PokemonCry = null;
+    }
     if (activeGen1PokemonAudio) {
       try {
         activeGen1PokemonAudio.pause();
@@ -8187,6 +8198,51 @@ function openCurrentPartnerDetailModal() {
     if (window.audioEngine) {
       window.audioEngine.stopSpeaking();
     }
+  }
+
+  // 🔴 點圖鑑一開始播放官方正版原聲叫聲（參考 PokeOS / PokeAPI 官方遊戲叫聲資料庫），叫聲結束後接續清晰朗讀名字、屬性與進化條件
+  function playPokemonFullIntro(pokemonId) {
+    stopPokemonIntroAudio();
+
+    // 1. 一開始播放寶可夢官方原聲叫聲
+    const crySrc = 'assets/audio/pokemon/cries/' + pokemonId + '.ogg';
+    const cryAudio = new Audio(crySrc);
+    activeGen1PokemonCry = cryAudio;
+
+    let voiceStarted = false;
+    const playVoiceIntro = () => {
+      if (voiceStarted) return;
+      voiceStarted = true;
+      activeGen1PokemonCry = null;
+
+      const introSrc = 'assets/audio/pokemon/poke_' + pokemonId + '.mp3';
+      const introAudio = new Audio(introSrc);
+      activeGen1PokemonAudio = introAudio;
+
+      introAudio.onended = () => {
+        if (activeGen1PokemonAudio === introAudio) {
+          activeGen1PokemonAudio = null;
+        }
+      };
+
+      introAudio.play().catch(err => {
+        if (err && (err.name === 'AbortError' || err.code === 20)) return;
+        console.warn('音檔播放受阻：', err);
+      });
+    };
+
+    cryAudio.onended = () => {
+      playVoiceIntro();
+    };
+
+    cryAudio.onerror = () => {
+      playVoiceIntro();
+    };
+
+    cryAudio.play().catch(err => {
+      if (err && (err.name === 'AbortError' || err.code === 20)) return;
+      playVoiceIntro();
+    });
   }
 
   function getPokemonSpeechText(targetP) {
@@ -8389,27 +8445,9 @@ function openCurrentPartnerDetailModal() {
       }
     }
 
-        // 🔴 點圖鑑播放動畫寵物專屬叫聲（皮卡皮卡、胖丁唱歌等）與標準語音（徹底杜絕回音與重疊）
+        // 🔴 點圖鑑一開始播放官方正版原聲叫聲（參考 PokeOS），叫聲結束後接續朗讀名字、屬性與進化條件
     const playPokemonIntro = () => {
-      stopPokemonIntroAudio();
-
-      const introSrc = 'assets/audio/pokemon/poke_' + p.id + '.mp3';
-      const introAudio = new Audio(introSrc);
-      activeGen1PokemonAudio = introAudio;
-
-      introAudio.onended = () => {
-        if (activeGen1PokemonAudio === introAudio) {
-          activeGen1PokemonAudio = null;
-        }
-      };
-
-      introAudio.play().catch((err) => {
-        // 點擊中斷造成的 AbortError 靜默忽略，絕不啟動背景雙重 TTS 造成回聲 (Echo)
-        if (err && (err.name === 'AbortError' || err.code === 20)) {
-          return;
-        }
-        console.warn('音檔播放受阻：', err);
-      });
+      playPokemonFullIntro(p.id);
     };
 
     // 朗讀按鈕
