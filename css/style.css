@@ -7323,3 +7323,34 @@ html, body {
   transform: translateY(-2px) scale(1.04);
   box-shadow: 0 6px 22px rgba(244, 63, 94, 0.7) !important;
 }
+
+/* 🌟《寶可夢卡牌151》（TCG）出戰加成與稀有度徽章樣式 */
+.tcg-badge-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.tcg-badge-chip.tcg-C { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+.tcg-badge-chip.tcg-U { background: #E0F2FE; color: #0284C7; border: 1px solid #7DD3FC; font-weight: 900; }
+.tcg-badge-chip.tcg-R { background: #F5F3FF; color: #7C3AED; border: 1px solid #DDD6FE; font-weight: 900; }
+.tcg-badge-chip.tcg-RR { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; font-weight: 900; }
+.tcg-badge-chip.tcg-AR { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; font-weight: 900; }
+.tcg-badge-chip.tcg-SAR { background: #FDF2F8; color: #DB2777; border: 1px solid #FBCFE8; font-weight: 900; }
+.tcg-badge-chip.tcg-UR { background: #FEF3C7; color: #B45309; border: 1px solid #FCD34D; font-weight: 900; }
+
+.tcg-buff-pill {
+  animation: pulseBuff 2s infinite ease-in-out;
+}
+@keyframes pulseBuff {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.modal-tcg-rarity-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

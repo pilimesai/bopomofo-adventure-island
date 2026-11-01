@@ -758,12 +758,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (statusDescEl) {
+      const buff = getPartnerBuffInfo(partner.gen1Id || partner.id);
+      const buffText = `【${buff.label}】出戰特權：${buff.bonusDesc}！`;
       if (partner.level >= 100) {
-        statusDescEl.textContent = `⚡ 戰力巔峰！達到最終滿級 Lv.100，隨時可以在道館中施展最強奧義【${partner.move}】！`;
+        statusDescEl.textContent = `⚡ 戰力巔峰！滿級 Lv.100 奧義【${partner.move}】！${buffText}`;
       } else if (partner.level >= 50) {
-        statusDescEl.textContent = `🔥 實力強勁！已突破前階滿級，朝著最終滿級 Lv.100 全速邁進！`;
+        statusDescEl.textContent = `🔥 實力強勁！突破前階滿級，朝 Lv.100 邁進！${buffText}`;
       } else {
-        statusDescEl.textContent = `🌱 活潑健康！準備好接受美味甜點與神奇糖果的培育，朝著滿級進化邁進！`;
+        statusDescEl.textContent = `🌱 活潑健康！接受甜點與糖果培育朝滿級邁進！${buffText}`;
       }
     }
 
@@ -1469,7 +1471,103 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // 👑 寶可夢滿級 (Lv.100) 與終極訓練認證模組 (Max Level & Final Training System)
   // ==========================================
-    // 👑 計算各寶可夢當前階段的滿級上限（只有一次進化的初階如皮卡丘滿級為 50，進化為雷丘後才是 100 滿級；無進化或最終階滿級為 100）
+    // 🌟《寶可夢卡牌151》（TCG）稀有度與出戰夥伴加成系統（C, U, R, RR, AR, SAR, UR）
+  // 參考官方分級：越稀有的寵物，出戰附加效果越強！
+  const TCG_RARITY_CONFIG = {
+    'C': {
+      label: 'C 普通',
+      badgeColor: '#64748B',
+      badgeBg: '#F1F5F9',
+      coinMulti: 1.0,
+      expMulti: 1.0,
+      bonusDesc: '基礎戰力（金幣 1x · 經驗 1x）',
+      shortBuff: '基礎戰力'
+    },
+    'U': {
+      label: 'U 非普通',
+      badgeColor: '#0284C7',
+      badgeBg: '#E0F2FE',
+      coinMulti: 1.2,
+      expMulti: 1.2,
+      bonusDesc: '非凡活力（金幣 +20% · 經驗 +20%）',
+      shortBuff: '金幣+20% · 經驗+20%'
+    },
+    'R': {
+      label: 'R 稀有閃卡',
+      badgeColor: '#7C3AED',
+      badgeBg: '#F5F3FF',
+      coinMulti: 1.5,
+      expMulti: 1.5,
+      bonusDesc: '稀有光環（金幣 1.5倍 · 經驗 1.5倍）',
+      shortBuff: '金幣1.5倍 · 經驗1.5倍'
+    },
+    'RR': {
+      label: 'RR 雙重稀有 ex',
+      badgeColor: '#DC2626',
+      badgeBg: '#FEF2F2',
+      coinMulti: 2.0,
+      expMulti: 2.0,
+      bonusDesc: 'ex極限加成（金幣 2倍 · 經驗 2倍！）',
+      shortBuff: '🔥 金幣2倍 · 經驗2倍！'
+    },
+    'AR': {
+      label: 'AR 藝術稀有',
+      badgeColor: '#D97706',
+      badgeBg: '#FFFBEB',
+      coinMulti: 2.2,
+      expMulti: 2.2,
+      bonusDesc: '藝術特展光環（金幣 2.2倍 · 經驗 2.2倍）',
+      shortBuff: '✨ 金幣2.2倍 · 經驗2.2倍'
+    },
+    'SAR': {
+      label: 'SAR 特殊藝術稀有',
+      badgeColor: '#EC4899',
+      badgeBg: '#FDF2F8',
+      coinMulti: 2.5,
+      expMulti: 2.5,
+      bonusDesc: '極致特卡光環（金幣 2.5倍 · 經驗 2.5倍！）',
+      shortBuff: '👑 金幣2.5倍 · 經驗2.5倍！'
+    },
+    'UR': {
+      label: 'UR 金卡傳奇',
+      badgeColor: '#B45309',
+      badgeBg: '#FEF3C7',
+      coinMulti: 3.0,
+      expMulti: 3.0,
+      bonusDesc: '黃金傳奇殿堂（金幣 3倍 · 經驗 3倍超絕加成！！）',
+      shortBuff: '🌟 金幣3倍 · 經驗3倍！！'
+    }
+  };
+
+  function getPartnerBuffInfo(pokemonId) {
+    if (!pokemonId) return { rarity: 'C', ...TCG_RARITY_CONFIG['C'] };
+    let pid = parseInt(pokemonId, 10);
+    if (isNaN(pid)) {
+      if (typeof pokemonId === 'string' && pokemonId.startsWith('gen1_')) {
+        pid = parseInt(pokemonId.replace('gen1_', ''), 10);
+      } else if (pokemonId === 'pikachu') pid = 25;
+      else if (pokemonId === 'eevee') pid = 133;
+      else if (pokemonId === 'bulbasaur') pid = 1;
+      else if (pokemonId === 'charmander') pid = 4;
+      else if (pokemonId === 'squirtle') pid = 7;
+    }
+    if (isNaN(pid) || typeof GEN1_POKEMON_LIST === 'undefined') {
+      return { rarity: 'C', ...TCG_RARITY_CONFIG['C'] };
+    }
+    const p = GEN1_POKEMON_LIST.find(item => item.id === pid);
+    const rarity = (p && p.tcgRarity) ? p.tcgRarity : 'C';
+    const conf = TCG_RARITY_CONFIG[rarity] || TCG_RARITY_CONFIG['C'];
+    return {
+      rarity: rarity,
+      id: pid,
+      name: p ? p.name : '',
+      ...conf
+    };
+  }
+  window.getPartnerBuffInfo = getPartnerBuffInfo;
+  window.TCG_RARITY_CONFIG = TCG_RARITY_CONFIG;
+
+  // 👑 計算各寶可夢當前階段的滿級上限（只有一次進化的初階如皮卡丘滿級為 50，進化為雷丘後才是 100 滿級；無進化或最終階滿級為 100）
   function getMaxLevelForPokemon(pokemonId) {
     if (!pokemonId) return 100;
     let pid = parseInt(pokemonId, 10);
@@ -2598,7 +2696,13 @@ function openCurrentPartnerDetailModal() {
         card.className = 'partner-select-card ' + (isCurrent ? 'current-active' : '') + (isCaught ? '' : ' locked-pokemon');
         card.innerHTML = `
           <div class="p-card-header">
-            <span class="p-type-tag">${p.dexNo} ${p.types.join('/')}</span>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span class="p-type-tag">${p.dexNo} ${p.types.join('/')}</span>
+              ${(() => {
+                const buff = getPartnerBuffInfo(p.id);
+                return `<span class="tcg-rarity-badge tcg-rarity-${buff.rarity}" style="font-size:10px;font-weight:900;padding:1px 6px;border-radius:8px;background:${buff.badgeBg};color:${buff.badgeColor};border:1px solid ${buff.badgeColor}40;">${buff.rarity}</span>`;
+              })()}
+            </div>
             ${isCurrent ? '<span class="p-active-badge">⚡ 出戰中</span>' : (isCaught ? '<span style="font-size:12px;color:#10B981;font-weight:900;">✓ 已收服</span>' : '<span style="font-size:12px;color:#94A3B8;font-weight:900;">🔒 未收服</span>')}
           </div>
           <div class="p-sprite-wrap">
@@ -2606,6 +2710,9 @@ function openCurrentPartnerDetailModal() {
           </div>
           <div class="p-name">${formatZhuyinDisplay(p.name, p.zhuyin)}</div>
           <div class="p-level">${(pData.level || 1) >= 100 ? '<span style="color:#D97706;font-weight:900;">👑 Lv.100 滿級 (終極訓練完成)</span>' : 'Lv.' + (pData.level || 1)} · 招式：${p.move}</div>
+          <div class="tcg-partner-buff-tag" style="font-size:11px;font-weight:800;color:${getPartnerBuffInfo(p.id).badgeColor};background:${getPartnerBuffInfo(p.id).badgeBg};padding:2px 8px;border-radius:6px;margin-top:4px;border:1px solid ${getPartnerBuffInfo(p.id).badgeColor}30;">
+            ⚡ 出戰效果：${getPartnerBuffInfo(p.id).shortBuff}
+          </div>
         `;
 
         card.addEventListener('click', () => {
@@ -4268,7 +4375,13 @@ function openCurrentPartnerDetailModal() {
 
                 </div>
 
-                <div style="font-size:12px;color:#D97706;font-weight:800;margin-top:2px;" id="poke-player-move">絕招：${partnerObj.move}</div>
+                <div style="font-size:12px;color:#D97706;font-weight:800;margin-top:2px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;" id="poke-player-move">
+                    <span>絕招：${partnerObj.move}</span>
+                    ${(() => {
+                      const buff = getPartnerBuffInfo(partnerObj.gen1Id || partnerObj.id);
+                      return `<span class="tcg-buff-pill tcg-buff-${buff.rarity}" style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:900;background:${buff.badgeBg};color:${buff.badgeColor};border:1px solid ${buff.badgeColor}40;" title="${buff.bonusDesc}">${buff.label} · ${buff.shortBuff}</span>`;
+                    })()}
+                  </div>
 
                 <div class="poke-hp-wrapper">
 
@@ -5659,14 +5772,15 @@ function openCurrentPartnerDetailModal() {
       }
       updateBattleHeaderUI();
 
-      // 💰 答對獲得金幣獎勵（若擁有王者冠軍之冠則翻倍）
+      const partnerObj = getCurrentPartnerInfo();
+      // 🌟《寶可夢卡牌151》（TCG）出戰加成：稀有度越高，金錢與經驗倍率越強！
+      const buffInfo = getPartnerBuffInfo(partnerObj ? (partnerObj.gen1Id || partnerObj.id) : state.partner);
       const hasCrown = Boolean(state.partnerData && state.partnerData.crown);
-      const coinGain = hasCrown ? 20 : 10;
+      const baseCoin = hasCrown ? 20 : 10;
+      const coinGain = Math.round(baseCoin * (buffInfo.coinMulti || 1.0));
       addCoins(coinGain, true);
 
       if (btn) btn.classList.add('correct-choice');
-
-      const partnerObj = getCurrentPartnerInfo();
 
       // 1. 夥伴大招攻擊
       executePlayerAttack(partnerObj, q, () => {
@@ -5724,7 +5838,8 @@ function openCurrentPartnerDetailModal() {
 
             const starBonus = isShiny ? 2 : 1;
             addStars(starBonus, false);
-            addPartnerExp(30);
+            const expGain = Math.round(30 * (buffInfo.expMulti || 1.0));
+            addPartnerExp(expGain);
             state.balls = Math.min(99, state.balls + (isShiny ? 3 : 1));
             localStorage.setItem('zhuyin_balls', state.balls.toString());
 
@@ -8376,7 +8491,13 @@ function openCurrentPartnerDetailModal() {
         ${isMaxTrained ? '<div class="gen1-max-trained-badge" title="🌟 終極訓練完成！滿級 Lv.100 極限達成！"><span class="badge-crown">👑</span> 終極訓練完成</div>' : ''}
         ${isCurrent ? '<div class="gen1-active-partner-badge" style="' + (isMaxTrained ? 'top:-11px;right:6px;' : '') + '">⚡ 出戰中</div>' : ''}
         <div class="gen1-card-top">
-          <span class="gen1-card-dex">${p.dexNo}</span>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span class="gen1-card-dex">${p.dexNo}</span>
+            ${(() => {
+              const buff = getPartnerBuffInfo(p.id);
+              return `<span class="tcg-badge-chip tcg-${buff.rarity}" style="font-size:10px;font-weight:900;padding:1px 6px;border-radius:6px;background:${buff.badgeBg};color:${buff.badgeColor};border:1px solid ${buff.badgeColor}40;">${buff.rarity}</span>`;
+            })()}
+          </div>
           <div style="display:flex;align-items:center;gap:4px;">
             ${isMaxTrained ? '<span class="gen1-max-lvl-pill">Lv.100 滿級</span>' : ''}
             ${isStarter ? '<span class="gen1-starter-badge">🌱 初始夥伴</span>' : ''}
@@ -8593,9 +8714,11 @@ function openCurrentPartnerDetailModal() {
     const isMaxTrained = isPokemonMaxTrained(p.id);
 
     if (titleEl) {
-      let statusPills = actuallyCaught 
-        ? ' <span style="font-size:13px;background:#10B981;color:#FFFFFF;padding:2px 8px;border-radius:10px;vertical-align:middle;font-weight:900;">✓ 已收服</span>'
-        : ' <span style="font-size:13px;background:#94A3B8;color:#FFFFFF;padding:2px 8px;border-radius:10px;vertical-align:middle;font-weight:900;">🔒 尚未收服</span>';
+      const buff = getPartnerBuffInfo(p.id);
+      let statusPills = ` <span class="modal-tcg-rarity-pill" style="font-size:13px;background:${buff.badgeBg};color:${buff.badgeColor};border:1.5px solid ${buff.badgeColor};padding:2px 8px;border-radius:10px;vertical-align:middle;font-weight:900;" title="《寶可夢卡牌151》TCG 官方稀有度">🎴 ${buff.label}</span> `;
+      statusPills += actuallyCaught 
+        ? '<span style="font-size:13px;background:#10B981;color:#FFFFFF;padding:2px 8px;border-radius:10px;vertical-align:middle;font-weight:900;">✓ 已收服</span>'
+        : '<span style="font-size:13px;background:#94A3B8;color:#FFFFFF;padding:2px 8px;border-radius:10px;vertical-align:middle;font-weight:900;">🔒 尚未收服</span>';
       if (isMaxTrained) {
         statusPills += ' <span class="modal-max-trained-pill">👑 終極訓練完成 (滿級)</span>';
       }
@@ -8631,15 +8754,16 @@ function openCurrentPartnerDetailModal() {
         const pMaxExp = (matchedPartnerData && matchedPartnerData.maxExp) || (pLevel * 100);
         const expPct = Math.min(100, Math.round((pExp / Math.max(1, pMaxExp)) * 100));
 
+        const buff = getPartnerBuffInfo(p.id);
         if (partnerLvlEl) {
           if (pLevel >= MAX_PARTNER_LEVEL || isMaxTrained) {
             partnerLvlEl.innerHTML = isCurrent
-              ? `🏆 當前出戰主力・滿級 Lv.100 (終極訓練完成！)`
-              : `👑 終極訓練完成・滿級 Lv.100 極限巔峰！`;
+              ? `🏆 當前出戰主力・滿級 Lv.100 (終極訓練完成！) <span style="font-size:12px;background:${buff.badgeBg};color:${buff.badgeColor};padding:2px 8px;border-radius:10px;margin-left:6px;border:1px solid ${buff.badgeColor}40;">⚡ 出戰加成：${buff.shortBuff}</span>`
+              : `👑 終極訓練完成・滿級 Lv.100 極限巔峰！ <span style="font-size:12px;background:${buff.badgeBg};color:${buff.badgeColor};padding:2px 8px;border-radius:10px;margin-left:6px;border:1px solid ${buff.badgeColor}40;">⚡ 出戰加成：${buff.shortBuff}</span>`;
           } else {
             partnerLvlEl.innerHTML = isCurrent 
-              ? `⭐ 當前出戰夥伴・等級 Lv.${pLevel}` 
-              : `🎖️ 已收服夥伴檔案・等級 Lv.${pLevel}`;
+              ? `⭐ 當前出戰夥伴・等級 Lv.${pLevel} <span style="font-size:12px;background:${buff.badgeBg};color:${buff.badgeColor};padding:2px 8px;border-radius:10px;margin-left:6px;border:1px solid ${buff.badgeColor}40;">⚡ 出戰加成：${buff.shortBuff}</span>` 
+              : `🎖️ 已收服夥伴檔案・等級 Lv.${pLevel} <span style="font-size:12px;background:${buff.badgeBg};color:${buff.badgeColor};padding:2px 8px;border-radius:10px;margin-left:6px;border:1px solid ${buff.badgeColor}40;">⚡ 出戰加成：${buff.shortBuff}</span>`;
           }
         }
         if (pLevel >= MAX_PARTNER_LEVEL || isMaxTrained) {

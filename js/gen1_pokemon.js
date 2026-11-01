@@ -1,8 +1,7 @@
 /**
  * 🔴 全國寶可夢圖鑑 第一世代（關都地區 No.001 - No.151）
- * 資料來源：神奇寶貝百科 (52poke.com) 官方全國圖鑑編號列表
- * 包含官方中文名、日文名、英文名、標準教育部注音、屬性、代表招式、進化條件與官方立繪
- * 進化規則：一次進化的初階滿級為 Lv.50，進化為最終型態後滿級提升至 Lv.100！
+ * 資料來源：神奇寶貝百科 (52poke.com) 官方全國圖鑑編號列表與《寶可夢卡牌151》（TCG）官方稀有度
+ * 包含官方中文名、日文名、英文名、標準教育部注音、屬性、代表招式、TCG稀有度、進化條件與官方立繪
  */
 
 const GEN1_POKEMON_LIST = [
@@ -30,7 +29,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "妙蛙草"
     },
     "move": "藤鞭",
-    "desc": "全國圖鑑 No.001，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.001，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 2,
@@ -56,7 +56,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "妙蛙花"
     },
     "move": "種子炸彈",
-    "desc": "全國圖鑑 No.002，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.002，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 3,
@@ -78,7 +79,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄇㄧㄠˋ ㄨㄚ ㄏㄨㄚ",
     "evolution": null,
     "move": "日光束",
-    "desc": "全國圖鑑 No.003，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.003，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 4,
@@ -103,7 +105,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "火恐龍"
     },
     "move": "過熱",
-    "desc": "全國圖鑑 No.004，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.004，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "C"
   },
   {
     "id": 5,
@@ -128,7 +131,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "噴火龍"
     },
     "move": "噴射火焰",
-    "desc": "全國圖鑑 No.005，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.005，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "U"
   },
   {
     "id": 6,
@@ -150,7 +154,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄆㄣ ㄏㄨㄛˇ ㄌㄨㄥˊ",
     "evolution": null,
     "move": "火焰旋渦",
-    "desc": "全國圖鑑 No.006，來自關都地區的經典寶可夢！屬性為【火/飛行】。"
+    "desc": "全國圖鑑 No.006，來自關都地區的經典寶可夢！屬性為【火/飛行】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 7,
@@ -175,7 +180,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "卡咪龜"
     },
     "move": "水炮",
-    "desc": "全國圖鑑 No.007，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.007，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 8,
@@ -200,7 +206,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "水箭龜"
     },
     "move": "加農水炮",
-    "desc": "全國圖鑑 No.008，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.008，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "U"
   },
   {
     "id": 9,
@@ -221,7 +228,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄕㄨㄟˇ ㄐㄧㄢˋ ㄍㄨㄟ",
     "evolution": null,
     "move": "衝浪",
-    "desc": "全國圖鑑 No.009，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.009，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 10,
@@ -246,7 +254,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "鐵甲蛹"
     },
     "move": "蟲咬",
-    "desc": "全國圖鑑 No.010，來自關都地區的經典寶可夢！屬性為【蟲】。"
+    "desc": "全國圖鑑 No.010，來自關都地區的經典寶可夢！屬性為【蟲】。",
+    "tcgRarity": "C"
   },
   {
     "id": 11,
@@ -271,7 +280,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "巴大蝶"
     },
     "move": "十字剪",
-    "desc": "全國圖鑑 No.011，來自關都地區的經典寶可夢！屬性為【蟲】。"
+    "desc": "全國圖鑑 No.011，來自關都地區的經典寶可夢！屬性為【蟲】。",
+    "tcgRarity": "C"
   },
   {
     "id": 12,
@@ -293,7 +303,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄅㄚ ㄉㄚˋ ㄉㄧㄝˊ",
     "evolution": null,
     "move": "銀色旋風",
-    "desc": "全國圖鑑 No.012，來自關都地區的經典寶可夢！屬性為【蟲/飛行】。"
+    "desc": "全國圖鑑 No.012，來自關都地區的經典寶可夢！屬性為【蟲/飛行】。",
+    "tcgRarity": "U"
   },
   {
     "id": 13,
@@ -319,7 +330,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "鐵殼蛹"
     },
     "move": "急速折返",
-    "desc": "全國圖鑑 No.013，來自關都地區的經典寶可夢！屬性為【蟲/毒】。"
+    "desc": "全國圖鑑 No.013，來自關都地區的經典寶可夢！屬性為【蟲/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 14,
@@ -345,7 +357,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "大針蜂"
     },
     "move": "致命針刺",
-    "desc": "全國圖鑑 No.014，來自關都地區的經典寶可夢！屬性為【蟲/毒】。"
+    "desc": "全國圖鑑 No.014，來自關都地區的經典寶可夢！屬性為【蟲/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 15,
@@ -367,7 +380,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄓㄣ ㄈㄥ",
     "evolution": null,
     "move": "蟲咬",
-    "desc": "全國圖鑑 No.015，來自關都地區的經典寶可夢！屬性為【蟲/毒】。"
+    "desc": "全國圖鑑 No.015，來自關都地區的經典寶可夢！屬性為【蟲/毒】。",
+    "tcgRarity": "R"
   },
   {
     "id": 16,
@@ -393,7 +407,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "比比鳥"
     },
     "move": "電光一閃",
-    "desc": "全國圖鑑 No.016，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.016，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "C"
   },
   {
     "id": 17,
@@ -419,7 +434,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "大比鳥"
     },
     "move": "劈開",
-    "desc": "全國圖鑑 No.017，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.017，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "C"
   },
   {
     "id": 18,
@@ -441,7 +457,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄅㄧˇ ㄋㄧㄠˇ",
     "evolution": null,
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.018，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.018，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "U"
   },
   {
     "id": 19,
@@ -466,7 +483,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "拉達"
     },
     "move": "泰山壓頂",
-    "desc": "全國圖鑑 No.019，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.019，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "C"
   },
   {
     "id": 20,
@@ -487,7 +505,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄌㄚ ㄉㄚˊ",
     "evolution": null,
     "move": "撞擊",
-    "desc": "全國圖鑑 No.020，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.020，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "U"
   },
   {
     "id": 21,
@@ -513,7 +532,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "大嘴雀"
     },
     "move": "電光一閃",
-    "desc": "全國圖鑑 No.021，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.021，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "C"
   },
   {
     "id": 22,
@@ -535,7 +555,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄗㄨㄟˇ ㄑㄩㄝˋ",
     "evolution": null,
     "move": "劈開",
-    "desc": "全國圖鑑 No.022，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.022，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "U"
   },
   {
     "id": 23,
@@ -560,7 +581,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "阿柏怪"
     },
     "move": "毒擊",
-    "desc": "全國圖鑑 No.023，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.023，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 24,
@@ -581,7 +603,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄚ ㄅㄛˊ ㄍㄨㄞˋ",
     "evolution": null,
     "move": "劇毒",
-    "desc": "全國圖鑑 No.024，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.024，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 25,
@@ -609,7 +632,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "十萬伏特",
-    "desc": "全國圖鑑 No.025，來自關都地區的經典寶可夢！屬性為【電】。"
+    "desc": "全國圖鑑 No.025，來自關都地區的經典寶可夢！屬性為【電】。",
+    "tcgRarity": "C"
   },
   {
     "id": 26,
@@ -630,7 +654,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄌㄟˊ ㄑㄧㄡ",
     "evolution": null,
     "move": "打雷",
-    "desc": "全國圖鑑 No.026，來自關都地區的經典寶可夢！屬性為【電】。"
+    "desc": "全國圖鑑 No.026，來自關都地區的經典寶可夢！屬性為【電】。",
+    "tcgRarity": "R"
   },
   {
     "id": 27,
@@ -655,7 +680,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "穿山王"
     },
     "move": "地震",
-    "desc": "全國圖鑑 No.027，來自關都地區的經典寶可夢！屬性為【地面】。"
+    "desc": "全國圖鑑 No.027，來自關都地區的經典寶可夢！屬性為【地面】。",
+    "tcgRarity": "C"
   },
   {
     "id": 28,
@@ -676,7 +702,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄔㄨㄢ ㄕㄢ ㄨㄤˊ",
     "evolution": null,
     "move": "大地之力",
-    "desc": "全國圖鑑 No.028，來自關都地區的經典寶可夢！屬性為【地面】。"
+    "desc": "全國圖鑑 No.028，來自關都地區的經典寶可夢！屬性為【地面】。",
+    "tcgRarity": "U"
   },
   {
     "id": 29,
@@ -701,7 +728,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "尼多娜"
     },
     "move": "劇毒",
-    "desc": "全國圖鑑 No.029，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.029，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 30,
@@ -729,7 +757,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 100
     },
     "move": "溶解液",
-    "desc": "全國圖鑑 No.030，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.030，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 31,
@@ -751,7 +780,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄋㄧˊ ㄉㄨㄛ ㄏㄡˋ",
     "evolution": null,
     "move": "毒針",
-    "desc": "全國圖鑑 No.031，來自關都地區的經典寶可夢！屬性為【毒/地面】。"
+    "desc": "全國圖鑑 No.031，來自關都地區的經典寶可夢！屬性為【毒/地面】。",
+    "tcgRarity": "U"
   },
   {
     "id": 32,
@@ -776,7 +806,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "尼多力諾"
     },
     "move": "污泥炸彈",
-    "desc": "全國圖鑑 No.032，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.032，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 33,
@@ -804,7 +835,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 100
     },
     "move": "毒擊",
-    "desc": "全國圖鑑 No.033，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.033，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 34,
@@ -826,7 +858,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄋㄧˊ ㄉㄨㄛ ㄨㄤˊ",
     "evolution": null,
     "move": "劇毒",
-    "desc": "全國圖鑑 No.034，來自關都地區的經典寶可夢！屬性為【毒/地面】。"
+    "desc": "全國圖鑑 No.034，來自關都地區的經典寶可夢！屬性為【毒/地面】。",
+    "tcgRarity": "R"
   },
   {
     "id": 35,
@@ -854,7 +887,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "吸取之吻",
-    "desc": "全國圖鑑 No.035，來自關都地區的經典寶可夢！屬性為【妖精】。"
+    "desc": "全國圖鑑 No.035，來自關都地區的經典寶可夢！屬性為【妖精】。",
+    "tcgRarity": "C"
   },
   {
     "id": 36,
@@ -875,7 +909,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄆㄧˊ ㄎㄜˇ ㄒㄧ",
     "evolution": null,
     "move": "妖精之風",
-    "desc": "全國圖鑑 No.036，來自關都地區的經典寶可夢！屬性為【妖精】。"
+    "desc": "全國圖鑑 No.036，來自關都地區的經典寶可夢！屬性為【妖精】。",
+    "tcgRarity": "U"
   },
   {
     "id": 37,
@@ -903,7 +938,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "大字爆炎",
-    "desc": "全國圖鑑 No.037，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.037，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "C"
   },
   {
     "id": 38,
@@ -924,7 +960,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄐㄧㄡˇ ㄨㄟˇ",
     "evolution": null,
     "move": "閃焰衝鋒",
-    "desc": "全國圖鑑 No.038，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.038，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 39,
@@ -953,7 +990,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "泰山壓頂",
-    "desc": "全國圖鑑 No.039，來自關都地區的經典寶可夢！屬性為【一般/妖精】。"
+    "desc": "全國圖鑑 No.039，來自關都地區的經典寶可夢！屬性為【一般/妖精】。",
+    "tcgRarity": "C"
   },
   {
     "id": 40,
@@ -975,7 +1013,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄆㄤˋ ㄎㄜˇ ㄉㄧㄥ",
     "evolution": null,
     "move": "撞擊",
-    "desc": "全國圖鑑 No.040，來自關都地區的經典寶可夢！屬性為【一般/妖精】。"
+    "desc": "全國圖鑑 No.040，來自關都地區的經典寶可夢！屬性為【一般/妖精】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 41,
@@ -1001,7 +1040,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "大嘴蝠"
     },
     "move": "毒針",
-    "desc": "全國圖鑑 No.041，來自關都地區的經典寶可夢！屬性為【毒/飛行】。"
+    "desc": "全國圖鑑 No.041，來自關都地區的經典寶可夢！屬性為【毒/飛行】。",
+    "tcgRarity": "C"
   },
   {
     "id": 42,
@@ -1023,7 +1063,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄗㄨㄟˇ ㄈㄨˊ",
     "evolution": null,
     "move": "污泥炸彈",
-    "desc": "全國圖鑑 No.042，來自關都地區的經典寶可夢！屬性為【毒/飛行】。"
+    "desc": "全國圖鑑 No.042，來自關都地區的經典寶可夢！屬性為【毒/飛行】。",
+    "tcgRarity": "U"
   },
   {
     "id": 43,
@@ -1049,7 +1090,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "臭臭花"
     },
     "move": "日光束",
-    "desc": "全國圖鑑 No.043，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.043，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 44,
@@ -1078,7 +1120,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 100
     },
     "move": "瘋狂植物",
-    "desc": "全國圖鑑 No.044，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.044，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 45,
@@ -1100,7 +1143,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄅㄚˋ ㄨㄤˊ ㄏㄨㄚ",
     "evolution": null,
     "move": "飛葉快刀",
-    "desc": "全國圖鑑 No.045，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.045，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "R"
   },
   {
     "id": 46,
@@ -1126,7 +1170,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "派拉斯特"
     },
     "move": "十字剪",
-    "desc": "全國圖鑑 No.046，來自關都地區的經典寶可夢！屬性為【蟲/草】。"
+    "desc": "全國圖鑑 No.046，來自關都地區的經典寶可夢！屬性為【蟲/草】。",
+    "tcgRarity": "C"
   },
   {
     "id": 47,
@@ -1148,7 +1193,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄆㄞˋ ㄌㄚ ㄙ ㄊㄜˋ",
     "evolution": null,
     "move": "銀色旋風",
-    "desc": "全國圖鑑 No.047，來自關都地區的經典寶可夢！屬性為【蟲/草】。"
+    "desc": "全國圖鑑 No.047，來自關都地區的經典寶可夢！屬性為【蟲/草】。",
+    "tcgRarity": "U"
   },
   {
     "id": 48,
@@ -1174,7 +1220,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "摩魯蛾"
     },
     "move": "急速折返",
-    "desc": "全國圖鑑 No.048，來自關都地區的經典寶可夢！屬性為【蟲/毒】。"
+    "desc": "全國圖鑑 No.048，來自關都地區的經典寶可夢！屬性為【蟲/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 49,
@@ -1196,7 +1243,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄇㄛˊ ㄌㄨˇ ㄜˊ",
     "evolution": null,
     "move": "致命針刺",
-    "desc": "全國圖鑑 No.049，來自關都地區的經典寶可夢！屬性為【蟲/毒】。"
+    "desc": "全國圖鑑 No.049，來自關都地區的經典寶可夢！屬性為【蟲/毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 50,
@@ -1221,7 +1269,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "三地鼠"
     },
     "move": "擲泥",
-    "desc": "全國圖鑑 No.050，來自關都地區的經典寶可夢！屬性為【地面】。"
+    "desc": "全國圖鑑 No.050，來自關都地區的經典寶可夢！屬性為【地面】。",
+    "tcgRarity": "C"
   },
   {
     "id": 51,
@@ -1242,7 +1291,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄙㄢ ㄉㄧˋ ㄕㄨˇ",
     "evolution": null,
     "move": "重踏",
-    "desc": "全國圖鑑 No.051，來自關都地區的經典寶可夢！屬性為【地面】。"
+    "desc": "全國圖鑑 No.051，來自關都地區的經典寶可夢！屬性為【地面】。",
+    "tcgRarity": "U"
   },
   {
     "id": 52,
@@ -1267,7 +1317,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "貓老大"
     },
     "move": "劈開",
-    "desc": "全國圖鑑 No.052，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.052，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "C"
   },
   {
     "id": 53,
@@ -1288,7 +1339,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄇㄠ ㄌㄠˇ ㄉㄚˋ",
     "evolution": null,
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.053，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.053，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "U"
   },
   {
     "id": 54,
@@ -1313,7 +1365,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "哥達鴨"
     },
     "move": "衝浪",
-    "desc": "全國圖鑑 No.054，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.054，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 55,
@@ -1334,7 +1387,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄍㄜ ㄉㄚˊ ㄧㄚ",
     "evolution": null,
     "move": "水槍",
-    "desc": "全國圖鑑 No.055，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.055，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "U"
   },
   {
     "id": 56,
@@ -1359,7 +1413,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "火爆猴"
     },
     "move": "近身戰",
-    "desc": "全國圖鑑 No.056，來自關都地區的經典寶可夢！屬性為【格鬥】。"
+    "desc": "全國圖鑑 No.056，來自關都地區的經典寶可夢！屬性為【格鬥】。",
+    "tcgRarity": "C"
   },
   {
     "id": 57,
@@ -1380,7 +1435,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄏㄨㄛˇ ㄅㄠˋ ㄏㄡˊ",
     "evolution": null,
     "move": "十字劈",
-    "desc": "全國圖鑑 No.057，來自關都地區的經典寶可夢！屬性為【格鬥】。"
+    "desc": "全國圖鑑 No.057，來自關都地區的經典寶可夢！屬性為【格鬥】。",
+    "tcgRarity": "U"
   },
   {
     "id": 58,
@@ -1408,7 +1464,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "閃焰衝鋒",
-    "desc": "全國圖鑑 No.058，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.058，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "C"
   },
   {
     "id": 59,
@@ -1429,7 +1486,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄈㄥ ㄙㄨˋ ㄍㄡˇ",
     "evolution": null,
     "move": "過熱",
-    "desc": "全國圖鑑 No.059，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.059，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "U"
   },
   {
     "id": 60,
@@ -1454,7 +1512,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "蚊香君"
     },
     "move": "水槍",
-    "desc": "全國圖鑑 No.060，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.060，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 61,
@@ -1482,7 +1541,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 100
     },
     "move": "水之波動",
-    "desc": "全國圖鑑 No.061，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.061，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 62,
@@ -1504,7 +1564,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄨㄣˊ ㄒㄧㄤ ㄩㄥˇ ㄕˋ",
     "evolution": null,
     "move": "水炮",
-    "desc": "全國圖鑑 No.062，來自關都地區的經典寶可夢！屬性為【水/格鬥】。"
+    "desc": "全國圖鑑 No.062，來自關都地區的經典寶可夢！屬性為【水/格鬥】。",
+    "tcgRarity": "U"
   },
   {
     "id": 63,
@@ -1529,7 +1590,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "勇基拉"
     },
     "move": "預知未來",
-    "desc": "全國圖鑑 No.063，來自關都地區的經典寶可夢！屬性為【超能力】。"
+    "desc": "全國圖鑑 No.063，來自關都地區的經典寶可夢！屬性為【超能力】。",
+    "tcgRarity": "C"
   },
   {
     "id": 64,
@@ -1554,7 +1616,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "胡地"
     },
     "move": "精神擊破",
-    "desc": "全國圖鑑 No.064，來自關都地區的經典寶可夢！屬性為【超能力】。"
+    "desc": "全國圖鑑 No.064，來自關都地區的經典寶可夢！屬性為【超能力】。",
+    "tcgRarity": "U"
   },
   {
     "id": 65,
@@ -1575,7 +1638,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄏㄨˊ ㄉㄧˋ",
     "evolution": null,
     "move": "念力",
-    "desc": "全國圖鑑 No.065，來自關都地區的經典寶可夢！屬性為【超能力】。"
+    "desc": "全國圖鑑 No.065，來自關都地區的經典寶可夢！屬性為【超能力】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 66,
@@ -1600,7 +1664,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "豪力"
     },
     "move": "近身戰",
-    "desc": "全國圖鑑 No.066，來自關都地區的經典寶可夢！屬性為【格鬥】。"
+    "desc": "全國圖鑑 No.066，來自關都地區的經典寶可夢！屬性為【格鬥】。",
+    "tcgRarity": "C"
   },
   {
     "id": 67,
@@ -1625,7 +1690,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "怪力"
     },
     "move": "十字劈",
-    "desc": "全國圖鑑 No.067，來自關都地區的經典寶可夢！屬性為【格鬥】。"
+    "desc": "全國圖鑑 No.067，來自關都地區的經典寶可夢！屬性為【格鬥】。",
+    "tcgRarity": "U"
   },
   {
     "id": 68,
@@ -1646,7 +1712,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄍㄨㄞˋ ㄌㄧˋ",
     "evolution": null,
     "move": "爆裂拳",
-    "desc": "全國圖鑑 No.068，來自關都地區的經典寶可夢！屬性為【格鬥】。"
+    "desc": "全國圖鑑 No.068，來自關都地區的經典寶可夢！屬性為【格鬥】。",
+    "tcgRarity": "R"
   },
   {
     "id": 69,
@@ -1672,7 +1739,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "口呆花"
     },
     "move": "瘋狂植物",
-    "desc": "全國圖鑑 No.069，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.069，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 70,
@@ -1701,7 +1769,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 100
     },
     "move": "飛葉快刀",
-    "desc": "全國圖鑑 No.070，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.070，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 71,
@@ -1723,7 +1792,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄕˊ ㄏㄨㄚ",
     "evolution": null,
     "move": "藤鞭",
-    "desc": "全國圖鑑 No.071，來自關都地區的經典寶可夢！屬性為【草/毒】。"
+    "desc": "全國圖鑑 No.071，來自關都地區的經典寶可夢！屬性為【草/毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 72,
@@ -1749,7 +1819,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "毒刺水母"
     },
     "move": "水炮",
-    "desc": "全國圖鑑 No.072，來自關都地區的經典寶可夢！屬性為【水/毒】。"
+    "desc": "全國圖鑑 No.072，來自關都地區的經典寶可夢！屬性為【水/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 73,
@@ -1771,7 +1842,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄨˊ ㄘˋ ㄕㄨㄟˇ ㄇㄨˇ",
     "evolution": null,
     "move": "加農水炮",
-    "desc": "全國圖鑑 No.073，來自關都地區的經典寶可夢！屬性為【水/毒】。"
+    "desc": "全國圖鑑 No.073，來自關都地區的經典寶可夢！屬性為【水/毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 74,
@@ -1797,7 +1869,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "隆隆石"
     },
     "move": "原始之力",
-    "desc": "全國圖鑑 No.074，來自關都地區的經典寶可夢！屬性為【岩石/地面】。"
+    "desc": "全國圖鑑 No.074，來自關都地區的經典寶可夢！屬性為【岩石/地面】。",
+    "tcgRarity": "C"
   },
   {
     "id": 75,
@@ -1823,7 +1896,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "隆隆岩"
     },
     "move": "落石",
-    "desc": "全國圖鑑 No.075，來自關都地區的經典寶可夢！屬性為【岩石/地面】。"
+    "desc": "全國圖鑑 No.075，來自關都地區的經典寶可夢！屬性為【岩石/地面】。",
+    "tcgRarity": "U"
   },
   {
     "id": 76,
@@ -1845,7 +1919,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄌㄨㄥˊ ㄌㄨㄥˊ ㄧㄢˊ",
     "evolution": null,
     "move": "岩石封鎖",
-    "desc": "全國圖鑑 No.076，來自關都地區的經典寶可夢！屬性為【岩石/地面】。"
+    "desc": "全國圖鑑 No.076，來自關都地區的經典寶可夢！屬性為【岩石/地面】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 77,
@@ -1870,7 +1945,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "烈焰馬"
     },
     "move": "大字爆炎",
-    "desc": "全國圖鑑 No.077，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.077，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "C"
   },
   {
     "id": 78,
@@ -1891,7 +1967,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄌㄧㄝˋ ㄧㄢˋ ㄇㄚˇ",
     "evolution": null,
     "move": "閃焰衝鋒",
-    "desc": "全國圖鑑 No.078，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.078，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "U"
   },
   {
     "id": 79,
@@ -1917,7 +1994,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "呆殼獸"
     },
     "move": "衝浪",
-    "desc": "全國圖鑑 No.079，來自關都地區的經典寶可夢！屬性為【水/超能力】。"
+    "desc": "全國圖鑑 No.079，來自關都地區的經典寶可夢！屬性為【水/超能力】。",
+    "tcgRarity": "C"
   },
   {
     "id": 80,
@@ -1939,7 +2017,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄞ ㄎㄜˊ ㄕㄡˋ",
     "evolution": null,
     "move": "水槍",
-    "desc": "全國圖鑑 No.080，來自關都地區的經典寶可夢！屬性為【水/超能力】。"
+    "desc": "全國圖鑑 No.080，來自關都地區的經典寶可夢！屬性為【水/超能力】。",
+    "tcgRarity": "U"
   },
   {
     "id": 81,
@@ -1965,7 +2044,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "三合一磁怪"
     },
     "move": "打雷",
-    "desc": "全國圖鑑 No.081，來自關都地區的經典寶可夢！屬性為【電/鋼】。"
+    "desc": "全國圖鑑 No.081，來自關都地區的經典寶可夢！屬性為【電/鋼】。",
+    "tcgRarity": "C"
   },
   {
     "id": 82,
@@ -1987,7 +2067,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄙㄢ ㄏㄜˊ ㄧ ㄘˊ ㄍㄨㄞˋ",
     "evolution": null,
     "move": "電擊",
-    "desc": "全國圖鑑 No.082，來自關都地區的經典寶可夢！屬性為【電/鋼】。"
+    "desc": "全國圖鑑 No.082，來自關都地區的經典寶可夢！屬性為【電/鋼】。",
+    "tcgRarity": "U"
   },
   {
     "id": 83,
@@ -2009,7 +2090,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄘㄨㄥ ㄧㄚ",
     "evolution": null,
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.083，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.083，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "C"
   },
   {
     "id": 84,
@@ -2035,7 +2117,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "嘟嘟利"
     },
     "move": "泰山壓頂",
-    "desc": "全國圖鑑 No.084，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.084，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "C"
   },
   {
     "id": 85,
@@ -2057,7 +2140,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄨ ㄉㄨ ㄌㄧˋ",
     "evolution": null,
     "move": "撞擊",
-    "desc": "全國圖鑑 No.085，來自關都地區的經典寶可夢！屬性為【一般/飛行】。"
+    "desc": "全國圖鑑 No.085，來自關都地區的經典寶可夢！屬性為【一般/飛行】。",
+    "tcgRarity": "R"
   },
   {
     "id": 86,
@@ -2082,7 +2166,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "白海獅"
     },
     "move": "水之波動",
-    "desc": "全國圖鑑 No.086，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.086，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 87,
@@ -2104,7 +2189,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄅㄞˊ ㄏㄞˇ ㄕ",
     "evolution": null,
     "move": "水炮",
-    "desc": "全國圖鑑 No.087，來自關都地區的經典寶可夢！屬性為【水/冰】。"
+    "desc": "全國圖鑑 No.087，來自關都地區的經典寶可夢！屬性為【水/冰】。",
+    "tcgRarity": "U"
   },
   {
     "id": 88,
@@ -2129,7 +2215,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "臭臭泥"
     },
     "move": "毒擊",
-    "desc": "全國圖鑑 No.088，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.088，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 89,
@@ -2150,7 +2237,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄔㄡˋ ㄔㄡˋ ㄋㄧˊ",
     "evolution": null,
     "move": "劇毒",
-    "desc": "全國圖鑑 No.089，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.089，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 90,
@@ -2178,7 +2266,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "水槍",
-    "desc": "全國圖鑑 No.090，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.090，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 91,
@@ -2200,7 +2289,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄘˋ ㄐㄧㄚˇ ㄅㄟˋ",
     "evolution": null,
     "move": "水之波動",
-    "desc": "全國圖鑑 No.091，來自關都地區的經典寶可夢！屬性為【水/冰】。"
+    "desc": "全國圖鑑 No.091，來自關都地區的經典寶可夢！屬性為【水/冰】。",
+    "tcgRarity": "U"
   },
   {
     "id": 92,
@@ -2226,7 +2316,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "鬼斯通"
     },
     "move": "暗影球",
-    "desc": "全國圖鑑 No.092，來自關都地區的經典寶可夢！屬性為【幽靈/毒】。"
+    "desc": "全國圖鑑 No.092，來自關都地區的經典寶可夢！屬性為【幽靈/毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 93,
@@ -2252,7 +2343,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "耿鬼"
     },
     "move": "黑夜魔影",
-    "desc": "全國圖鑑 No.093，來自關都地區的經典寶可夢！屬性為【幽靈/毒】。"
+    "desc": "全國圖鑑 No.093，來自關都地區的經典寶可夢！屬性為【幽靈/毒】。",
+    "tcgRarity": "U"
   },
   {
     "id": 94,
@@ -2274,7 +2366,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄍㄥˇ ㄍㄨㄟˇ",
     "evolution": null,
     "move": "禍不單行",
-    "desc": "全國圖鑑 No.094，來自關都地區的經典寶可夢！屬性為【幽靈/毒】。"
+    "desc": "全國圖鑑 No.094，來自關都地區的經典寶可夢！屬性為【幽靈/毒】。",
+    "tcgRarity": "R"
   },
   {
     "id": 95,
@@ -2296,7 +2389,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄧㄢˊ ㄕㄜˊ",
     "evolution": null,
     "move": "落石",
-    "desc": "全國圖鑑 No.095，來自關都地區的經典寶可夢！屬性為【岩石/地面】。"
+    "desc": "全國圖鑑 No.095，來自關都地區的經典寶可夢！屬性為【岩石/地面】。",
+    "tcgRarity": "U"
   },
   {
     "id": 96,
@@ -2321,7 +2415,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "引夢貘人"
     },
     "move": "幻象光線",
-    "desc": "全國圖鑑 No.096，來自關都地區的經典寶可夢！屬性為【超能力】。"
+    "desc": "全國圖鑑 No.096，來自關都地區的經典寶可夢！屬性為【超能力】。",
+    "tcgRarity": "C"
   },
   {
     "id": 97,
@@ -2342,7 +2437,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄧㄣˇ ㄇㄥˋ ㄇㄛˋ ㄖㄣˊ",
     "evolution": null,
     "move": "精神強念",
-    "desc": "全國圖鑑 No.097，來自關都地區的經典寶可夢！屬性為【超能力】。"
+    "desc": "全國圖鑑 No.097，來自關都地區的經典寶可夢！屬性為【超能力】。",
+    "tcgRarity": "U"
   },
   {
     "id": 98,
@@ -2367,7 +2463,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "巨鉗蟹"
     },
     "move": "加農水炮",
-    "desc": "全國圖鑑 No.098，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.098，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 99,
@@ -2388,7 +2485,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄐㄩˋ ㄑㄧㄢˊ ㄒㄧㄝˋ",
     "evolution": null,
     "move": "衝浪",
-    "desc": "全國圖鑑 No.099，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.099，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "U"
   },
   {
     "id": 100,
@@ -2413,7 +2511,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "頑皮雷彈"
     },
     "move": "十萬伏特",
-    "desc": "全國圖鑑 No.100，來自關都地區的經典寶可夢！屬性為【電】。"
+    "desc": "全國圖鑑 No.100，來自關都地區的經典寶可夢！屬性為【電】。",
+    "tcgRarity": "C"
   },
   {
     "id": 101,
@@ -2434,7 +2533,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄨㄢˊ ㄆㄧˊ ㄌㄟˊ ㄉㄢˋ",
     "evolution": null,
     "move": "打雷",
-    "desc": "全國圖鑑 No.101，來自關都地區的經典寶可夢！屬性為【電】。"
+    "desc": "全國圖鑑 No.101，來自關都地區的經典寶可夢！屬性為【電】。",
+    "tcgRarity": "R"
   },
   {
     "id": 102,
@@ -2463,7 +2563,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "種子炸彈",
-    "desc": "全國圖鑑 No.102，來自關都地區的經典寶可夢！屬性為【草/超能力】。"
+    "desc": "全國圖鑑 No.102，來自關都地區的經典寶可夢！屬性為【草/超能力】。",
+    "tcgRarity": "C"
   },
   {
     "id": 103,
@@ -2485,7 +2586,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄧㄝ ㄉㄢˋ ㄕㄨˋ",
     "evolution": null,
     "move": "日光束",
-    "desc": "全國圖鑑 No.103，來自關都地區的經典寶可夢！屬性為【草/超能力】。"
+    "desc": "全國圖鑑 No.103，來自關都地區的經典寶可夢！屬性為【草/超能力】。",
+    "tcgRarity": "U"
   },
   {
     "id": 104,
@@ -2510,7 +2612,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "嘎啦嘎啦"
     },
     "move": "骨頭回力鏢",
-    "desc": "全國圖鑑 No.104，來自關都地區的經典寶可夢！屬性為【地面】。"
+    "desc": "全國圖鑑 No.104，來自關都地區的經典寶可夢！屬性為【地面】。",
+    "tcgRarity": "C"
   },
   {
     "id": 105,
@@ -2531,7 +2634,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄍㄚ ㄌㄚ ㄍㄚ ㄌㄚ",
     "evolution": null,
     "move": "擲泥",
-    "desc": "全國圖鑑 No.105，來自關都地區的經典寶可夢！屬性為【地面】。"
+    "desc": "全國圖鑑 No.105，來自關都地區的經典寶可夢！屬性為【地面】。",
+    "tcgRarity": "R"
   },
   {
     "id": 106,
@@ -2552,7 +2656,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄈㄟ ㄊㄨㄟˇ ㄌㄤˊ",
     "evolution": null,
     "move": "近身戰",
-    "desc": "全國圖鑑 No.106，來自關都地區的經典寶可夢！屬性為【格鬥】。"
+    "desc": "全國圖鑑 No.106，來自關都地區的經典寶可夢！屬性為【格鬥】。",
+    "tcgRarity": "U"
   },
   {
     "id": 107,
@@ -2573,7 +2678,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄎㄨㄞˋ ㄑㄩㄢˊ ㄌㄤˊ",
     "evolution": null,
     "move": "十字劈",
-    "desc": "全國圖鑑 No.107，來自關都地區的經典寶可夢！屬性為【格鬥】。"
+    "desc": "全國圖鑑 No.107，來自關都地區的經典寶可夢！屬性為【格鬥】。",
+    "tcgRarity": "U"
   },
   {
     "id": 108,
@@ -2594,7 +2700,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄚˋ ㄕㄜˊ ˙ㄊㄡ",
     "evolution": null,
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.108，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.108，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "C"
   },
   {
     "id": 109,
@@ -2619,7 +2726,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "雙彈瓦斯"
     },
     "move": "劇毒",
-    "desc": "全國圖鑑 No.109，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.109，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "C"
   },
   {
     "id": 110,
@@ -2640,7 +2748,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄕㄨㄤ ㄉㄢˋ ㄨㄚˇ ㄙ",
     "evolution": null,
     "move": "溶解液",
-    "desc": "全國圖鑑 No.110，來自關都地區的經典寶可夢！屬性為【毒】。"
+    "desc": "全國圖鑑 No.110，來自關都地區的經典寶可夢！屬性為【毒】。",
+    "tcgRarity": "R"
   },
   {
     "id": 111,
@@ -2666,7 +2775,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "鑽角犀獸"
     },
     "move": "重踏",
-    "desc": "全國圖鑑 No.111，來自關都地區的經典寶可夢！屬性為【地面/岩石】。"
+    "desc": "全國圖鑑 No.111，來自關都地區的經典寶可夢！屬性為【地面/岩石】。",
+    "tcgRarity": "C"
   },
   {
     "id": 112,
@@ -2688,7 +2798,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄗㄨㄢ ㄐㄧㄠˇ ㄒㄧ ㄕㄡˋ",
     "evolution": null,
     "move": "地震",
-    "desc": "全國圖鑑 No.112，來自關都地區的經典寶可夢！屬性為【地面/岩石】。"
+    "desc": "全國圖鑑 No.112，來自關都地區的經典寶可夢！屬性為【地面/岩石】。",
+    "tcgRarity": "U"
   },
   {
     "id": 113,
@@ -2709,7 +2820,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄐㄧˊ ㄌㄧˋ ㄉㄢˋ",
     "evolution": null,
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.113，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.113，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "R"
   },
   {
     "id": 114,
@@ -2730,7 +2842,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄇㄢˋ ㄊㄥˊ ㄍㄨㄞˋ",
     "evolution": null,
     "move": "瘋狂植物",
-    "desc": "全國圖鑑 No.114，來自關都地區的經典寶可夢！屬性為【草】。"
+    "desc": "全國圖鑑 No.114，來自關都地區的經典寶可夢！屬性為【草】。",
+    "tcgRarity": "C"
   },
   {
     "id": 115,
@@ -2751,7 +2864,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄞˋ ㄕㄡˋ",
     "evolution": null,
     "move": "撞擊",
-    "desc": "全國圖鑑 No.115，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.115，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 116,
@@ -2776,7 +2890,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "海刺龍"
     },
     "move": "水之波動",
-    "desc": "全國圖鑑 No.116，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.116，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 117,
@@ -2797,7 +2912,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄏㄞˇ ㄘˋ ㄌㄨㄥˊ",
     "evolution": null,
     "move": "水炮",
-    "desc": "全國圖鑑 No.117，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.117，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "U"
   },
   {
     "id": 118,
@@ -2822,7 +2938,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "金魚王"
     },
     "move": "加農水炮",
-    "desc": "全國圖鑑 No.118，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.118，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 119,
@@ -2843,7 +2960,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄐㄧㄣ ㄩˊ ㄨㄤˊ",
     "evolution": null,
     "move": "衝浪",
-    "desc": "全國圖鑑 No.119，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.119，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "U"
   },
   {
     "id": 120,
@@ -2871,7 +2989,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "水槍",
-    "desc": "全國圖鑑 No.120，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.120，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 121,
@@ -2893,7 +3012,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄅㄠˇ ㄕˊ ㄏㄞˇ ㄒㄧㄥ",
     "evolution": null,
     "move": "水之波動",
-    "desc": "全國圖鑑 No.121，來自關都地區的經典寶可夢！屬性為【水/超能力】。"
+    "desc": "全國圖鑑 No.121，來自關都地區的經典寶可夢！屬性為【水/超能力】。",
+    "tcgRarity": "R"
   },
   {
     "id": 122,
@@ -2915,7 +3035,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄇㄛˊ ㄑㄧㄤˊ ㄖㄣˊ ㄡˇ",
     "evolution": null,
     "move": "精神強念",
-    "desc": "全國圖鑑 No.122，來自關都地區的經典寶可夢！屬性為【超能力/妖精】。"
+    "desc": "全國圖鑑 No.122，來自關都地區的經典寶可夢！屬性為【超能力/妖精】。",
+    "tcgRarity": "R"
   },
   {
     "id": 123,
@@ -2937,7 +3058,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄈㄟ ㄊㄧㄢ ㄊㄤˊ ㄌㄤˊ",
     "evolution": null,
     "move": "急速折返",
-    "desc": "全國圖鑑 No.123，來自關都地區的經典寶可夢！屬性為【蟲/飛行】。"
+    "desc": "全國圖鑑 No.123，來自關都地區的經典寶可夢！屬性為【蟲/飛行】。",
+    "tcgRarity": "U"
   },
   {
     "id": 124,
@@ -2959,7 +3081,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄇㄧˊ ㄔㄨㄣˊ ㄐㄧㄝˇ",
     "evolution": null,
     "move": "絕對零度",
-    "desc": "全國圖鑑 No.124，來自關都地區的經典寶可夢！屬性為【冰/超能力】。"
+    "desc": "全國圖鑑 No.124，來自關都地區的經典寶可夢！屬性為【冰/超能力】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 125,
@@ -2980,7 +3103,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄧㄢˋ ㄐㄧˊ ㄕㄡˋ",
     "evolution": null,
     "move": "十萬伏特",
-    "desc": "全國圖鑑 No.125，來自關都地區的經典寶可夢！屬性為【電】。"
+    "desc": "全國圖鑑 No.125，來自關都地區的經典寶可夢！屬性為【電】。",
+    "tcgRarity": "C"
   },
   {
     "id": 126,
@@ -3001,7 +3125,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄧㄚ ㄗㄨㄟˇ ㄏㄨㄛˇ ㄕㄡˋ",
     "evolution": null,
     "move": "火焰旋渦",
-    "desc": "全國圖鑑 No.126，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.126，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "C"
   },
   {
     "id": 127,
@@ -3022,7 +3147,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄎㄞˇ ㄌㄨㄛˊ ㄙ",
     "evolution": null,
     "move": "銀色旋風",
-    "desc": "全國圖鑑 No.127，來自關都地區的經典寶可夢！屬性為【蟲】。"
+    "desc": "全國圖鑑 No.127，來自關都地區的經典寶可夢！屬性為【蟲】。",
+    "tcgRarity": "U"
   },
   {
     "id": 128,
@@ -3043,7 +3169,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄎㄣˇ ㄊㄞˋ ㄌㄨㄛˊ",
     "evolution": null,
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.128，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.128，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "U"
   },
   {
     "id": 129,
@@ -3068,7 +3195,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "暴鯉龍"
     },
     "move": "衝浪",
-    "desc": "全國圖鑑 No.129，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.129，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "C"
   },
   {
     "id": 130,
@@ -3090,7 +3218,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄅㄠˋ ㄌㄧˇ ㄌㄨㄥˊ",
     "evolution": null,
     "move": "水槍",
-    "desc": "全國圖鑑 No.130，來自關都地區的經典寶可夢！屬性為【水/飛行】。"
+    "desc": "全國圖鑑 No.130，來自關都地區的經典寶可夢！屬性為【水/飛行】。",
+    "tcgRarity": "R"
   },
   {
     "id": 131,
@@ -3112,7 +3241,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄌㄚ ㄆㄨˇ ㄌㄚ ㄙ",
     "evolution": null,
     "move": "水之波動",
-    "desc": "全國圖鑑 No.131，來自關都地區的經典寶可夢！屬性為【水/冰】。"
+    "desc": "全國圖鑑 No.131，來自關都地區的經典寶可夢！屬性為【水/冰】。",
+    "tcgRarity": "U"
   },
   {
     "id": 132,
@@ -3133,7 +3263,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄅㄞˇ ㄅㄧㄢˋ ㄍㄨㄞˋ",
     "evolution": null,
     "move": "劈開",
-    "desc": "全國圖鑑 No.132，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.132，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "R"
   },
   {
     "id": 133,
@@ -3180,7 +3311,8 @@ const GEN1_POKEMON_LIST = [
       "reqLevel": 50
     },
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.133，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.133，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "C"
   },
   {
     "id": 134,
@@ -3201,7 +3333,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄕㄨㄟˇ ㄧ ㄅㄨˋ",
     "evolution": null,
     "move": "衝浪",
-    "desc": "全國圖鑑 No.134，來自關都地區的經典寶可夢！屬性為【水】。"
+    "desc": "全國圖鑑 No.134，來自關都地區的經典寶可夢！屬性為【水】。",
+    "tcgRarity": "R"
   },
   {
     "id": 135,
@@ -3222,7 +3355,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄌㄟˊ ㄧ ㄅㄨˋ",
     "evolution": null,
     "move": "十萬伏特",
-    "desc": "全國圖鑑 No.135，來自關都地區的經典寶可夢！屬性為【電】。"
+    "desc": "全國圖鑑 No.135，來自關都地區的經典寶可夢！屬性為【電】。",
+    "tcgRarity": "R"
   },
   {
     "id": 136,
@@ -3243,7 +3377,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄏㄨㄛˇ ㄧ ㄅㄨˋ",
     "evolution": null,
     "move": "火焰旋渦",
-    "desc": "全國圖鑑 No.136，來自關都地區的經典寶可夢！屬性為【火】。"
+    "desc": "全國圖鑑 No.136，來自關都地區的經典寶可夢！屬性為【火】。",
+    "tcgRarity": "R"
   },
   {
     "id": 137,
@@ -3264,7 +3399,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄨㄛ ㄅㄧㄢ ㄕㄡˋ",
     "evolution": null,
     "move": "劈開",
-    "desc": "全國圖鑑 No.137，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.137，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "C"
   },
   {
     "id": 138,
@@ -3290,7 +3426,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "多刺菊石獸"
     },
     "move": "尖石攻擊",
-    "desc": "全國圖鑑 No.138，來自關都地區的經典寶可夢！屬性為【岩石/水】。"
+    "desc": "全國圖鑑 No.138，來自關都地區的經典寶可夢！屬性為【岩石/水】。",
+    "tcgRarity": "U"
   },
   {
     "id": 139,
@@ -3312,7 +3449,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄉㄨㄛ ㄘˋ ㄐㄩˊ ㄕˊ ㄕㄡˋ",
     "evolution": null,
     "move": "原始之力",
-    "desc": "全國圖鑑 No.139，來自關都地區的經典寶可夢！屬性為【岩石/水】。"
+    "desc": "全國圖鑑 No.139，來自關都地區的經典寶可夢！屬性為【岩石/水】。",
+    "tcgRarity": "R"
   },
   {
     "id": 140,
@@ -3338,7 +3476,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "鐮刀盔"
     },
     "move": "落石",
-    "desc": "全國圖鑑 No.140，來自關都地區的經典寶可夢！屬性為【岩石/水】。"
+    "desc": "全國圖鑑 No.140，來自關都地區的經典寶可夢！屬性為【岩石/水】。",
+    "tcgRarity": "U"
   },
   {
     "id": 141,
@@ -3360,7 +3499,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄌㄧㄢˊ ㄉㄠ ㄎㄨㄟ",
     "evolution": null,
     "move": "岩石封鎖",
-    "desc": "全國圖鑑 No.141，來自關都地區的經典寶可夢！屬性為【岩石/水】。"
+    "desc": "全國圖鑑 No.141，來自關都地區的經典寶可夢！屬性為【岩石/水】。",
+    "tcgRarity": "R"
   },
   {
     "id": 142,
@@ -3382,7 +3522,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄏㄨㄚˋ ㄕˊ ㄧˋ ㄌㄨㄥˊ",
     "evolution": null,
     "move": "岩崩",
-    "desc": "全國圖鑑 No.142，來自關都地區的經典寶可夢！屬性為【岩石/飛行】。"
+    "desc": "全國圖鑑 No.142，來自關都地區的經典寶可夢！屬性為【岩石/飛行】。",
+    "tcgRarity": "R"
   },
   {
     "id": 143,
@@ -3403,7 +3544,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄎㄚˇ ㄅㄧˇ ㄕㄡˋ",
     "evolution": null,
     "move": "破壞光線",
-    "desc": "全國圖鑑 No.143，來自關都地區的經典寶可夢！屬性為【一般】。"
+    "desc": "全國圖鑑 No.143，來自關都地區的經典寶可夢！屬性為【一般】。",
+    "tcgRarity": "U"
   },
   {
     "id": 144,
@@ -3425,7 +3567,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄐㄧˊ ㄉㄨㄥˋ ㄋㄧㄠˇ",
     "evolution": null,
     "move": "絕對零度",
-    "desc": "全國圖鑑 No.144，來自關都地區的經典寶可夢！屬性為【冰/飛行】。"
+    "desc": "全國圖鑑 No.144，來自關都地區的經典寶可夢！屬性為【冰/飛行】。",
+    "tcgRarity": "R"
   },
   {
     "id": 145,
@@ -3447,7 +3590,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄕㄢˇ ㄉㄧㄢˋ ㄋㄧㄠˇ",
     "evolution": null,
     "move": "十萬伏特",
-    "desc": "全國圖鑑 No.145，來自關都地區的經典寶可夢！屬性為【電/飛行】。"
+    "desc": "全國圖鑑 No.145，來自關都地區的經典寶可夢！屬性為【電/飛行】。",
+    "tcgRarity": "RR"
   },
   {
     "id": 146,
@@ -3469,7 +3613,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄏㄨㄛˇ ㄧㄢˋ ㄋㄧㄠˇ",
     "evolution": null,
     "move": "火焰旋渦",
-    "desc": "全國圖鑑 No.146，來自關都地區的經典寶可夢！屬性為【火/飛行】。"
+    "desc": "全國圖鑑 No.146，來自關都地區的經典寶可夢！屬性為【火/飛行】。",
+    "tcgRarity": "R"
   },
   {
     "id": 147,
@@ -3494,7 +3639,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "哈克龍"
     },
     "move": "逆鱗",
-    "desc": "全國圖鑑 No.147，來自關都地區的經典寶可夢！屬性為【龍】。"
+    "desc": "全國圖鑑 No.147，來自關都地區的經典寶可夢！屬性為【龍】。",
+    "tcgRarity": "C"
   },
   {
     "id": 148,
@@ -3519,7 +3665,8 @@ const GEN1_POKEMON_LIST = [
       "evolvesToName": "快龍"
     },
     "move": "龍之俯衝",
-    "desc": "全國圖鑑 No.148，來自關都地區的經典寶可夢！屬性為【龍】。"
+    "desc": "全國圖鑑 No.148，來自關都地區的經典寶可夢！屬性為【龍】。",
+    "tcgRarity": "U"
   },
   {
     "id": 149,
@@ -3541,7 +3688,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄎㄨㄞˋ ㄌㄨㄥˊ",
     "evolution": null,
     "move": "天龍流星",
-    "desc": "全國圖鑑 No.149，來自關都地區的經典寶可夢！屬性為【龍/飛行】。"
+    "desc": "全國圖鑑 No.149，來自關都地區的經典寶可夢！屬性為【龍/飛行】。",
+    "tcgRarity": "R"
   },
   {
     "id": 150,
@@ -3562,7 +3710,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄔㄠ ㄇㄥˋ",
     "evolution": null,
     "move": "念力",
-    "desc": "全國圖鑑 No.150，來自關都地區的經典寶可夢！屬性為【超能力】。"
+    "desc": "全國圖鑑 No.150，來自關都地區的經典寶可夢！屬性為【超能力】。",
+    "tcgRarity": "R"
   },
   {
     "id": 151,
@@ -3583,7 +3732,8 @@ const GEN1_POKEMON_LIST = [
     "zhuyin": "ㄇㄥˋ ㄏㄨㄢˋ",
     "evolution": null,
     "move": "幻象光線",
-    "desc": "全國圖鑑 No.151，來自關都地區的經典寶可夢！屬性為【超能力】。"
+    "desc": "全國圖鑑 No.151，來自關都地區的經典寶可夢！屬性為【超能力】。",
+    "tcgRarity": "RR"
   }
 ];
 
