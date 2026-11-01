@@ -5747,16 +5747,16 @@ html, body {
   color: #FFFFFF;
 }
 
-/* 151 寶可夢卡片網格 */
+/* 151 寶可夢卡片網格（加寬卡片邊距，確保 4~5 字注音完美容納） */
 .gen1-pokemon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
   gap: 14px;
   margin-top: 14px;
 }
 @media (max-width: 600px) {
   .gen1-pokemon-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
     gap: 10px;
   }
 }
@@ -5765,7 +5765,7 @@ html, body {
   background: #FFFFFF;
   border: 3px solid #E2E8F0;
   border-radius: 18px;
-  padding: 12px 10px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -5773,6 +5773,8 @@ html, body {
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  box-sizing: border-box;
+  overflow: visible;
 }
 .gen1-card:hover {
   transform: translateY(-4px) scale(1.02);
@@ -5812,13 +5814,18 @@ html, body {
 }
 
 .gen1-starter-badge {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 900;
   color: #059669;
   background: #D1FAE5;
   padding: 1px 6px;
   border-radius: 8px;
   border: 1px solid #A7F3D0;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.2 !important;
 }
 
 .gen1-card-top {
@@ -5861,15 +5868,78 @@ html, body {
 }
 
 .gen1-card-name-ruby {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 900;
   color: #1E293B;
   text-align: center;
   margin: 4px 0 6px 0;
   min-height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+}
+
+/* 寶可夢卡片專屬直式注音排版：精確微調字距與音標，100% 容納於卡片內絕不超出邊框 */
+.gen1-card-name-ruby .zy-hanzi-pair {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 1px !important;
+  flex-shrink: 0 !important;
+}
+
+.gen1-card-name-ruby .zy-hanzi {
+  font-size: 14px !important;
+  margin-right: 1.5px !important;
+  line-height: 1 !important;
+}
+
+.gen1-card-name-ruby .zy-vertical-syllable {
+  font-size: 8.5px !important;
+  line-height: 1 !important;
+}
+
+.gen1-card-name-ruby .zy-vertical-syllable .zy-char {
+  font-size: 8px !important;
+  line-height: 8px !important;
+}
+
+.gen1-card-name-ruby .zy-tone-side {
+  font-size: 8px !important;
+  right: -6px !important;
+}
+
+.gen1-card-name-ruby .zy-tone-light {
+  font-size: 8px !important;
+  top: -5px !important;
+}
+
+/* 4 字寶可夢名稱縮放（例如：妙蛙種子、尼多力諾、蚊香蝌蚪等） */
+.gen1-card-name-ruby.len-4 .zy-hanzi-pair {
+  margin: 0 0.5px !important;
+}
+.gen1-card-name-ruby.len-4 .zy-hanzi {
+  font-size: 12.5px !important;
+  margin-right: 1px !important;
+}
+.gen1-card-name-ruby.len-4 .zy-vertical-syllable {
+  font-size: 8px !important;
+}
+
+/* 5 字寶可夢名稱縮放（例如：三合一磁怪、多刺菊石獸） */
+.gen1-card-name-ruby.len-5 .zy-hanzi-pair {
+  margin: 0 0.5px !important;
+}
+.gen1-card-name-ruby.len-5 .zy-hanzi {
+  font-size: 11px !important;
+  margin-right: 0.5px !important;
+}
+.gen1-card-name-ruby.len-5 .zy-vertical-syllable {
+  font-size: 7px !important;
 }
 
 .gen1-card-types {

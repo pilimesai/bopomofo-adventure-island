@@ -8152,7 +8152,7 @@ function openCurrentPartnerDetailModal() {
           <img src="assets/pokemon/gen1/${p.id}.png" alt="${p.name}" class="gen1-card-img" loading="lazy" onerror="this.onerror=null;this.src='${p.image}';" />
           ${isMaxTrained ? '<span class="max-trained-corner-crown">👑</span>' : ''}
         </div>
-        <div class="gen1-card-name-ruby">
+        <div class="gen1-card-name-ruby${(p.name && p.name.length >= 5) ? ' len-5' : ((p.name && p.name.length === 4) ? ' len-4' : '')}">
           ${formatZhuyinDisplay(p.name, p.zhuyin)}
         </div>
         <div class="gen1-card-types">
